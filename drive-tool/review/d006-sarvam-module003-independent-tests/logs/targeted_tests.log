@@ -1,0 +1,35 @@
+### targeted: descriptor + bounded-read tests (py3.11)
+test_close_idempotency_and_operations_after_close (tests.test_local.TestDescriptorLifetimeAndClose.test_close_idempotency_and_operations_after_close) ... ok
+test_deterministic_descriptor_accounting_across_success_and_failures (tests.test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures) ... ok
+test_linux_proc_self_fd_bounded_count (tests.test_local.TestDescriptorLifetimeAndClose.test_linux_proc_self_fd_bounded_count) ... ok
+test_multi_chunk_streaming_growth_seam (tests.test_local.TestBoundedReads.test_multi_chunk_streaming_growth_seam)
+Proves chunked reading caps total bytes requested at max_read_bytes + 1. ... ok
+test_read_limit_below_exact_and_above_threshold (tests.test_local.TestBoundedReads.test_read_limit_below_exact_and_above_threshold) ... ok
+test_simulated_file_growth_after_fstat_reads_at_most_limit_plus_one (tests.test_local.TestBoundedReads.test_simulated_file_growth_after_fstat_reads_at_most_limit_plus_one)
+Proves a file growing after fstat cannot bypass max_read_bytes. ... ok
+test_fifo_rejected_without_blocking_in_bounded_subprocess (tests.test_local.TestSpecialEntriesAndNonblockingFifo.test_fifo_rejected_without_blocking_in_bounded_subprocess) ... ok
+test_unix_socket_rejected_and_omitted_from_listing (tests.test_local.TestSpecialEntriesAndNonblockingFifo.test_unix_socket_rejected_and_omitted_from_listing) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.232s
+
+OK
+exit=0
+
+### same (py3.12)
+test_close_idempotency_and_operations_after_close (tests.test_local.TestDescriptorLifetimeAndClose.test_close_idempotency_and_operations_after_close) ... ok
+test_deterministic_descriptor_accounting_across_success_and_failures (tests.test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures) ... ok
+test_linux_proc_self_fd_bounded_count (tests.test_local.TestDescriptorLifetimeAndClose.test_linux_proc_self_fd_bounded_count) ... ok
+test_multi_chunk_streaming_growth_seam (tests.test_local.TestBoundedReads.test_multi_chunk_streaming_growth_seam)
+Proves chunked reading caps total bytes requested at max_read_bytes + 1. ... ok
+test_read_limit_below_exact_and_above_threshold (tests.test_local.TestBoundedReads.test_read_limit_below_exact_and_above_threshold) ... ok
+test_simulated_file_growth_after_fstat_reads_at_most_limit_plus_one (tests.test_local.TestBoundedReads.test_simulated_file_growth_after_fstat_reads_at_most_limit_plus_one)
+Proves a file growing after fstat cannot bypass max_read_bytes. ... ok
+test_fifo_rejected_without_blocking_in_bounded_subprocess (tests.test_local.TestSpecialEntriesAndNonblockingFifo.test_fifo_rejected_without_blocking_in_bounded_subprocess) ... ok
+test_unix_socket_rejected_and_omitted_from_listing (tests.test_local.TestSpecialEntriesAndNonblockingFifo.test_unix_socket_rejected_and_omitted_from_listing) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.303s
+
+OK
+exit=0

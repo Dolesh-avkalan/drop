@@ -1,0 +1,8 @@
+########## fd_probe py3.11 ##########
+baseline=4 after_init=5 during_50_loops=5 after_close=4
+RESULT: PASS (no leak)
+exit=0
+########## fd_probe py3.12 ##########
+baseline=4 after_init=5 during_50_loops=5 after_close=4
+RESULT: PASS (no leak)
+exit=0

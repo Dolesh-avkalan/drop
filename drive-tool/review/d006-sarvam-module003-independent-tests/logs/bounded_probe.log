@@ -1,0 +1,16 @@
+########## bounded_probe py3.11 ##########
+(1) apparent_size=2147483648 st_blocks=4194304
+    outcome=ReadLimitExceededError: file 'p/huge.bin' size (2147483648 bytes) exceeds max_read_bytes (1048576 bytes)
+    os.read calls before rejection=0
+(2) outcome=ReadLimitExceededError: file 'p/grow.bin' exceeded max_read_bytes (16 bytes) while reading
+    bytes read from descriptor=17 (expected max_read_bytes+1 = 17)
+RESULT: PASS
+exit=0
+########## bounded_probe py3.12 ##########
+(1) apparent_size=2147483648 st_blocks=4194304
+    outcome=ReadLimitExceededError: file 'p/huge.bin' size (2147483648 bytes) exceeds max_read_bytes (1048576 bytes)
+    os.read calls before rejection=0
+(2) outcome=ReadLimitExceededError: file 'p/grow.bin' exceeded max_read_bytes (16 bytes) while reading
+    bytes read from descriptor=17 (expected max_read_bytes+1 = 17)
+RESULT: PASS
+exit=0

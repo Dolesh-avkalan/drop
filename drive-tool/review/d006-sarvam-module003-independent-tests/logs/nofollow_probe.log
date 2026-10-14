@@ -1,0 +1,49 @@
+########## python3.11 ##########
+python 3.11.2 | os.name=posix
+--- probe dir: /tmp/nofollow_probe_zthxz7xt
+    /proc/mounts type for dir: '9p' (mountpoint '/tmp')
+    flags include O_NOFOLLOW: True, O_DIRECTORY: True
+    lstat('linkdir').islink = True
+    (A) open('linkdir', O_NOFOLLOW|O_DIRECTORY) -> SUCCEEDED fd=4 (symlink FOLLOWED)
+        readdir(fd) = ['child']
+    (B) open('linkdir', O_NOFOLLOW only) -> raised ELOOP (40)
+--- probe dir: /scratch/work/nofollow_probe_a_x3sfrc
+    /proc/mounts type for dir: '9p' (mountpoint '/scratch')
+    flags include O_NOFOLLOW: True, O_DIRECTORY: True
+    lstat('linkdir').islink = True
+    (A) open('linkdir', O_NOFOLLOW|O_DIRECTORY) -> SUCCEEDED fd=4 (symlink FOLLOWED)
+        readdir(fd) = ['child']
+    (B) open('linkdir', O_NOFOLLOW only) -> raised ELOOP (40)
+--- probe dir: /dev/shm/nofollow_probe_w2pal4kf
+    /proc/mounts type for dir: 'tmpfs' (mountpoint '/dev/shm')
+    flags include O_NOFOLLOW: True, O_DIRECTORY: True
+    lstat('linkdir').islink = True
+    (A) open('linkdir', O_NOFOLLOW|O_DIRECTORY) -> SUCCEEDED fd=4 (symlink FOLLOWED)
+        readdir(fd) = ['child']
+    (B) open('linkdir', O_NOFOLLOW only) -> raised ELOOP (40)
+exit=0
+
+########## python3.12 ##########
+python 3.12.13 | os.name=posix
+--- probe dir: /tmp/nofollow_probe_c_1f2o_6
+    /proc/mounts type for dir: '9p' (mountpoint '/tmp')
+    flags include O_NOFOLLOW: True, O_DIRECTORY: True
+    lstat('linkdir').islink = True
+    (A) open('linkdir', O_NOFOLLOW|O_DIRECTORY) -> SUCCEEDED fd=4 (symlink FOLLOWED)
+        readdir(fd) = ['child']
+    (B) open('linkdir', O_NOFOLLOW only) -> raised ELOOP (40)
+--- probe dir: /scratch/work/nofollow_probe_k3iyxtir
+    /proc/mounts type for dir: '9p' (mountpoint '/scratch')
+    flags include O_NOFOLLOW: True, O_DIRECTORY: True
+    lstat('linkdir').islink = True
+    (A) open('linkdir', O_NOFOLLOW|O_DIRECTORY) -> SUCCEEDED fd=4 (symlink FOLLOWED)
+        readdir(fd) = ['child']
+    (B) open('linkdir', O_NOFOLLOW only) -> raised ELOOP (40)
+--- probe dir: /dev/shm/nofollow_probe_rie6z05e
+    /proc/mounts type for dir: 'tmpfs' (mountpoint '/dev/shm')
+    flags include O_NOFOLLOW: True, O_DIRECTORY: True
+    lstat('linkdir').islink = True
+    (A) open('linkdir', O_NOFOLLOW|O_DIRECTORY) -> SUCCEEDED fd=4 (symlink FOLLOWED)
+        readdir(fd) = ['child']
+    (B) open('linkdir', O_NOFOLLOW only) -> raised ELOOP (40)
+exit=0

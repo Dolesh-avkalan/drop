@@ -1,0 +1,35 @@
+########## python3.11 ##########
+python 3.11.2 | realpath(TMPDIR) base under /tmp
+  [ACTUAL os.open (this env)] read_bytes('p/sub/target.txt') traversal
+      -> ESCAPED: read_bytes returned OUTSIDE sentinel bytes b'OUTSIDE_SENTINEL_BYTES_0123456789'
+  [ACTUAL os.open (this env)] stat('p/sub/target.txt') traversal
+      -> ESCAPED: stat exposed OUTSIDE metadata (size=33, name='target.txt')
+  [ACTUAL os.open (this env)] list_children('p/sub') final directory
+      -> ESCAPED: list_children('p/sub') exposed OUTSIDE entries ['secret.txt', 'target.txt']
+
+  [SIMULATED conformant open] read_bytes('p/sub/target.txt') traversal
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt'
+  [SIMULATED conformant open] stat('p/sub/target.txt') traversal
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt'
+  [SIMULATED conformant open] list_children('p/sub') final directory
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub'
+
+exit=0
+
+########## python3.12 ##########
+python 3.12.13 | realpath(TMPDIR) base under /tmp
+  [ACTUAL os.open (this env)] read_bytes('p/sub/target.txt') traversal
+      -> ESCAPED: read_bytes returned OUTSIDE sentinel bytes b'OUTSIDE_SENTINEL_BYTES_0123456789'
+  [ACTUAL os.open (this env)] stat('p/sub/target.txt') traversal
+      -> ESCAPED: stat exposed OUTSIDE metadata (size=33, name='target.txt')
+  [ACTUAL os.open (this env)] list_children('p/sub') final directory
+      -> ESCAPED: list_children('p/sub') exposed OUTSIDE entries ['secret.txt', 'target.txt']
+
+  [SIMULATED conformant open] read_bytes('p/sub/target.txt') traversal
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt'
+  [SIMULATED conformant open] stat('p/sub/target.txt') traversal
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt'
+  [SIMULATED conformant open] list_children('p/sub') final directory
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub'
+
+exit=0
