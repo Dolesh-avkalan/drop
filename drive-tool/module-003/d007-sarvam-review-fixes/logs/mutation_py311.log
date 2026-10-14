@@ -1,0 +1,25 @@
+test_deterministic_descriptor_accounting_across_success_and_failures (tests.test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures) ... FAIL
+test_list_children_closes_the_scan_descriptor (tests.test_local.TestDescriptorLifetimeAndClose.test_list_children_closes_the_scan_descriptor)
+The explicit scan_fd close must actually be issued. ... FAIL
+
+======================================================================
+FAIL: test_deterministic_descriptor_accounting_across_success_and_failures (tests.test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutant/tests/test_local.py", line 1083, in test_deterministic_descriptor_accounting_across_success_and_failures
+    self.assertEqual(len(active_fds), 1)
+AssertionError: 3 != 1
+
+======================================================================
+FAIL: test_list_children_closes_the_scan_descriptor (tests.test_local.TestDescriptorLifetimeAndClose.test_list_children_closes_the_scan_descriptor)
+The explicit scan_fd close must actually be issued.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutant/tests/test_local.py", line 1153, in test_list_children_closes_the_scan_descriptor
+    self.assertIn(
+AssertionError: 5 not found in [] : list_children must close the descriptor it opened for scandir
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.037s
+
+FAILED (failures=2)

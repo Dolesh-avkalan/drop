@@ -1,0 +1,6 @@
+test_deterministic_descriptor_accounting_across_success_and_failures (tests.test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.060s
+
+OK

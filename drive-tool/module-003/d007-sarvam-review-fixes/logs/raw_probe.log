@@ -1,0 +1,7 @@
+flags O_NOFOLLOW=True O_DIRECTORY=False
+symlink_to_dir : raised ELOOP
+broken_symlink : raised ELOOP
+real_dir       : opened, mode=0o40775
+root_slash     : opened, mode=0o40755
+fifo           : opened, mode=0o10664
+regular_file   : opened, mode=0o100664

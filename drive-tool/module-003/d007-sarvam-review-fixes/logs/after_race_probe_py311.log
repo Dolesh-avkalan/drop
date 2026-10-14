@@ -1,0 +1,15 @@
+python 3.11.2 | realpath(TMPDIR) base under /tmp
+  [ACTUAL os.open (this env)] read_bytes('p/sub/target.txt') traversal
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt'
+  [ACTUAL os.open (this env)] stat('p/sub/target.txt') traversal
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt'
+  [ACTUAL os.open (this env)] list_children('p/sub') final directory
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub'
+
+  [SIMULATED conformant open] read_bytes('p/sub/target.txt') traversal
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt'
+  [SIMULATED conformant open] stat('p/sub/target.txt') traversal
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt'
+  [SIMULATED conformant open] list_children('p/sub') final directory
+      -> raised UnsafePathError: symlink encountered at 'sub' for 'p/sub'
+

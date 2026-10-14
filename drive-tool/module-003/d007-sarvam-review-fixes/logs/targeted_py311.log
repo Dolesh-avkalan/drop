@@ -1,0 +1,29 @@
+test_dir_open_flags_exclude_o_directory (tests.test_local.TestPlatformNoFollowSemantics.test_dir_open_flags_exclude_o_directory) ... ok
+test_real_kernel_opens_real_directory_and_fstat_is_dir (tests.test_local.TestPlatformNoFollowSemantics.test_real_kernel_opens_real_directory_and_fstat_is_dir) ... ok
+test_real_kernel_rejects_symlink_with_component_flags (tests.test_local.TestPlatformNoFollowSemantics.test_real_kernel_rejects_symlink_with_component_flags) ... ok
+test_runtime_probe_reports_nofollow_enforced (tests.test_local.TestPlatformNoFollowSemantics.test_runtime_probe_reports_nofollow_enforced) ... ok
+test_unsupported_platform_when_runtime_probe_fails (tests.test_local.TestPlatformNoFollowSemantics.test_unsupported_platform_when_runtime_probe_fails) ... ok
+test_adversarial_symlink_swap_between_stat_and_read_and_mid_traversal (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_adversarial_symlink_swap_between_stat_and_read_and_mid_traversal)
+Deterministic mechanism proof that symlink swaps cannot escape root. ... ok
+test_dir_swap_before_ancestor_open_rejected_at_root_setup (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_ancestor_open_rejected_at_root_setup) ... ok
+test_dir_swap_before_component_open_read_traversal_rejected (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_component_open_read_traversal_rejected) ... ok
+test_dir_swap_before_component_open_stat_traversal_rejected (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_component_open_stat_traversal_rejected) ... ok
+test_dir_swap_before_list_children_final_open_rejected (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_list_children_final_open_rejected) ... ok
+test_disappearing_entry_during_listing_is_skipped (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_disappearing_entry_during_listing_is_skipped) ... ok
+test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) ... ok
+test_root_renamed_and_replaced_by_outside_symlink_stays_anchored (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_root_renamed_and_replaced_by_outside_symlink_stays_anchored) ... ok
+test_root_setup_close_failure_cleans_new_fd_without_double_close (tests.test_local.TestCloseFailureOwnership.test_root_setup_close_failure_cleans_new_fd_without_double_close) ... ok
+test_traversal_close_failure_cleans_new_fd_without_double_close (tests.test_local.TestCloseFailureOwnership.test_traversal_close_failure_cleans_new_fd_without_double_close) ... ok
+test_root_fstat_error_wrapped_and_root_fd_closed (tests.test_local.TestOsErrorWrapping.test_root_fstat_error_wrapped_and_root_fd_closed) ... ok
+test_scandir_iteration_error_wrapped_and_scan_fd_closed (tests.test_local.TestOsErrorWrapping.test_scandir_iteration_error_wrapped_and_scan_fd_closed) ... ok
+test_traversal_fstat_error_wrapped_and_fds_cleaned (tests.test_local.TestOsErrorWrapping.test_traversal_fstat_error_wrapped_and_fds_cleaned) ... ok
+test_close_idempotency_and_operations_after_close (tests.test_local.TestDescriptorLifetimeAndClose.test_close_idempotency_and_operations_after_close) ... ok
+test_deterministic_descriptor_accounting_across_success_and_failures (tests.test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures) ... ok
+test_linux_proc_self_fd_bounded_count (tests.test_local.TestDescriptorLifetimeAndClose.test_linux_proc_self_fd_bounded_count) ... ok
+test_list_children_closes_the_scan_descriptor (tests.test_local.TestDescriptorLifetimeAndClose.test_list_children_closes_the_scan_descriptor)
+The explicit scan_fd close must actually be issued. ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.315s
+
+OK
