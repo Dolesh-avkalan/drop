@@ -1,0 +1,17 @@
+=== d012 probe coupling / platform-denial check ===
+tree: /scratch/work/snap/base
+
+--- Part A: probe follows production flags ---
+  dir==file flags: True; has O_NOFOLLOW=True; has O_DIRECTORY=False
+  baseline probe (real helper) = True
+  probe os.open used the production helper's flags: False (probe opens=['0xa0800', '0xa0800'])
+  after restore probe = True (not cached): True
+  [observed] probe with O_DIRECTORY added = True (reported, not asserted; documents kernel O_DIRECTORY interaction)
+
+--- Part B: platform-denial gating when static present, runtime probe False ---
+  Part B N/A: this test module has no static/runtime gate split (pre-d010 self-fulfilling gate) -- expected on the base revision
+
+RESULT: FAIL (3 assertion(s))
+  !! weakened production flags (O_NOFOLLOW dropped) not detected; probe=True
+  !! constructor did not fail closed under weakened flags
+  !! probe did NOT open with the production helper's flags (probe opens=['0xa0800', '0xa0800'])

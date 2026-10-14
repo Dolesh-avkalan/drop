@@ -1,0 +1,421 @@
+{
+  "tree": "/scratch/work/snap/base",
+  "platform_ok": true,
+  "passed": 2,
+  "failed": 9,
+  "results": [
+    {
+      "scenario": "read shallow: parent-handoff close fails after child acquired",
+      "op": "read",
+      "target": "p/a/file.txt",
+      "fail_paths": {
+        "a": "after_real"
+      },
+      "primary": null,
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 2,
+      "acquired_labels": [
+        "a",
+        "file.txt"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "file.txt": 0
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "file.txt",
+      "child_close_attempts": 0,
+      "parent_label": "a",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": null,
+      "failures": [
+        "'file.txt' acquired but close attempted 0 times (want 1)",
+        "CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double"
+      ],
+      "ok": false
+    },
+    {
+      "scenario": "read deep: parent-handoff close fails after child acquired",
+      "op": "read",
+      "target": "p/a/b/file.txt",
+      "fail_paths": {
+        "b": "after_real"
+      },
+      "primary": null,
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 3,
+      "acquired_labels": [
+        "a",
+        "b",
+        "file.txt"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "b": 1,
+        "file.txt": 0
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "file.txt",
+      "child_close_attempts": 0,
+      "parent_label": "b",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": null,
+      "failures": [
+        "'file.txt' acquired but close attempted 0 times (want 1)",
+        "CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double"
+      ],
+      "ok": false
+    },
+    {
+      "scenario": "list shallow: parent-handoff close fails after scan acquired",
+      "op": "list",
+      "target": "p/a/b",
+      "fail_paths": {
+        "a": "after_real"
+      },
+      "primary": null,
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 2,
+      "acquired_labels": [
+        "a",
+        "b"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "b": 0
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "b",
+      "child_close_attempts": 0,
+      "parent_label": "a",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": null,
+      "failures": [
+        "'b' acquired but close attempted 0 times (want 1)",
+        "CHILD 'b' close attempts=0 (want exactly 1) -> leak/double"
+      ],
+      "ok": false
+    },
+    {
+      "scenario": "list deep: parent-handoff close fails after scan acquired",
+      "op": "list",
+      "target": "p/a/b/c",
+      "fail_paths": {
+        "b": "after_real"
+      },
+      "primary": null,
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 3,
+      "acquired_labels": [
+        "a",
+        "b",
+        "c"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "b": 1,
+        "c": 0
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "c",
+      "child_close_attempts": 0,
+      "parent_label": "b",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": null,
+      "failures": [
+        "'c' acquired but close attempted 0 times (want 1)",
+        "CHILD 'c' close attempts=0 (want exactly 1) -> leak/double"
+      ],
+      "ok": false
+    },
+    {
+      "scenario": "read deep: MULTIPLE close failures (parent + child)",
+      "op": "read",
+      "target": "p/a/b/file.txt",
+      "fail_paths": {
+        "b": "after_real",
+        "file.txt": "after_real"
+      },
+      "primary": null,
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 3,
+      "acquired_labels": [
+        "a",
+        "b",
+        "file.txt"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "b": 1,
+        "file.txt": 0
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "file.txt",
+      "child_close_attempts": 0,
+      "parent_label": "b",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": null,
+      "failures": [
+        "'file.txt' acquired but close attempted 0 times (want 1)",
+        "CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double"
+      ],
+      "ok": false
+    },
+    {
+      "scenario": "list deep: MULTIPLE close failures (parent + scan)",
+      "op": "list",
+      "target": "p/a/b/c",
+      "fail_paths": {
+        "b": "after_real",
+        "c": "after_real"
+      },
+      "primary": null,
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 3,
+      "acquired_labels": [
+        "a",
+        "b",
+        "c"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "b": 1,
+        "c": 0
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "c",
+      "child_close_attempts": 0,
+      "parent_label": "b",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": null,
+      "failures": [
+        "'c' acquired but close attempted 0 times (want 1)",
+        "CHILD 'c' close attempts=0 (want exactly 1) -> leak/double"
+      ],
+      "ok": false
+    },
+    {
+      "scenario": "read deep: earlier traversal close failure (intermediate 'a')",
+      "op": "read",
+      "target": "p/a/b/file.txt",
+      "fail_paths": {
+        "a": "after_real"
+      },
+      "primary": null,
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 2,
+      "acquired_labels": [
+        "a",
+        "b"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "b": 1
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "file.txt",
+      "child_close_attempts": null,
+      "parent_label": "b",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": null,
+      "note": "child never acquired (earlier traversal failed first) - correct",
+      "failures": [],
+      "ok": true
+    },
+    {
+      "scenario": "read deep: PRIMARY read failure + parent/child close errors",
+      "op": "read",
+      "target": "p/a/b/file.txt",
+      "fail_paths": {
+        "b": "after_real",
+        "file.txt": "after_real"
+      },
+      "primary": "read",
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 3,
+      "acquired_labels": [
+        "a",
+        "b",
+        "file.txt"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "b": 1,
+        "file.txt": 0
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "file.txt",
+      "child_close_attempts": 0,
+      "parent_label": "b",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": true,
+      "failures": [
+        "'file.txt' acquired but close attempted 0 times (want 1)",
+        "CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double"
+      ],
+      "ok": false
+    },
+    {
+      "scenario": "list deep: PRIMARY scandir failure + parent/scan close errors",
+      "op": "list",
+      "target": "p/a/b/c",
+      "fail_paths": {
+        "b": "after_real",
+        "c": "after_real"
+      },
+      "primary": "scandir",
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 3,
+      "acquired_labels": [
+        "a",
+        "b",
+        "c"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "b": 1,
+        "c": 0
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "c",
+      "child_close_attempts": 0,
+      "parent_label": "b",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": true,
+      "failures": [
+        "'c' acquired but close attempted 0 times (want 1)",
+        "CHILD 'c' close attempts=0 (want exactly 1) -> leak/double"
+      ],
+      "ok": false
+    },
+    {
+      "scenario": "read shallow: AMBIGUOUS close of child (not released, not retried)",
+      "op": "read",
+      "target": "p/a/file.txt",
+      "fail_paths": {
+        "file.txt": "ambiguous"
+      },
+      "primary": null,
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 2,
+      "acquired_labels": [
+        "a",
+        "file.txt"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "file.txt": 1
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "file.txt",
+      "child_close_attempts": 1,
+      "parent_label": "a",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [
+        16
+      ],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": null,
+      "failures": [],
+      "ok": true
+    },
+    {
+      "scenario": "read deep: AMBIGUOUS close of parent handoff",
+      "op": "read",
+      "target": "p/a/b/file.txt",
+      "fail_paths": {
+        "b": "ambiguous"
+      },
+      "primary": null,
+      "raised_type": "LocalStorageError",
+      "raised_cause_type": "OSError",
+      "raised_cause_errno": 5,
+      "op_acquired": 3,
+      "acquired_labels": [
+        "a",
+        "b",
+        "file.txt"
+      ],
+      "close_attempts": {
+        "a": 1,
+        "b": 1,
+        "file.txt": 0
+      },
+      "double_close": [],
+      "close_without_open": [],
+      "child_label": "file.txt",
+      "child_close_attempts": 0,
+      "parent_label": "b",
+      "parent_close_attempts": 1,
+      "ambiguous_left_open_real_fds": [
+        17
+      ],
+      "root_still_owned": true,
+      "root_still_usable": true,
+      "primary_preserved": null,
+      "failures": [
+        "'file.txt' acquired but close attempted 0 times (want 1)",
+        "CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double"
+      ],
+      "ok": false
+    }
+  ]
+}

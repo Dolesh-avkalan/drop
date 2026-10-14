@@ -1,0 +1,9 @@
+{
+  "tree": "/scratch/work/snap/base",
+  "failures": [
+    "weakened production flags (O_NOFOLLOW dropped) not detected; probe=True",
+    "constructor did not fail closed under weakened flags",
+    "probe did NOT open with the production helper's flags (probe opens=['0xa0800', '0xa0800'])"
+  ],
+  "part_b": "n/a (no static/runtime split in test module)"
+}

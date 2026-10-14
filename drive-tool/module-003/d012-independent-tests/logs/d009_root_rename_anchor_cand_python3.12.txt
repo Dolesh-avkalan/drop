@@ -1,0 +1,8 @@
+python 3.12.13 | d009 root-rename anchoring
+PASS symlink-replacement read (got b'ORIGINAL_INSIDE_BYTES')
+PASS symlink-replacement list (got ['a.txt'])
+PASS symlink-replacement stat (size=21)
+PASS dir-replacement read (got b'ORIGINAL_INSIDE_BYTES')
+PASS control: fresh adapter sees outside (got b'OUTSIDE_SENTINEL_BYTES_0123456789')
+
+RESULT: PASS - retained root fd stays anchored to the original directory

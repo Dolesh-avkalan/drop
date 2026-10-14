@@ -1,0 +1,140 @@
+d012 consolidated battery  2026-10-14T18:05:52Z
+
+########## A. environment ##########
+d012 environment 2026-10-14T18:05:41Z
+host kernel: Linux 4.19.0-gvisor x86_64 GNU/Linux
+python3.12: Python 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+python3.11: Python 3.11.2 (main, May 12 2026, 05:17:27) [GCC 12.2.0]
+os-release:
+  PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+  NAME="Debian GNU/Linux"
+  VERSION_ID="12"
+  VERSION="12 (bookworm)"
+  VERSION_CODENAME=bookworm
+  ID=debian
+  HOME_URL="https://www.debian.org/"
+  SUPPORT_URL="https://www.debian.org/support"
+  BUG_REPORT_URL="https://bugs.debian.org/"
+mounts (/ /tmp /scratch):
+  none on / type overlay (rw)
+  none on /tmp type 9p (rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs)
+  none on /scratch type 9p (rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs)
+TMPDIR=/scratch/tmp
+candidate commit: 80bf54885877c475d2ac59ddb3e9f96384600b9e (feature/module-003-resource-fixes)
+base commit:      c2b324dab4cf720178a36a58b5f1cf1339730151
+main commit:      440d0f697c2c2ff176ad991279b1a3e399c42f93
+blob hashes:
+  drive_tool/local.py  candidate 5da22dd42d27746b9840ed00495568ea468754a3
+  tests/test_local.py  candidate b3319752edaf92a02993981fcc62d63f63ebb408
+  docs/evidence/MODULE-003-RESOURCE-FIXES.md candidate 2da73028ce87d06cb0cdb79509b98314124ac2f7
+  drive_tool/local.py  base      2f85eebf879c8c14b9945660dc65f978e3212133
+  tests/test_local.py  base      b84b41776209342319dddb8ecd10cfb8ee129233
+  drive_tool/storage.py candidate 28f7b8c0ce7ac56d602d0af3a709c3f31441904b
+  drive_tool/storage.py base      28f7b8c0ce7ac56d602d0af3a709c3f31441904b
+  drive_tool/__init__.py candidate 9be841b5749acb36c5e362c84b986d98292bae8d
+  drive_tool/__init__.py base      9be841b5749acb36c5e362c84b986d98292bae8d
+raw probe: O_NOFOLLOW alone -> ELOOP; O_NOFOLLOW|O_DIRECTORY -> follows (gVisor)
+
+########## B. committed suite (candidate) ##########
+---- candidate / python3.11 ----
+----------------------------------------------------------------------
+Ran 89 tests in 0.589s
+
+OK
+EXIT=0
+---- candidate / python3.12 ----
+----------------------------------------------------------------------
+Ran 89 tests in 0.661s
+
+OK
+EXIT=0
+
+########## C. committed suite (base, its own tests) ##########
+---- base / python3.11 ----
+----------------------------------------------------------------------
+Ran 82 tests in 0.669s
+
+OK
+EXIT=0
+---- base / python3.12 ----
+----------------------------------------------------------------------
+Ran 82 tests in 0.612s
+
+OK
+EXIT=0
+
+########## D. NEW tests on BASE implementation (d010 claim: 5 failures) ##########
+---- newtests-on-base / python3.11 ----
+FAIL: test_list_children_deep_parent_handoff_close_failure_releases_child (test_local.TestChildDescriptorOwnershipHandoff.test_list_children_deep_parent_handoff_close_failure_releases_child)
+FAIL: test_list_children_parent_handoff_close_failure_releases_child (test_local.TestChildDescriptorOwnershipHandoff.test_list_children_parent_handoff_close_failure_releases_child)
+FAIL: test_read_bytes_deep_parent_handoff_close_failure_releases_child (test_local.TestChildDescriptorOwnershipHandoff.test_read_bytes_deep_parent_handoff_close_failure_releases_child)
+FAIL: test_read_bytes_parent_handoff_close_failure_releases_child (test_local.TestChildDescriptorOwnershipHandoff.test_read_bytes_parent_handoff_close_failure_releases_child)
+FAIL: test_probe_follows_production_dir_flags (test_local.TestPlatformNoFollowSemantics.test_probe_follows_production_dir_flags)
+Ran 89 tests in 0.597s
+FAILED (failures=5)
+EXIT=0
+---- newtests-on-base / python3.12 ----
+FAIL: test_list_children_deep_parent_handoff_close_failure_releases_child (test_local.TestChildDescriptorOwnershipHandoff.test_list_children_deep_parent_handoff_close_failure_releases_child)
+FAIL: test_list_children_parent_handoff_close_failure_releases_child (test_local.TestChildDescriptorOwnershipHandoff.test_list_children_parent_handoff_close_failure_releases_child)
+FAIL: test_read_bytes_deep_parent_handoff_close_failure_releases_child (test_local.TestChildDescriptorOwnershipHandoff.test_read_bytes_deep_parent_handoff_close_failure_releases_child)
+FAIL: test_read_bytes_parent_handoff_close_failure_releases_child (test_local.TestChildDescriptorOwnershipHandoff.test_read_bytes_parent_handoff_close_failure_releases_child)
+FAIL: test_probe_follows_production_dir_flags (test_local.TestPlatformNoFollowSemantics.test_probe_follows_production_dir_flags)
+Ran 89 tests in 0.597s
+FAILED (failures=5)
+EXIT=0
+
+########## E. d012 fresh ownership check ##########
+---- candidate ----
+
+RESULT: 11 passed, 0 failed, 11 total
+EXIT=0
+---- base ----
+
+RESULT: 2 passed, 9 failed, 11 total
+EXIT=1
+---- M1 mutant (drop child cleanup) ----
+
+RESULT: 5 passed, 6 failed, 11 total
+EXIT=1
+
+########## F. d012 probe-coupling / platform-denial check ##########
+---- candidate ----
+
+RESULT: PASS (all assertions held)
+EXIT=0
+---- base ----
+  !! constructor did not fail closed under weakened flags
+  !! probe did NOT open with the production helper's flags (probe opens=['0xa0800', '0xa0800'])
+EXIT=1
+---- M2 mutant (decoupled probe) ----
+RESULT: FAIL (1 assertion(s))
+  !! probe did NOT open with the production helper's flags (probe opens=[])
+EXIT=1
+
+########## G. d012 operational containment check ##########
+---- candidate ----
+
+RESULT: 15 passed, 0 failed, 15 total
+EXIT=0
+---- base ----
+
+RESULT: 15 passed, 0 failed, 15 total
+EXIT=0
+
+########## H. d009 secondary cross-check (against candidate) ##########
+raw_nofollow_probe python3.11 EXIT=0
+containment_assert python3.11 EXIT=0
+bounded_read_checks python3.11 EXIT=0
+root_rename_anchor python3.11 EXIT=0
+fifo_timeout python3.11 EXIT=0
+fd_cleanup python3.11 EXIT=0
+raw_nofollow_probe python3.12 EXIT=0
+containment_assert python3.12 EXIT=0
+bounded_read_checks python3.12 EXIT=0
+root_rename_anchor python3.12 EXIT=0
+fifo_timeout python3.12 EXIT=0
+fd_cleanup python3.12 EXIT=0
+d009 fd_cleanup against BASE (expect FAIL):
+  fd_cleanup base EXIT=1
+
+########## battery complete ##########

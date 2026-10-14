@@ -1,0 +1,58 @@
+=== d012 fresh ownership check ===
+tree: /scratch/work/snap/base
+platform supported: True 
+
+[FAIL] read shallow: parent-handoff close fails after child acquired
+        acquired=['a', 'file.txt'] close_attempts={'a': 1, 'file.txt': 0} child=file.txt@0 parent=a@1
+        !! 'file.txt' acquired but close attempted 0 times (want 1)
+        !! CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double
+
+[FAIL] read deep: parent-handoff close fails after child acquired
+        acquired=['a', 'b', 'file.txt'] close_attempts={'a': 1, 'b': 1, 'file.txt': 0} child=file.txt@0 parent=b@1
+        !! 'file.txt' acquired but close attempted 0 times (want 1)
+        !! CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double
+
+[FAIL] list shallow: parent-handoff close fails after scan acquired
+        acquired=['a', 'b'] close_attempts={'a': 1, 'b': 0} child=b@0 parent=a@1
+        !! 'b' acquired but close attempted 0 times (want 1)
+        !! CHILD 'b' close attempts=0 (want exactly 1) -> leak/double
+
+[FAIL] list deep: parent-handoff close fails after scan acquired
+        acquired=['a', 'b', 'c'] close_attempts={'a': 1, 'b': 1, 'c': 0} child=c@0 parent=b@1
+        !! 'c' acquired but close attempted 0 times (want 1)
+        !! CHILD 'c' close attempts=0 (want exactly 1) -> leak/double
+
+[FAIL] read deep: MULTIPLE close failures (parent + child)
+        acquired=['a', 'b', 'file.txt'] close_attempts={'a': 1, 'b': 1, 'file.txt': 0} child=file.txt@0 parent=b@1
+        !! 'file.txt' acquired but close attempted 0 times (want 1)
+        !! CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double
+
+[FAIL] list deep: MULTIPLE close failures (parent + scan)
+        acquired=['a', 'b', 'c'] close_attempts={'a': 1, 'b': 1, 'c': 0} child=c@0 parent=b@1
+        !! 'c' acquired but close attempted 0 times (want 1)
+        !! CHILD 'c' close attempts=0 (want exactly 1) -> leak/double
+
+[PASS] read deep: earlier traversal close failure (intermediate 'a')
+        acquired=['a', 'b'] close_attempts={'a': 1, 'b': 1} child=file.txt@None parent=b@1
+
+[FAIL] read deep: PRIMARY read failure + parent/child close errors
+        acquired=['a', 'b', 'file.txt'] close_attempts={'a': 1, 'b': 1, 'file.txt': 0} child=file.txt@0 parent=b@1
+        !! 'file.txt' acquired but close attempted 0 times (want 1)
+        !! CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double
+
+[FAIL] list deep: PRIMARY scandir failure + parent/scan close errors
+        acquired=['a', 'b', 'c'] close_attempts={'a': 1, 'b': 1, 'c': 0} child=c@0 parent=b@1
+        !! 'c' acquired but close attempted 0 times (want 1)
+        !! CHILD 'c' close attempts=0 (want exactly 1) -> leak/double
+
+[PASS] read shallow: AMBIGUOUS close of child (not released, not retried)
+        acquired=['a', 'file.txt'] close_attempts={'a': 1, 'file.txt': 1} child=file.txt@1 parent=a@1
+        ambiguous: real fds deliberately left open by injection = [16] (module did NOT retry; cannot verify release) 
+
+[FAIL] read deep: AMBIGUOUS close of parent handoff
+        acquired=['a', 'b', 'file.txt'] close_attempts={'a': 1, 'b': 1, 'file.txt': 0} child=file.txt@0 parent=b@1
+        ambiguous: real fds deliberately left open by injection = [17] (module did NOT retry; cannot verify release) 
+        !! 'file.txt' acquired but close attempted 0 times (want 1)
+        !! CHILD 'file.txt' close attempts=0 (want exactly 1) -> leak/double
+
+RESULT: 2 passed, 9 failed, 11 total

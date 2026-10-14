@@ -1,0 +1,19 @@
+{
+  "tree": "/scratch/work/snap/candidate",
+  "failures": [],
+  "full_real": [
+    89,
+    0,
+    0,
+    0
+  ],
+  "full_probe_false": [
+    89,
+    40,
+    1,
+    0
+  ],
+  "failed_ids_probe_false": [
+    "test_local.TestPlatformNoFollowSemantics.test_runtime_probe_matches_raw_kernel_nofollow"
+  ]
+}

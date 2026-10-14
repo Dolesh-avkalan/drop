@@ -1,0 +1,19 @@
+=== d012 operational containment checks ===
+tree: /scratch/work/snap/base
+  [PASS] final symlink rejected by stat
+  [PASS] final symlink rejected by read_bytes
+  [PASS] final dir-symlink rejected by list_children
+  [PASS] intermediate symlink rejected by stat
+  [PASS] listing omits symlinks -- names=['file.txt', 'sub']
+  [PASS] root anchoring: read stays in original dir -- got=b'orig-root-data'
+  [PASS] root anchoring: listing stays in original dir -- names=['file.txt', 'sub']
+  [PASS] bounded read below limit
+  [PASS] bounded read exact limit
+  [PASS] bounded read above limit rejected
+  [PASS] growth-after-fstat rejected
+  [PASS] growth-after-fstat read bounded to max+1 -- bytes read=11 (limit+1=11)
+  [PASS] FIFO read rejected without blocking (bounded subprocess) -- out='UNSUPPORTED_ENTRY' rc=0
+  [PASS] listing omits FIFO -- names=[]
+  [PASS] no fd leak across 200 op cycles -- before=4 after=4
+
+RESULT: 15 passed, 0 failed, 15 total

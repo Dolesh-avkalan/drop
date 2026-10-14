@@ -1,0 +1,8 @@
+python 3.11.2 | d009 bounded-read checks | max_read_bytes=1000
+PASS below-limit (len=990)
+PASS exact-limit (len=1000)
+PASS above-limit (ReadLimitExceededError)
+PASS grow-during-read (ReadLimitExceededError)
+PASS under-report-stat (ReadLimitExceededError)
+
+RESULT: PASS - all bounded-read checks behaved as specified

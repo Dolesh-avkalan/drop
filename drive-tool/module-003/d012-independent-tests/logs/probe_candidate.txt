@@ -1,0 +1,22 @@
+=== d012 probe coupling / platform-denial check ===
+tree: /scratch/work/snap/candidate
+
+--- Part A: probe follows production flags ---
+  dir==file flags: True; has O_NOFOLLOW=True; has O_DIRECTORY=False
+  baseline probe (real helper) = True
+  weakened flags -> probe False and constructor fail-closed: OK
+  probe os.open used the production helper's flags: True (probe opens=['0xa0900', '0xa0900'])
+  after restore probe = True (not cached): True
+  [observed] probe with O_DIRECTORY added = False (reported, not asserted; documents kernel O_DIRECTORY interaction)
+
+--- Part B: platform-denial gating when static present, runtime probe False ---
+  static POSIX prerequisites met: True
+  TestPlatformCapabilityGate: ran=6 skipped=0 failures=0 errors=0 failed_ids=[]
+  TestPlatformNoFollowSemantics: ran=7 skipped=0 failures=1 errors=0 failed_ids=['test_local.TestPlatformNoFollowSemantics.test_runtime_probe_matches_raw_kernel_nofollow']
+  operational TestConfigurationAndRootValidation: ran=5 skipped=5 (expected: all skipped, precise reason)
+    skip reason: adapter unsupported on this kernel: O_NOFOLLOW is not enforced (runtime probe returned False); operational containment tests are not meaningful here
+  full suite (real kernel): ran=89 skipped=0 failures=0 errors=0
+  full suite (probe forced False): ran=89 skipped=40 failures=1 errors=0
+    failed_ids under forced False: ['test_local.TestPlatformNoFollowSemantics.test_runtime_probe_matches_raw_kernel_nofollow']
+
+RESULT: PASS (all assertions held)

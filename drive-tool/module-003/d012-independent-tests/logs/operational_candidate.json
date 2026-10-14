@@ -1,0 +1,82 @@
+{
+  "tree": "/scratch/work/snap/candidate",
+  "checks": [
+    {
+      "check": "final symlink rejected by stat",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "final symlink rejected by read_bytes",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "final dir-symlink rejected by list_children",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "intermediate symlink rejected by stat",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "listing omits symlinks",
+      "ok": true,
+      "detail": "names=['file.txt', 'sub']"
+    },
+    {
+      "check": "root anchoring: read stays in original dir",
+      "ok": true,
+      "detail": "got=b'orig-root-data'"
+    },
+    {
+      "check": "root anchoring: listing stays in original dir",
+      "ok": true,
+      "detail": "names=['file.txt', 'sub']"
+    },
+    {
+      "check": "bounded read below limit",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "bounded read exact limit",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "bounded read above limit rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "growth-after-fstat rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "growth-after-fstat read bounded to max+1",
+      "ok": true,
+      "detail": "bytes read=11 (limit+1=11)"
+    },
+    {
+      "check": "FIFO read rejected without blocking (bounded subprocess)",
+      "ok": true,
+      "detail": "out='UNSUPPORTED_ENTRY' rc=0"
+    },
+    {
+      "check": "listing omits FIFO",
+      "ok": true,
+      "detail": "names=[]"
+    },
+    {
+      "check": "no fd leak across 200 op cycles",
+      "ok": true,
+      "detail": "before=4 after=4"
+    }
+  ],
+  "passed": 15,
+  "failed": 0
+}
