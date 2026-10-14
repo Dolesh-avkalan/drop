@@ -1,0 +1,166 @@
+test_nested_stat_list_and_read_exact_binary_and_empty_files (test_local.TestBasicOperationsAndMetadata.test_nested_stat_list_and_read_exact_binary_and_empty_files) ... ok
+test_protocol_conformance_and_defaults (test_local.TestBasicOperationsAndMetadata.test_protocol_conformance_and_defaults) ... ok
+test_sorted_listing_and_empty_directory (test_local.TestBasicOperationsAndMetadata.test_sorted_listing_and_empty_directory) ... ok
+test_synthetic_root_and_real_top_level_root_filename (test_local.TestBasicOperationsAndMetadata.test_synthetic_root_and_real_top_level_root_filename) ... ok
+test_multi_chunk_streaming_growth_seam (test_local.TestBoundedReads.test_multi_chunk_streaming_growth_seam)
+Proves chunked reading caps total bytes requested at max_read_bytes + 1. ... ok
+test_read_limit_below_exact_and_above_threshold (test_local.TestBoundedReads.test_read_limit_below_exact_and_above_threshold) ... ok
+test_simulated_file_growth_after_fstat_reads_at_most_limit_plus_one (test_local.TestBoundedReads.test_simulated_file_growth_after_fstat_reads_at_most_limit_plus_one)
+Proves a file growing after fstat cannot bypass max_read_bytes. ... ok
+test_invalid_max_read_bytes_raises_value_error (test_local.TestConfigurationAndRootValidation.test_invalid_max_read_bytes_raises_value_error) ... ok
+test_invalid_root_types_and_non_canonical_roots_rejected (test_local.TestConfigurationAndRootValidation.test_invalid_root_types_and_non_canonical_roots_rejected) ... ok
+test_invalid_source_id_raises_value_error (test_local.TestConfigurationAndRootValidation.test_invalid_source_id_raises_value_error) ... ok
+test_nonexistent_and_file_root_rejected (test_local.TestConfigurationAndRootValidation.test_nonexistent_and_file_root_rejected) ... ok
+test_symlink_root_and_symlink_ancestor_rejected (test_local.TestConfigurationAndRootValidation.test_symlink_root_and_symlink_ancestor_rejected) ... FAIL
+test_adversarial_symlink_swap_between_stat_and_read_and_mid_traversal (test_local.TestContainmentSymlinksAndAnchoredRoot.test_adversarial_symlink_swap_between_stat_and_read_and_mid_traversal)
+Deterministic mechanism proof that symlink swaps cannot escape root. ... ok
+test_disappearing_entry_during_listing_is_skipped (test_local.TestContainmentSymlinksAndAnchoredRoot.test_disappearing_entry_during_listing_is_skipped) ... ok
+test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) ... 
+  test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (sym_id='p/sym_outside_dir') ... FAIL
+  test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (sym_id='p/sym_broken') ... ERROR
+  test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (sym_id='p/real_dir/sym_nested_dir') ... FAIL
+  test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/sym_outside_dir/secret.txt') ... FAIL
+  test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/sym_outside_dir/sub/deep.txt') ... FAIL
+  test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/real_dir/sym_nested_dir/deep.txt') ... FAIL
+test_root_renamed_and_replaced_by_outside_symlink_stays_anchored (test_local.TestContainmentSymlinksAndAnchoredRoot.test_root_renamed_and_replaced_by_outside_symlink_stays_anchored) ... ok
+test_close_idempotency_and_operations_after_close (test_local.TestDescriptorLifetimeAndClose.test_close_idempotency_and_operations_after_close) ... ok
+test_deterministic_descriptor_accounting_across_success_and_failures (test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures) ... FAIL
+test_linux_proc_self_fd_bounded_count (test_local.TestDescriptorLifetimeAndClose.test_linux_proc_self_fd_bounded_count) ... FAIL
+test_error_hierarchy_extends_storage_error (test_local.TestPlatformCapabilityGate.test_error_hierarchy_extends_storage_error) ... ok
+test_missing_dir_fd_support_raises_unsupported_platform_error (test_local.TestPlatformCapabilityGate.test_missing_dir_fd_support_raises_unsupported_platform_error) ... ok
+test_missing_follow_symlinks_support_raises_unsupported_platform_error (test_local.TestPlatformCapabilityGate.test_missing_follow_symlinks_support_raises_unsupported_platform_error) ... ok
+test_missing_o_nofollow_raises_unsupported_platform_error (test_local.TestPlatformCapabilityGate.test_missing_o_nofollow_raises_unsupported_platform_error) ... ok
+test_missing_scandir_fd_support_raises_unsupported_platform_error (test_local.TestPlatformCapabilityGate.test_missing_scandir_fd_support_raises_unsupported_platform_error) ... ok
+test_non_posix_os_name_raises_unsupported_platform_error (test_local.TestPlatformCapabilityGate.test_non_posix_os_name_raises_unsupported_platform_error) ... ok
+test_all_malformed_id_classes_rejected_with_unsafe_path_error (test_local.TestPrecedenceAndMalformedIds.test_all_malformed_id_classes_rejected_with_unsafe_path_error) ... ok
+test_missing_entries_and_file_directory_type_errors (test_local.TestPrecedenceAndMalformedIds.test_missing_entries_and_file_directory_type_errors) ... ok
+test_non_fileref_raises_type_error (test_local.TestPrecedenceAndMalformedIds.test_non_fileref_raises_type_error) ... ok
+test_source_mismatch_precedence_across_all_methods_and_states (test_local.TestPrecedenceAndMalformedIds.test_source_mismatch_precedence_across_all_methods_and_states) ... ok
+test_fifo_rejected_without_blocking_in_bounded_subprocess (test_local.TestSpecialEntriesAndNonblockingFifo.test_fifo_rejected_without_blocking_in_bounded_subprocess) ... ok
+test_unix_socket_rejected_and_omitted_from_listing (test_local.TestSpecialEntriesAndNonblockingFifo.test_unix_socket_rejected_and_omitted_from_listing) ... ok
+test_files_must_be_mapping (test_storage.TestConstructorValidation.test_files_must_be_mapping) ... ok
+test_invalid_filenames (test_storage.TestConstructorValidation.test_invalid_filenames) ... ok
+test_invalid_source_id (test_storage.TestConstructorValidation.test_invalid_source_id) ... ok
+test_non_bytes_payload (test_storage.TestConstructorValidation.test_non_bytes_payload) ... ok
+test_non_string_filename (test_storage.TestConstructorValidation.test_non_string_filename) ... ok
+test_valid_adapter_constructs (test_storage.TestConstructorValidation.test_valid_adapter_constructs) ... ok
+test_error_hierarchy (test_storage.TestDirectoryFileErrors.test_error_hierarchy) ... ok
+test_list_children_on_file_raises_not_directory (test_storage.TestDirectoryFileErrors.test_list_children_on_file_raises_not_directory) ... ok
+test_read_bytes_on_root_raises_is_directory (test_storage.TestDirectoryFileErrors.test_read_bytes_on_root_raises_is_directory) ... ok
+test_filemetadata_is_frozen (test_storage.TestFrozen.test_filemetadata_is_frozen) ... ok
+test_fileref_is_frozen (test_storage.TestFrozen.test_fileref_is_frozen) ... ok
+test_value_equality (test_storage.TestFrozen.test_value_equality) ... ok
+test_mutating_input_mapping_after_construction (test_storage.TestIsolation.test_mutating_input_mapping_after_construction) ... ok
+test_read_returns_are_stable (test_storage.TestIsolation.test_read_returns_are_stable) ... ok
+test_children_metadata_fields (test_storage.TestListChildren.test_children_metadata_fields) ... ok
+test_empty_root (test_storage.TestListChildren.test_empty_root) ... ok
+test_listing_is_deterministic_across_calls (test_storage.TestListChildren.test_listing_is_deterministic_across_calls) ... ok
+test_listing_is_sorted_by_name (test_storage.TestListChildren.test_listing_is_sorted_by_name) ... ok
+test_list_children_unknown (test_storage.TestNotFound.test_list_children_unknown) ... ok
+test_read_bytes_unknown (test_storage.TestNotFound.test_read_bytes_unknown) ... ok
+test_stat_unknown (test_storage.TestNotFound.test_stat_unknown) ... ok
+test_isinstance_protocol (test_storage.TestProtocol.test_isinstance_protocol) ... ok
+test_metadata_type (test_storage.TestProtocol.test_metadata_type) ... ok
+test_read_binary_file_exact (test_storage.TestReadBytes.test_read_binary_file_exact) ... ok
+test_read_binary_with_nul_and_ff (test_storage.TestReadBytes.test_read_binary_with_nul_and_ff) ... ok
+test_read_empty_file (test_storage.TestReadBytes.test_read_empty_file) ... ok
+test_read_exact_text_bytes (test_storage.TestReadBytes.test_read_exact_text_bytes) ... ok
+test_list_children_wrong_source (test_storage.TestSourceMismatch.test_list_children_wrong_source) ... ok
+test_read_bytes_wrong_source (test_storage.TestSourceMismatch.test_read_bytes_wrong_source) ... ok
+test_stat_wrong_source (test_storage.TestSourceMismatch.test_stat_wrong_source) ... ok
+test_wrong_source_precedes_unknown_file_id (test_storage.TestSourceMismatch.test_wrong_source_precedes_unknown_file_id) ... ok
+test_wrong_source_root_ref (test_storage.TestSourceMismatch.test_wrong_source_root_ref) ... ok
+test_binary_file_size (test_storage.TestStat.test_binary_file_size) ... ok
+test_empty_file_size (test_storage.TestStat.test_empty_file_size) ... ok
+test_file_stat_values (test_storage.TestStat.test_file_stat_values) ... ok
+test_root_stat_values (test_storage.TestStat.test_root_stat_values) ... ok
+
+======================================================================
+ERROR: test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (sym_id='p/sym_broken')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/drive_tool/local.py", line 684, in list_children
+    scan_fd = self._os_open(
+              ^^^^^^^^^^^^^^
+  File "/scratch/repos/drive-tool/drive_tool/local.py", line 343, in _os_open
+    return os.open(path, flags, dir_fd=dir_fd)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'sym_broken'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/tests/test_local.py", line 480, in test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing
+    adapter.list_children(ref)
+  File "/scratch/repos/drive-tool/drive_tool/local.py", line 688, in list_children
+    raise self._classify_component_open_error(
+drive_tool.storage.NotFoundError: entry 'p/sym_broken' not found
+
+======================================================================
+FAIL: test_symlink_root_and_symlink_ancestor_rejected (test_local.TestConfigurationAndRootValidation.test_symlink_root_and_symlink_ancestor_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/tests/test_local.py", line 164, in test_symlink_root_and_symlink_ancestor_rejected
+    with self.assertRaises(UnsafePathError):
+AssertionError: UnsafePathError not raised
+
+======================================================================
+FAIL: test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (sym_id='p/sym_outside_dir')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/tests/test_local.py", line 479, in test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing
+    with self.assertRaises(UnsafePathError):
+AssertionError: UnsafePathError not raised
+
+======================================================================
+FAIL: test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (sym_id='p/real_dir/sym_nested_dir')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/tests/test_local.py", line 479, in test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing
+    with self.assertRaises(UnsafePathError):
+AssertionError: UnsafePathError not raised
+
+======================================================================
+FAIL: test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/sym_outside_dir/secret.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/tests/test_local.py", line 490, in test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing
+    with self.assertRaises(UnsafePathError):
+AssertionError: UnsafePathError not raised
+
+======================================================================
+FAIL: test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/sym_outside_dir/sub/deep.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/tests/test_local.py", line 490, in test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing
+    with self.assertRaises(UnsafePathError):
+AssertionError: UnsafePathError not raised
+
+======================================================================
+FAIL: test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/real_dir/sym_nested_dir/deep.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/tests/test_local.py", line 490, in test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing
+    with self.assertRaises(UnsafePathError):
+AssertionError: UnsafePathError not raised
+
+======================================================================
+FAIL: test_deterministic_descriptor_accounting_across_success_and_failures (test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/tests/test_local.py", line 871, in test_deterministic_descriptor_accounting_across_success_and_failures
+    with self.assertRaises(UnsafePathError):
+AssertionError: UnsafePathError not raised
+
+======================================================================
+FAIL: test_linux_proc_self_fd_bounded_count (test_local.TestDescriptorLifetimeAndClose.test_linux_proc_self_fd_bounded_count)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/repos/drive-tool/tests/test_local.py", line 919, in test_linux_proc_self_fd_bounded_count
+    self.assertEqual(len(os.listdir(proc_fd)), baseline_fds + 1)
+AssertionError: 40 != 15
+
+----------------------------------------------------------------------
+Ran 67 tests in 0.320s
+
+FAILED (failures=8, errors=1)
