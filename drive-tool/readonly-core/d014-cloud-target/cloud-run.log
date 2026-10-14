@@ -1,0 +1,59 @@
+workspace: /tmp/d014-99e10252-7utf_021
+--- environment (before) ---
+  time:      2026-10-14T18:45:49Z
+  host:      directortemp
+  uname:     Linux directortemp 7.0.0-1011-gcp #11-Ubuntu SMP PREEMPT Tue Aug 11 17:32:26 UTC 2026 x86_64 
+  os:        Ubuntu 26.04.1 LTS
+  runner py: 3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]
+  nproc:     2
+  ws free:   4136525824 bytes
+  tmp free:  4136525824 bytes
+  MemTotal: 8123828 kB
+  MemAvailable: 5739288 kB
+  mount: /dev/root / ext4 rw,relatime,discard,errors=remount-ro,commit=30
+  mount: tmpfs /tmp tmpfs rw,nosuid,nodev,size=4061916k,nr_inodes=1048576,inode64,usrquota
+downloaded archive (58344 bytes)
+extracted 23 members; src root = drive-tool-99e102522da4f0eeee465fe231ad62f0cc4ecad8
+identity OK: all 17 files match pinned blobs
+interpreters found: ['python3.14=3.14.4']
+=== suite on python3.14 (3.14.4) ===
+  ran=140 skipped=0 ok=True failed=False exit=0 timeout=False
+  --- kernel check nofollow on python3.14 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check bounded_read on python3.14 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check root_anchor on python3.14 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check dir_symlink_swap on python3.14 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fifo on python3.14 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fd_lifetime on python3.14 ---
+    PASS (exit=0 timeout=False)
+--- environment (after) ---
+  time:      2026-10-14T18:45:50Z
+  host:      directortemp
+  uname:     Linux directortemp 7.0.0-1011-gcp #11-Ubuntu SMP PREEMPT Tue Aug 11 17:32:26 UTC 2026 x86_64 
+  os:        Ubuntu 26.04.1 LTS
+  runner py: 3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]
+  nproc:     2
+  ws free:   4136132608 bytes
+  tmp free:  4136132608 bytes
+  MemTotal: 8123828 kB
+  MemAvailable: 5723280 kB
+  mount: /dev/root / ext4 rw,relatime,discard,errors=remount-ro,commit=30
+  mount: tmpfs /tmp tmpfs rw,nosuid,nodev,size=4061916k,nr_inodes=1048576,inode64,usrquota
+
+=== summary ===
+  suite python3.14: ran=140 skipped=0 ok=True
+  check python3.14:nofollow: PASS
+  check python3.14:bounded_read: PASS
+  check python3.14:root_anchor: PASS
+  check python3.14:dir_symlink_swap: PASS
+  check python3.14:fifo: PASS
+  check python3.14:fd_lifetime: PASS
+  manifest entries: 29
+RESULT: PASS
+
+Safe, precise cleanup (run only when evidence is no longer needed):
+  rm -rf /tmp/d014-99e10252-7utf_021

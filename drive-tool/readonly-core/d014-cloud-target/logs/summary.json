@@ -1,0 +1,66 @@
+{
+  "commit": "99e102522da4f0eeee465fe231ad62f0cc4ecad8",
+  "archive_url": "https://codeload.github.com/Dolesh-avkalan/drive-tool/tar.gz/99e102522da4f0eeee465fe231ad62f0cc4ecad8",
+  "workspace": "/tmp/d014-99e10252-7utf_021",
+  "archive_bytes": 58344,
+  "archive_sha256": "d082b6c4110f3929b49512a152de4494f189f14adcf32d69fbf2b923e33ba497",
+  "members": 23,
+  "pythons": [
+    {
+      "name": "python3.14",
+      "path": "/usr/bin/python3.14",
+      "version": "3.14.4"
+    }
+  ],
+  "suite": {
+    "python3.14": {
+      "rc": 0,
+      "ran": 140,
+      "skipped": 0,
+      "ok": true,
+      "failed": false,
+      "timed_out": false,
+      "seconds": 0.28
+    }
+  },
+  "checks": {
+    "python3.14:nofollow": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.06
+    },
+    "python3.14:bounded_read": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.06
+    },
+    "python3.14:root_anchor": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.06
+    },
+    "python3.14:dir_symlink_swap": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.06
+    },
+    "python3.14:fifo": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.07
+    },
+    "python3.14:fd_lifetime": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.08
+    }
+  },
+  "failures": [],
+  "result": "PASS"
+}

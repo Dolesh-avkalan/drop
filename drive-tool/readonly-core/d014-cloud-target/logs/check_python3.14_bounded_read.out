@@ -1,0 +1,9 @@
+$ /usr/bin/python3.14 /tmp/d014-runner-FPAPpc/kernel_checks.py bounded_read /tmp/d014-99e10252-7utf_021/extract/drive-tool-99e102522da4f0eeee465fe231ad62f0cc4ecad8
+
+=== kernel check: bounded_read ===
+  below/exact/above + growth all bounded (growth read 11 <= 11)
+CHECK bounded_read RESULT: PASS
+
+--- stderr ---
+
+EXIT=0 timed_out=False seconds=0.06
