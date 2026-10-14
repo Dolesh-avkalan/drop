@@ -1,0 +1,41 @@
+test_files_must_be_mapping (test_storage.TestConstructorValidation.test_files_must_be_mapping) ... ok
+test_invalid_filenames (test_storage.TestConstructorValidation.test_invalid_filenames) ... ok
+test_invalid_source_id (test_storage.TestConstructorValidation.test_invalid_source_id) ... ok
+test_non_bytes_payload (test_storage.TestConstructorValidation.test_non_bytes_payload) ... ok
+test_non_string_filename (test_storage.TestConstructorValidation.test_non_string_filename) ... ok
+test_valid_adapter_constructs (test_storage.TestConstructorValidation.test_valid_adapter_constructs) ... ok
+test_error_hierarchy (test_storage.TestDirectoryFileErrors.test_error_hierarchy) ... ok
+test_list_children_on_file_raises_not_directory (test_storage.TestDirectoryFileErrors.test_list_children_on_file_raises_not_directory) ... ok
+test_read_bytes_on_root_raises_is_directory (test_storage.TestDirectoryFileErrors.test_read_bytes_on_root_raises_is_directory) ... ok
+test_filemetadata_is_frozen (test_storage.TestFrozen.test_filemetadata_is_frozen) ... ok
+test_fileref_is_frozen (test_storage.TestFrozen.test_fileref_is_frozen) ... ok
+test_value_equality (test_storage.TestFrozen.test_value_equality) ... ok
+test_mutating_input_mapping_after_construction (test_storage.TestIsolation.test_mutating_input_mapping_after_construction) ... ok
+test_read_returns_are_stable (test_storage.TestIsolation.test_read_returns_are_stable) ... ok
+test_children_metadata_fields (test_storage.TestListChildren.test_children_metadata_fields) ... ok
+test_empty_root (test_storage.TestListChildren.test_empty_root) ... ok
+test_listing_is_deterministic_across_calls (test_storage.TestListChildren.test_listing_is_deterministic_across_calls) ... ok
+test_listing_is_sorted_by_name (test_storage.TestListChildren.test_listing_is_sorted_by_name) ... ok
+test_list_children_unknown (test_storage.TestNotFound.test_list_children_unknown) ... ok
+test_read_bytes_unknown (test_storage.TestNotFound.test_read_bytes_unknown) ... ok
+test_stat_unknown (test_storage.TestNotFound.test_stat_unknown) ... ok
+test_isinstance_protocol (test_storage.TestProtocol.test_isinstance_protocol) ... ok
+test_metadata_type (test_storage.TestProtocol.test_metadata_type) ... ok
+test_read_binary_file_exact (test_storage.TestReadBytes.test_read_binary_file_exact) ... ok
+test_read_binary_with_nul_and_ff (test_storage.TestReadBytes.test_read_binary_with_nul_and_ff) ... ok
+test_read_empty_file (test_storage.TestReadBytes.test_read_empty_file) ... ok
+test_read_exact_text_bytes (test_storage.TestReadBytes.test_read_exact_text_bytes) ... ok
+test_list_children_wrong_source (test_storage.TestSourceMismatch.test_list_children_wrong_source) ... ok
+test_read_bytes_wrong_source (test_storage.TestSourceMismatch.test_read_bytes_wrong_source) ... ok
+test_stat_wrong_source (test_storage.TestSourceMismatch.test_stat_wrong_source) ... ok
+test_wrong_source_precedes_unknown_file_id (test_storage.TestSourceMismatch.test_wrong_source_precedes_unknown_file_id) ... ok
+test_wrong_source_root_ref (test_storage.TestSourceMismatch.test_wrong_source_root_ref) ... ok
+test_binary_file_size (test_storage.TestStat.test_binary_file_size) ... ok
+test_empty_file_size (test_storage.TestStat.test_empty_file_size) ... ok
+test_file_stat_values (test_storage.TestStat.test_file_stat_values) ... ok
+test_root_stat_values (test_storage.TestStat.test_root_stat_values) ... ok
+
+----------------------------------------------------------------------
+Ran 36 tests in 0.007s
+
+OK
