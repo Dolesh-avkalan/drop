@@ -1,0 +1,1046 @@
+diff -ruN a/drive-tool/docs/evidence/MODULE-002.md b/drive-tool/docs/evidence/MODULE-002.md
+--- a/drive-tool/docs/evidence/MODULE-002.md	1970-01-01 00:00:00.000000000 +0000
++++ b/drive-tool/docs/evidence/MODULE-002.md	2026-10-14 18:12:54.133077823 +0000
+@@ -0,0 +1,158 @@
++# MODULE-002 — evidence
++
++Task: MODULE-002 — paginated listing helper
++Repository: https://github.com/Dolesh-avkalan/drive-tool
++Branch: feature/module-002-listing
++Base commit: 194d4ad57de6dd895c6eaaf7faf4d08583eab02b (MODULE-001 tip, not main)
++Date (UTC): 2026-10-06 17:12:27
++Python: Python 3.12.13
++
++## Files delivered
++
++- drive_tool/listing.py
++- tests/test_listing.py
++- docs/evidence/MODULE-002.md (this file)
++
++Only these files are added. MODULE-001 files (drive_tool/__init__.py,
++drive_tool/storage.py, tests/test_storage.py, docs/evidence/MODULE-001.md)
++are unchanged.
++
++## Scope confirmation
++
++Read-only helper over the existing StorageAdapter contract, standard library
++only. No connectors, no deployment, no branch merge, no modification of
++MODULE-001. Synthetic fixtures only.
++
++## Exact test command
++
++Run from the repository root:
++
++    python3 -m unittest discover -s tests -v
++
++## Real result
++
++Exit status: EXIT=0
++Summary line: Ran 71 tests in 0.016s
++
++Note: `unittest -v` writes its report to stderr, so the captured stdout below
++is empty by design and the full report appears under stderr. The run includes
++the 36 pre-existing MODULE-001 tests plus the new MODULE-002 tests.
++
++### stdout (empty)
++
++```
++```
++
++### stderr (full unittest report)
++
++```
++test_base_storage_error_propagates (test_listing.TestAdapterErrorPropagation.test_base_storage_error_propagates) ... ok
++test_not_directory_propagates (test_listing.TestAdapterErrorPropagation.test_not_directory_propagates) ... ok
++test_not_found_propagates (test_listing.TestAdapterErrorPropagation.test_not_found_propagates) ... ok
++test_source_mismatch_propagates (test_listing.TestAdapterErrorPropagation.test_source_mismatch_propagates) ... ok
++test_invalid_filter_does_not_call_adapter (test_listing.TestAdapterNotCalledOnInvalidArguments.test_invalid_filter_does_not_call_adapter) ... ok
++test_invalid_limit_does_not_call_adapter (test_listing.TestAdapterNotCalledOnInvalidArguments.test_invalid_limit_does_not_call_adapter) ... ok
++test_invalid_offset_does_not_call_adapter (test_listing.TestAdapterNotCalledOnInvalidArguments.test_invalid_offset_does_not_call_adapter) ... ok
++test_offset_above_length_calls_adapter_first (test_listing.TestAdapterNotCalledOnInvalidArguments.test_offset_above_length_calls_adapter_first) ... ok
++test_valid_call_calls_adapter_once (test_listing.TestAdapterNotCalledOnInvalidArguments.test_valid_call_calls_adapter_once) ... ok
++test_empty_source_yields_empty_page (test_listing.TestEmptySource.test_empty_source_yields_empty_page) ... ok
++test_case_sensitive_filter_excludes_other_case (test_listing.TestFiltering.test_case_sensitive_filter_excludes_other_case) ... ok
++test_case_sensitive_filter_matches_exact_case (test_listing.TestFiltering.test_case_sensitive_filter_matches_exact_case) ... ok
++test_empty_filter_includes_all (test_listing.TestFiltering.test_empty_filter_includes_all) ... ok
++test_filter_applied_before_pagination (test_listing.TestFiltering.test_filter_applied_before_pagination) ... ok
++test_filter_then_offset_equal_filtered_length (test_listing.TestFiltering.test_filter_then_offset_equal_filtered_length) ... ok
++test_no_matches (test_listing.TestFiltering.test_no_matches) ... ok
++test_uppercase_filter_has_no_matches (test_listing.TestFiltering.test_uppercase_filter_has_no_matches) ... ok
++test_final_page (test_listing.TestPagination.test_final_page) ... ok
++test_first_page (test_listing.TestPagination.test_first_page) ... ok
++test_limit_boundaries (test_listing.TestPagination.test_limit_boundaries) ... ok
++test_limit_larger_than_remaining (test_listing.TestPagination.test_limit_larger_than_remaining) ... ok
++test_middle_page (test_listing.TestPagination.test_middle_page) ... ok
++test_next_offset_exact_when_more_remain (test_listing.TestPagination.test_next_offset_exact_when_more_remain) ... ok
++test_offset_above_length_raises (test_listing.TestPagination.test_offset_above_length_raises) ... ok
++test_offset_equal_to_length (test_listing.TestPagination.test_offset_equal_to_length) ... ok
++test_items_is_tuple (test_listing.TestResultShape.test_items_is_tuple) ... ok
++test_page_equality (test_listing.TestResultShape.test_page_equality) ... ok
++test_page_is_frozen (test_listing.TestResultShape.test_page_is_frozen) ... ok
++test_sorted_by_file_id_when_name_and_source_match (test_listing.TestSorting.test_sorted_by_file_id_when_name_and_source_match) ... ok
++test_sorted_by_name_source_id_file_id (test_listing.TestSorting.test_sorted_by_name_source_id_file_id) ... ok
++test_invalid_limit (test_listing.TestValidation.test_invalid_limit) ... ok
++test_invalid_name_contains (test_listing.TestValidation.test_invalid_name_contains) ... ok
++test_invalid_offset (test_listing.TestValidation.test_invalid_offset) ... ok
++test_valid_arguments_do_not_raise (test_listing.TestValidation.test_valid_arguments_do_not_raise) ... ok
++test_valid_offsets_do_not_raise (test_listing.TestValidation.test_valid_offsets_do_not_raise) ... ok
++test_files_must_be_mapping (test_storage.TestConstructorValidation.test_files_must_be_mapping) ... ok
++test_invalid_filenames (test_storage.TestConstructorValidation.test_invalid_filenames) ... ok
++test_invalid_source_id (test_storage.TestConstructorValidation.test_invalid_source_id) ... ok
++test_non_bytes_payload (test_storage.TestConstructorValidation.test_non_bytes_payload) ... ok
++test_non_string_filename (test_storage.TestConstructorValidation.test_non_string_filename) ... ok
++test_valid_adapter_constructs (test_storage.TestConstructorValidation.test_valid_adapter_constructs) ... ok
++test_error_hierarchy (test_storage.TestDirectoryFileErrors.test_error_hierarchy) ... ok
++test_list_children_on_file_raises_not_directory (test_storage.TestDirectoryFileErrors.test_list_children_on_file_raises_not_directory) ... ok
++test_read_bytes_on_root_raises_is_directory (test_storage.TestDirectoryFileErrors.test_read_bytes_on_root_raises_is_directory) ... ok
++test_filemetadata_is_frozen (test_storage.TestFrozen.test_filemetadata_is_frozen) ... ok
++test_fileref_is_frozen (test_storage.TestFrozen.test_fileref_is_frozen) ... ok
++test_value_equality (test_storage.TestFrozen.test_value_equality) ... ok
++test_mutating_input_mapping_after_construction (test_storage.TestIsolation.test_mutating_input_mapping_after_construction) ... ok
++test_read_returns_are_stable (test_storage.TestIsolation.test_read_returns_are_stable) ... ok
++test_children_metadata_fields (test_storage.TestListChildren.test_children_metadata_fields) ... ok
++test_empty_root (test_storage.TestListChildren.test_empty_root) ... ok
++test_listing_is_deterministic_across_calls (test_storage.TestListChildren.test_listing_is_deterministic_across_calls) ... ok
++test_listing_is_sorted_by_name (test_storage.TestListChildren.test_listing_is_sorted_by_name) ... ok
++test_list_children_unknown (test_storage.TestNotFound.test_list_children_unknown) ... ok
++test_read_bytes_unknown (test_storage.TestNotFound.test_read_bytes_unknown) ... ok
++test_stat_unknown (test_storage.TestNotFound.test_stat_unknown) ... ok
++test_isinstance_protocol (test_storage.TestProtocol.test_isinstance_protocol) ... ok
++test_metadata_type (test_storage.TestProtocol.test_metadata_type) ... ok
++test_read_binary_file_exact (test_storage.TestReadBytes.test_read_binary_file_exact) ... ok
++test_read_binary_with_nul_and_ff (test_storage.TestReadBytes.test_read_binary_with_nul_and_ff) ... ok
++test_read_empty_file (test_storage.TestReadBytes.test_read_empty_file) ... ok
++test_read_exact_text_bytes (test_storage.TestReadBytes.test_read_exact_text_bytes) ... ok
++test_list_children_wrong_source (test_storage.TestSourceMismatch.test_list_children_wrong_source) ... ok
++test_read_bytes_wrong_source (test_storage.TestSourceMismatch.test_read_bytes_wrong_source) ... ok
++test_stat_wrong_source (test_storage.TestSourceMismatch.test_stat_wrong_source) ... ok
++test_wrong_source_precedes_unknown_file_id (test_storage.TestSourceMismatch.test_wrong_source_precedes_unknown_file_id) ... ok
++test_wrong_source_root_ref (test_storage.TestSourceMismatch.test_wrong_source_root_ref) ... ok
++test_binary_file_size (test_storage.TestStat.test_binary_file_size) ... ok
++test_empty_file_size (test_storage.TestStat.test_empty_file_size) ... ok
++test_file_stat_values (test_storage.TestStat.test_file_stat_values) ... ok
++test_root_stat_values (test_storage.TestStat.test_root_stat_values) ... ok
++
++----------------------------------------------------------------------
++Ran 71 tests in 0.016s
++
++OK
++```
++
++## Coverage against the acceptance criteria
++
++- Empty source; sorted first/middle/final pages; offset equal to length;
++  offset above length — TestEmptySource, TestPagination.
++- Exact next_offset behaviour and tuple/frozen result — TestPagination,
++  TestResultShape.
++- Filtering before pagination; case sensitivity; empty filter; no matches —
++  TestFiltering.
++- Invalid limit/offset including bool, float, str, negative, and limit 0/101 —
++  TestValidation.
++- Invalid filter type — TestValidation.
++- A fake adapter call counter proves invalid arguments do not call the adapter —
++  TestAdapterNotCalledOnInvalidArguments.
++- Adapter errors propagate without changing their type —
++  TestAdapterErrorPropagation.
++- Existing 36 MODULE-001 tests still pass — confirmed in the run above.
++
++## Consistency note
++
++This is offset pagination of a fresh listing, not a consistent snapshot. Each
++call re-reads `adapter.list_children(parent)`, so files added, removed, or
++renamed between calls can shift pages. Opaque durable cursors are out of scope
++for this module.
++
++## Limitations
++
++- Execution evidence is from this sandbox (Debian, CPython Python 3.12.13). The brief
++  states Python 3.11+ as the minimum; only 3.12 was available to run here.
++- Pagination is offset-based over a freshly fetched listing; it is not a
++  consistent snapshot across calls.
++- The helper is read-only and delegates all source/file resolution and error
++  semantics to the adapter; it does not intercept StorageError exceptions.
+diff -ruN a/drive-tool/docs/evidence/READONLY-CORE-INTEGRATION.md b/drive-tool/docs/evidence/READONLY-CORE-INTEGRATION.md
+--- a/drive-tool/docs/evidence/READONLY-CORE-INTEGRATION.md	1970-01-01 00:00:00.000000000 +0000
++++ b/drive-tool/docs/evidence/READONLY-CORE-INTEGRATION.md	2026-10-14 18:14:37.189251781 +0000
+@@ -0,0 +1,160 @@
++# READONLY-CORE-INTEGRATION — d013 assembled read-only core candidate (Sarvam)
++
++Director: Codex. Worker: browser Sarvam. Brief: d013 (assemble and test an
++isolated read-only core candidate).
++Branch (intended): `feature/readonly-core-candidate`. No merge, no deploy, no
++implementation fixes, no dependencies, no adapter/listing/storage edits.
++
++## 0. Status
++
++- **TESTS_RUN** — combined suite passes on Python **3.11.2** and **3.12.13**.
++- **PUSH_BLOCKED** — no GitHub write connector is bound to this worker (only the
++  read-only public repo fetcher; `gh` unauthenticated). Nothing was written to
++  any branch or to `Dolesh-avkalan/drop`. A complete patch/source/evidence bundle
++  is delivered as a downloadable zip with a manifest and hashes.
++- Assembly verdict: **compatible, no INTEGRATION_BLOCKED**. The MODULE-002 and
++  MODULE-003 branches are both additive over the shared MODULE-001 storage
++  contract; they combine without any shim.
++
++## 1. Pins and assembled identity
++
++| Item | Value |
++| --- | --- |
++| Base MODULE-003 candidate | `80bf54885877c475d2ac59ddb3e9f96384600b9e` |
++| MODULE-002 source | `bfbae511a538cff22b642fcd771b7a189029f7e8` |
++| Shared MODULE-001 base | `194d4ad57de6dd895c6eaaf7faf4d08583eab02b` |
++
++Assembled tree = the MODULE-003 candidate **plus** the three MODULE-002 files
++(`drive_tool/listing.py`, `tests/test_listing.py`,
++`docs/evidence/MODULE-002.md`), copied byte-for-byte, **plus** two new
++integration files (`tests/test_readonly_core.py`,
++`docs/evidence/READONLY-CORE-INTEGRATION.md`).
++
++## 2. Compatibility assessment (why not INTEGRATION_BLOCKED)
++
++The shared files are byte-identical across all three pins:
++
++| shared file | blob (all three pins) |
++| --- | --- |
++| `drive_tool/storage.py` | `28f7b8c0ce7ac56d602d0af3a709c3f31441904b` |
++| `drive_tool/__init__.py` | `9be841b5749acb36c5e362c84b986d98292bae8d` |
++| `tests/test_storage.py` | `2126dde7f32b7c0cd4d1e737ff990ab10954caf5` |
++| `README.md` | `3e23315ec72a68d7b9bb30d2c87b617147e0add6` |
++
++Relative to the MODULE-001 base, each module adds exactly one source file and
++touches nothing else: MODULE-003 adds `drive_tool/local.py`; MODULE-002 adds
++`drive_tool/listing.py`. `listing.py` imports only
++`FileMetadata`, `FileRef`, `StorageAdapter` from `drive_tool.storage` — all
++present and unchanged — and `LocalAdapter` satisfies the `StorageAdapter`
++protocol (`source_id`, `stat`, `list_children`, `read_bytes`). The two branches
++are disjoint additions over a frozen shared contract, so no interface shim was
++needed or added.
++
++## 3. Source blob verification (assembled == accepted pins)
++
++Every original source/evidence blob in the assembled tree is byte-identical to
++its accepted pin:
++
++| assembled file | blob | pin |
++| --- | --- | --- |
++| `drive_tool/storage.py` | `28f7b8c0…` | MODULE-001 base |
++| `drive_tool/__init__.py` | `9be841b5…` | MODULE-001 base |
++| `drive_tool/local.py` | `5da22dd4…` | MODULE-003 candidate |
++| `drive_tool/listing.py` | `1ce6f1ab704eeef77de8520a7143b253b532ddf9` | MODULE-002 |
++| `tests/test_storage.py` | `2126dde7…` | MODULE-001 base |
++| `tests/test_local.py` | `b3319752…` | MODULE-003 candidate |
++| `tests/test_listing.py` | `8287db88a4b7ff8d956c082e8150c8d169f0f4f7` | MODULE-002 |
++| `docs/evidence/MODULE-002.md` | `84468b790d31f45b8179f14352cfcde85e541028` | MODULE-002 |
++
++A recursive diff of the assembled tree against the MODULE-003 candidate shows
++exactly four added files (the three MODULE-002 files and
++`tests/test_readonly_core.py`) and no modifications to any existing file. The
++original MODULE-002/003 evidence files remain historical; this document
++identifies the *assembled* candidate and its new execution.
++
++## 4. Integration tests (`tests/test_readonly_core.py`)
++
++Provenance: written for d013. They drive the **real** `LocalAdapter` through the
++**real** `ListingService` over tiny synthetic directories; they do not re-test
++either module in isolation (MODULE-002's own tests already exercise the helper
++over in-memory/fake adapters, and MODULE-003's tests cover the adapter).
++
++Covered observable cross-module behaviour:
++
++- **Multi-page nested listings** — root pages (`limit=2`) with exact
++  `next_offset`; a subdirectory paginated one item at a time
++  (`["a.txt","b.txt","deep"]`); a deeper directory; and a full page-size-1 walk
++  that reconstructs the same listing as a single large page.
++- **Filtering / sorted metadata and refs** — sorted by name; correct
++  `ref.source_id`, `ref.file_id` (e.g. `p/sub/a.txt`), `parent_id` (`root` or
++  `p/sub`), `kind`, and file `size_bytes`; `name_contains` filtering over the
++  real adapter; `ListingPage.items` is a tuple.
++- **Omitted symlinks / special entries** — a symlink to an outside file and a
++  FIFO are omitted from the real listing (root lists exactly
++  `["m.txt","sub","z.txt"]`).
++- **Wrong-source propagation** — `SourceMismatchError` from the adapter reaches
++  the caller through the service unchanged, including when a filter is also
++  supplied.
++- **Invalid options avoid adapter work** — with a counting `LocalAdapter`
++  subclass, invalid `limit`/`offset`/`name_contains` raise `ValueError` with
++  `list_children` call count still 0; a valid call consults the adapter once.
++- **Real adapter listing cleanup failure surfaces unchanged** — a `LocalAdapter`
++  subclass that fails the close of the listed directory's scan descriptor (real
++  close, then injected `OSError`) makes `list_children` raise
++  `LocalStorageError`; the service propagates that same error type, not wrapped
++  as `ValueError`, with its `OSError` `__cause__` preserved.
++
++Integration file blob: `tests/test_readonly_core.py` =
++`1b0f746fd8162a9d27691abf7f5a90492548c4d8` (16 tests).
++
++## 5. Combined suite results (independently established)
++
++Command: `python3.X -m unittest discover -s tests -v` in the assembled tree.
++
++| Interpreter | Result | Exit | Skips |
++| --- | --- | --- | --- |
++| 3.11.2 | `Ran 140 tests … OK` | 0 | 0 |
++| 3.12.13 | `Ran 140 tests … OK` | 0 | 0 |
++
++Per-file counts (identical on both interpreters): `test_storage` 36,
++`test_local` 53, `test_listing` 35, `test_readonly_core` 16 — sum **140**. The
++count was obtained by running the assembled suite directly, not by adding prior
++reports. Full stdout/stderr and exit codes: `logs/suite_python3.11.txt`,
++`logs/suite_python3.12.txt`, `logs/00_env.log`.
++
++## 6. Environment
++
++- Kernel `Linux 4.19.0-gvisor x86_64` (gVisor); Debian GNU/Linux 12 (bookworm).
++- Filesystems: `/` overlay; `/tmp` and `/scratch` 9p (v9fs),
++  `cache=remote_revalidating,disable_fifo_open,directfs`; `TMPDIR=/scratch/tmp`.
++- Interpreters: Python 3.11.2 and 3.12.13 (both present and used).
++
++## 7. Current resource and feature boundaries (unchanged by this assembly)
++
++- `read_bytes` is **bounded** (`max_read_bytes`, enforced via `fstat` and a
++  `max_read_bytes + 1` read cap).
++- **Listing still materialises the whole direct directory**: `ListingService`
++  calls `adapter.list_children(parent)` once per page, which reads the entire
++  direct directory; **page size is not an enumeration bound** and the adapter
++  does not expose a streaming/partial enumeration. Offset pagination is over a
++  *fresh* listing, not a consistent snapshot (documented in `listing.py`).
++- The local adapter is **POSIX capability-gated** (runtime no-follow probe,
++  fail-closed with `UnsupportedPlatformError`); **no native Windows filesystem
++  support**.
++- No Google Drive connector, no writes, no REST/MCP surface, no jobs, no
++  deployment; no production-release or full Drive Tool completeness claim.
++- Conformant cloud-box / cloud-kernel tests and integrated MODULE-002 behaviour
++  on a conformant kernel remain later gates; the environment here is gVisor/9p.
++
++## 8. Deliverables (manifest)
++
++Intended `Dolesh-avkalan/drop` layout: `drive-tool/readonly-core/d013-integration/`
++(not pushed — see §0). The bundle contains:
++
++- `readonly-core.patch` — the assembly delta from the MODULE-003 candidate
++  (adds the three MODULE-002 files and the two integration files; no edits).
++- `source/` — the assembled `drive_tool/`, `tests/`, `docs/evidence/` and
++  `README.md`.
++- `logs/` — environment and both combined-suite runs (stdout/stderr/exits).
++- `MANIFEST.md` — every file with size and sha256.
++- this document.
+diff -ruN a/drive-tool/drive_tool/listing.py b/drive-tool/drive_tool/listing.py
+--- a/drive-tool/drive_tool/listing.py	1970-01-01 00:00:00.000000000 +0000
++++ b/drive-tool/drive_tool/listing.py	2026-10-14 18:12:54.103081848 +0000
+@@ -0,0 +1,106 @@
++"""Offset-paginated listing helper over the storage contract.
++
++MODULE-002: a small read-only helper layered on the existing ``StorageAdapter``
++contract. It adds no connectors and does not modify MODULE-001.
++
++Consistency note
++----------------
++This is *offset pagination of a fresh listing*, not a consistent snapshot.
++Each call re-reads ``adapter.list_children(parent)``, so if files are added,
++removed, or renamed between calls, previously returned offsets can shift and a
++page may repeat or skip items. Opaque, durable cursors that survive mutation
++are explicitly out of scope for this module.
++
++Python 3.11+, standard library only.
++"""
++
++from __future__ import annotations
++
++from dataclasses import dataclass
++
++from drive_tool.storage import FileMetadata, FileRef, StorageAdapter
++
++__all__ = ["ListingPage", "ListingService", "MIN_LIMIT", "MAX_LIMIT"]
++
++MIN_LIMIT = 1
++MAX_LIMIT = 100
++
++
++@dataclass(frozen=True)
++class ListingPage:
++    """One page of listing results.
++
++    ``items`` is an immutable tuple of metadata in sorted order.
++    ``next_offset`` is the offset to pass for the next page, or ``None`` when
++    the listing is exhausted.
++    """
++
++    items: tuple[FileMetadata, ...]
++    next_offset: int | None
++
++
++def _validate_limit(limit: object) -> None:
++    # bool is a subclass of int, so reject it explicitly before the int check.
++    if isinstance(limit, bool) or not isinstance(limit, int):
++        raise ValueError(f"limit must be an int, got {type(limit).__name__}")
++    if limit < MIN_LIMIT or limit > MAX_LIMIT:
++        raise ValueError(f"limit must be between {MIN_LIMIT} and {MAX_LIMIT}, got {limit}")
++
++
++def _validate_offset(offset: object) -> None:
++    if isinstance(offset, bool) or not isinstance(offset, int):
++        raise ValueError(f"offset must be an int, got {type(offset).__name__}")
++    if offset < 0:
++        raise ValueError(f"offset must be >= 0, got {offset}")
++
++
++def _validate_name_contains(name_contains: object) -> None:
++    if name_contains is not None and not isinstance(name_contains, str):
++        raise ValueError(
++            f"name_contains must be None or str, got {type(name_contains).__name__}"
++        )
++
++
++class ListingService:
++    """Read-only paginated listing over a ``StorageAdapter``."""
++
++    def __init__(self, adapter: StorageAdapter) -> None:
++        self._adapter = adapter
++
++    def list_page(
++        self,
++        parent: FileRef,
++        *,
++        limit: int = 50,
++        offset: int = 0,
++        name_contains: str | None = None,
++    ) -> ListingPage:
++        """Return one page of the sorted, optionally filtered children of ``parent``.
++
++        Arguments are validated before the adapter is called, so invalid input
++        never reaches the adapter. Ordering is by ``(name, source_id, file_id)``.
++        Filtering is a case-sensitive substring match applied before pagination.
++        """
++        # Validate everything first: bad arguments must not touch the adapter.
++        _validate_limit(limit)
++        _validate_offset(offset)
++        _validate_name_contains(name_contains)
++
++        # Fresh listing each call; copy before sorting so the adapter's own
++        # return value is never mutated.
++        items = list(self._adapter.list_children(parent))
++        items.sort(key=lambda meta: (meta.name, meta.ref.source_id, meta.ref.file_id))
++
++        if name_contains is not None:
++            items = [meta for meta in items if name_contains in meta.name]
++
++        total = len(items)
++        if offset > total:
++            raise ValueError(
++                f"offset {offset} is greater than the filtered length {total}"
++            )
++
++        window = items[offset : offset + limit]
++        end = offset + len(window)
++        next_offset = end if end < total else None
++        return ListingPage(items=tuple(window), next_offset=next_offset)
+diff -ruN a/drive-tool/tests/test_listing.py b/drive-tool/tests/test_listing.py
+--- a/drive-tool/tests/test_listing.py	1970-01-01 00:00:00.000000000 +0000
++++ b/drive-tool/tests/test_listing.py	2026-10-14 18:12:54.123079164 +0000
+@@ -0,0 +1,316 @@
++"""Tests for the MODULE-002 paginated listing helper.
++
++Synthetic fixtures only. Run from the repository root:
++
++    python3 -m unittest discover -s tests -v
++"""
++
++import dataclasses
++import unittest
++
++from drive_tool.listing import MAX_LIMIT, MIN_LIMIT, ListingPage, ListingService
++from drive_tool.storage import (
++    ROOT_ID,
++    FileMetadata,
++    FileRef,
++    InMemoryAdapter,
++    NotDirectoryError,
++    NotFoundError,
++    SourceMismatchError,
++    StorageError,
++)
++
++SOURCE = "src-a"
++
++# Names chosen so ASCII sorting is non-trivial: uppercase 'B' (0x42) sorts
++# before lowercase 'a' (0x61), and 'Beta.txt' contains no lowercase 'beta'.
++FIXTURE_NAMES = [
++    "Beta.txt",
++    "alpha.txt",
++    "beta.txt",
++    "delta.txt",
++    "epsilon.txt",
++    "gamma.txt",
++]
++SORTED_NAMES = sorted(FIXTURE_NAMES)
++
++
++def make_adapter() -> InMemoryAdapter:
++    return InMemoryAdapter(SOURCE, {name: b"x" for name in FIXTURE_NAMES})
++
++
++def meta(name: str, source_id: str = SOURCE, file_id: str | None = None) -> FileMetadata:
++    return FileMetadata(
++        ref=FileRef(source_id, file_id if file_id is not None else name),
++        name=name,
++        parent_id=ROOT_ID,
++        kind="file",
++        size_bytes=0,
++    )
++
++
++class FakeAdapter:
++    """A StorageAdapter stand-in that counts calls and can raise on demand."""
++
++    def __init__(self, metadata=(), error: BaseException | None = None) -> None:
++        self.source_id = "src-fake"
++        self.calls = 0
++        self._metadata = list(metadata)
++        self._error = error
++
++    def list_children(self, parent: FileRef) -> list[FileMetadata]:
++        self.calls += 1
++        if self._error is not None:
++            raise self._error
++        return list(self._metadata)
++
++    def stat(self, ref: FileRef) -> FileMetadata:  # pragma: no cover - unused
++        raise NotImplementedError
++
++    def read_bytes(self, ref: FileRef) -> bytes:  # pragma: no cover - unused
++        raise NotImplementedError
++
++
++class TestEmptySource(unittest.TestCase):
++    def test_empty_source_yields_empty_page(self) -> None:
++        adapter = InMemoryAdapter(SOURCE, {})
++        page = ListingService(adapter).list_page(FileRef(SOURCE, ROOT_ID))
++        self.assertEqual(page.items, ())
++        self.assertIsNone(page.next_offset)
++
++
++class TestPagination(unittest.TestCase):
++    """Sorted first/middle/final pages, offset == length, offset > length."""
++
++    def setUp(self) -> None:
++        self.service = ListingService(make_adapter())
++        self.root = FileRef(SOURCE, ROOT_ID)
++
++    def test_first_page(self) -> None:
++        page = self.service.list_page(self.root, limit=2, offset=0)
++        self.assertEqual([m.name for m in page.items], SORTED_NAMES[0:2])
++        self.assertEqual(page.next_offset, 2)
++
++    def test_middle_page(self) -> None:
++        page = self.service.list_page(self.root, limit=2, offset=2)
++        self.assertEqual([m.name for m in page.items], SORTED_NAMES[2:4])
++        self.assertEqual(page.next_offset, 4)
++
++    def test_final_page(self) -> None:
++        page = self.service.list_page(self.root, limit=2, offset=4)
++        self.assertEqual([m.name for m in page.items], SORTED_NAMES[4:6])
++        self.assertIsNone(page.next_offset)
++
++    def test_offset_equal_to_length(self) -> None:
++        page = self.service.list_page(self.root, limit=2, offset=len(SORTED_NAMES))
++        self.assertEqual(page.items, ())
++        self.assertIsNone(page.next_offset)
++
++    def test_offset_above_length_raises(self) -> None:
++        with self.assertRaises(ValueError):
++            self.service.list_page(self.root, limit=2, offset=len(SORTED_NAMES) + 1)
++
++    def test_limit_larger_than_remaining(self) -> None:
++        page = self.service.list_page(self.root, limit=MAX_LIMIT, offset=0)
++        self.assertEqual([m.name for m in page.items], SORTED_NAMES)
++        self.assertIsNone(page.next_offset)
++
++    def test_limit_boundaries(self) -> None:
++        page_min = self.service.list_page(self.root, limit=MIN_LIMIT, offset=0)
++        self.assertEqual(len(page_min.items), 1)
++        self.assertEqual(page_min.next_offset, 1)
++        page_max = self.service.list_page(self.root, limit=MAX_LIMIT, offset=0)
++        self.assertEqual(len(page_max.items), len(SORTED_NAMES))
++
++    def test_next_offset_exact_when_more_remain(self) -> None:
++        page = self.service.list_page(self.root, limit=4, offset=0)
++        self.assertEqual(page.next_offset, 4)
++        page2 = self.service.list_page(self.root, limit=4, offset=4)
++        self.assertEqual([m.name for m in page2.items], SORTED_NAMES[4:6])
++        self.assertIsNone(page2.next_offset)
++
++
++class TestSorting(unittest.TestCase):
++    def test_sorted_by_name_source_id_file_id(self) -> None:
++        # Same name, different source_id: the tie-break must order by source_id.
++        adapter = FakeAdapter(
++            [meta("dup.txt", "s2"), meta("dup.txt", "s1"), meta("aaa.txt", "s9")]
++        )
++        page = ListingService(adapter).list_page(FileRef(SOURCE, ROOT_ID))
++        self.assertEqual(
++            [(m.name, m.ref.source_id) for m in page.items],
++            [("aaa.txt", "s9"), ("dup.txt", "s1"), ("dup.txt", "s2")],
++        )
++
++    def test_sorted_by_file_id_when_name_and_source_match(self) -> None:
++        adapter = FakeAdapter(
++            [meta("dup.txt", "s1", "z"), meta("dup.txt", "s1", "a")]
++        )
++        page = ListingService(adapter).list_page(FileRef(SOURCE, ROOT_ID))
++        self.assertEqual([m.ref.file_id for m in page.items], ["a", "z"])
++
++
++class TestFiltering(unittest.TestCase):
++    """Filtering before pagination; case sensitivity; empty filter; no matches."""
++
++    def setUp(self) -> None:
++        self.service = ListingService(make_adapter())
++        self.root = FileRef(SOURCE, ROOT_ID)
++
++    def test_case_sensitive_filter_excludes_other_case(self) -> None:
++        page = self.service.list_page(self.root, name_contains="beta")
++        self.assertEqual([m.name for m in page.items], ["beta.txt"])
++
++    def test_case_sensitive_filter_matches_exact_case(self) -> None:
++        page = self.service.list_page(self.root, name_contains="Beta")
++        self.assertEqual([m.name for m in page.items], ["Beta.txt"])
++
++    def test_uppercase_filter_has_no_matches(self) -> None:
++        page = self.service.list_page(self.root, name_contains="BETA")
++        self.assertEqual(page.items, ())
++        self.assertIsNone(page.next_offset)
++
++    def test_empty_filter_includes_all(self) -> None:
++        page = self.service.list_page(self.root, name_contains="", limit=MAX_LIMIT)
++        self.assertEqual([m.name for m in page.items], SORTED_NAMES)
++
++    def test_no_matches(self) -> None:
++        page = self.service.list_page(self.root, name_contains="zzz")
++        self.assertEqual(page.items, ())
++        self.assertIsNone(page.next_offset)
++
++    def test_filter_applied_before_pagination(self) -> None:
++        # 'a' matches Beta.txt, alpha.txt, beta.txt, delta.txt, gamma.txt (5),
++        # but not epsilon.txt. next_offset must reflect the filtered length.
++        filtered = ["Beta.txt", "alpha.txt", "beta.txt", "delta.txt", "gamma.txt"]
++        page = self.service.list_page(self.root, limit=2, offset=0, name_contains="a")
++        self.assertEqual([m.name for m in page.items], filtered[0:2])
++        self.assertEqual(page.next_offset, 2)
++        last = self.service.list_page(self.root, limit=2, offset=4, name_contains="a")
++        self.assertEqual([m.name for m in last.items], filtered[4:5])
++        self.assertIsNone(last.next_offset)
++
++    def test_filter_then_offset_equal_filtered_length(self) -> None:
++        page = self.service.list_page(
++            self.root, limit=2, offset=1, name_contains="beta"
++        )
++        self.assertEqual(page.items, ())
++        self.assertIsNone(page.next_offset)
++
++
++class TestResultShape(unittest.TestCase):
++    def test_items_is_tuple(self) -> None:
++        page = ListingService(make_adapter()).list_page(FileRef(SOURCE, ROOT_ID))
++        self.assertIsInstance(page.items, tuple)
++
++    def test_page_is_frozen(self) -> None:
++        page = ListingService(make_adapter()).list_page(FileRef(SOURCE, ROOT_ID))
++        with self.assertRaises(dataclasses.FrozenInstanceError):
++            page.next_offset = 5  # type: ignore[misc]
++
++    def test_page_equality(self) -> None:
++        service = ListingService(make_adapter())
++        a = service.list_page(FileRef(SOURCE, ROOT_ID), limit=2)
++        b = service.list_page(FileRef(SOURCE, ROOT_ID), limit=2)
++        self.assertEqual(a, b)
++
++
++class TestValidation(unittest.TestCase):
++    """Invalid limit/offset (incl bool, float, str, negative, 0/101) and filter."""
++
++    def setUp(self) -> None:
++        self.adapter = FakeAdapter()
++        self.service = ListingService(self.adapter)
++        self.root = FileRef(SOURCE, ROOT_ID)
++
++    def test_invalid_limit(self) -> None:
++        for bad in (0, 101, -1, True, False, 1.5, "5", None, [1]):
++            with self.subTest(limit=bad):
++                with self.assertRaises(ValueError):
++                    self.service.list_page(self.root, limit=bad)
++
++    def test_invalid_offset(self) -> None:
++        for bad in (-1, True, False, 1.5, "0", None, [0]):
++            with self.subTest(offset=bad):
++                with self.assertRaises(ValueError):
++                    self.service.list_page(self.root, offset=bad)
++
++    def test_invalid_name_contains(self) -> None:
++        for bad in (5, ["a"], b"a", True, 1.0):
++            with self.subTest(name_contains=bad):
++                with self.assertRaises(ValueError):
++                    self.service.list_page(self.root, name_contains=bad)
++
++    def test_valid_arguments_do_not_raise(self) -> None:
++        for good_limit in (1, 50, 100):
++            with self.subTest(limit=good_limit):
++                self.service.list_page(self.root, limit=good_limit)
++
++    def test_valid_offsets_do_not_raise(self) -> None:
++        # Three items, so offsets 0..3 are all valid (3 == length -> empty page).
++        self.adapter._metadata = [meta("a.txt"), meta("b.txt"), meta("c.txt")]
++        for good_offset in (0, 1, 3):
++            with self.subTest(offset=good_offset):
++                self.service.list_page(self.root, offset=good_offset)
++
++
++class TestAdapterNotCalledOnInvalidArguments(unittest.TestCase):
++    """A fake adapter call counter proves invalid arguments never reach it."""
++
++    def setUp(self) -> None:
++        self.adapter = FakeAdapter()
++        self.service = ListingService(self.adapter)
++        self.root = FileRef(SOURCE, ROOT_ID)
++
++    def test_invalid_limit_does_not_call_adapter(self) -> None:
++        with self.assertRaises(ValueError):
++            self.service.list_page(self.root, limit=0)
++        self.assertEqual(self.adapter.calls, 0)
++
++    def test_invalid_offset_does_not_call_adapter(self) -> None:
++        with self.assertRaises(ValueError):
++            self.service.list_page(self.root, offset=-1)
++        self.assertEqual(self.adapter.calls, 0)
++
++    def test_invalid_filter_does_not_call_adapter(self) -> None:
++        with self.assertRaises(ValueError):
++            self.service.list_page(self.root, name_contains=5)
++        self.assertEqual(self.adapter.calls, 0)
++
++    def test_valid_call_calls_adapter_once(self) -> None:
++        self.service.list_page(self.root)
++        self.assertEqual(self.adapter.calls, 1)
++
++    def test_offset_above_length_calls_adapter_first(self) -> None:
++        # This check needs the listing, so the adapter is consulted once.
++        self.adapter._metadata = [meta("one.txt")]
++        with self.assertRaises(ValueError):
++            self.service.list_page(self.root, offset=5)
++        self.assertEqual(self.adapter.calls, 1)
++
++
++class TestAdapterErrorPropagation(unittest.TestCase):
++    """Adapter errors propagate without changing their type."""
++
++    def _assert_propagates(self, error: BaseException) -> None:
++        adapter = FakeAdapter(error=error)
++        service = ListingService(adapter)
++        with self.assertRaises(type(error)) as ctx:
++            service.list_page(FileRef(SOURCE, ROOT_ID))
++        self.assertIs(ctx.exception, error)
++
++    def test_not_found_propagates(self) -> None:
++        self._assert_propagates(NotFoundError("missing"))
++
++    def test_not_directory_propagates(self) -> None:
++        self._assert_propagates(NotDirectoryError("not a dir"))
++
++    def test_source_mismatch_propagates(self) -> None:
++        self._assert_propagates(SourceMismatchError("wrong source"))
++
++    def test_base_storage_error_propagates(self) -> None:
++        self._assert_propagates(StorageError("generic"))
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff -ruN a/drive-tool/tests/test_readonly_core.py b/drive-tool/tests/test_readonly_core.py
+--- a/drive-tool/tests/test_readonly_core.py	1970-01-01 00:00:00.000000000 +0000
++++ b/drive-tool/tests/test_readonly_core.py	2026-10-14 18:13:24.389018285 +0000
+@@ -0,0 +1,286 @@
++"""d013 integration tests: MODULE-002 ListingService over the MODULE-003 LocalAdapter.
++
++Provenance: written for d013 (feature/readonly-core-candidate). These tests drive
++the *real* filesystem adapter (``drive_tool.local.LocalAdapter``) through the real
++pagination helper (``drive_tool.listing.ListingService``); they deliberately do
++NOT re-test each module in isolation (MODULE-002's own tests already cover the
++helper over in-memory/fake adapters, and MODULE-003's own tests cover the adapter).
++Every check here is observable cross-module behaviour over tiny synthetic
++directories created in the sandbox.
++
++Run from the repository root:
++
++    python3 -m unittest discover -s tests -v
++"""
++
++from __future__ import annotations
++
++import errno
++import os
++import shutil
++import tempfile
++import unittest
++
++from drive_tool.listing import MAX_LIMIT, MIN_LIMIT, ListingPage, ListingService
++from drive_tool.local import (
++    LocalAdapter,
++    LocalStorageError,
++    _no_follow_semantics_available,
++)
++from drive_tool.storage import FileRef, SourceMismatchError
++
++SOURCE = "core-src"
++
++
++def _static_ok() -> bool:
++    return (
++        os.name == "posix"
++        and hasattr(os, "O_NOFOLLOW")
++        and os.open in getattr(os, "supports_dir_fd", set())
++        and os.stat in getattr(os, "supports_dir_fd", set())
++    )
++
++
++class _CoreTestCase(unittest.TestCase):
++    """Base case: real synthetic tree, gated on a supported platform."""
++
++    def setUp(self) -> None:
++        if not _static_ok():
++            self.skipTest("static POSIX dir_fd/O_NOFOLLOW facilities required")
++        if not _no_follow_semantics_available():
++            self.skipTest(
++                "adapter unsupported on this kernel: O_NOFOLLOW not enforced "
++                "(runtime probe returned False); integration listing tests are "
++                "not meaningful here"
++            )
++        raw = tempfile.mkdtemp(prefix="d013_core_")
++        self.base = os.path.realpath(raw)
++        self.root = os.path.join(self.base, "root")
++        self.outside = os.path.join(self.base, "outside")
++        os.makedirs(os.path.join(self.root, "sub", "deep"))
++        os.makedirs(self.outside)
++        self._write("root/z.txt", b"z")
++        self._write("root/m.txt", b"mmm")
++        self._write("root/sub/a.txt", b"a")
++        self._write("root/sub/b.txt", b"bb")
++        self._write("root/sub/deep/leaf.txt", b"leaf")
++        with open(os.path.join(self.outside, "secret.txt"), "wb") as fh:
++            fh.write(b"SECRET")
++        self.adapter = LocalAdapter(SOURCE, self.root)
++        self.service = ListingService(self.adapter)
++
++    def tearDown(self) -> None:
++        if hasattr(self, "adapter"):
++            self.adapter.close()
++        if hasattr(self, "base") and os.path.isdir(self.base):
++            shutil.rmtree(self.base, ignore_errors=True)
++
++    def _write(self, rel: str, data: bytes) -> None:
++        with open(os.path.join(self.base, rel), "wb") as fh:
++            fh.write(data)
++
++    def _names(self, ref, **kw):
++        return [m.name for m in self.service.list_page(ref, **kw).items]
++
++
++class TestNestedMultiPageListings(_CoreTestCase):
++    """Multi-page pagination across nested directories via the real adapter."""
++
++    def test_root_pages_cover_all_real_children(self) -> None:
++        root = FileRef(SOURCE, "root")
++        page1 = self.service.list_page(root, limit=2, offset=0)
++        self.assertEqual([m.name for m in page1.items], ["m.txt", "sub"])
++        self.assertEqual(page1.next_offset, 2)
++        page2 = self.service.list_page(root, limit=2, offset=page1.next_offset)
++        self.assertEqual([m.name for m in page2.items], ["z.txt"])
++        self.assertIsNone(page2.next_offset)
++
++    def test_subdirectory_pages_one_at_a_time(self) -> None:
++        sub = FileRef(SOURCE, "p/sub")
++        seen, offset = [], 0
++        while True:
++            page = self.service.list_page(sub, limit=MIN_LIMIT, offset=offset)
++            seen.extend(m.name for m in page.items)
++            if page.next_offset is None:
++                break
++            offset = page.next_offset
++        self.assertEqual(seen, ["a.txt", "b.txt", "deep"])
++
++    def test_deep_directory_listing(self) -> None:
++        deep = FileRef(SOURCE, "p/sub/deep")
++        self.assertEqual(self._names(deep), ["leaf.txt"])
++
++    def test_full_traversal_reconstructs_sorted_listing(self) -> None:
++        # Paginate the whole directory at page size 1 and compare to a single
++        # large page: the two paths must agree (offset pagination is consistent
++        # for a quiescent directory).
++        root = FileRef(SOURCE, "root")
++        walked, offset = [], 0
++        while True:
++            page = self.service.list_page(root, limit=1, offset=offset)
++            walked.extend(m.name for m in page.items)
++            if page.next_offset is None:
++                break
++            offset = page.next_offset
++        single = self._names(root, limit=MAX_LIMIT)
++        self.assertEqual(walked, single)
++
++
++class TestMetadataRefsAndSorting(_CoreTestCase):
++    """Sorted metadata with correct parent_id / source_id / file_id refs."""
++
++    def test_nested_metadata_parent_and_refs(self) -> None:
++        sub = FileRef(SOURCE, "p/sub")
++        items = {m.name: m for m in self.service.list_page(sub, limit=MAX_LIMIT).items}
++        self.assertEqual(list(items), ["a.txt", "b.txt", "deep"])  # sorted
++        a = items["a.txt"]
++        self.assertEqual(a.ref.source_id, SOURCE)
++        self.assertEqual(a.ref.file_id, "p/sub/a.txt")
++        self.assertEqual(a.parent_id, "p/sub")
++        self.assertEqual(a.kind, "file")
++        self.assertEqual(a.size_bytes, 1)  # b"a"
++        deep = items["deep"]
++        self.assertEqual(deep.kind, "directory")
++        self.assertIsNone(deep.size_bytes)
++        self.assertEqual(deep.ref.file_id, "p/sub/deep")
++
++    def test_top_level_parent_is_root(self) -> None:
++        items = {m.name: m for m in self.service.list_page(
++            FileRef(SOURCE, "root"), limit=MAX_LIMIT).items}
++        self.assertEqual(items["m.txt"].parent_id, "root")
++        self.assertEqual(items["sub"].parent_id, "root")
++        self.assertEqual(items["m.txt"].ref.file_id, "p/m.txt")
++        self.assertEqual(items["m.txt"].size_bytes, 3)
++
++    def test_filtering_over_real_adapter(self) -> None:
++        sub = FileRef(SOURCE, "p/sub")
++        self.assertEqual(self._names(sub, name_contains=".txt"), ["a.txt", "b.txt"])
++        self.assertEqual(self._names(sub, name_contains="eep"), ["deep"])
++        self.assertEqual(self._names(sub, name_contains="zzz"), [])
++
++    def test_page_shape_over_real_adapter(self) -> None:
++        page = self.service.list_page(FileRef(SOURCE, "root"), limit=1)
++        self.assertIsInstance(page, ListingPage)
++        self.assertIsInstance(page.items, tuple)
++
++
++class TestOmittedSpecialEntries(_CoreTestCase):
++    """Symlinks and special entries are omitted from real-adapter listings."""
++
++    def test_symlink_and_fifo_omitted(self) -> None:
++        os.symlink(os.path.join(self.outside, "secret.txt"),
++                   os.path.join(self.root, "link_out"))
++        made_fifo = True
++        try:
++            os.mkfifo(os.path.join(self.root, "pipe"))
++        except OSError:
++            made_fifo = False
++        names = self._names(FileRef(SOURCE, "root"), limit=MAX_LIMIT)
++        self.assertEqual(names, ["m.txt", "sub", "z.txt"])
++        self.assertNotIn("link_out", names)
++        if made_fifo:
++            self.assertNotIn("pipe", names)
++
++
++class TestWrongSourcePropagation(_CoreTestCase):
++    """A wrong-source ref surfaces from the adapter through the service unchanged."""
++
++    def test_wrong_source_on_root(self) -> None:
++        with self.assertRaises(SourceMismatchError):
++            self.service.list_page(FileRef("other-src", "root"))
++
++    def test_wrong_source_on_nested(self) -> None:
++        with self.assertRaises(SourceMismatchError):
++            self.service.list_page(FileRef("other-src", "p/sub"))
++
++    def test_source_mismatch_is_not_swallowed_by_filtering(self) -> None:
++        with self.assertRaises(SourceMismatchError):
++            self.service.list_page(FileRef("other-src", "root"), name_contains="a")
++
++
++class _CountingLocalAdapter(LocalAdapter):
++    """Counts list_children calls to prove the service's pre-validation."""
++
++    def __init__(self, *args, **kwargs):
++        self.list_calls = 0
++        super().__init__(*args, **kwargs)
++
++    def list_children(self, parent):
++        self.list_calls += 1
++        return super().list_children(parent)
++
++
++class TestInvalidOptionsAvoidAdapterWork(_CoreTestCase):
++    """Invalid options raise before any adapter work happens."""
++
++    def setUp(self) -> None:
++        super().setUp()
++        self.counting = _CountingLocalAdapter(SOURCE, self.root)
++        self.counting_service = ListingService(self.counting)
++
++    def tearDown(self) -> None:
++        if hasattr(self, "counting"):
++            self.counting.close()
++        super().tearDown()
++
++    def test_invalid_limit_does_not_touch_adapter(self) -> None:
++        for bad in (0, 101, -1, True, False, 1.5, "5", None):
++            with self.subTest(limit=bad):
++                with self.assertRaises(ValueError):
++                    self.counting_service.list_page(FileRef(SOURCE, "root"), limit=bad)
++        self.assertEqual(self.counting.list_calls, 0)
++
++    def test_invalid_offset_and_filter_do_not_touch_adapter(self) -> None:
++        with self.assertRaises(ValueError):
++            self.counting_service.list_page(FileRef(SOURCE, "root"), offset=-1)
++        with self.assertRaises(ValueError):
++            self.counting_service.list_page(FileRef(SOURCE, "root"), name_contains=7)
++        self.assertEqual(self.counting.list_calls, 0)
++
++    def test_valid_call_consults_adapter_once(self) -> None:
++        self.counting_service.list_page(FileRef(SOURCE, "root"))
++        self.assertEqual(self.counting.list_calls, 1)
++
++
++class _CloseFailingLocalAdapter(LocalAdapter):
++    """Fails the close of the descriptor opened for a chosen path name."""
++
++    def __init__(self, *args, fail_close_name=None, **kwargs):
++        self._fail_close_name = fail_close_name
++        self._open_paths: dict[int, str] = {}
++        super().__init__(*args, **kwargs)
++
++    def _os_open(self, path, flags, *, dir_fd=None):
++        fd = super()._os_open(path, flags, dir_fd=dir_fd)
++        self._open_paths[fd] = path
++        return fd
++
++    def _os_close(self, fd):
++        name = self._open_paths.get(fd)
++        super()._os_close(fd)  # real close first (kernel releases the fd)
++        if name == self._fail_close_name:
++            raise OSError(errno.EIO, "injected listing cleanup close failure")
++
++
++class TestAdapterListingFailureSurfacesThroughService(_CoreTestCase):
++    """A real adapter listing cleanup failure propagates through the service."""
++
++    def test_listing_cleanup_failure_surfaces_unchanged(self) -> None:
++        adapter = _CloseFailingLocalAdapter(SOURCE, self.root, fail_close_name="sub")
++        try:
++            service = ListingService(adapter)
++            with self.assertRaises(LocalStorageError) as ctx:
++                service.list_page(FileRef(SOURCE, "p/sub"))
++            exc = ctx.exception
++            # The adapter's storage error must reach the caller unwrapped (not a
++            # ValueError, and not re-typed), with its OSError cause preserved.
++            self.assertIsInstance(exc, LocalStorageError)
++            self.assertNotIsInstance(exc, ValueError)
++            self.assertIsInstance(exc.__cause__, OSError)
++            self.assertIn("close", str(exc).lower())
++        finally:
++            adapter.close()
++
++
++if __name__ == "__main__":
++    unittest.main()

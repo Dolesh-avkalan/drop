@@ -1,0 +1,8 @@
+d013 env 2026-10-14T18:13:45Z
+Linux 4.19.0-gvisor x86_64 GNU/Linux
+Python 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+Python 3.11.2 (main, May 12 2026, 05:17:27) [GCC 12.2.0]
+none on / type overlay (rw)
+none on /tmp type 9p (rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs)
+none on /scratch type 9p (rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs)
+TMPDIR=/scratch/tmp
