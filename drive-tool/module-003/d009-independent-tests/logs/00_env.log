@@ -1,0 +1,32 @@
+== date (UTC) ==
+2026-10-14T17:27:06Z
+== uname ==
+Linux claw-sandbox-dc770e4329da631fd3218d18e9 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 GNU/Linux
+== os-release ==
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+== interpreters ==
+Python 3.11.2
+Python 3.12.13
+Python 3.12.13
+== which ==
+/usr/bin/python3.11
+/usr/local/bin/python3.12
+== mounts ==
+none / overlay rw 0 0
+none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs 0 0
+none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs 0 0
+none /dev/shm tmpfs rw 0 0
+== TMPDIR ==
+/scratch/tmp
+== flags ==
+O_NOFOLLOW 131072 O_DIRECTORY 65536 O_NONBLOCK 2048 O_CLOEXEC 524288
+== realpath scratch/tmp ==
+/scratch/tmp
+== df ==
+Filesystem      Size  Used Avail Use% Mounted on
+none            300G   14G  287G   5% /scratch
+none             64M  4.0K   64M   1% /tmp
+== stat -f /scratch/tmp ==
+v9fs
+== boot id ==
+ee343f8a-3eac-4a72-a733-f75830581cfc

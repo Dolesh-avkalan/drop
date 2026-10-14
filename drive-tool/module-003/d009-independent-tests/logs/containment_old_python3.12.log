@@ -1,0 +1,7 @@
+python 3.12.13 | real kernel os.open | d009 containment probe
+FAIL read_bytes(p/sub/target.txt) traversal: ESCAPED -> returned b'OUTSIDE_SENTINEL_BYTES_0123456789'
+FAIL stat(p/sub/target.txt) traversal: ESCAPED -> returned FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)
+FAIL list_children(p/sub) final dir open: ESCAPED -> returned [FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/secret.txt'), name='secret.txt', parent_id='p/sub', kind='file', size_bytes=19), FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)]
+FAIL root-ancestor-swap: ESCAPED - anchored OUTSIDE, read sentinel b'OUTSIDE_SENTINEL_BYTES_0123456789'
+
+RESULT: FAIL - 4 containment failure(s): ['read_bytes(p/sub/target.txt) traversal', 'stat(p/sub/target.txt) traversal', 'list_children(p/sub) final dir open', 'root-ancestor-swap']

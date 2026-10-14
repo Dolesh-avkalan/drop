@@ -1,0 +1,16 @@
+old tree: /scratch/work/old-110b27e
+new tree: /scratch/work/new-c2b324d
+added   (1): ['docs/evidence/MODULE-003-REVIEW-FIXES.md']
+removed (0): []
+changed (3): ['docs/evidence/MODULE-003.md', 'drive_tool/local.py', 'tests/test_local.py']
+
+-- MODULE-001 / frozen blobs --
+  SAME  3e23315ec72a68d7b9bb30d2c87b617147e0add6  README.md
+  SAME  3dabc64d75ff2fee3786de76179cdbf184332517  docs/evidence/MODULE-001.md
+  SAME  a9701ca7a033bf71c0a115fe4eadad096ed824b7  docs/evidence/MODULE-003-GEMINI.md
+  SAME  9be841b5749acb36c5e362c84b986d98292bae8d  drive_tool/__init__.py
+  SAME  28f7b8c0ce7ac56d602d0af3a709c3f31441904b  drive_tool/storage.py
+  SAME  9168f60a4499383c89a39033529fec6e2773921a  tasks/MODULE-001.md
+  SAME  2126dde7f32b7c0cd4d1e737ff990ab10954caf5  tests/test_storage.py
+
+RESULT: PASS - only the four d007 files differ; MODULE-001 blobs unchanged

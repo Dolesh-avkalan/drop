@@ -1,0 +1,7 @@
+python 3.11.2 | real kernel os.open | d009 containment probe
+PASS read_bytes(p/sub/target.txt) traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS stat(p/sub/target.txt) traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS list_children(p/sub) final dir open: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub')
+PASS root-ancestor-swap: contained (UnsafePathError: symlink rejected at component 'anc' in root '/scratch/tmp/d009_cont_root_rdb1wk7u/anc/inner')
+
+RESULT: PASS - all entry points contained the directory swap

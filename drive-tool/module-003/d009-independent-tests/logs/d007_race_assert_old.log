@@ -1,0 +1,7 @@
+python 3.11.2 | real kernel os.open | asserting reproducer
+FAIL read_bytes('p/sub/target.txt') traversal: ESCAPED - operation returned b'OUTSIDE_SENTINEL_BYTES_0123456789'
+FAIL stat('p/sub/target.txt') traversal: ESCAPED - operation returned FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)
+FAIL list_children('p/sub') final directory: ESCAPED - operation returned [FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/secret.txt'), name='secret.txt', parent_id='p/sub', kind='file', size_bytes=19), FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)]
+FAIL root-ancestor swap: unexpected ValueError: root '/scratch/tmp/race_probe_anc_jlguemjm/anc/inner' must be an existing directory: [Errno 2] No such file or directory: 'inner'
+
+RESULT: FAIL - 4 containment failure(s): ["read_bytes('p/sub/target.txt') traversal", "stat('p/sub/target.txt') traversal", "list_children('p/sub') final directory", 'root-ancestor']

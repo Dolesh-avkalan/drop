@@ -1,0 +1,231 @@
+.......EE......EFFF.......EEE......F.F.F......
+======================================================================
+ERROR: test_root_setup_close_failure_cleans_new_fd_without_double_close (tests.test_local.TestCloseFailureOwnership.test_root_setup_close_failure_cleans_new_fd_without_double_close)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 409, in _open_anchored_root
+    self._os_close(current_fd)
+  File "/usr/lib/python3.11/unittest/mock.py", line 1118, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1122, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1183, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1231, in flaky_close
+    raise OSError(errno.EIO, "injected close failure")
+OSError: [Errno 5] injected close failure
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1238, in test_root_setup_close_failure_cleans_new_fd_without_double_close
+    LocalAdapter("src", inner)
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 285, in __init__
+    self._root_fd = self._open_anchored_root(raw_root, root_parts)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 414, in _open_anchored_root
+    self._os_close(current_fd)
+  File "/usr/lib/python3.11/unittest/mock.py", line 1118, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1122, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1183, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1229, in flaky_close
+    real_close(fd)
+OSError: [Errno 9] Bad file descriptor
+
+======================================================================
+ERROR: test_traversal_close_failure_cleans_new_fd_without_double_close (tests.test_local.TestCloseFailureOwnership.test_traversal_close_failure_cleans_new_fd_without_double_close)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 628, in _traverse_parent_dir
+    self._os_close(current_fd)
+  File "/usr/lib/python3.11/unittest/mock.py", line 1118, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1122, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1183, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1192, in flaky_close
+    raise OSError(errno.EIO, "injected close failure")
+OSError: [Errno 5] injected close failure
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1199, in test_traversal_close_failure_cleans_new_fd_without_double_close
+    adapter.read_bytes(FileRef("src", "p/a/b/file.txt"))
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 841, in read_bytes
+    parent_fd = self._traverse_parent_dir(root_fd, parts[:-1], ref.file_id)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 634, in _traverse_parent_dir
+    self._os_close(current_fd)
+  File "/usr/lib/python3.11/unittest/mock.py", line 1118, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1122, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1183, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1190, in flaky_close
+    real_close(fd)
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 346, in _os_close
+    os.close(fd)
+OSError: [Errno 9] Bad file descriptor
+
+======================================================================
+ERROR: test_dir_swap_before_ancestor_open_rejected_at_root_setup (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_ancestor_open_rejected_at_root_setup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 382, in _open_anchored_root
+    pre_st = self._os_stat_nofollow(part, dir_fd=current_fd)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 352, in _os_stat_nofollow
+    return os.stat(path, dir_fd=dir_fd, follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'inner'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 810, in test_dir_swap_before_ancestor_open_rejected_at_root_setup
+    LocalAdapter("src", inner)
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 285, in __init__
+    self._root_fd = self._open_anchored_root(raw_root, root_parts)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 384, in _open_anchored_root
+    raise self._classify_root_error(
+ValueError: root '/scratch/tmp/drive_tool_mod003_ae1dk7b7/anc/inner' must be an existing directory: [Errno 2] No such file or directory: 'inner'
+
+======================================================================
+ERROR: test_root_fstat_error_wrapped_and_root_fd_closed (tests.test_local.TestOsErrorWrapping.test_root_fstat_error_wrapped_and_root_fd_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1355, in test_root_fstat_error_wrapped_and_root_fd_closed
+    LocalAdapter("src", self.root_dir)
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 285, in __init__
+    self._root_fd = self._open_anchored_root(raw_root, root_parts)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 371, in _open_anchored_root
+    root_st = self._os_fstat(current_fd)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1118, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1122, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1183, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1347, in flaky_fstat
+    raise OSError(errno.EACCES, "injected fstat failure")
+PermissionError: [Errno 13] injected fstat failure
+
+======================================================================
+ERROR: test_scandir_iteration_error_wrapped_and_scan_fd_closed (tests.test_local.TestOsErrorWrapping.test_scandir_iteration_error_wrapped_and_scan_fd_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1285, in test_scandir_iteration_error_wrapped_and_scan_fd_closed
+    adapter.list_children(FileRef("src", ROOT_ID))
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 788, in list_children
+    for entry in entries:
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1264, in __next__
+    raise OSError(errno.EIO, "injected readdir failure")
+OSError: [Errno 5] injected readdir failure
+
+======================================================================
+ERROR: test_traversal_fstat_error_wrapped_and_fds_cleaned (tests.test_local.TestOsErrorWrapping.test_traversal_fstat_error_wrapped_and_fds_cleaned)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1326, in test_traversal_fstat_error_wrapped_and_fds_cleaned
+    adapter.read_bytes(FileRef("src", "p/a/b/f.txt"))
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 841, in read_bytes
+    parent_fd = self._traverse_parent_dir(root_fd, parts[:-1], ref.file_id)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/drive_tool/local.py", line 610, in _traverse_parent_dir
+    st = self._os_fstat(next_fd)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1118, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1122, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1183, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 1317, in flaky_fstat
+    raise OSError(errno.EIO, "injected fstat failure")
+OSError: [Errno 5] injected fstat failure
+
+======================================================================
+FAIL: test_dir_swap_before_component_open_read_traversal_rejected (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_component_open_read_traversal_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 757, in test_dir_swap_before_component_open_read_traversal_rejected
+    self._assert_contained(
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 723, in _assert_contained
+    self.fail(
+AssertionError: expected UnsafePathError, but the operation returned b'OUTSIDE_SENTINEL_BYTES_0123456789' (outside data exposed)
+
+======================================================================
+FAIL: test_dir_swap_before_component_open_stat_traversal_rejected (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_component_open_stat_traversal_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 771, in test_dir_swap_before_component_open_stat_traversal_rejected
+    self._assert_contained(
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 723, in _assert_contained
+    self.fail(
+AssertionError: expected UnsafePathError, but the operation returned FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33) (outside data exposed)
+
+======================================================================
+FAIL: test_dir_swap_before_list_children_final_open_rejected (tests.test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_list_children_final_open_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 783, in test_dir_swap_before_list_children_final_open_rejected
+    self._assert_contained(
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 723, in _assert_contained
+    self.fail(
+AssertionError: expected UnsafePathError, but the operation returned [FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/secret.txt'), name='secret.txt', parent_id='p/sub', kind='file', size_bytes=19), FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)] (outside data exposed)
+
+======================================================================
+FAIL: test_dir_open_flags_exclude_o_directory (tests.test_local.TestPlatformNoFollowSemantics.test_dir_open_flags_exclude_o_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 129, in test_dir_open_flags_exclude_o_directory
+    self.assertFalse(
+AssertionError: 65536 is not false : directory-component opens must not use O_DIRECTORY
+
+======================================================================
+FAIL: test_real_kernel_rejects_symlink_with_component_flags (tests.test_local.TestPlatformNoFollowSemantics.test_real_kernel_rejects_symlink_with_component_flags)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 140, in test_real_kernel_rejects_symlink_with_component_flags
+    with self.assertRaises(OSError) as cm:
+AssertionError: OSError not raised
+
+======================================================================
+FAIL: test_unsupported_platform_when_runtime_probe_fails (tests.test_local.TestPlatformNoFollowSemantics.test_unsupported_platform_when_runtime_probe_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d009/oldcheck/tests/test_local.py", line 165, in test_unsupported_platform_when_runtime_probe_fails
+    with self.assertRaises(UnsupportedPlatformError):
+AssertionError: UnsupportedPlatformError not raised
+
+----------------------------------------------------------------------
+Ran 46 tests in 0.426s
+
+FAILED (failures=6, errors=6)

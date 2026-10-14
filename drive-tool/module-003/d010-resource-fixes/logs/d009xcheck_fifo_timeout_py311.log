@@ -1,0 +1,7 @@
+python 3.11.2 | d009 FIFO no-hang check
+  child: CHILD OK: UnsupportedEntryError: 'p/fifo' is not a regular file (mode 0o10664)
+PASS fifo-read-no-hang (rc=0, within 10s)
+PASS fifo-stat (UnsupportedEntryError)
+PASS fifo-omitted-from-listing (got ['regular.txt'])
+
+RESULT: PASS - FIFO rejected without blocking and omitted from listing

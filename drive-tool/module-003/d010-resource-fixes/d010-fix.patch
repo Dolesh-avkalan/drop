@@ -1,0 +1,585 @@
+# d010 patch: base c2b324dab4cf720178a36a58b5f1cf1339730151 -> feature/module-003-resource-fixes
+# apply with: git apply d010-fix.patch
+--- a/drive_tool/local.py
++++ b/drive_tool/local.py
+@@ -140,12 +140,10 @@
+         except OSError:
+             return False
+ 
+-        flags = (
+-            os.O_RDONLY
+-            | os.O_NOFOLLOW
+-            | os.O_NONBLOCK
+-            | getattr(os, "O_CLOEXEC", 0)
+-        )
++        # Use the production directory-component flag helper itself, so the
++        # probe can never drift from real adapter behaviour: the helper is the
++        # single source of truth, resolved at call time (never cached).
++        flags = _dir_open_flags()
+         try:
+             fd = os.open(link, flags)
+         except OSError as exc:
+@@ -494,6 +492,32 @@
+         except OSError:
+             pass
+ 
++    def _release_owned(self, owned: list[tuple[int, str]]) -> None:
++        """Release each owned descriptor exactly once, in the given order.
++
++        A descriptor is "owned" the moment it is acquired, and is closed exactly
++        once here. A failing ``close`` is never retried: Linux releases the
++        descriptor even when ``close`` reports an error, and a truly ambiguous
++        close cannot be verified from user space, so it must not be retried.
++        While another exception is already propagating, close failures are
++        suppressed so the primary storage error is never masked; on the success
++        path the first close failure is raised as :class:`LocalStorageError`
++        with its ``OSError`` cause preserved.
++        """
++        primary = sys.exc_info()[0]
++        first_failure: tuple[str, OSError] | None = None
++        for fd, context in owned:
++            try:
++                self._os_close(fd)
++            except OSError as exc:
++                if first_failure is None:
++                    first_failure = (context, exc)
++        if first_failure is not None and primary is None:
++            context, exc = first_failure
++            raise LocalStorageError(
++                f"failed to close descriptor for {context}: {exc}"
++            ) from exc
++
+     # -- root initialization ---------------------------------------------------
+ 
+     def _open_anchored_root(self, raw_root: str, parts: list[str]) -> int:
+@@ -846,18 +870,27 @@
+         parts = _parse_file_id(parent.file_id)
+         dir_flags = _dir_open_flags()
+ 
+-        if not parts:
+-            try:
+-                scan_fd = self._os_open(".", dir_flags, dir_fd=root_fd)
+-            except OSError as exc:
+-                raise LocalStorageError(
+-                    f"failed to open root directory for listing: {exc}"
+-                ) from exc
+-        else:
+-            parent_fd = self._traverse_parent_dir(
+-                root_fd, parts[:-1], parent.file_id
+-            )
+-            try:
++        # A descriptor is owned the moment it is acquired. ``owned`` is released
++        # exactly once by the single ``finally`` at the end of this method, which
++        # covers the parent-close handoff as well as the scan, so a failing
++        # parent close cannot skip the child's cleanup scope.
++        owned: list[tuple[int, str]] = []
++        try:
++            if not parts:
++                try:
++                    scan_fd = self._os_open(".", dir_flags, dir_fd=root_fd)
++                except OSError as exc:
++                    raise LocalStorageError(
++                        f"failed to open root directory for listing: {exc}"
++                    ) from exc
++            else:
++                parent_fd = self._traverse_parent_dir(
++                    root_fd, parts[:-1], parent.file_id
++                )
++                if parent_fd != root_fd:
++                    owned.append(
++                        (parent_fd, f"parent directory of {parent.file_id!r}")
++                    )
+                 target_name = parts[-1]
+                 try:
+                     scan_fd = self._os_open(
+@@ -872,13 +905,10 @@
+                         is_intermediate=False,
+                         for_directory_op=True,
+                     ) from exc
+-            finally:
+-                if parent_fd != root_fd:
+-                    self._close_traversal_fd(
+-                        parent_fd, context=f"parent directory of {parent.file_id!r}"
+-                    )
+ 
+-        try:
++            # Child scan descriptor acquired: owned immediately.
++            owned.append((scan_fd, f"scan descriptor for {parent.file_id!r}"))
++
+             try:
+                 dir_st = self._os_fstat(scan_fd)
+             except OSError as exc:
+@@ -958,9 +988,7 @@
+                 f"failed to iterate directory {parent.file_id!r}: {exc}"
+             ) from exc
+         finally:
+-            self._close_traversal_fd(
+-                scan_fd, context=f"scan descriptor for {parent.file_id!r}"
+-            )
++            self._release_owned(owned)
+ 
+         children.sort(key=lambda meta: meta.name)
+         return children
+@@ -974,6 +1002,13 @@
+             raise IsDirectoryError(f"{ROOT_ID!r} is a directory, not a file")
+ 
+         parent_fd = self._traverse_parent_dir(root_fd, parts[:-1], ref.file_id)
++        # A descriptor is owned the moment it is acquired. Once the child file
++        # descriptor is opened it is released exactly once by the single
++        # ``finally`` below, which also covers the parent-close handoff, so a
++        # failing parent close cannot skip the child's cleanup scope.
++        owned: list[tuple[int, str]] = []
++        if parent_fd != root_fd:
++            owned.append((parent_fd, f"parent directory of {ref.file_id!r}"))
+         try:
+             target_name = parts[-1]
+             try:
+@@ -989,18 +1024,10 @@
+                     is_intermediate=False,
+                     for_directory_op=False,
+                 ) from exc
+-        finally:
+-            if parent_fd != root_fd:
+-                self._close_traversal_fd(
+-                    parent_fd, context=f"parent directory of {ref.file_id!r}"
+-                )
+-
+-        try:
++            owned.append((file_fd, f"file descriptor for {ref.file_id!r}"))
+             return self._read_open_file_bounded(file_fd, ref.file_id)
+         finally:
+-            self._close_traversal_fd(
+-                file_fd, context=f"file descriptor for {ref.file_id!r}"
+-            )
++            self._release_owned(owned)
+ 
+     def _read_open_file_bounded(self, file_fd: int, file_id: str) -> bytes:
+         """Verify ``file_fd`` is a regular file and read up to ``max_read_bytes``."""
+--- a/tests/test_local.py
++++ b/tests/test_local.py
+@@ -38,12 +38,14 @@
+     StorageError,
+ )
+ 
+-def _is_supported_posix() -> bool:
+-    """Return True when the current platform supports LocalAdapter.
++def _static_posix_prerequisites_met() -> bool:
++    """Return True when the STATIC POSIX facilities the adapter needs exist.
+ 
+-    Beyond the static constants/dir_fd checks this also runs the same runtime
+-    probe the adapter uses, so a platform that defines ``O_NOFOLLOW`` but does
+-    not enforce it is treated as unsupported rather than silently passing.
++    This deliberately does NOT run the runtime no-follow probe: the probe and
++    platform-denial tests must still run when static facilities exist even if
++    the runtime probe returns False. A correctly rejected (non-conformant)
++    kernel is a legitimate fail-closed outcome, not a reason to skip the tests
++    that check it.
+     """
+     return (
+         os.name == "posix"
+@@ -53,17 +55,26 @@
+         and os.stat in getattr(os, "supports_dir_fd", set())
+         and os.stat in getattr(os, "supports_follow_symlinks", set())
+         and os.scandir in getattr(os, "supports_fd", set())
+-        and _no_follow_semantics_available()
+     )
+ 
+-class _PosixTempRootTestCase(unittest.TestCase):
+-    """Base test case providing a canonical symlink-free temporary directory."""
++
++def _runtime_nofollow_enforced() -> bool:
++    """Return True when the running kernel actually enforces the adapter flags."""
++    return _no_follow_semantics_available()
++
++
++class _PosixStaticTestCase(unittest.TestCase):
++    """Base case gated only on STATIC POSIX facilities.
++
++    Probe/platform-denial tests derive from this class so they run whenever the
++    static facilities exist, even when the runtime probe returns False.
++    """
+ 
+     def setUp(self) -> None:
+-        if not _is_supported_posix():
+-            self.skipTest("POSIX dir_fd/O_NOFOLLOW capabilities required")
+-        # Resolve any OS-level symlinks in the system temp root (e.g. /tmp -> /private/tmp)
+-        # so the base fixture path has zero symlinks in its ancestor chain from /.
++        if not _static_posix_prerequisites_met():
++            self.skipTest("static POSIX dir_fd/O_NOFOLLOW facilities required")
++        # Resolve OS-level symlinks in the system temp root so the fixture path
++        # has zero symlinks in its ancestor chain from /.
+         raw_base = tempfile.mkdtemp(prefix="drive_tool_mod003_")
+         self.base_dir = Path(os.path.realpath(raw_base))
+         self.root_dir = self.base_dir / "root"
+@@ -75,6 +86,29 @@
+         if hasattr(self, "base_dir") and self.base_dir.exists():
+             shutil.rmtree(self.base_dir, ignore_errors=True)
+ 
++
++class _PosixRuntimeTestCase(_PosixStaticTestCase):
++    """Base case for OPERATIONAL tests that actually drive the adapter.
++
++    These may skip when the runtime probe reports that O_NOFOLLOW is not
++    enforced (the adapter is then correctly unsupported / fail-closed), with a
++    precise reason. The probe/denial tests derive from ``_PosixStaticTestCase``
++    so they are never skipped by the result they test.
++    """
++
++    def setUp(self) -> None:
++        super().setUp()
++        if not _runtime_nofollow_enforced():
++            self.skipTest(
++                "adapter unsupported on this kernel: O_NOFOLLOW is not enforced "
++                "(runtime probe returned False); operational containment tests "
++                "are not meaningful here"
++            )
++
++
++class _PosixTempRootTestCase(_PosixRuntimeTestCase):
++    """Operational base: static facilities plus an enforced no-follow kernel."""
++
+ class TestPlatformCapabilityGate(unittest.TestCase):
+     """Tests for explicit platform capability gating (runs on all platforms)."""
+ 
+@@ -115,7 +149,7 @@
+             with self.assertRaises(UnsupportedPlatformError):
+                 LocalAdapter("local-src", "/tmp")
+ 
+-class TestPlatformNoFollowSemantics(_PosixTempRootTestCase):
++class TestPlatformNoFollowSemantics(_PosixStaticTestCase):
+     """Real-kernel checks that O_NOFOLLOW (without O_DIRECTORY) is enforced.
+ 
+     These assert against the actual kernel rather than a simulated result: the
+@@ -132,19 +166,36 @@
+         )
+ 
+     def test_real_kernel_rejects_symlink_with_component_flags(self) -> None:
++        """Raw kernel: production flags either reject the symlink or fail closed.
++
++        Runs whenever static facilities exist and is NOT skipped by the result
++        it tests. On a kernel that enforces O_NOFOLLOW the open is rejected with
++        ELOOP/EMLINK; on one that does not, the correct product behaviour is
++        fail-closed, so the adapter must raise UnsupportedPlatformError rather
++        than proceed unsafely.
++        """
+         (self.outside_dir / "inside").mkdir()
+         link = self.root_dir / "linkdir"
+         os.symlink(self.outside_dir, link)
+ 
+         flags = _dir_open_flags()
+-        with self.assertRaises(OSError) as cm:
++        rejected = False
++        try:
+             fd = os.open(str(link), flags)
++        except OSError as exc:
++            rejected = exc.errno in (errno.ELOOP, getattr(errno, "EMLINK", -1))
++        else:
+             os.close(fd)
+-        self.assertIn(
+-            cm.exception.errno,
+-            (errno.ELOOP, getattr(errno, "EMLINK", -1)),
+-            msg="O_NOFOLLOW alone must reject a symlink component on this kernel",
+-        )
++
++        if _no_follow_semantics_available():
++            self.assertTrue(
++                rejected,
++                msg="probe reports no-follow enforced, but the kernel followed a "
++                "symlink with the production component flags",
++            )
++        else:
++            with self.assertRaises(UnsupportedPlatformError):
++                LocalAdapter("src", self.root_dir)
+ 
+     def test_real_kernel_opens_real_directory_and_fstat_is_dir(self) -> None:
+         flags = _dir_open_flags()
+@@ -154,8 +205,60 @@
+         finally:
+             os.close(fd)
+ 
+-    def test_runtime_probe_reports_nofollow_enforced(self) -> None:
+-        self.assertTrue(_no_follow_semantics_available())
++    def test_runtime_probe_matches_raw_kernel_nofollow(self) -> None:
++        """The runtime probe must agree with the raw kernel, not a constant."""
++        (self.outside_dir / "inside").mkdir()
++        link = self.root_dir / "linkdir"
++        os.symlink(self.outside_dir, link)
++
++        flags = _dir_open_flags()
++        try:
++            fd = os.open(str(link), flags)
++        except OSError as exc:
++            enforced = exc.errno in (errno.ELOOP, getattr(errno, "EMLINK", -1))
++        else:
++            os.close(fd)
++            enforced = False
++
++        self.assertEqual(
++            _no_follow_semantics_available(),
++            enforced,
++            msg="runtime probe disagrees with actual kernel O_NOFOLLOW behaviour",
++        )
++
++    def test_probe_follows_production_dir_flags(self) -> None:
++        """Removing O_NOFOLLOW from the production helper must be detected.
++
++        The probe must derive its flags from the production helper rather than a
++        separately reconstructed bitmask, so weakening the helper makes the
++        probe detect following and the constructor fail closed.
++        """
++        real_helper = _dir_open_flags
++
++        def weakened_helper() -> int:
++            return real_helper() & ~os.O_NOFOLLOW
++
++        with mock.patch(
++            "drive_tool.local._dir_open_flags", side_effect=weakened_helper
++        ):
++            self.assertFalse(
++                _no_follow_semantics_available(),
++                msg="probe did not follow the weakened production flags",
++            )
++            with self.assertRaises(UnsupportedPlatformError):
++                LocalAdapter("src", self.root_dir)
++
++    def test_file_and_dir_open_flags_share_safe_flags(self) -> None:
++        """File and directory component opens share the same safe flags."""
++        from drive_tool.local import _file_open_flags
++
++        dir_flags = _dir_open_flags()
++        file_flags = _file_open_flags()
++        for flags in (dir_flags, file_flags):
++            self.assertTrue(flags & os.O_NOFOLLOW)
++            self.assertTrue(flags & os.O_NONBLOCK)
++            self.assertFalse(flags & getattr(os, "O_DIRECTORY", 0))
++        self.assertEqual(dir_flags, file_flags)
+ 
+     def test_unsupported_platform_when_runtime_probe_fails(self) -> None:
+         with mock.patch(
+@@ -1358,5 +1461,226 @@
+         self.assertEqual(cm.exception.__cause__.errno, errno.EACCES)
+         self.assertEqual(set(opened), set(closed))
+ 
++
++class _OwnershipTracker:
++    """Lifetime-accurate descriptor accounting.
++
++    Each acquisition gets a unique token; closes pop the most-recent token for
++    that fd number (LIFO, matching the kernel). This identifies descriptor
++    lifetimes by acquisition rather than assuming an integer fd uniquely
++    identifies one lifetime, so it stays correct even when the kernel reuses a
++    freed fd number.
++    """
++
++    def __init__(self) -> None:
++        self._next = 0
++        self._stacks: dict = {}
++        self._info: dict = {}
++        self.released: list = []
++        self.close_without_open: int = 0
++
++    def on_open(self, fd: int, dir_fd):
++        token = self._next
++        self._next += 1
++        self._info[token] = (fd, dir_fd)
++        self._stacks.setdefault(fd, []).append(token)
++        return token
++
++    def on_close(self, fd: int):
++        stack = self._stacks.get(fd)
++        if not stack:
++            self.close_without_open += 1
++            return None
++        token = stack.pop()
++        self.released.append(token)
++        return token
++
++    def last_token_for(self, fd: int):
++        stack = self._stacks.get(fd)
++        return stack[-1] if stack else None
++
++    def release_count(self, token) -> int:
++        return self.released.count(token)
++
++    def open_tokens(self) -> list:
++        return [t for stack in self._stacks.values() for t in stack]
++
++    def token_for(self, predicate):
++        for token, (fd, dir_fd) in self._info.items():
++            if predicate(token, fd, dir_fd):
++                return token
++        return None
++
++
++class TestChildDescriptorOwnershipHandoff(_PosixTempRootTestCase):
++    """Child descriptors must be released exactly once across the parent-close
++    handoff, including when the parent close fails after the child is acquired.
++
++    Regression for the base-revision leak: in read_bytes/list_children the
++    parent fd is closed in a ``finally`` that runs after the child fd is
++    acquired; a failing parent close exited before the child's cleanup scope,
++    orphaning the child. Descriptors are identified by acquisition, not by
++    assuming an integer fd uniquely identifies a lifetime.
++    """
++
++    def _make_tree(self) -> None:
++        (self.root_dir / "a").mkdir()
++        (self.root_dir / "a" / "file.txt").write_bytes(b"A")
++        (self.root_dir / "a" / "b").mkdir()
++        (self.root_dir / "a" / "b" / "file.txt").write_bytes(b"AB")
++        (self.root_dir / "a" / "b" / "c").mkdir()
++        (self.root_dir / "a" / "b" / "c" / "file.txt").write_bytes(b"ABC")
++
++    def _run_handoff(self, op):
++        """Run op with the parent-handoff close failing after the child open."""
++        self._make_tree()
++        adapter = LocalAdapter("src", self.root_dir)
++        tracker = _OwnershipTracker()
++        parent_box: dict = {}
++
++        real_open = adapter._os_open
++        real_close = adapter._os_close
++        real_trav = adapter._traverse_parent_dir
++
++        def trav(rfd, dir_parts, file_id):
++            fd = real_trav(rfd, dir_parts, file_id)
++            parent_box["fd"] = fd
++            parent_box["token"] = tracker.last_token_for(fd)
++            return fd
++
++        def open_hook(path, flags, *, dir_fd=None):
++            fd = real_open(path, flags, dir_fd=dir_fd)
++            tracker.on_open(fd, dir_fd)
++            return fd
++
++        def close_hook(fd):
++            tracker.on_close(fd)
++            real_close(fd)  # Linux releases the fd even if close() reports error
++            if parent_box.get("fd") == fd:
++                raise OSError(errno.EIO, "injected parent-handoff close failure")
++
++        adapter._traverse_parent_dir = trav
++        adapter._os_open = open_hook
++        adapter._os_close = close_hook
++        exc = None
++        try:
++            try:
++                op(adapter)
++            except LocalStorageError as e:
++                exc = e
++        finally:
++            adapter._traverse_parent_dir = real_trav
++            adapter._os_open = real_open
++            adapter._os_close = real_close
++        return adapter, tracker, parent_box, exc
++
++    def _assert_handoff_release(self, op) -> None:
++        adapter, tracker, parent_box, exc = self._run_handoff(op)
++        try:
++            self.assertIsNotNone(exc, "operation must surface the close failure")
++            self.assertIsInstance(exc.__cause__, OSError)
++            self.assertEqual(exc.__cause__.errno, errno.EIO)
++
++            parent_fd = parent_box.get("fd")
++            parent_token = parent_box.get("token")
++            child_token = tracker.token_for(
++                lambda t, fd, dfd: dfd == parent_fd and fd != parent_fd
++            )
++            self.assertIsNotNone(
++                child_token, "child descriptor should have been acquired"
++            )
++            self.assertEqual(
++                tracker.release_count(child_token), 1,
++                "child descriptor lifetime must be released exactly once "
++                f"(got {tracker.release_count(child_token)})",
++            )
++            self.assertNotIn(
++                child_token, tracker.open_tokens(),
++                "child descriptor orphaned (still open)",
++            )
++            self.assertEqual(
++                tracker.close_without_open, 0,
++                "a descriptor was closed without a matching acquisition",
++            )
++            self.assertEqual(
++                tracker.open_tokens(), [],
++                "descriptors still open after the operation",
++            )
++            self.assertEqual(
++                tracker.release_count(parent_token), 1,
++                "parent descriptor must be released exactly once",
++            )
++            # Root ownership intact: the adapter is still usable.
++            self.assertIsNotNone(adapter._root_fd)
++            self.assertEqual(
++                adapter.read_bytes(FileRef("src", "p/a/file.txt")), b"A"
++            )
++        finally:
++            adapter.close()
++
++    def test_read_bytes_parent_handoff_close_failure_releases_child(self) -> None:
++        self._assert_handoff_release(
++            lambda a: a.read_bytes(FileRef("src", "p/a/file.txt"))
++        )
++
++    def test_read_bytes_deep_parent_handoff_close_failure_releases_child(self) -> None:
++        self._assert_handoff_release(
++            lambda a: a.read_bytes(FileRef("src", "p/a/b/file.txt"))
++        )
++
++    def test_list_children_parent_handoff_close_failure_releases_child(self) -> None:
++        self._assert_handoff_release(
++            lambda a: a.list_children(FileRef("src", "p/a/b"))
++        )
++
++    def test_list_children_deep_parent_handoff_close_failure_releases_child(self) -> None:
++        self._assert_handoff_release(
++            lambda a: a.list_children(FileRef("src", "p/a/b/c"))
++        )
++
++    def test_earlier_traversal_close_failure_leaves_no_child_open(self) -> None:
++        """A close failure earlier in traversal must not leak anything either."""
++        self._make_tree()
++        adapter = LocalAdapter("src", self.root_dir)
++        tracker = _OwnershipTracker()
++        real_open = adapter._os_open
++        real_close = adapter._os_close
++        seq = {"n": 0}
++
++        def open_hook(path, flags, *, dir_fd=None):
++            fd = real_open(path, flags, dir_fd=dir_fd)
++            tracker.on_open(fd, dir_fd)
++            return fd
++
++        def close_hook(fd):
++            seq["n"] += 1
++            tracker.on_close(fd)
++            real_close(fd)
++            if seq["n"] == 1:
++                raise OSError(errno.EIO, "injected first-close failure")
++
++        adapter._os_open = open_hook
++        adapter._os_close = close_hook
++        exc = None
++        try:
++            try:
++                adapter.read_bytes(FileRef("src", "p/a/b/file.txt"))
++            except LocalStorageError as e:
++                exc = e
++        finally:
++            adapter._os_open = real_open
++            adapter._os_close = real_close
++        try:
++            self.assertIsNotNone(exc)
++            self.assertIsInstance(exc.__cause__, OSError)
++            self.assertEqual(tracker.close_without_open, 0)
++            self.assertEqual(tracker.open_tokens(), [])
++            self.assertEqual(
++                adapter.read_bytes(FileRef("src", "p/a/file.txt")), b"A"
++            )
++        finally:
++            adapter.close()
++
++
+ if __name__ == "__main__":
+     unittest.main()

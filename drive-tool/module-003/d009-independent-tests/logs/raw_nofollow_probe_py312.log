@@ -1,0 +1,39 @@
+python 3.12.13 | kernel via os.open (real, no mocks)
+flag values: O_NOFOLLOW=131072 O_DIRECTORY=65536 O_NONBLOCK=2048
+
+[flags=NOFOLLOW_only] O_NOFOLLOW=True O_DIRECTORY=False
+  symlink_to_dir  : raised ELOOP
+  broken_symlink  : raised ELOOP
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : opened mode=0o10664 (fifo)
+  regular_file    : opened mode=0o100664 (reg)
+
+[flags=NOFOLLOW|DIRECTORY] O_NOFOLLOW=True O_DIRECTORY=True
+  symlink_to_dir  : opened mode=0o40775 (dir)
+  broken_symlink  : raised ENOENT
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : raised ENOTDIR
+  regular_file    : raised ENOTDIR
+
+[flags=DIRECTORY_only] O_NOFOLLOW=False O_DIRECTORY=True
+  symlink_to_dir  : opened mode=0o40775 (dir)
+  broken_symlink  : raised ENOENT
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : raised ENOTDIR
+  regular_file    : raised ENOTDIR
+
+[flags=plain] O_NOFOLLOW=False O_DIRECTORY=False
+  symlink_to_dir  : opened mode=0o40775 (dir)
+  broken_symlink  : raised ENOENT
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : opened mode=0o10664 (fifo)
+  regular_file    : opened mode=0o100664 (reg)
+
+ASSERT-OK: adapter flags (O_NOFOLLOW, no O_DIRECTORY) reject symlink with ELOOP
+ASSERT-OK: adapter flags open a real directory as S_ISDIR
+
+RESULT: PASS

@@ -1,0 +1,7 @@
+python 3.11.2 | real kernel os.open | asserting reproducer
+PASS read_bytes('p/sub/target.txt') traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS stat('p/sub/target.txt') traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS list_children('p/sub') final directory: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub')
+PASS root-ancestor swap: contained (UnsafePathError: symlink rejected at component 'anc' in root '/scratch/tmp/race_probe_anc_2t951j9q/anc/inner')
+
+RESULT: PASS - all entry points contained the directory swap

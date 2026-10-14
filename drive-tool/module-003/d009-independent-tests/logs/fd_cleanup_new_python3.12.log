@@ -1,0 +1,12 @@
+python 3.12.13 | d009 descriptor-lifetime checks (reuse-safe)
+
+-- Part A: repeated success/failure fd accounting --
+PASS partA-no-fd-growth (before=5, after=5, iterations=300)
+
+-- Part B: parent-close error after child descriptor acquired --
+  [read] raised=LocalStorageError parent_fd=5 child_fd=4 events=[('open', 4), ('open', 5), ('close', 4), ('open', 4), ('close', 5)] live_after=[4] child_fstat_ok=True
+FAIL partB-read-child-released-exactly-once (child_fd=4 still_open=True in_live=True)
+  [list] raised=LocalStorageError parent_fd=4 child_fd=5 events=[('open', 4), ('open', 5), ('close', 4)] live_after=[5] child_fstat_ok=True
+FAIL partB-list-child-released-exactly-once (child_fd=5 still_open=True in_live=True)
+
+RESULT: FAIL - ['partB-read-child-released-exactly-once', 'partB-list-child-released-exactly-once']

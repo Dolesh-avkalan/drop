@@ -1,0 +1,361 @@
+d009 consolidated battery  2026-10-14T17:32:32Z
+
+########## A. environment ##########
+== date (UTC) ==
+2026-10-14T17:27:06Z
+== uname ==
+Linux claw-sandbox-dc770e4329da631fd3218d18e9 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 GNU/Linux
+== os-release ==
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+== interpreters ==
+Python 3.11.2
+Python 3.12.13
+Python 3.12.13
+== which ==
+/usr/bin/python3.11
+/usr/local/bin/python3.12
+== mounts ==
+none / overlay rw 0 0
+none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs 0 0
+none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs 0 0
+none /dev/shm tmpfs rw 0 0
+== TMPDIR ==
+/scratch/tmp
+== flags ==
+O_NOFOLLOW 131072 O_DIRECTORY 65536 O_NONBLOCK 2048 O_CLOEXEC 524288
+== realpath scratch/tmp ==
+/scratch/tmp
+== df ==
+Filesystem      Size  Used Avail Use% Mounted on
+none            300G   14G  287G   5% /scratch
+none             64M  4.0K   64M   1% /tmp
+== stat -f /scratch/tmp ==
+v9fs
+== boot id ==
+ee343f8a-3eac-4a72-a733-f75830581cfc
+
+########## B. committed suites (in-checkout) ##########
+==================== suite new py3.11 ====================
+$ bash -o pipefail -c cd /scratch/work/new-c2b324d && python3.11 -m unittest discover -s tests -v 2>&1 | tail -n 4
+----------------------------------------------------------------------
+Ran 82 tests in 0.641s
+
+OK
+EXIT=0  (suite new py3.11)
+
+==================== suite new py3.12 ====================
+$ bash -o pipefail -c cd /scratch/work/new-c2b324d && python3.12 -m unittest discover -s tests -v 2>&1 | tail -n 4
+----------------------------------------------------------------------
+Ran 82 tests in 0.652s
+
+OK
+EXIT=0  (suite new py3.12)
+
+==================== suite old py3.11 ====================
+$ bash -o pipefail -c cd /scratch/work/old-110b27e && python3.11 -m unittest discover -s tests -v 2>&1 | tail -n 4
+----------------------------------------------------------------------
+Ran 67 tests in 0.331s
+
+OK
+EXIT=0  (suite old py3.11)
+
+==================== suite old py3.12 ====================
+$ bash -o pipefail -c cd /scratch/work/old-110b27e && python3.12 -m unittest discover -s tests -v 2>&1 | tail -n 4
+----------------------------------------------------------------------
+Ran 67 tests in 0.459s
+
+OK
+EXIT=0  (suite old py3.12)
+
+########## C. independent checks (d009) ##########
+==================== raw_nofollow_probe python3.11 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.11 raw_nofollow_probe.py
+python 3.11.2 | kernel via os.open (real, no mocks)
+flag values: O_NOFOLLOW=131072 O_DIRECTORY=65536 O_NONBLOCK=2048
+
+[flags=NOFOLLOW_only] O_NOFOLLOW=True O_DIRECTORY=False
+  symlink_to_dir  : raised ELOOP
+  broken_symlink  : raised ELOOP
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : opened mode=0o10664 (fifo)
+  regular_file    : opened mode=0o100664 (reg)
+
+[flags=NOFOLLOW|DIRECTORY] O_NOFOLLOW=True O_DIRECTORY=True
+  symlink_to_dir  : opened mode=0o40775 (dir)
+  broken_symlink  : raised ENOENT
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : raised ENOTDIR
+  regular_file    : raised ENOTDIR
+
+[flags=DIRECTORY_only] O_NOFOLLOW=False O_DIRECTORY=True
+  symlink_to_dir  : opened mode=0o40775 (dir)
+  broken_symlink  : raised ENOENT
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : raised ENOTDIR
+  regular_file    : raised ENOTDIR
+
+[flags=plain] O_NOFOLLOW=False O_DIRECTORY=False
+  symlink_to_dir  : opened mode=0o40775 (dir)
+  broken_symlink  : raised ENOENT
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : opened mode=0o10664 (fifo)
+  regular_file    : opened mode=0o100664 (reg)
+
+ASSERT-OK: adapter flags (O_NOFOLLOW, no O_DIRECTORY) reject symlink with ELOOP
+ASSERT-OK: adapter flags open a real directory as S_ISDIR
+
+RESULT: PASS
+EXIT=0  (raw_nofollow_probe python3.11)
+
+==================== raw_nofollow_probe python3.12 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.12 raw_nofollow_probe.py
+python 3.12.13 | kernel via os.open (real, no mocks)
+flag values: O_NOFOLLOW=131072 O_DIRECTORY=65536 O_NONBLOCK=2048
+
+[flags=NOFOLLOW_only] O_NOFOLLOW=True O_DIRECTORY=False
+  symlink_to_dir  : raised ELOOP
+  broken_symlink  : raised ELOOP
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : opened mode=0o10664 (fifo)
+  regular_file    : opened mode=0o100664 (reg)
+
+[flags=NOFOLLOW|DIRECTORY] O_NOFOLLOW=True O_DIRECTORY=True
+  symlink_to_dir  : opened mode=0o40775 (dir)
+  broken_symlink  : raised ENOENT
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : raised ENOTDIR
+  regular_file    : raised ENOTDIR
+
+[flags=DIRECTORY_only] O_NOFOLLOW=False O_DIRECTORY=True
+  symlink_to_dir  : opened mode=0o40775 (dir)
+  broken_symlink  : raised ENOENT
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : raised ENOTDIR
+  regular_file    : raised ENOTDIR
+
+[flags=plain] O_NOFOLLOW=False O_DIRECTORY=False
+  symlink_to_dir  : opened mode=0o40775 (dir)
+  broken_symlink  : raised ENOENT
+  real_dir        : opened mode=0o40775 (dir)
+  root_slash      : opened mode=0o40755 (dir)
+  fifo            : opened mode=0o10664 (fifo)
+  regular_file    : opened mode=0o100664 (reg)
+
+ASSERT-OK: adapter flags (O_NOFOLLOW, no O_DIRECTORY) reject symlink with ELOOP
+ASSERT-OK: adapter flags open a real directory as S_ISDIR
+
+RESULT: PASS
+EXIT=0  (raw_nofollow_probe python3.12)
+
+==================== containment NEW python3.11 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.11 containment_assert.py
+python 3.11.2 | real kernel os.open | d009 containment probe
+PASS read_bytes(p/sub/target.txt) traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS stat(p/sub/target.txt) traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS list_children(p/sub) final dir open: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub')
+PASS root-ancestor-swap: contained (UnsafePathError: symlink rejected at component 'anc' in root '/scratch/tmp/d009_cont_root_gc8_gdnx/anc/inner')
+
+RESULT: PASS - all entry points contained the directory swap
+EXIT=0  (containment NEW python3.11)
+
+==================== containment OLD python3.11 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/old-110b27e python3.11 containment_assert.py
+python 3.11.2 | real kernel os.open | d009 containment probe
+FAIL read_bytes(p/sub/target.txt) traversal: ESCAPED -> returned b'OUTSIDE_SENTINEL_BYTES_0123456789'
+FAIL stat(p/sub/target.txt) traversal: ESCAPED -> returned FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)
+FAIL list_children(p/sub) final dir open: ESCAPED -> returned [FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/secret.txt'), name='secret.txt', parent_id='p/sub', kind='file', size_bytes=19), FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)]
+FAIL root-ancestor-swap: ESCAPED - anchored OUTSIDE, read sentinel b'OUTSIDE_SENTINEL_BYTES_0123456789'
+
+RESULT: FAIL - 4 containment failure(s): ['read_bytes(p/sub/target.txt) traversal', 'stat(p/sub/target.txt) traversal', 'list_children(p/sub) final dir open', 'root-ancestor-swap']
+EXIT=1  (containment OLD python3.11)
+
+==================== containment NEW python3.12 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.12 containment_assert.py
+python 3.12.13 | real kernel os.open | d009 containment probe
+PASS read_bytes(p/sub/target.txt) traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS stat(p/sub/target.txt) traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS list_children(p/sub) final dir open: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub')
+PASS root-ancestor-swap: contained (UnsafePathError: symlink rejected at component 'anc' in root '/scratch/tmp/d009_cont_root_la4lytx6/anc/inner')
+
+RESULT: PASS - all entry points contained the directory swap
+EXIT=0  (containment NEW python3.12)
+
+==================== containment OLD python3.12 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/old-110b27e python3.12 containment_assert.py
+python 3.12.13 | real kernel os.open | d009 containment probe
+FAIL read_bytes(p/sub/target.txt) traversal: ESCAPED -> returned b'OUTSIDE_SENTINEL_BYTES_0123456789'
+FAIL stat(p/sub/target.txt) traversal: ESCAPED -> returned FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)
+FAIL list_children(p/sub) final dir open: ESCAPED -> returned [FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/secret.txt'), name='secret.txt', parent_id='p/sub', kind='file', size_bytes=19), FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)]
+FAIL root-ancestor-swap: ESCAPED - anchored OUTSIDE, read sentinel b'OUTSIDE_SENTINEL_BYTES_0123456789'
+
+RESULT: FAIL - 4 containment failure(s): ['read_bytes(p/sub/target.txt) traversal', 'stat(p/sub/target.txt) traversal', 'list_children(p/sub) final dir open', 'root-ancestor-swap']
+EXIT=1  (containment OLD python3.12)
+
+==================== bounded_read NEW python3.11 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.11 bounded_read_checks.py
+python 3.11.2 | d009 bounded-read checks | max_read_bytes=1000
+PASS below-limit (len=990)
+PASS exact-limit (len=1000)
+PASS above-limit (ReadLimitExceededError)
+PASS grow-during-read (ReadLimitExceededError)
+PASS under-report-stat (ReadLimitExceededError)
+
+RESULT: PASS - all bounded-read checks behaved as specified
+EXIT=0  (bounded_read NEW python3.11)
+
+==================== root_rename_anchor NEW python3.11 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.11 root_rename_anchor.py
+python 3.11.2 | d009 root-rename anchoring
+PASS symlink-replacement read (got b'ORIGINAL_INSIDE_BYTES')
+PASS symlink-replacement list (got ['a.txt'])
+PASS symlink-replacement stat (size=21)
+PASS dir-replacement read (got b'ORIGINAL_INSIDE_BYTES')
+PASS control: fresh adapter sees outside (got b'OUTSIDE_SENTINEL_BYTES_0123456789')
+
+RESULT: PASS - retained root fd stays anchored to the original directory
+EXIT=0  (root_rename_anchor NEW python3.11)
+
+==================== fifo_timeout NEW python3.11 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.11 fifo_timeout.py
+python 3.11.2 | d009 FIFO no-hang check
+  child: CHILD OK: UnsupportedEntryError: 'p/fifo' is not a regular file (mode 0o10664)
+PASS fifo-read-no-hang (rc=0, within 10s)
+PASS fifo-stat (UnsupportedEntryError)
+PASS fifo-omitted-from-listing (got ['regular.txt'])
+
+RESULT: PASS - FIFO rejected without blocking and omitted from listing
+EXIT=0  (fifo_timeout NEW python3.11)
+
+==================== fd_cleanup NEW python3.11 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.11 fd_cleanup.py
+python 3.11.2 | d009 descriptor-lifetime checks (reuse-safe)
+
+-- Part A: repeated success/failure fd accounting --
+PASS partA-no-fd-growth (before=5, after=5, iterations=300)
+
+-- Part B: parent-close error after child descriptor acquired --
+  [read] raised=LocalStorageError parent_fd=5 child_fd=4 events=[('open', 4), ('open', 5), ('close', 4), ('open', 4), ('close', 5)] live_after=[4] child_fstat_ok=True
+FAIL partB-read-child-released-exactly-once (child_fd=4 still_open=True in_live=True)
+  [list] raised=LocalStorageError parent_fd=4 child_fd=5 events=[('open', 4), ('open', 5), ('close', 4)] live_after=[5] child_fstat_ok=True
+FAIL partB-list-child-released-exactly-once (child_fd=5 still_open=True in_live=True)
+
+RESULT: FAIL - ['partB-read-child-released-exactly-once', 'partB-list-child-released-exactly-once']
+EXIT=1  (fd_cleanup NEW python3.11)
+
+==================== bounded_read NEW python3.12 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.12 bounded_read_checks.py
+python 3.12.13 | d009 bounded-read checks | max_read_bytes=1000
+PASS below-limit (len=990)
+PASS exact-limit (len=1000)
+PASS above-limit (ReadLimitExceededError)
+PASS grow-during-read (ReadLimitExceededError)
+PASS under-report-stat (ReadLimitExceededError)
+
+RESULT: PASS - all bounded-read checks behaved as specified
+EXIT=0  (bounded_read NEW python3.12)
+
+==================== root_rename_anchor NEW python3.12 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.12 root_rename_anchor.py
+python 3.12.13 | d009 root-rename anchoring
+PASS symlink-replacement read (got b'ORIGINAL_INSIDE_BYTES')
+PASS symlink-replacement list (got ['a.txt'])
+PASS symlink-replacement stat (size=21)
+PASS dir-replacement read (got b'ORIGINAL_INSIDE_BYTES')
+PASS control: fresh adapter sees outside (got b'OUTSIDE_SENTINEL_BYTES_0123456789')
+
+RESULT: PASS - retained root fd stays anchored to the original directory
+EXIT=0  (root_rename_anchor NEW python3.12)
+
+==================== fifo_timeout NEW python3.12 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.12 fifo_timeout.py
+python 3.12.13 | d009 FIFO no-hang check
+  child: CHILD OK: UnsupportedEntryError: 'p/fifo' is not a regular file (mode 0o10664)
+PASS fifo-read-no-hang (rc=0, within 10s)
+PASS fifo-stat (UnsupportedEntryError)
+PASS fifo-omitted-from-listing (got ['regular.txt'])
+
+RESULT: PASS - FIFO rejected without blocking and omitted from listing
+EXIT=0  (fifo_timeout NEW python3.12)
+
+==================== fd_cleanup NEW python3.12 ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.12 fd_cleanup.py
+python 3.12.13 | d009 descriptor-lifetime checks (reuse-safe)
+
+-- Part A: repeated success/failure fd accounting --
+PASS partA-no-fd-growth (before=5, after=5, iterations=300)
+
+-- Part B: parent-close error after child descriptor acquired --
+  [read] raised=LocalStorageError parent_fd=5 child_fd=4 events=[('open', 4), ('open', 5), ('close', 4), ('open', 4), ('close', 5)] live_after=[4] child_fstat_ok=True
+FAIL partB-read-child-released-exactly-once (child_fd=4 still_open=True in_live=True)
+  [list] raised=LocalStorageError parent_fd=4 child_fd=5 events=[('open', 4), ('open', 5), ('close', 4)] live_after=[5] child_fstat_ok=True
+FAIL partB-list-child-released-exactly-once (child_fd=5 still_open=True in_live=True)
+
+RESULT: FAIL - ['partB-read-child-released-exactly-once', 'partB-list-child-released-exactly-once']
+EXIT=1  (fd_cleanup NEW python3.12)
+
+########## D. revision diff ##########
+==================== diff_check ====================
+$ python3 diff_check.py /scratch/work/old-110b27e /scratch/work/new-c2b324d
+old tree: /scratch/work/old-110b27e
+new tree: /scratch/work/new-c2b324d
+added   (1): ['docs/evidence/MODULE-003-REVIEW-FIXES.md']
+removed (0): []
+changed (3): ['docs/evidence/MODULE-003.md', 'drive_tool/local.py', 'tests/test_local.py']
+
+-- MODULE-001 / frozen blobs --
+  SAME  3e23315ec72a68d7b9bb30d2c87b617147e0add6  README.md
+  SAME  3dabc64d75ff2fee3786de76179cdbf184332517  docs/evidence/MODULE-001.md
+  SAME  a9701ca7a033bf71c0a115fe4eadad096ed824b7  docs/evidence/MODULE-003-GEMINI.md
+  SAME  9be841b5749acb36c5e362c84b986d98292bae8d  drive_tool/__init__.py
+  SAME  28f7b8c0ce7ac56d602d0af3a709c3f31441904b  drive_tool/storage.py
+  SAME  9168f60a4499383c89a39033529fec6e2773921a  tasks/MODULE-001.md
+  SAME  2126dde7f32b7c0cd4d1e737ff990ab10954caf5  tests/test_storage.py
+
+RESULT: PASS - only the four d007 files differ; MODULE-001 blobs unchanged
+EXIT=0  (diff_check)
+
+########## E. d007 reproducers (secondary cross-check) ##########
+==================== d007 race_probe_assert NEW ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/new-c2b324d python3.11 /scratch/repos/drop/drive-tool/module-003/d007-sarvam-review-fixes/race_probe_assert.py
+python 3.11.2 | real kernel os.open | asserting reproducer
+PASS read_bytes('p/sub/target.txt') traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS stat('p/sub/target.txt') traversal: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub/target.txt')
+PASS list_children('p/sub') final directory: contained (UnsafePathError: symlink encountered at 'sub' for 'p/sub')
+PASS root-ancestor swap: contained (UnsafePathError: symlink rejected at component 'anc' in root '/scratch/tmp/race_probe_anc_64hrekwb/anc/inner')
+
+RESULT: PASS - all entry points contained the directory swap
+EXIT=0  (d007 race_probe_assert NEW)
+
+==================== d007 race_probe_assert OLD ====================
+$ bash -o pipefail -c PYTHONPATH=/scratch/work/old-110b27e python3.11 /scratch/repos/drop/drive-tool/module-003/d007-sarvam-review-fixes/race_probe_assert.py
+python 3.11.2 | real kernel os.open | asserting reproducer
+FAIL read_bytes('p/sub/target.txt') traversal: ESCAPED - operation returned b'OUTSIDE_SENTINEL_BYTES_0123456789'
+FAIL stat('p/sub/target.txt') traversal: ESCAPED - operation returned FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)
+FAIL list_children('p/sub') final directory: ESCAPED - operation returned [FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/secret.txt'), name='secret.txt', parent_id='p/sub', kind='file', size_bytes=19), FileMetadata(ref=FileRef(source_id='src', file_id='p/sub/target.txt'), name='target.txt', parent_id='p/sub', kind='file', size_bytes=33)]
+FAIL root-ancestor swap: unexpected ValueError: root '/scratch/tmp/race_probe_anc_jfwntrp7/anc/inner' must be an existing directory: [Errno 2] No such file or directory: 'inner'
+
+RESULT: FAIL - 4 containment failure(s): ["read_bytes('p/sub/target.txt') traversal", "stat('p/sub/target.txt') traversal", "list_children('p/sub') final directory", 'root-ancestor']
+EXIT=1  (d007 race_probe_assert OLD)
+
+==================== d007 run_new_tests_on_old py3.11 ====================
+$ bash -o pipefail -c cd oldcheck && PYTHONPATH=/scratch/work/d009/oldcheck python3.11 run_new_tests_on_old.py 2>&1 | tail -n 3
+Ran 46 tests in 0.516s
+
+FAILED (failures=6, errors=6)
+EXIT=1  (d007 run_new_tests_on_old py3.11)
+
+==================== d007 run_new_tests_on_old py3.12 ====================
+$ bash -o pipefail -c cd oldcheck && PYTHONPATH=/scratch/work/d009/oldcheck python3.12 run_new_tests_on_old.py 2>&1 | tail -n 3
+Ran 46 tests in 0.449s
+
+FAILED (failures=6, errors=6)
+EXIT=1  (d007 run_new_tests_on_old py3.12)
+
+########## battery complete ##########
