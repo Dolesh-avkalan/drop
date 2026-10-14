@@ -1,0 +1,16 @@
+workspace: /tmp/d014-n4
+--- environment (before) ---
+  time:      2026-10-14T18:37:32Z
+  host:      claw-sandbox-eeae45640eb21e1892b74099e3
+  uname:     Linux claw-sandbox-eeae45640eb21e1892b74099e3 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   65421312 bytes
+  tmp free:  65421312 bytes
+  MemTotal: 2148352 kB
+  MemAvailable: 2086200 kB
+  mount: none / overlay rw
+  mount: none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+  mount: none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+FAIL-CLOSED (archive): FileNotFoundError: [Errno 2] No such file or directory: '/no/such/file.tgz'

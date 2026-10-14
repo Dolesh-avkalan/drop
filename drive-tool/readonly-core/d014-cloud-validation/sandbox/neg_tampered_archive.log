@@ -1,0 +1,19 @@
+workspace: /tmp/d014-n1
+--- environment (before) ---
+  time:      2026-10-14T18:37:31Z
+  host:      claw-sandbox-eeae45640eb21e1892b74099e3
+  uname:     Linux claw-sandbox-eeae45640eb21e1892b74099e3 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   65785856 bytes
+  tmp free:  65785856 bytes
+  MemTotal: 2148352 kB
+  MemAvailable: 2086200 kB
+  mount: none / overlay rw
+  mount: none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+  mount: none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+copied archive /scratch/work/d014/tamper/x/tampered.tgz (58759 bytes)
+extracted 23 members; src root = drive-tool-99e102522da4f0eeee465fe231ad62f0cc4ecad8
+FAIL-CLOSED (identity):
+  MISMATCH drive_tool/storage.py: got eead55f5348c850a68fbb7500aca7d1c33b2b37d want 28f7b8c0ce7ac56d602d0af3a709c3f31441904b

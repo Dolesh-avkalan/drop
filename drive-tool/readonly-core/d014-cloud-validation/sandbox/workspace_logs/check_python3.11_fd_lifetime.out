@@ -1,0 +1,10 @@
+$ /usr/bin/python3.11 /scratch/work/d014/runner/kernel_checks.py fd_lifetime /tmp/d014-99e10252-0n0_x_nd/extract/drive-tool-99e102522da4f0eeee465fe231ad62f0cc4ecad8
+
+=== kernel check: fd_lifetime ===
+  repeated ops fd count: before=5 after=4
+  handoff results (op, raised, fd-delta) = [('read', 'LocalStorageError', 0), ('list', 'LocalStorageError', 0)]
+CHECK fd_lifetime RESULT: PASS
+
+--- stderr ---
+
+EXIT=0 timed_out=False seconds=0.29

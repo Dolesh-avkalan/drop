@@ -1,0 +1,12 @@
+$ /usr/local/bin/python3.12 /scratch/work/d014/runner/kernel_checks.py nofollow /tmp/d014-99e10252-0n0_x_nd/extract/drive-tool-99e102522da4f0eeee465fe231ad62f0cc4ecad8
+
+=== kernel check: nofollow ===
+  component flags = 0o2404000 (O_NOFOLLOW=True, O_DIRECTORY=False)
+  open(symlink, component flags) -> ELOOP
+  open(symlink, flags|O_DIRECTORY) -> FOLLOWED (informational)
+  open(real dir) fstat S_ISDIR = True
+CHECK nofollow RESULT: PASS
+
+--- stderr ---
+
+EXIT=0 timed_out=False seconds=0.21

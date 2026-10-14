@@ -1,0 +1,82 @@
+workspace: /tmp/d014-99e10252-0n0_x_nd
+--- environment (before) ---
+  time:      2026-10-14T18:36:56Z
+  host:      claw-sandbox-eeae45640eb21e1892b74099e3
+  uname:     Linux claw-sandbox-eeae45640eb21e1892b74099e3 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   66240512 bytes
+  tmp free:  66240512 bytes
+  MemTotal: 2148352 kB
+  MemAvailable: 2086200 kB
+  mount: none / overlay rw
+  mount: none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+  mount: none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+downloaded archive (58344 bytes)
+extracted 23 members; src root = drive-tool-99e102522da4f0eeee465fe231ad62f0cc4ecad8
+identity OK: all 17 files match pinned blobs
+interpreters found: ['python3.12=3.12.13', 'python3.11=3.11.2']
+=== suite on python3.12 (3.12.13) ===
+  ran=140 skipped=0 ok=True failed=False exit=0 timeout=False
+  --- kernel check nofollow on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check bounded_read on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check root_anchor on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check dir_symlink_swap on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fifo on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fd_lifetime on python3.12 ---
+    PASS (exit=0 timeout=False)
+=== suite on python3.11 (3.11.2) ===
+  ran=140 skipped=0 ok=True failed=False exit=0 timeout=False
+  --- kernel check nofollow on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check bounded_read on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check root_anchor on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check dir_symlink_swap on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fifo on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fd_lifetime on python3.11 ---
+    PASS (exit=0 timeout=False)
+--- environment (after) ---
+  time:      2026-10-14T18:37:02Z
+  host:      claw-sandbox-eeae45640eb21e1892b74099e3
+  uname:     Linux claw-sandbox-eeae45640eb21e1892b74099e3 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   65802240 bytes
+  tmp free:  65802240 bytes
+  MemTotal: 2148352 kB
+  MemAvailable: 2084428 kB
+  mount: none / overlay rw
+  mount: none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+  mount: none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+
+=== summary ===
+  suite python3.12: ran=140 skipped=0 ok=True
+  suite python3.11: ran=140 skipped=0 ok=True
+  check python3.12:nofollow: PASS
+  check python3.12:bounded_read: PASS
+  check python3.12:root_anchor: PASS
+  check python3.12:dir_symlink_swap: PASS
+  check python3.12:fifo: PASS
+  check python3.12:fd_lifetime: PASS
+  check python3.11:nofollow: PASS
+  check python3.11:bounded_read: PASS
+  check python3.11:root_anchor: PASS
+  check python3.11:dir_symlink_swap: PASS
+  check python3.11:fifo: PASS
+  check python3.11:fd_lifetime: PASS
+  manifest entries: 36
+RESULT: PASS
+
+Safe, precise cleanup (run only when evidence is no longer needed):
+  rm -rf /tmp/d014-99e10252-0n0_x_nd
