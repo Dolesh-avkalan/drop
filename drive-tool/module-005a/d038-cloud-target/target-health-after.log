@@ -1,0 +1,10 @@
+Thu Oct 15 15:54:17 UTC 2026
+ext4 /
+1.2M	/var/tmp/d038-e88c9c79-x_u8hul3
+80K	/var/tmp/d038-runner-lyeNmb
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       8.6G  8.0G  559M  94% /
+active
+active
+active
+{"ok": true}

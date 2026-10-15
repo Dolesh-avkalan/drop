@@ -1,0 +1,9 @@
+$ /usr/bin/python3.14 /var/tmp/d038-runner-lyeNmb/kernel_checks.py write_collision /var/tmp/d038-e88c9c79-x_u8hul3/extract/drive-tool-e88c9c79fdc27057622d44ba51e008f2e4ea4f4f
+
+=== kernel check: write_collision ===
+  [REAL] bytes after collision = b'ORIGINAL'; dir = ['keep.bin']
+CHECK write_collision RESULT: PASS
+
+--- stderr ---
+
+EXIT=0 timed_out=False seconds=0.09
