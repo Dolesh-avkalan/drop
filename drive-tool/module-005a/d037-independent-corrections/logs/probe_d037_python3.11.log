@@ -1,0 +1,66 @@
+[PASS] P1.strict_B_inspected :: 4
+[PASS] P1.no_B_plus_1_next :: next=4
+[PASS] P1.at_most_B_stat :: stat=4
+[PASS] P1.complete_false_at_cap :: False
+[PASS] P1.items_le_inspected :: 
+[PASS] P2.exact_budget_incomplete :: 5,False
+[PASS] P2.room_to_spare_complete :: 5,True
+[PASS] P3.prefix_match_retained :: 
+[PASS] P3.prefix_truncated_max_entries :: max_entries
+[PASS] P3.inspected_is_B :: 5
+[PASS] P4.omitted_entries_charged :: 4 vs 4
+[PASS] P4.only_supported_items :: 
+[PASS] P5.enoent_entry_charged :: 3
+[PASS] P5.enoent_item_omitted :: 
+[PASS] P6.stat_failure_charged :: 2
+[PASS] P6.stat_failure_error_type :: LocalStorageError
+[PASS] P6.stat_failure_cause :: OSError
+[PASS] P7.iter_failure_charged :: 2
+[PASS] P8.partial_close_charged :: 3
+[PASS] P8.complete_close_charged :: 3
+[PASS] P9.no_fd_growth :: 5->5
+[PASS] P10.root_identity :: True
+[PASS] P11.sibling_not_scanned :: ['root', 'p/s1']
+[PASS] P11.truncated_after_exhaust :: max_entries
+[PASS] P12.max_results_precedence :: max_results
+[PASS] P12.depth_truncation_explicit :: max_depth
+[PASS] P13.items_not_tuple :: rejected
+[PASS] P13.inspected_bool :: rejected
+[PASS] P13.inspected_str :: rejected
+[PASS] P13.inspected_gt_remaining :: rejected
+[PASS] P13.inspected_negative :: rejected
+[PASS] P13.complete_not_bool :: rejected
+[PASS] P13.items_gt_inspected :: rejected
+[PASS] P13.incomplete_no_exhaust :: rejected
+[PASS] P13.missing_attrs :: rejected
+[PASS] P14.no_scanner_denied :: ScanUnsupportedError
+[PASS] P14.non_callable_denied :: ScanUnsupportedError
+[PASS] P14.arg_validation_first :: ValueError first
+[PASS] FB.prescan_skipped_not_complete :: truncated=True reason=skipped skipped=('p/bad',)
+[PASS] FB.skipped_not_not_found :: items=()
+[PASS] FB.midscan_skipped_not_complete :: reason=skipped inspected=3
+[PASS] FB.max_results_precedence_over_skipped :: reason=max_results
+[PASS] FB.max_depth_precedence_over_skipped :: reason=max_depth
+[PASS] FB.max_entries_precedence_over_skipped :: reason=max_entries
+[PASS] FB.empty_skipped_complete :: False,None
+[PASS] FA.root_malformed_raises :: StorageError
+[PASS] FA.depth_malformed_raises :: StorageError at depth>0
+[PASS] FA.root_identity :: True
+[PASS] FA.root_cause :: OSError
+[PASS] FC.metadata_charged :: inspected=1 err_is=True cause_is=True
+[PASS] FC.stat_charged :: inspected=2 err_is=True
+[PASS] FC.next_charged :: inspected=2
+[PASS] FC.pre_yield_unchanged :: identity=True
+[PASS] FC.no_double_wrap :: identity=True
+[PASS] FC.below_root_charged_skipped :: inspected=2 skipped=('p/sub',) reason=skipped
+[PASS] FC.primary_wins_cleanup :: err_is_primary=True inspected=2
+[PASS] FC.no_close_retry :: close_calls=1
+[PASS] FC.no_fd_growth_same_lifetime :: 5->5
+
+==== TALLY ====
+PASS: 58
+FAIL: 0
+FINDING: 0
+ERROR: 0
+
+==== FAILURES ====
