@@ -1,0 +1,31 @@
+D058 independent backend audit — SHA256 manifest of published artifacts
+(drop @ main, drive-tool/module-006/d058-independent-backend-summary/)
+
+Candidate source (verbatim D054 bytes; also on drive-tool feature/module-006a-file-service-independent @ 14729120c0f32ee5d64c1daf93b27fa1b3270d6b, tree 3482dc4325afb5adf4b7ecfcbfe1e76a1ad0356c)
+befe20bba64252d5595ac68e4af8459f4d8686dd31d14f5bfbf5159fa8b56f8c  candidate/drive_tool/file_service.py
+855df6ef02139f003cf7cfd26ccd1c43bce52b14e332c774f23a6de2917ad8dc  candidate/tests/test_file_service.py
+
+Harness scripts (parent audit)
+0951646643114246e501be1c73be7ff2e0b27b59388b4058a3d8370fa9777e3d  scripts/indep_mutations.py
+83d9c0d8200c8b118b889beab4faf7a1a41dbfafdf7bc217c3eb8c6c6777dca0  scripts/indep_probes.py
+
+Harness scripts (independent reproduction)
+6f9bab825fb06d5d16aec722784b13f279975a9b31e0a1536313969207f24d64  scripts/reproduce_mutations.py
+d207be5bee4844fdd9e5f73bb8f73543951489b6bbf362ee1801cb2b1d5dae4b  scripts/reproduce_probes.py
+
+Raw logs (independent reproduction on the published candidate)
+a1f00c6e9ce57a8700216ef3cf0a57b0551bffd5ad540126853d374a01039482  logs/suite_full_3.11.txt
+275423b5e08343e3a5f19a3356d181c94451c3644c34747fac214286ee3daff1  logs/suite_full_3.12.txt
+1a8b80e2d466577e4734d066448017b9ef4bbc919d17a2608aea0edc9d28ad4a  logs/suite_focused_3.11.txt
+eb3748fe43f3639032e4775ace57671b7004da9bad2cc7e6dbfcfb78bb56355d  logs/suite_focused_3.12.txt
+7d91ccd51a43b8f0cc6916674fec1b862de62a42a2853a449b7568f6fff9dd92  logs/mutations.txt
+94c14bb3c6035580d5de5b2e5ca4d71efe4efbc384fbf8da150554bb16b7a953  logs/probes_3.11.txt
+d743f715da45a43a03c0cddfbe34acf1944e98a0d89f03d9c064f2d47ae661a8  logs/probes_3.12.txt
+
+Pinned inputs
+7632d4868bba9025167f21aa0f3c1e579141a59638bf7f0e38b17126ff79f267  tasks/d050-file-service-implementation.md @ 8eac68b98481b86e7ae164a5835063584c15fdcb
+ea0c018390ffe127299161b9006f2aef6b2a353659e18262f5b811d82c7b88b8  drive-tool/module-006/d050-gemini-file-service.md @ 2b980155e82e985a08d3a9eb7d517bf6a69603db
+
+drive-tool base tree  f71038e9da22044fcfe6ba6f35ce72239a878945  (e55c9f741a528ce9298b5041012373195e878eaf)
+candidate tree      3482dc4325afb5adf4b7ecfcbfe1e76a1ad0356c
+candidate commit    14729120c0f32ee5d64c1daf93b27fa1b3270d6b
