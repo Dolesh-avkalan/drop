@@ -1,0 +1,15 @@
+tmp: /scratch/tmp/d054_probe_6t66tc86
+uid: 1000
+[perm] find items: ['p/open.txt']
+[perm] find skipped: ['p/locked'] truncated: True reason: skipped
+[alias] alpha reads p/a.txt: b'AAA'
+[alias] alpha reads p/b.txt -> not_found
+[drain] timed-out close -> False binding.closed: False
+[drain] post-drain list -> unavailable retry_safe: True
+[drain] in-flight read data: b'payload'
+[drain] draining close -> True binding.closed: True
+[fd] before=4 after-open=5 after-drain=4 (open adds adapters, drain restores)
+[save] code: unavailable uncertain: True retry_safe: False
+[save] bytes actually on disk: b'published-bytes'
+[save] rendered error: unavailable: service or storage is unavailable | repr: ServiceError(code='unavailable', outcome_uncertain=True, retry_safe=False) | cause: None
+PROBE DONE

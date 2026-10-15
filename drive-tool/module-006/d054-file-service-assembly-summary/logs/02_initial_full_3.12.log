@@ -1,0 +1,246 @@
+.....................EEEEEEEEEEEEEEEE........................................................................................................................................................................................................................................................................................................................................................................................................
+======================================================================
+ERROR: test_auth_before_any_per_request_adapter_call (test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 223, in test_auth_before_any_per_request_adapter_call
+    service = LocalFileService((_make_agent("agent1", token, (ro_grant,)),))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 592, in test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive
+    (_make_agent("agent", token, (_make_grant("work", root),)),)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_concurrent_closes_close_once_and_reject_new_leases (test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 647, in test_concurrent_closes_close_once_and_reject_new_leases
+    (_make_agent("agent", token, (_make_grant("work", root),)),)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_fd_stability_and_resource_accounting_after_close (test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 708, in test_fd_stability_and_resource_accounting_after_close
+    service = LocalFileService((_make_agent("agent", token, grants),))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_invalid_options_and_caps_perform_no_io (test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 254, in test_invalid_options_and_caps_perform_no_io
+    service = LocalFileService((_make_agent("agent", token, (grant,)),))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_list_and_find_metadata_and_partial_skip_contract (test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 340, in test_list_and_find_metadata_and_partial_skip_contract
+    (_make_agent("agent", token, (_make_grant("files", root),)),)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_read_large_sparse_range_and_exact_eof (test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 391, in test_read_large_sparse_range_and_exact_eof
+    (_make_agent("agent", token, (_make_grant("store", root),)),)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_readonly_denial_and_no_leaked_metadata (test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 163, in test_readonly_denial_and_no_leaked_metadata
+    service = LocalFileService((_make_agent("reader", token, (ro_grant,)),))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_save_creates_missing_parents_in_one_call (test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 459, in test_save_creates_missing_parents_in_one_call
+    (_make_agent("agent", token, (_make_grant("work", root),)),)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_save_no_overwrite_collision_and_explicit_overwrite (test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 425, in test_save_no_overwrite_collision_and_explicit_overwrite
+    (_make_agent("agent", token, (_make_grant("work", root),)),)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_save_post_publish_fsync_failure_flags_uncertainty (test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 526, in test_save_post_publish_fsync_failure_flags_uncertainty
+    (_make_agent("agent", token, (_make_grant("work", root),)),)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_save_symlink_parent_refused_and_outside_untouched (test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 502, in test_save_symlink_parent_refused_and_outside_untouched
+    (_make_agent("agent", token, (_make_grant("work", root),)),)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_six_identities_and_config_limits (test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 87, in test_six_identities_and_config_limits
+    policies.append(_make_agent(f"agent-{idx}", f"secret-token-{idx}-value", (grant,)))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_startup_rollback_closes_earlier_adapters_once (test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 205, in test_startup_rollback_closes_earlier_adapters_once
+    policy = _make_agent("agent-rollback", "rollback-token-123", grants)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_static_error_redaction_and_no_cause_leak (test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 559, in test_static_error_redaction_and_no_cause_leak
+    (_make_agent("agent", token, (_make_grant("work", root),)),)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+======================================================================
+ERROR: test_two_agents_same_alias_different_roots (test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 132, in test_two_agents_same_alias_different_roots
+    _make_agent("alpha", token_a, (_make_grant("shared", root_a),)),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/dt-initial/tests/test_file_service.py", line 53, in _make_agent
+    return AgentPolicy(
+           ^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "/scratch/work/dt-initial/drive_tool/service_policy.py", line 117, in __post_init__
+    raise TypeError('token_sha256 must be bytes')
+TypeError: token_sha256 must be bytes
+
+----------------------------------------------------------------------
+Ran 429 tests in 4.011s
+
+FAILED (errors=16)
+initial 3.12 exit=1

@@ -1,0 +1,30 @@
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... FAIL
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutations/M3_invalid_option_reaches_io/tests/test_file_service.py", line 326, in test_invalid_options_and_caps_perform_no_io
+    with self.assertRaises(ServiceError) as ctx:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ServiceError not raised
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.184s
+
+FAILED (failures=1)

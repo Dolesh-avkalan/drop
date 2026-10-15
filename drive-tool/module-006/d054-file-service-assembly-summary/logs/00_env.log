@@ -1,0 +1,15 @@
+=== env ===
+Linux claw-sandbox-dfb3c115c73b1c165f101f8672 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 GNU/Linux
+
+Python 3.11.2
+Python 3.12.13
+
+9effd25 fix(test_file_service): conform harness to accepted service_policy/local contracts
+894558a fix(file_service): rebuild canonical p/ FileRef ids from parsed parts
+fed9d8b D050: add drive_tool/file_service.py and tests/test_file_service.py verbatim from d050-gemini-file-service.md (drop 2b980155e82e985a08d3a9eb7d517bf6a69603db)
+e2f0efa base: accepted policy main e55c9f741a528ce9298b5041012373195e878eaf (drive-tool)
+
+9effd25e08a8de9c2d319c2acae15a0cd2c9689b
+3482dc4325afb5adf4b7ecfcbfe1e76a1ad0356c
+
+uid=1000(sandbox) gid=1000(sandbox) groups=1000(sandbox)

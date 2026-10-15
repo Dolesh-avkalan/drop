@@ -1,0 +1,85 @@
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ERROR
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ERROR
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ERROR
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ERROR
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... FAIL
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ERROR
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ERROR
+
+======================================================================
+ERROR: test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutations/M2_alias_key_collision/tests/test_file_service.py", line 631, in test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutations/M2_alias_key_collision/tests/test_file_service.py", line 686, in test_concurrent_closes_close_once_and_reject_new_leases
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutations/M2_alias_key_collision/tests/test_file_service.py", line 279, in test_invalid_options_and_caps_perform_no_io
+    binding = service._bindings[("agent", "src")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'src')
+
+======================================================================
+ERROR: test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutations/M2_alias_key_collision/tests/test_file_service.py", line 565, in test_save_post_publish_fsync_failure_flags_uncertainty
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutations/M2_alias_key_collision/tests/test_file_service.py", line 598, in test_static_error_redaction_and_no_cause_leak
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutations/M2_alias_key_collision/tests/test_file_service.py", line 146, in test_two_agents_same_alias_different_roots
+    res_a = service.read(token_a, "shared", "p/only_a.txt")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/mutations/M2_alias_key_collision/drive_tool/file_service.py", line 555, in read
+    raise _translate_storage_exception(exc, is_write_in_flight=False) from None
+drive_tool.file_service.ServiceError: not_found: requested resource not found
+
+======================================================================
+FAIL: test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutations/M2_alias_key_collision/tests/test_file_service.py", line 102, in test_six_identities_and_config_limits
+    self.assertEqual(res.data, f"agent-{idx}".encode("utf-8"))
+AssertionError: b'agent-5' != b'agent-0'
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.173s
+
+FAILED (failures=1, errors=6)
