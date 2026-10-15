@@ -1,0 +1,58 @@
+[PASS] P1.a each reads its own file  -- a=b'alpha-content' b=b'bravo-content'
+[PASS] P1.b each cannot read the other's file (not_found)  -- a->b=('code', 'not_found') b->a=('code', 'not_found')
+[PASS] P1.c write by A lands in A's root only  -- a_exists=True b_exists=False
+[PASS] P2.read 'p/../x' -> denied  -- got ('code', 'denied')
+[PASS] P2.read '/etc/passwd' -> denied  -- got ('code', 'denied')
+[PASS] P2.read 'p/a/../../x' -> denied  -- got ('code', 'denied')
+[PASS] P2.read 'p/./a' -> denied  -- got ('code', 'denied')
+[PASS] P2.read 'a.txt' -> denied  -- got ('code', 'denied')
+[PASS] P2.read 'p/' -> denied  -- got ('code', 'denied')
+[PASS] P2.read 'p//a' -> denied  -- got ('code', 'denied')
+[PASS] P2.read 'p/a/' -> denied  -- got ('code', 'denied')
+[PASS] P2.read 'p\\a' -> denied  -- got ('code', 'denied')
+[PASS] P2.read 'p/a\x00' -> denied  -- got ('code', 'denied')
+[PASS] P2.save 'p/../x' -> denied  -- got ('code', 'denied')
+[PASS] P2.save '/etc/passwd' -> denied  -- got ('code', 'denied')
+[PASS] P2.save 'p/a/../../x' -> denied  -- got ('code', 'denied')
+[PASS] P2.save 'p/./a' -> denied  -- got ('code', 'denied')
+[PASS] P2.save 'a.txt' -> denied  -- got ('code', 'denied')
+[PASS] P2.save 'p/' -> denied  -- got ('code', 'denied')
+[PASS] P2.save 'p//a' -> denied  -- got ('code', 'denied')
+[PASS] P2.save 'p/a/' -> denied  -- got ('code', 'denied')
+[PASS] P2.save 'p\\a' -> denied  -- got ('code', 'denied')
+[PASS] P2.save 'p/a\x00' -> denied  -- got ('code', 'denied')
+[PASS] P2.read 'root' -> invalid  -- got ('code', 'invalid')
+[PASS] P2.save 'root' -> invalid  -- got ('code', 'invalid')
+[PASS] P3.read of a directory -> invalid  -- got ('code', 'invalid')
+[PASS] P3.list of a file -> invalid  -- got ('code', 'invalid')
+[PASS] P4.read of a symlink -> denied  -- got ('code', 'denied')
+[PASS] P4.save through symlinked parent -> denied  -- got ('code', 'denied')
+[PASS] P4.outside dir untouched  -- entries=[]
+[PASS] P5.read at cap ok  -- len=100
+[PASS] P5.read cap+1 -> too_large  -- got ('code', 'too_large')
+[PASS] P5.save cap+1 -> too_large  -- got ('code', 'too_large')
+[PASS] P5.save at cap ok  -- got ('ok', {'ref': {'source_id': 'src', 'file_id': 'p/at.bin'}, 'bytes_written': 100, 'parents_may_have_been_created': True})
+[PASS] P6.exact-fill window eof_observed False  -- data=b'0123456789' eof=False
+[PASS] P6.read at end data b'' eof True  -- data=b'' eof=True
+[PASS] P6.read past end data b'' eof True  -- data=b'' eof=True
+[PASS] P6.partial tail data 4 bytes eof True  -- data=b'6789' eof=True
+[PASS] P7.8 concurrent saves -> exactly 1 ok  -- ok=1 exists=7 outcomes=['ok', 'exists', 'exists', 'exists', 'exists', 'exists', 'exists', 'exists']
+[PASS] P7.8 concurrent saves -> 7 exists  -- ok=1 exists=7 outcomes=['ok', 'exists', 'exists', 'exists', 'exists', 'exists', 'exists', 'exists']
+[PASS] P8.fd count stable before/after 100 read+list ops  -- before=5 after=5
+[PASS] P9.blocked read entered
+[PASS] P9.close(timeout=0.03) -> False  -- got False
+[PASS] P9.binding still open  -- closed=False
+[PASS] P9.new lease -> unavailable retry_safe True  -- got ('code', 'unavailable', True)
+[PASS] P9.read succeeds after unblock  -- outcomes=[b'live-descriptor-data']
+[PASS] P9.later close -> True  -- got True
+[PASS] P10.blocked read entered
+[PASS] P10.6 concurrent close() -> all True  -- results=[True, True, True, True, True, True]
+[PASS] P10.adapter close called exactly once  -- close_calls=1
+[PASS] P11.OSError from read_range -> unavailable  -- got unavailable
+[PASS] P11.no root in rendered error  -- rendered="unavailable: service or storage is unavailable ServiceError(code='unavailable', outcome_uncertain=False, retry_safe=True) service or storage is unavailable"
+[PASS] P11.no token in rendered error  -- rendered="unavailable: service or storage is unavailable ServiceError(code='unavailable', outcome_uncertain=False, retry_safe=True) service or storage is unavailable"
+[PASS] P11.__cause__ None  -- cause=None
+[INFO] find(name_contains='   ')  -- result=('code', 'invalid')
+[INFO] list(offset=10000)  -- result=('code', 'invalid')
+
+SUMMARY: 54/54 checks PASS, 0 FAIL

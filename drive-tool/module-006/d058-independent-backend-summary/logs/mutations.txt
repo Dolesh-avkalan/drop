@@ -1,0 +1,765 @@
+D058 independent backend audit - semantic mutation results
+candidate tree: /scratch/work/cand
+pythons: python3.11, python3.12  timeout: 120s
+focused command: PYTHONPATH=. <python> -m unittest -v tests.test_file_service
+
+A timeout counts as CAUGHT.
+
+=== TABLE (mutation | python | verdict | failing tests) ===
+M1_skip_grant_lookup | python3.11 | CAUGHT | test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call); test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata)
+M1_skip_grant_lookup | python3.12 | CAUGHT | test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call); test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata)
+M2_alias_only_binding_key | python3.11 | CAUGHT | test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ; test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ; test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ; test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ; test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits); test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ; test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) 
+M2_alias_only_binding_key | python3.12 | CAUGHT | test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ; test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ; test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ; test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ; test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits); test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ; test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) 
+M3_bool_accepted_as_int | python3.11 | CAUGHT | test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+M3_bool_accepted_as_int | python3.12 | CAUGHT | test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+M4_drop_save_uncertainty | python3.11 | CAUGHT | test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call); test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite); test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty); test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched)
+M4_drop_save_uncertainty | python3.12 | CAUGHT | test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call); test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite); test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty); test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched)
+M5_close_ignores_active_leases | python3.11 | CAUGHT | test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+M5_close_ignores_active_leases | python3.12 | CAUGHT | test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+M6_always_create_parents | python3.11 | CAUGHT | test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+M6_always_create_parents | python3.12 | CAUGHT | test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+M7_double_close | python3.11 | CAUGHT | test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+M7_double_close | python3.12 | CAUGHT | test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+
+=== RAW PER-MUTATION OUTPUT ===
+
+----- M1_skip_grant_lookup / python3.11 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call)
+  test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... FAIL
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... FAIL
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M1_skip_grant_lookup_ko87d8w_/tree/tests/test_file_service.py", line 261, in test_auth_before_any_per_request_adapter_call
+    service.read(token, "vault", "root", offset=-1, length=0)
+  File "/scratch/tmp/d058_M1_skip_grant_lookup_ko87d8w_/tree/drive_tool/file_service.py", line 529, in read
+    parts = _parse_canonical_parts(file_id, allow_root=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tmp/d058_M1_skip_grant_lookup_ko87d8w_/tree/drive_tool/file_service.py", line 153, in _parse_canonical_parts
+    parts = _parse_file_id(file_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1118, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1122, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/mock.py", line 1177, in _execute_mock_call
+    raise effect
+AssertionError: _parse_file_id must not run before auth
+
+======================================================================
+FAIL: test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M1_skip_grant_lookup_ko87d8w_/tree/tests/test_file_service.py", line 174, in test_readonly_denial_and_no_leaked_metadata
+    with self.assertRaises(ServiceError) as existing_exc:
+AssertionError: ServiceError not raised
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.211s
+
+FAILED (failures=2)
+--- end raw ---
+
+----- M1_skip_grant_lookup / python3.12 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call)
+  test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... FAIL
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... FAIL
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M1_skip_grant_lookup_g_qd81be/tree/tests/test_file_service.py", line 261, in test_auth_before_any_per_request_adapter_call
+    service.read(token, "vault", "root", offset=-1, length=0)
+  File "/scratch/tmp/d058_M1_skip_grant_lookup_g_qd81be/tree/drive_tool/file_service.py", line 529, in read
+    parts = _parse_canonical_parts(file_id, allow_root=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tmp/d058_M1_skip_grant_lookup_g_qd81be/tree/drive_tool/file_service.py", line 153, in _parse_canonical_parts
+    parts = _parse_file_id(file_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+AssertionError: _parse_file_id must not run before auth
+
+======================================================================
+FAIL: test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M1_skip_grant_lookup_g_qd81be/tree/tests/test_file_service.py", line 174, in test_readonly_denial_and_no_leaked_metadata
+    with self.assertRaises(ServiceError) as existing_exc:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ServiceError not raised
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.300s
+
+FAILED (failures=2)
+--- end raw ---
+
+----- M2_alias_only_binding_key / python3.11 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) 
+  test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) 
+  test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) 
+  test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) 
+  test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits)
+  test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) 
+  test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) 
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ERROR
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ERROR
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ERROR
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ERROR
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... FAIL
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ERROR
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ERROR
+
+======================================================================
+ERROR: test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_qx32iquf/tree/tests/test_file_service.py", line 631, in test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_qx32iquf/tree/tests/test_file_service.py", line 686, in test_concurrent_closes_close_once_and_reject_new_leases
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_qx32iquf/tree/tests/test_file_service.py", line 279, in test_invalid_options_and_caps_perform_no_io
+    binding = service._bindings[("agent", "src")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'src')
+
+======================================================================
+ERROR: test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_qx32iquf/tree/tests/test_file_service.py", line 565, in test_save_post_publish_fsync_failure_flags_uncertainty
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_qx32iquf/tree/tests/test_file_service.py", line 598, in test_static_error_redaction_and_no_cause_leak
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_qx32iquf/tree/tests/test_file_service.py", line 146, in test_two_agents_same_alias_different_roots
+    res_a = service.read(token_a, "shared", "p/only_a.txt")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_qx32iquf/tree/drive_tool/file_service.py", line 555, in read
+    raise _translate_storage_exception(exc, is_write_in_flight=False) from None
+drive_tool.file_service.ServiceError: not_found: requested resource not found
+
+======================================================================
+FAIL: test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_qx32iquf/tree/tests/test_file_service.py", line 102, in test_six_identities_and_config_limits
+    self.assertEqual(res.data, f"agent-{idx}".encode("utf-8"))
+AssertionError: b'agent-5' != b'agent-0'
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.132s
+
+FAILED (failures=1, errors=6)
+--- end raw ---
+
+----- M2_alias_only_binding_key / python3.12 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) 
+  test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) 
+  test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) 
+  test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) 
+  test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits)
+  test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) 
+  test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) 
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ERROR
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ERROR
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ERROR
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ERROR
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... FAIL
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ERROR
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ERROR
+
+======================================================================
+ERROR: test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_ecc5lchd/tree/tests/test_file_service.py", line 631, in test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_ecc5lchd/tree/tests/test_file_service.py", line 686, in test_concurrent_closes_close_once_and_reject_new_leases
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_ecc5lchd/tree/tests/test_file_service.py", line 279, in test_invalid_options_and_caps_perform_no_io
+    binding = service._bindings[("agent", "src")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'src')
+
+======================================================================
+ERROR: test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_ecc5lchd/tree/tests/test_file_service.py", line 565, in test_save_post_publish_fsync_failure_flags_uncertainty
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_ecc5lchd/tree/tests/test_file_service.py", line 598, in test_static_error_redaction_and_no_cause_leak
+    binding = service._bindings[("agent", "work")]
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: ('agent', 'work')
+
+======================================================================
+ERROR: test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_ecc5lchd/tree/tests/test_file_service.py", line 146, in test_two_agents_same_alias_different_roots
+    res_a = service.read(token_a, "shared", "p/only_a.txt")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_ecc5lchd/tree/drive_tool/file_service.py", line 555, in read
+    raise _translate_storage_exception(exc, is_write_in_flight=False) from None
+drive_tool.file_service.ServiceError: not_found: requested resource not found
+
+======================================================================
+FAIL: test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M2_alias_only_binding_key_ecc5lchd/tree/tests/test_file_service.py", line 102, in test_six_identities_and_config_limits
+    self.assertEqual(res.data, f"agent-{idx}".encode("utf-8"))
+AssertionError: b'agent-5' != b'agent-0'
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.195s
+
+FAILED (failures=1, errors=6)
+--- end raw ---
+
+----- M3_bool_accepted_as_int / python3.11 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... FAIL
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M3_bool_accepted_as_int_1w0yk4nx/tree/tests/test_file_service.py", line 326, in test_invalid_options_and_caps_perform_no_io
+    with self.assertRaises(ServiceError) as ctx:
+AssertionError: ServiceError not raised
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.257s
+
+FAILED (failures=1)
+--- end raw ---
+
+----- M3_bool_accepted_as_int / python3.12 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... FAIL
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M3_bool_accepted_as_int_3badovbu/tree/tests/test_file_service.py", line 326, in test_invalid_options_and_caps_perform_no_io
+    with self.assertRaises(ServiceError) as ctx:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ServiceError not raised
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.304s
+
+FAILED (failures=1)
+--- end raw ---
+
+----- M4_drop_save_uncertainty / python3.11 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+  test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite)
+  test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty)
+  test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... FAIL
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... FAIL
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... FAIL
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... FAIL
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M4_drop_save_uncertainty_zhc88s7a/tree/tests/test_file_service.py", line 509, in test_save_creates_missing_parents_in_one_call
+    self.assertTrue(missing_parent_ctx.exception.outcome_uncertain)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M4_drop_save_uncertainty_zhc88s7a/tree/tests/test_file_service.py", line 468, in test_save_no_overwrite_collision_and_explicit_overwrite
+    self.assertTrue(ctx.exception.outcome_uncertain)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M4_drop_save_uncertainty_zhc88s7a/tree/tests/test_file_service.py", line 583, in test_save_post_publish_fsync_failure_flags_uncertainty
+    self.assertTrue(err.outcome_uncertain)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M4_drop_save_uncertainty_zhc88s7a/tree/tests/test_file_service.py", line 552, in test_save_symlink_parent_refused_and_outside_untouched
+    self.assertTrue(ctx.exception.outcome_uncertain)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.215s
+
+FAILED (failures=4)
+--- end raw ---
+
+----- M4_drop_save_uncertainty / python3.12 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+  test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite)
+  test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty)
+  test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... FAIL
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... FAIL
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... FAIL
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... FAIL
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M4_drop_save_uncertainty_qn6p8qnv/tree/tests/test_file_service.py", line 509, in test_save_creates_missing_parents_in_one_call
+    self.assertTrue(missing_parent_ctx.exception.outcome_uncertain)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M4_drop_save_uncertainty_qn6p8qnv/tree/tests/test_file_service.py", line 468, in test_save_no_overwrite_collision_and_explicit_overwrite
+    self.assertTrue(ctx.exception.outcome_uncertain)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M4_drop_save_uncertainty_qn6p8qnv/tree/tests/test_file_service.py", line 583, in test_save_post_publish_fsync_failure_flags_uncertainty
+    self.assertTrue(err.outcome_uncertain)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M4_drop_save_uncertainty_qn6p8qnv/tree/tests/test_file_service.py", line 552, in test_save_symlink_parent_refused_and_outside_untouched
+    self.assertTrue(ctx.exception.outcome_uncertain)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.255s
+
+FAILED (failures=4)
+--- end raw ---
+
+----- M5_close_ignores_active_leases / python3.11 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... FAIL
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... Exception in thread Thread-2 (<lambda>):
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/tmp/d058_M5_close_ignores_active_leases_aj_v04y9/tree/tests/test_file_service.py", line 710, in <lambda>
+    target=lambda: service.read(token, "work", "p/item.txt")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tmp/d058_M5_close_ignores_active_leases_aj_v04y9/tree/drive_tool/file_service.py", line 548, in read
+    raise _translate_storage_exception(exc, is_write_in_flight=False) from None
+drive_tool.file_service.ServiceError: unavailable: service or storage is unavailable
+ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M5_close_ignores_active_leases_aj_v04y9/tree/tests/test_file_service.py", line 660, in test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive
+    self.assertFalse(service.close(timeout=0.03))
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.222s
+
+FAILED (failures=1)
+--- end raw ---
+
+----- M5_close_ignores_active_leases / python3.12 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... FAIL
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... Exception in thread Thread-2 (<lambda>):
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/scratch/tmp/d058_M5_close_ignores_active_leases_36asaot4/tree/tests/test_file_service.py", line 710, in <lambda>
+    target=lambda: service.read(token, "work", "p/item.txt")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tmp/d058_M5_close_ignores_active_leases_36asaot4/tree/drive_tool/file_service.py", line 548, in read
+    raise _translate_storage_exception(exc, is_write_in_flight=False) from None
+drive_tool.file_service.ServiceError: unavailable: service or storage is unavailable
+ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M5_close_ignores_active_leases_36asaot4/tree/tests/test_file_service.py", line 660, in test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive
+    self.assertFalse(service.close(timeout=0.03))
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.213s
+
+FAILED (failures=1)
+--- end raw ---
+
+----- M6_always_create_parents / python3.11 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... FAIL
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M6_always_create_parents_lwutegwx/tree/tests/test_file_service.py", line 499, in test_save_creates_missing_parents_in_one_call
+    with self.assertRaises(ServiceError) as missing_parent_ctx:
+AssertionError: ServiceError not raised
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.215s
+
+FAILED (failures=1)
+--- end raw ---
+
+----- M6_always_create_parents / python3.12 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... ok
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... FAIL
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M6_always_create_parents_hukognct/tree/tests/test_file_service.py", line 499, in test_save_creates_missing_parents_in_one_call
+    with self.assertRaises(ServiceError) as missing_parent_ctx:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ServiceError not raised
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.239s
+
+FAILED (failures=1)
+--- end raw ---
+
+----- M7_double_close / python3.11 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... FAIL
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M7_double_close_95ct0rj4/tree/tests/test_file_service.py", line 731, in test_concurrent_closes_close_once_and_reject_new_leases
+    self.assertEqual(close_calls, 1)
+AssertionError: 4 != 1
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.209s
+
+FAILED (failures=1)
+--- end raw ---
+
+----- M7_double_close / python3.12 -> CAUGHT (exit=1, timeout=False) -----
+failing test names:
+  test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+--- raw stdout+stderr verbatim ---
+test_auth_before_any_per_request_adapter_call (tests.test_file_service.LocalFileServiceTests.test_auth_before_any_per_request_adapter_call) ... ok
+test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive (tests.test_file_service.LocalFileServiceTests.test_concurrent_blocked_read_and_close_timeout_keeps_fd_alive) ... ok
+test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases) ... FAIL
+test_fd_stability_and_resource_accounting_after_close (tests.test_file_service.LocalFileServiceTests.test_fd_stability_and_resource_accounting_after_close) ... ok
+test_invalid_options_and_caps_perform_no_io (tests.test_file_service.LocalFileServiceTests.test_invalid_options_and_caps_perform_no_io) ... ok
+test_list_and_find_metadata_and_partial_skip_contract (tests.test_file_service.LocalFileServiceTests.test_list_and_find_metadata_and_partial_skip_contract) ... ok
+test_read_large_sparse_range_and_exact_eof (tests.test_file_service.LocalFileServiceTests.test_read_large_sparse_range_and_exact_eof) ... ok
+test_readonly_denial_and_no_leaked_metadata (tests.test_file_service.LocalFileServiceTests.test_readonly_denial_and_no_leaked_metadata) ... ok
+test_save_creates_missing_parents_in_one_call (tests.test_file_service.LocalFileServiceTests.test_save_creates_missing_parents_in_one_call) ... ok
+test_save_no_overwrite_collision_and_explicit_overwrite (tests.test_file_service.LocalFileServiceTests.test_save_no_overwrite_collision_and_explicit_overwrite) ... ok
+test_save_post_publish_fsync_failure_flags_uncertainty (tests.test_file_service.LocalFileServiceTests.test_save_post_publish_fsync_failure_flags_uncertainty) ... ok
+test_save_symlink_parent_refused_and_outside_untouched (tests.test_file_service.LocalFileServiceTests.test_save_symlink_parent_refused_and_outside_untouched) ... ok
+test_six_identities_and_config_limits (tests.test_file_service.LocalFileServiceTests.test_six_identities_and_config_limits) ... ok
+test_startup_rollback_closes_earlier_adapters_once (tests.test_file_service.LocalFileServiceTests.test_startup_rollback_closes_earlier_adapters_once) ... ok
+test_static_error_redaction_and_no_cause_leak (tests.test_file_service.LocalFileServiceTests.test_static_error_redaction_and_no_cause_leak) ... ok
+test_two_agents_same_alias_different_roots (tests.test_file_service.LocalFileServiceTests.test_two_agents_same_alias_different_roots) ... ok
+
+======================================================================
+FAIL: test_concurrent_closes_close_once_and_reject_new_leases (tests.test_file_service.LocalFileServiceTests.test_concurrent_closes_close_once_and_reject_new_leases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/tmp/d058_M7_double_close_o4eepof0/tree/tests/test_file_service.py", line 731, in test_concurrent_closes_close_once_and_reject_new_leases
+    self.assertEqual(close_calls, 1)
+AssertionError: 4 != 1
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.221s
+
+FAILED (failures=1)
+--- end raw ---
