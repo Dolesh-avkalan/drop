@@ -1,0 +1,9 @@
+candidate commit: bcf5d457fd951a63a61ebd5c939001790526819a (branch feature/module-006a-client-canonical-ids head)
+candidate tree:   1f969300ac8257864c739e3ff1a5bdfae545e1d1
+candidate parent: 53450a4cb71f555addd94eb5a700c777e7f5b1e6
+prod blob: d04c637de7b7ed2b9be78d5b18fde60519f71579 sha256 03c009ca1635be9a210c7ba3d2aa55cf90d4f64af8d6021a414294c94468a791
+test blob: 41d94d6ba0a184943ff6c80e1acc3d920ce18034 sha256 e10d6145bdaf52f54edd84cd8e693dd7c39a392c8aeca7bc10915b65ef8ae4f4
+integration base (accepted policy): e55c9f741a528ce9298b5041012373195e878eaf tree f71038e9da22044fcfe6ba6f35ce72239a878945
+integration branch: feature/module-006a-client-final-integration
+integration head:   f837e8170eab89b7c12d1372626e3ebc20573a20
+integration tree:   d0d4a30f20b95850b38d1cd807f01a1363af9e29

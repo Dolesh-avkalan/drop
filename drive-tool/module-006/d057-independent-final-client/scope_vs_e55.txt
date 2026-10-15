@@ -1,0 +1,6 @@
+Integration scope vs base e55c9f74 (published branch tree):
+  added:   drive_tool/service_client.py (blob d04c637de7b7ed2b9be78d5b18fde60519f71579)
+  added:   tests/test_service_client.py (blob 41d94d6ba0a184943ff6c80e1acc3d920ce18034)
+  changed: (none)
+  removed: (none)
+All other e55 files preserved byte-for-byte.

@@ -1,0 +1,38 @@
+      [note] duplicate Content-Length -> DriveClientError
+PASS prefix: malformed/nonprefixed ids rejected before any socket (all 4 ops)
+PASS prefix: bare 'p' and 'p/' rejected (nonempty canonical suffix required)
+PASS prefix: root allowed only for list/find, rejected for read/save
+PASS prefix: NUL rejected even when it would look prefixed
+PASS wire: list JSON body carries canonical id verbatim (space+plus)
+PASS wire: read JSON body carries canonical id verbatim
+PASS wire: save query round-trips canonical id with space and plus
+PASS dup header: duplicate X-Drive-Offset fails closed
+PASS dup header: duplicate X-Drive-EOF-Observed fails closed
+PASS dup header: duplicate X-Drive-Observed-Size fails closed
+PASS dup header: stdlib get_all returns 2 values (raw behaviour check)
+PASS dup header: malformed decimal observation header fails closed
+PASS dup header: missing observation header fails closed
+PASS dup header: duplicate Content-Length reported (actual stdlib behaviour)
+PASS hostile: truncated chunked read body -> safe error, read False/True
+PASS hostile: truncated chunked save body -> uncertain True/False
+PASS hostile: mid-body stall read -> timeout, read False/True
+PASS hostile: mid-body stall save -> timeout, uncertain True/False
+PASS hostile: mid-body error is redacted (no raw IncompleteRead text)
+PASS save: refused connection -> uncertain True/False
+PASS save: oversize success body -> uncertain True/False
+PASS save: malformed error reply -> uncertain True/False
+PASS read: refused connection -> uncertain False/True
+PASS no retry: save hit exactly once on failure
+PASS no retry: read hit exactly once on failure
+PASS close: connection+response closed on success
+PASS close: connection+response closed on protocol error
+PASS close: one fresh connection per call (no reuse)
+PASS redaction: token/root/remote message never leak from error
+PASS redaction: client repr hides token
+PASS bounds: declared Content-Length over cap fails before body read
+PASS bounds: chunked body of cap+1 fails (bounded read)
+PASS bounds: read reply longer than requested fails
+PASS bounds: exact-fill with eof_observed is protocol-invalid
+PASS bounds: short window with eof_observed accepted
+
+35 probes, 35 passed, 0 failed
