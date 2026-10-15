@@ -1,0 +1,8 @@
+control: valid request                         half=False elapsed= 0.001s bytes=180   status=HTTP/1.1 403 Forbidden           code=denied
+overlong request line, no CRLFCRLF             half=False elapsed= 1.001s bytes=186   status=HTTP/1.1 504 Gateway Timeout     code=timeout
+overlong request line, no CRLFCRLF             half=True  elapsed= 0.001s bytes=0     status=<no bytes>                       code=-
+overlong header block, no CRLFCRLF             half=False elapsed= 1.002s bytes=186   status=HTTP/1.1 504 Gateway Timeout     code=timeout
+overlong header block, no CRLFCRLF             half=True  elapsed= 0.001s bytes=0     status=<no bytes>                       code=-
+bare LF terminator                             half=False elapsed= 1.002s bytes=186   status=HTTP/1.1 504 Gateway Timeout     code=timeout
+bare LF terminator                             half=True  elapsed= 0.001s bytes=0     status=<no bytes>                       code=-
+control: buffer > 24576 (size check fires)     half=False elapsed= 0.001s bytes=183   status=HTTP/1.1 400 Bad Request         code=invalid

@@ -1,0 +1,14 @@
+== 4.1 startup 6-slot readiness (6 concurrent requests right after __init__) ==
+  trials=40 requests=240 tally={'ok_403': 240}
+
+== 4.2 repeated close() re-invokes _wake_listener() after the listener is closed ==
+  gate entered: True
+  close#1(timeout=0.1) -> False  wake_calls= 1
+  rebind released port 37829 -> False
+  close#2(timeout=0.3) -> True  wake_calls= 2  targets= [(37829, 9), (37829, -1)]
+  close#3(timeout=5.0) -> True
+
+== 4.3 idle connection handed off; close() does not close it ==
+  trial 0: close(0.05)=False returned in 0.050s; client got 186 bytes after 1.982s status=HTTP/1.1 504 Gateway Timeout
+  trial 1: close(0.05)=False returned in 0.050s; client got 186 bytes after 1.980s status=HTTP/1.1 504 Gateway Timeout
+  trial 2: close(0.05)=False returned in 0.051s; client got 186 bytes after 1.981s status=HTTP/1.1 504 Gateway Timeout

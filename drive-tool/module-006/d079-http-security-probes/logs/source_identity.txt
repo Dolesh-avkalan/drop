@@ -1,0 +1,16 @@
+# D079 source identity
+
+repo:            Dolesh-avkalan/drive-tool
+candidate commit: f304425ab774158090edd69f1b605bcc3b03096d
+  (integration cc9c994e + D076 save-test correction; source/tests untouched by D079)
+drive_tool/http_adapter.py:
+  blob:   02576d59d555afc7afde89fd8e2e63a1c1c43e24
+  bytes:  37502
+  sha256: 191ad2be919fabdd2f4ec9edb0820165c2c4358ce05c93574514b5ee30a30ff3
+  lines:  1099
+tests/test_http_adapter.py:
+  blob:   80798e3200064a09e4c84a2b264c4f764b64599c
+
+reviewed report: drop 7a84686a02a736b7ec181658902f4db08725b267
+  path: drive-tool/module-006/d074-http-security-review.md
+  blob: cc17287100b88e67552d50dcb3494a9197d24507
