@@ -1,0 +1,105 @@
+[PASS] P1 real NUL root rejected  -- '/x\x00y'
+[PASS] P1 single-backslash root rejected  -- '/x\\y'
+[PASS] P1 double-backslash root rejected  -- '/x\\\\y'
+[PASS] P1 root component rejected '/x/./y'
+[PASS] P1 root component rejected '/x/../y'
+[PASS] P1 root component rejected '/./x'
+[PASS] P1 root component rejected '/../x'
+[PASS] P1 root component rejected '/.'
+[PASS] P1 root component rejected '/..'
+[PASS] P1 root component rejected '/x//y'
+[PASS] P1 root component rejected '/foo/'
+[PASS] P1 root component rejected '//'
+[PASS] P1 root component rejected ''
+[PASS] P1 root '/' accepted
+[PASS] P1 root '/srv/data' accepted
+[PASS] P1 relative root rejected
+[PASS] P1 non-str root TypeError
+[PASS] P2 max_read_bytes bool True rejected (TypeError)
+[PASS] P2 max_read_bytes bool False rejected (TypeError)
+[PASS] P2 max_read_bytes out-of-range 0 rejected (ValueError)
+[PASS] P2 max_read_bytes out-of-range -1 rejected (ValueError)
+[PASS] P2 max_read_bytes out-of-range 1048577 rejected (ValueError)
+[PASS] P2 max_read_bytes boundary 1 accepted
+[PASS] P2 max_read_bytes boundary 1048576 accepted
+[PASS] P2 max_read_bytes non-int 1.0 rejected (TypeError)
+[PASS] P2 max_read_bytes non-int '1' rejected (TypeError)
+[PASS] P2 max_read_bytes non-int None rejected (TypeError)
+[PASS] P2 max_write_bytes bool True rejected (TypeError)
+[PASS] P2 max_write_bytes bool False rejected (TypeError)
+[PASS] P2 max_write_bytes out-of-range 0 rejected (ValueError)
+[PASS] P2 max_write_bytes out-of-range -1 rejected (ValueError)
+[PASS] P2 max_write_bytes out-of-range 1048577 rejected (ValueError)
+[PASS] P2 max_write_bytes boundary 1 accepted
+[PASS] P2 max_write_bytes boundary 1048576 accepted
+[PASS] P2 max_write_bytes non-int 1.0 rejected (TypeError)
+[PASS] P2 max_write_bytes non-int '1' rejected (TypeError)
+[PASS] P2 max_write_bytes non-int None rejected (TypeError)
+[PASS] P2 duplicate agent_id rejected
+[PASS] P2 duplicate token digest rejected
+[PASS] P2 32 agents accepted
+[PASS] P2 33 agents rejected
+[PASS] P2 32 grants accepted
+[PASS] P2 33 grants rejected
+[PASS] P2 alias 64 chars accepted
+[PASS] P2 alias 65 chars rejected
+[PASS] P2 alias empty rejected
+[PASS] P2 agent_id 65 chars rejected
+[PASS] P3 _by_id is mappingproxy  -- mappingproxy
+[PASS] P3 _agents is tuple
+[PASS] P3 _digests is tuple
+[PASS] P3 _by_id item assignment blocked
+[PASS] P3 grant.operations is frozenset
+[PASS] P3 grant frozen (alias)
+[PASS] P3 agent frozen (agent_id)
+[PASS] P3 agents list rejected
+[PASS] P4 agent a returns its own grant (identity)
+[PASS] P4 agent b returns its own grant (identity)
+[PASS] P4 roots differ
+[PASS] P4 no fallback a->b's alias
+[PASS] P4 asking a for b-only alias denies
+[PASS] P4 asking b for a-only alias denies
+[PASS] P5 readonly denies save
+[PASS] P5 readonly denies list
+[PASS] P5 readonly allows read
+[PASS] P5 write-only denies read
+[PASS] P5 write-only denies find
+[PASS] P6 all malformed/unhashable denied with fixed message  -- 20 cases
+[PASS] P7 authenticate returns exact AgentPolicy
+[PASS] P7 authorize returns exact SourceGrant
+[PASS] P8 cp33 len32 accepted
+[PASS] P8 cp126 len32 accepted
+[PASS] P8 len256 accepted
+[PASS] P8 length 31 rejected  -- access denied
+[PASS] P8 length 257 rejected  -- access denied
+[PASS] P8 length 0 rejected  -- access denied
+[PASS] P8 charset-outside ' aaaaaaaaaa rejected  -- access denied
+[PASS] P8 charset-outside 'aaaaaaaaaaa rejected  -- access denied
+[PASS] P8 charset-outside '            rejected  -- access denied
+[PASS] P8 charset-outside '\taaaaaaaaa rejected  -- access denied
+[PASS] P8 charset-outside 'aaaaaaaaaaa rejected  -- access denied
+[PASS] P8 charset-outside 'äääääääääää rejected  -- access denied
+[PASS] P8 charset-outside 'ééééééééééé rejected  -- access denied
+[PASS] P8 non-str token NoneType rejected  -- access denied
+[PASS] P8 non-str token int rejected  -- access denied
+[PASS] P8 non-str token bytes rejected  -- access denied
+[PASS] P8 non-str token bytearray rejected  -- access denied
+[PASS] P8 non-str token list rejected  -- access denied
+[PASS] P8 non-str token dict rejected  -- access denied
+[PASS] P9 match@0 compares all 5 digests (no early return)  -- calls=5
+[PASS] P9 match@0 returns exact agent
+[PASS] P9 match@4 compares all 5 digests (no early return)  -- calls=5
+[PASS] P9 match@4 returns exact agent
+[PASS] P9 unknown token compares all digests  -- calls=5
+[PASS] P10 secret token absent from agent repr
+[PASS] P10 digest absent from agent repr
+[PASS] P10 root absent from grant repr
+[PASS] P10 root absent from table repr
+[PASS] P10 denied message has no secret  -- access denied
+[PASS] P10 authorize denied message fixed  -- access denied
+[PASS] P10 build+use touches no fs/network
+[PASS] P10 raw token not in table attrs
+[PASS] P11 module imports cleanly
+[PASS] P11 'Mapping' not imported into module namespace
+
+=== PROBE SUMMARY: 103/103 passed ===

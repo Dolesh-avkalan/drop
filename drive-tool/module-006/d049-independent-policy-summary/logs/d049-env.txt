@@ -1,0 +1,9 @@
+D049 independent verification environment
+date_utc: 2026-10-15T17:01:31Z
+host_kernel: Linux 4.19.0-gvisor x86_64 GNU/Linux
+os: Debian GNU/Linux 12 (bookworm)
+python3.11: 3.11.2 (main, May 12 2026, 05:17:27) [GCC 12.2.0]
+python3.12: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+python3.13 present: no
+python3.14 present: no
+git: git version 2.39.5

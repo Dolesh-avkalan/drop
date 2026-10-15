@@ -1,0 +1,78 @@
+test_agent_id_type_error (tests.test_service_policy.AgentPolicyTests.test_agent_id_type_error) ... ok
+test_agent_id_value_error (tests.test_service_policy.AgentPolicyTests.test_agent_id_value_error) ... ok
+test_grants_duplicate_alias_rejected (tests.test_service_policy.AgentPolicyTests.test_grants_duplicate_alias_rejected) ... ok
+test_grants_empty_rejected (tests.test_service_policy.AgentPolicyTests.test_grants_empty_rejected) ... ok
+test_grants_too_many_rejected (tests.test_service_policy.AgentPolicyTests.test_grants_too_many_rejected) ... ok
+test_grants_type_error (tests.test_service_policy.AgentPolicyTests.test_grants_type_error) ... ok
+test_grants_wrong_type_rejected (tests.test_service_policy.AgentPolicyTests.test_grants_wrong_type_rejected) ... ok
+test_token_bytearray_rejected (tests.test_service_policy.AgentPolicyTests.test_token_bytearray_rejected) ... ok
+test_token_memoryview_rejected (tests.test_service_policy.AgentPolicyTests.test_token_memoryview_rejected) ... ok
+test_token_wrong_length_rejected (tests.test_service_policy.AgentPolicyTests.test_token_wrong_length_rejected) ... ok
+test_valid_agent (tests.test_service_policy.AgentPolicyTests.test_valid_agent) ... ok
+test_authenticate_does_not_leak_input_in_message (tests.test_service_policy.AuthenticationTests.test_authenticate_does_not_leak_input_in_message) ... ok
+test_compares_all_digests_no_early_return (tests.test_service_policy.AuthenticationTests.test_compares_all_digests_no_early_return) ... ok
+test_invalid_tokens_indistinguishable (tests.test_service_policy.AuthenticationTests.test_invalid_tokens_indistinguishable) ... ok
+test_no_raw_token_stored_on_agent (tests.test_service_policy.AuthenticationTests.test_no_raw_token_stored_on_agent) ... ok
+test_no_raw_token_stored_on_table (tests.test_service_policy.AuthenticationTests.test_no_raw_token_stored_on_table) ... ok
+test_repr_redacts_digest_and_root (tests.test_service_policy.AuthenticationTests.test_repr_redacts_digest_and_root) ... ok
+test_valid_token_returns_exact_agent (tests.test_service_policy.AuthenticationTests.test_valid_token_returns_exact_agent) ... ok
+test_visible_ascii_bounds_accepted (tests.test_service_policy.AuthenticationTests.test_visible_ascii_bounds_accepted) ... ERROR
+test_alias_not_granted_denied (tests.test_service_policy.AuthorizationTests.test_alias_not_granted_denied) ... ok
+test_allowed_returns_exact_object (tests.test_service_policy.AuthorizationTests.test_allowed_returns_exact_object) ... ok
+test_caps_do_not_grant_absent_operations (tests.test_service_policy.AuthorizationTests.test_caps_do_not_grant_absent_operations) ... ok
+test_denied_message_identical_across_reasons (tests.test_service_policy.AuthorizationTests.test_denied_message_identical_across_reasons) ... ok
+test_read_only_denies_save (tests.test_service_policy.AuthorizationTests.test_read_only_denies_save) ... ok
+test_same_alias_across_agents_isolated (tests.test_service_policy.AuthorizationTests.test_same_alias_across_agents_isolated) ... ok
+test_save_only_denies_read (tests.test_service_policy.AuthorizationTests.test_save_only_denies_read) ... ok
+test_unknown_agent_denied (tests.test_service_policy.AuthorizationTests.test_unknown_agent_denied) ... ok
+test_unknown_operation_denied (tests.test_service_policy.AuthorizationTests.test_unknown_operation_denied) ... ok
+test_wrong_type_and_unhashable_denied (tests.test_service_policy.AuthorizationTests.test_wrong_type_and_unhashable_denied) ... ok
+test_denied_message_fixed (tests.test_service_policy.ConstantsTests.test_denied_message_fixed) ... ok
+test_max_transfer_bytes (tests.test_service_policy.ConstantsTests.test_max_transfer_bytes) ... ok
+test_operations_exact (tests.test_service_policy.ConstantsTests.test_operations_exact) ... ok
+test_agent_policy_frozen (tests.test_service_policy.FrozenDataclassTests.test_agent_policy_frozen) ... ok
+test_agent_policy_grants_is_tuple (tests.test_service_policy.FrozenDataclassTests.test_agent_policy_grants_is_tuple) ... ok
+test_source_grant_frozen (tests.test_service_policy.FrozenDataclassTests.test_source_grant_frozen) ... ok
+test_source_grant_operations_is_frozenset (tests.test_service_policy.FrozenDataclassTests.test_source_grant_operations_is_frozenset) ... ok
+test_agents_must_be_tuple (tests.test_service_policy.PolicyTableConstructionTests.test_agents_must_be_tuple) ... ok
+test_duplicate_agent_id_rejected (tests.test_service_policy.PolicyTableConstructionTests.test_duplicate_agent_id_rejected) ... ok
+test_duplicate_token_digest_rejected (tests.test_service_policy.PolicyTableConstructionTests.test_duplicate_token_digest_rejected) ... ok
+test_empty_agents_rejected (tests.test_service_policy.PolicyTableConstructionTests.test_empty_agents_rejected) ... ok
+test_too_many_agents_rejected (tests.test_service_policy.PolicyTableConstructionTests.test_too_many_agents_rejected) ... ok
+test_wrong_entry_type_rejected (tests.test_service_policy.PolicyTableConstructionTests.test_wrong_entry_type_rejected) ... ok
+test_build_and_use_do_not_touch_fs_or_network (tests.test_service_policy.PurityTests.test_build_and_use_do_not_touch_fs_or_network) ... ok
+test_alias_type_errors (tests.test_service_policy.SourceGrantTests.test_alias_type_errors) ... ok
+test_alias_value_errors (tests.test_service_policy.SourceGrantTests.test_alias_value_errors) ... ok
+test_cap_bool_rejected (tests.test_service_policy.SourceGrantTests.test_cap_bool_rejected) ... ok
+test_cap_minimum_accepted (tests.test_service_policy.SourceGrantTests.test_cap_minimum_accepted) ... ok
+test_cap_too_large_rejected (tests.test_service_policy.SourceGrantTests.test_cap_too_large_rejected) ... ok
+test_cap_zero_rejected (tests.test_service_policy.SourceGrantTests.test_cap_zero_rejected) ... ok
+test_operations_empty_rejected (tests.test_service_policy.SourceGrantTests.test_operations_empty_rejected) ... ok
+test_operations_must_be_frozenset (tests.test_service_policy.SourceGrantTests.test_operations_must_be_frozenset) ... ok
+test_operations_nonstring_members_rejected (tests.test_service_policy.SourceGrantTests.test_operations_nonstring_members_rejected) ... ok
+test_operations_unknown_rejected (tests.test_service_policy.SourceGrantTests.test_operations_unknown_rejected) ... ok
+test_root_backslash_rejected (tests.test_service_policy.SourceGrantTests.test_root_backslash_rejected) ... ok
+test_root_dot_components_rejected (tests.test_service_policy.SourceGrantTests.test_root_dot_components_rejected) ... ok
+test_root_empty_components_rejected (tests.test_service_policy.SourceGrantTests.test_root_empty_components_rejected) ... ok
+test_root_empty_rejected (tests.test_service_policy.SourceGrantTests.test_root_empty_rejected) ... ok
+test_root_nul_rejected (tests.test_service_policy.SourceGrantTests.test_root_nul_rejected) ... ok
+test_root_relative_rejected (tests.test_service_policy.SourceGrantTests.test_root_relative_rejected) ... ok
+test_root_slash_accepted (tests.test_service_policy.SourceGrantTests.test_root_slash_accepted) ... ok
+test_root_type_errors (tests.test_service_policy.SourceGrantTests.test_root_type_errors) ... ok
+test_valid_grant (tests.test_service_policy.SourceGrantTests.test_valid_grant) ... ok
+
+======================================================================
+ERROR: test_visible_ascii_bounds_accepted (tests.test_service_policy.AuthenticationTests.test_visible_ascii_bounds_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d049/initial/tests/test_service_policy.py", line 300, in test_visible_ascii_bounds_accepted
+    self.table.authenticate('!' * 32)  # unknown -> denied
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d049/initial/drive_tool/service_policy.py", line 192, in authenticate
+    raise PolicyDeniedError()
+drive_tool.service_policy.PolicyDeniedError: access denied
+
+----------------------------------------------------------------------
+Ran 62 tests in 0.023s
+
+FAILED (errors=1)

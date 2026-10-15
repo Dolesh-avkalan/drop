@@ -1,0 +1,40 @@
+# D049 independent-verification byte-SHA256 manifest
+# Generated 2026-10-15T17:02:37Z
+# reviewer: independent (fresh context)
+
+aaf0055e97b696c3980c397bc36154fc78fddc6e6488433dc2ded0ea42111c2c  ./D049-REPORT.md
+8feedd9499f52df32449acb4ce8d1d2e2a32e7cbf7d5ab2bed2f1a8547d9aa1c  ./candidate/drive_tool/service_policy.py
+ada2c59e46cab5cc6b188b8d1ddefa9a25cfebe7d40e64df3ad65b3d5501959b  ./candidate/tests/test_service_policy.py
+cfebdd12089f3ff59f2ab8c23432c80290efa5ac2e12fe0132fab692f0087c0e  ./logs/d049-base-full-python3.11.log
+46a68e5f64924183e2b8d5e266cc6e80ac4d565fc7b751e0594a7d5704364513  ./logs/d049-base-full-python3.12.log
+ec6b3342c8a8080f7b99e1e104ff7620e12074efdbe707b836b370e2ce3ef253  ./logs/d049-env.txt
+001c0fdc46ef38e5f1cef07fb1c75a7df42fec428265f44f59d88f1d67eda020  ./logs/d049-full-python3.11.log
+ce8e82ad7b461ac5d5a802dfb76840d261a701b87dc43ffbf108c334f96be387  ./logs/d049-full-python3.12.log
+f75a3ae0a40dcd6050241cc19bc2babc657e71724a133af949f3053d670bd6e7  ./logs/d049-initial-full-python3.11.log
+2b1245c78c23b883c80e40b4af4ceb31a71839e61442b772047dc0a68935008e  ./logs/d049-initial-full-python3.12.log
+407086df918c93c101e7b7ac3db12356894f71f99bb458bf3d5b6fd4eef4ddae  ./logs/d049-initial-policy-python3.11.log
+0e2246e935559ad8d9125eb87773611fd35f4c6b8fb29d0fd46bc2c1f0373c4c  ./logs/d049-initial-policy-python3.12.log
+4437c5ebc264b5ec02f50fb57511328d833171513792b27719d85dbc367a567f  ./logs/d049-mutation-rerun.log
+87d68fbbd166c3bdaddeceaa70db9a98eb17ddd2809363f0cb61c54d2f8dadbb  ./logs/d049-policy-python3.11.log
+3bbddeb70d0378763275540579a81b4e6b489be08984ea9e2392d568546eb2f7  ./logs/d049-policy-python3.12.log
+26d189a37df63196f606a22ed0b57ade7034785ebf24f080421c703438d7a9f6  ./logs/d049-probes-python3.11.log
+26d189a37df63196f606a22ed0b57ade7034785ebf24f080421c703438d7a9f6  ./logs/d049-probes-python3.12.log
+e661d2e2fe3ba6c175e1b37ddd7aa1fb204f0cbb037e54db3110198fdcafc80b  ./logs/mutations/M1_early_auth_return.python3.11.log
+a58e3de9487d56a63b01912f899fffa94a5f141a56ce7091b145d0d9d5fa81c2  ./logs/mutations/M1_early_auth_return.python3.12.log
+144f9fc048d0f0bcbf457e19191e048de3e1640c3ef17447733ac526cc07d398  ./logs/mutations/M2_duplicate_digest_acceptance.python3.11.log
+6e47c3378a04d092c8933e448eb900c9ae635197ff0a3db863d50ec0d70e86b7  ./logs/mutations/M2_duplicate_digest_acceptance.python3.12.log
+9d83e594c3cd488cec1ebad84584e0a8738475ed5d543ea7f181f0214d972746  ./logs/mutations/M3_cross_agent_alias_fallback.python3.11.log
+7191a9e7eb7a6d28232d8a56b773163915e6e2326bb6444942b98bfc27b6ff06  ./logs/mutations/M3_cross_agent_alias_fallback.python3.12.log
+3b565e02ecf4443ab93448850e4a43e94f2dc5ebea52e33f70471a94a8b995f3  ./logs/mutations/M4_readonly_save_bypass.python3.11.log
+e4b340811f8c04f83699b2912178ef7671e1775d59ab3b1202120fcd050b23f7  ./logs/mutations/M4_readonly_save_bypass.python3.12.log
+9af77a42282c28221154d572d41bd508b39f02732c4c4dd0018827b545ed878c  ./logs/mutations/M5_malformed_root_acceptance.python3.11.log
+a56f1e376862b7581467cc8463f5bfcb30377f76324dc817bc82b9a17ba4c62a  ./logs/mutations/M5_malformed_root_acceptance.python3.12.log
+1ce7a6f01ab7e5e9c23a1c7427c8a39c757dd4f5050fc3580c71328d01eb3dc8  ./logs/mutations/M6_cap_upper_bound_bypass.python3.11.log
+62e3ff6226d982359d287c8d1e1f4287411cfa88eb032c7af44eb16ed03de91e  ./logs/mutations/M6_cap_upper_bound_bypass.python3.12.log
+820c9b43d6f22222e937fd9bbc66a50567dcfffce136e6318281157545d00fac  ./pins/d045-deepseek-service-policy.generated.md
+feca9df9ad74ee9ffd3d7394a84115fb533ede9bb8b37496aff16dfe04820c5d  ./pins/d045-service-policy-implementation.contract.md
+5c289de74ed06219bc0a87669538f01d3e804cbb87e75a7d02a63295099da33d  ./pins/d049-policy-independent.brief.md
+01de46c88d5eea9950b42c3c12600668bda2a5060d99c6f0b65cc1413f015269  ./scripts/d049_adversarial_probes.py
+d9e87d422486c6ed9221e364f4c045fbd2bb06f30c3140c2555d58ac3f5bf36d  ./scripts/d049_mutation_rerun.py
+537837dd2f90505ed0ef37905e4f5e0cdfcc2e39dc2c808dfc32e7b97aeedd6e  ./verbatim/service_policy.verbatim.py
+d8d777681dd310e6612ac4bfea4c9389d770bb4d95bacfacfd6460e8b4db7f4d  ./verbatim/test_service_policy.verbatim.py
