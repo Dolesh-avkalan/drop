@@ -1,0 +1,8 @@
+# D067 new module only on python3.12
+# cmd: python3.12 -m unittest tests.test_http_adapter
+
+sssssssssssssssssssssssssssssssssssssssssssssssssssss..ss
+----------------------------------------------------------------------
+Ran 57 tests in 0.052s
+
+OK (skipped=55)

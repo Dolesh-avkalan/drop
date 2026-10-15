@@ -1,0 +1,9 @@
+# D067 gate-contract tests (execute without the production adapter)
+
+test_helper_raises_without_production_adapter (tests.test_http_adapter.SmokeSoakGateContractTests.test_helper_raises_without_production_adapter) ... ok
+test_thresholds_fixed (tests.test_http_adapter.SmokeSoakGateContractTests.test_thresholds_fixed) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.038s
+
+OK

@@ -1,0 +1,12 @@
+# D067 source identity (deliverable: tests/test_http_adapter.py)
+
+branch:        feature/module-006b-http-tests
+base commit:   b7f8d17b9dcc4aec68d54b38f994290e05264e67
+git blob sha1: d8322b7b4eba9fa62eacb19bd6ef4d72f532fe1c
+sha256:        ef81429dbbe2554d0a3c10ff6c2ec29c521bb134499dd109637c3a817aec8ae4
+lines:         1326
+bytes:         54064
+test methods:  57
+test classes:  14
+
+scope: exactly one new path (tests/test_http_adapter.py); no other file changed.

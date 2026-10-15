@@ -1,0 +1,6 @@
+# D067 compile checks
+
+$ python3.11 -m py_compile tests/test_http_adapter.py
+py3.11: OK
+$ python3.12 -m py_compile tests/test_http_adapter.py
+py3.12: OK

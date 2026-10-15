@@ -1,3 +1,0 @@
-rawline1
-rawline2
-rawline3
