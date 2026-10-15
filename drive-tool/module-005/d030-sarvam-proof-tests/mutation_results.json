@@ -1,0 +1,106 @@
+[
+  {
+    "id": "M1",
+    "label": "Drop O_NOFOLLOW from intermediate directory traversal",
+    "ref": "nit1",
+    "status": "Ran 204 tests in 1.806s; FAILED (failures=5, errors=3); exit=1",
+    "fails": [
+      "test_deterministic_descriptor_accounting_across_success_and_failures (test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures)",
+      "test_intermediate_symlink_in_parts_before_last_refused (test_local_write_proofs.TestNit1IntermediateSymlink.test_intermediate_symlink_in_parts_before_last_refused)",
+      "test_closed_wrong_source_precedes_closed_and_args_and_mkdir_validation (test_local_write_proofs.TestNit5ClosedPrecedenceAndMkdirValidation.test_closed_wrong_source_precedes_closed_and_args_and_mkdir_validation)",
+      "test_dir_swap_before_component_open_read_traversal_rejected (test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_component_open_read_traversal_rejected)",
+      "test_dir_swap_before_component_open_stat_traversal_rejected (test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_component_open_stat_traversal_rejected)",
+      "test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/sym_outside_dir/secret.txt')",
+      "test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/sym_outside_dir/sub/deep.txt')",
+      "test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/real_dir/sym_nested_dir/deep.txt')"
+    ]
+  },
+  {
+    "id": "M2",
+    "label": "Accept a symlink strictly inside parts[:-1] (follow + do not reject)",
+    "ref": "nit1",
+    "status": "Ran 204 tests in 2.024s; FAILED (failures=5, errors=3); exit=1",
+    "fails": [
+      "test_deterministic_descriptor_accounting_across_success_and_failures (test_local.TestDescriptorLifetimeAndClose.test_deterministic_descriptor_accounting_across_success_and_failures)",
+      "test_intermediate_symlink_in_parts_before_last_refused (test_local_write_proofs.TestNit1IntermediateSymlink.test_intermediate_symlink_in_parts_before_last_refused)",
+      "test_closed_wrong_source_precedes_closed_and_args_and_mkdir_validation (test_local_write_proofs.TestNit5ClosedPrecedenceAndMkdirValidation.test_closed_wrong_source_precedes_closed_and_args_and_mkdir_validation)",
+      "test_dir_swap_before_component_open_read_traversal_rejected (test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_component_open_read_traversal_rejected)",
+      "test_dir_swap_before_component_open_stat_traversal_rejected (test_local.TestContainmentSymlinksAndAnchoredRoot.test_dir_swap_before_component_open_stat_traversal_rejected)",
+      "test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/sym_outside_dir/secret.txt')",
+      "test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/sym_outside_dir/sub/deep.txt')",
+      "test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing (test_local.TestContainmentSymlinksAndAnchoredRoot.test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing) (traversal_id='p/real_dir/sym_nested_dir/deep.txt')"
+    ]
+  },
+  {
+    "id": "M3",
+    "label": "check-then-rename instead of atomic link for overwrite=False",
+    "ref": "nit2 / extra",
+    "status": "Ran 204 tests in 1.702s; FAILED (failures=1, errors=9); exit=1",
+    "fails": [
+      "test_name_validation_all_invalid_classes (test_local_write.TestNameValidation.test_name_validation_all_invalid_classes)",
+      "test_mutation_guard_fsync_called_on_file_and_dir_fds (test_local_write.TestSeams.test_mutation_guard_fsync_called_on_file_and_dir_fds)",
+      "test_mutation_guard_temp_open_flags_and_mode (test_local_write.TestSeams.test_mutation_guard_temp_open_flags_and_mode)",
+      "test_seam_link_failures_eexist_and_eperm_clean_up (test_local_write.TestSeams.test_seam_link_failures_eexist_and_eperm_clean_up)",
+      "test_seam_write_handles_short_writes_and_eintr (test_local_write.TestSeams.test_seam_write_handles_short_writes_and_eintr)",
+      "test_write_and_read_back_root_and_nested (test_local_write.TestWriteHappyPaths.test_write_and_read_back_root_and_nested)",
+      "test_write_empty_and_exact_max_write_bytes (test_local_write.TestWriteHappyPaths.test_write_empty_and_exact_max_write_bytes)",
+      "test_publish_uses_link_for_no_overwrite_and_rename_for_overwrite (test_local_write_proofs.TestNit2PublishSeams.test_publish_uses_link_for_no_overwrite_and_rename_for_overwrite)",
+      "test_temp_open_has_cloexec_and_16_lower_hex_name (test_local_write_proofs.TestNit3TempOpenFlagsAndName.test_temp_open_has_cloexec_and_16_lower_hex_name)",
+      "test_concurrent_two_writers_race_overwrite_false (test_local_write.TestRace.test_concurrent_two_writers_race_overwrite_false)"
+    ]
+  },
+  {
+    "id": "M4",
+    "label": "Drop O_CLOEXEC from the temp-file open flags",
+    "ref": "nit3 / extra",
+    "status": "Ran 204 tests in 1.775s; FAILED (failures=1); exit=1",
+    "fails": [
+      "test_temp_open_has_cloexec_and_16_lower_hex_name (test_local_write_proofs.TestNit3TempOpenFlagsAndName.test_temp_open_has_cloexec_and_16_lower_hex_name)"
+    ]
+  },
+  {
+    "id": "M5",
+    "label": "Use 8 hex characters in the temp name (token_hex(4))",
+    "ref": "nit3 / extra",
+    "status": "Ran 204 tests in 2.400s; FAILED (failures=1); exit=1",
+    "fails": [
+      "test_temp_open_has_cloexec_and_16_lower_hex_name (test_local_write_proofs.TestNit3TempOpenFlagsAndName.test_temp_open_has_cloexec_and_16_lower_hex_name)"
+    ]
+  },
+  {
+    "id": "M6",
+    "label": "Move tmp_on_disk = False back after the post-link unlink",
+    "ref": "nit4 / extra",
+    "status": "Ran 204 tests in 2.014s; FAILED (failures=1); exit=1",
+    "fails": [
+      "test_post_link_unlink_failure_calls_unlink_once (test_local_write_proofs.TestNit4PostLinkUnlinkFailure.test_post_link_unlink_failure_calls_unlink_once)"
+    ]
+  },
+  {
+    "id": "M7",
+    "label": "Check closed state before source mismatch (_check_source_and_state)",
+    "ref": "nit5",
+    "status": "Ran 204 tests in 1.982s; FAILED (errors=10); exit=1",
+    "fails": [
+      "test_check_order_source_closed_validation (test_enumeration.LocalAdapterEnumerationTests.test_check_order_source_closed_validation)",
+      "test_source_mismatch_precedence_across_all_methods_and_states (test_local.TestPrecedenceAndMalformedIds.test_source_mismatch_precedence_across_all_methods_and_states) (state='closed', ref=FileRef(source_id='wrong-source', file_id='root'))",
+      "test_source_mismatch_precedence_across_all_methods_and_states (test_local.TestPrecedenceAndMalformedIds.test_source_mismatch_precedence_across_all_methods_and_states) (state='closed', ref=FileRef(source_id='wrong-source', file_id='p/missing.txt'))",
+      "test_source_mismatch_precedence_across_all_methods_and_states (test_local.TestPrecedenceAndMalformedIds.test_source_mismatch_precedence_across_all_methods_and_states) (state='closed', ref=FileRef(source_id='wrong-source', file_id=''))",
+      "test_source_mismatch_precedence_across_all_methods_and_states (test_local.TestPrecedenceAndMalformedIds.test_source_mismatch_precedence_across_all_methods_and_states) (state='closed', ref=FileRef(source_id='wrong-source', file_id='../escape'))",
+      "test_source_mismatch_precedence_across_all_methods_and_states (test_local.TestPrecedenceAndMalformedIds.test_source_mismatch_precedence_across_all_methods_and_states) (state='closed', ref=FileRef(source_id='wrong-source', file_id='/etc/passwd'))",
+      "test_source_mismatch_precedence_across_all_methods_and_states (test_local.TestPrecedenceAndMalformedIds.test_source_mismatch_precedence_across_all_methods_and_states) (state='closed', ref=FileRef(source_id='wrong-source', file_id='p/a//b'))",
+      "test_source_mismatch_precedence_across_all_methods_and_states (test_local.TestPrecedenceAndMalformedIds.test_source_mismatch_precedence_across_all_methods_and_states) (state='closed', ref=FileRef(source_id='wrong-source', file_id='p/bad\\x00id'))",
+      "test_source_mismatch_precedence_across_all_methods_and_states (test_local.TestPrecedenceAndMalformedIds.test_source_mismatch_precedence_across_all_methods_and_states) (state='closed', ref=FileRef(source_id='wrong-source', file_id='p/bad\\\\id'))",
+      "test_closed_wrong_source_precedes_closed_and_args_and_mkdir_validation (test_local_write_proofs.TestNit5ClosedPrecedenceAndMkdirValidation.test_closed_wrong_source_precedes_closed_and_args_and_mkdir_validation)"
+    ]
+  },
+  {
+    "id": "M8",
+    "label": "Let mkdir validate the name before checking the source",
+    "ref": "nit5 / extra",
+    "status": "Ran 204 tests in 2.034s; FAILED (errors=1); exit=1",
+    "fails": [
+      "test_closed_wrong_source_precedes_closed_and_args_and_mkdir_validation (test_local_write_proofs.TestNit5ClosedPrecedenceAndMkdirValidation.test_closed_wrong_source_precedes_closed_and_args_and_mkdir_validation)"
+    ]
+  }
+]
