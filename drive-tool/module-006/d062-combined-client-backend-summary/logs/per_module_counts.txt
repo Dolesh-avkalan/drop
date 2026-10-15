@@ -1,0 +1,36 @@
+--- python3.11 ---
+tests.test_enumeration :: Ran 15 tests in 0.054s OK 
+tests.test_enumeration_proofs :: Ran 6 tests in 0.049s OK 
+tests.test_file_service :: Ran 16 tests in 0.257s OK 
+tests.test_listing :: Ran 35 tests in 0.006s OK 
+tests.test_local :: Ran 53 tests in 0.694s OK 
+tests.test_local_range :: Ran 62 tests in 0.860s OK 
+tests.test_local_range_proofs :: Ran 15 tests in 0.214s OK 
+tests.test_local_write :: Ran 24 tests in 0.514s OK 
+tests.test_local_write_proofs :: Ran 5 tests in 0.048s OK 
+tests.test_partial_scan :: Ran 37 tests in 0.189s OK 
+tests.test_partial_scan_proofs :: Ran 13 tests in 0.387s OK 
+tests.test_partial_scan_review_fixes :: Ran 18 tests in 0.055s OK 
+tests.test_readonly_core :: Ran 16 tests in 0.204s OK 
+tests.test_search :: Ran 16 tests in 0.057s OK 
+tests.test_service_client :: Ran 77 tests in 2.707s OK 
+tests.test_service_policy :: Ran 62 tests in 0.015s OK 
+tests.test_storage :: Ran 36 tests in 0.005s OK 
+--- python3.12 ---
+tests.test_enumeration :: Ran 15 tests in 0.113s OK 
+tests.test_enumeration_proofs :: Ran 6 tests in 0.182s OK 
+tests.test_file_service :: Ran 16 tests in 0.287s OK 
+tests.test_listing :: Ran 35 tests in 0.008s OK 
+tests.test_local :: Ran 53 tests in 1.163s OK 
+tests.test_local_range :: Ran 62 tests in 0.772s OK 
+tests.test_local_range_proofs :: Ran 15 tests in 0.245s OK 
+tests.test_local_write :: Ran 24 tests in 0.707s OK 
+tests.test_local_write_proofs :: Ran 5 tests in 0.089s OK 
+tests.test_partial_scan :: Ran 37 tests in 0.344s OK 
+tests.test_partial_scan_proofs :: Ran 13 tests in 0.546s OK 
+tests.test_partial_scan_review_fixes :: Ran 18 tests in 0.120s OK 
+tests.test_readonly_core :: Ran 16 tests in 0.297s OK 
+tests.test_search :: Ran 16 tests in 0.138s OK 
+tests.test_service_client :: Ran 77 tests in 2.836s OK 
+tests.test_service_policy :: Ran 62 tests in 0.032s OK 
+tests.test_storage :: Ran 36 tests in 0.011s OK 

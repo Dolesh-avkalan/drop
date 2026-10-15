@@ -1,0 +1,38 @@
+D062 combined client/backend candidate — SHA256 / git-blob manifest
+
+== Pins ==
+accepted client base commit : cbf60867a0ca6e10206d540aed93f40e24b44a5d
+accepted client base tree   : b96c2807f0c8bd6adb09ba4678a43482e876bf41
+backend commit              : 14729120c0f32ee5d64c1daf93b27fa1b3270d6b
+backend tree                : 3482dc4325afb5adf4b7ecfcbfe1e76a1ad0356c
+published branch            : feature/module-006a-service-client-integration
+published head commit       : 67d37b2bba1e2676d12c99eff0559c04df6174c8
+published tree              : d6b5e87cd37e459bb8c3b1c85f97700dc2225ca7
+published parent            : cbf60867a0ca6e10206d540aed93f40e24b44a5d
+
+== Overlay (exactly two additions; base source unchanged) ==
+befe20bba64252d5595ac68e4af8459f4d8686dd31d14f5bfbf5159fa8b56f8c  sha256  gitblob=b7e18c606f45066cd54ec66016e70e797486ef50  drive_tool/file_service.py
+855df6ef02139f003cf7cfd26ccd1c43bce52b14e332c774f23a6de2917ad8dc  sha256  gitblob=8b5248f9365d8cac6e1331bb4677dea48a1778ff  tests/test_file_service.py
+expected gitblobs: b7e18c606f45066cd54ec66016e70e797486ef50, 8b5248f9365d8cac6e1331bb4677dea48a1778ff
+
+== Harness + assembly scripts ==
+eed448dde800a96759c92054a8438db6005bff011e41bc4c96f11d1c9969e941  assemble_candidate.py
+0951646643114246e501be1c73be7ff2e0b27b59388b4058a3d8370fa9777e3d  indep_mutations.py
+83d9c0d8200c8b118b889beab4faf7a1a41dbfafdf7bc217c3eb8c6c6777dca0  indep_probes.py
+6f9bab825fb06d5d16aec722784b13f279975a9b31e0a1536313969207f24d64  reproduce_mutations.py
+d207be5bee4844fdd9e5f73bb8f73543951489b6bbf362ee1801cb2b1d5dae4b  reproduce_probes.py
+69ee9beb8c22879728426c9cf83080fb47ffe64c5980f5c7ff0e4a8f5c4d5049  run_combined_suite.sh
+4e172b9389c6ab97dabfcb15e791c9c83b78180ba7c118f56e925726424a492e  verify_published.py
+
+== Evidence logs ==
+50a9c6e60677b185b51f42ec73197e098c7b2d638d113a14821dc612f112e322  logs/assemble_verify.txt
+fd5e68310d1158601227ad9ff0bdd7549010695567439e5ec93490429de2e503  logs/mutations.txt
+2c6177fdbaeb256c3086a54959df7e9e62f8731dbf17255087f149f66fd4345f  logs/per_module_counts.txt
+bd03fa58ac0a66e061329e61b114d15f87809fb7f3c00f80d73668316f9183cb  logs/probes_python3.11.txt
+9f50efc13b439806dcbc34969f2a2738f6accb1b41663a0cf436d50c4b208426  logs/probes_python3.12.txt
+33ccb74aef444448a67c1c232f31f5e6b02152980ccb6fac338ffd0a70ac6afe  logs/suite_baseline_python3.11.txt
+4bf727ecf31f7263d59fae3131cdd4b6035480a6a0283a6863320a5612897b05  logs/suite_baseline_python3.12.txt
+23a676b3cc8e1972324804b250ed05da2226577a38e26cbdb3aa95d231537c3f  logs/suite_focused_python3.11.txt
+4b98a99ea24f9b922befbb829845cf9c30971953bba39273e1a80da6742334c8  logs/suite_focused_python3.12.txt
+7eeec4357cdee524ac5c203cba0a4591d63ab150775dda51b6c207cb421a17a1  logs/suite_full_python3.11.txt
+7caecdeb512e6ccfd58855b7b2bb92c4b890a2b9fc38ddc60ddf9228dd62f75f  logs/suite_full_python3.12.txt

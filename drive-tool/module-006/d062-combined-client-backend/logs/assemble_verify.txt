@@ -1,0 +1,21 @@
+/scratch/work/d062-out/drive-tool/module-006/d062-combined-client-backend-summary/scripts/assemble_candidate.py:60: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+  tf.extractall(dest)
+/scratch/work/d062-out/drive-tool/module-006/d062-combined-client-backend-summary/scripts/assemble_candidate.py:60: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+  tf.extractall(dest)
+added  : ['drive_tool/file_service.py', 'tests/test_file_service.py']
+removed: []
+changed: []
+[OK] drive_tool/file_service.py gitblob=b7e18c606f45066cd54ec66016e70e797486ef50 expected=b7e18c606f45066cd54ec66016e70e797486ef50
+[OK] tests/test_file_service.py gitblob=8b5248f9365d8cac6e1331bb4677dea48a1778ff expected=8b5248f9365d8cac6e1331bb4677dea48a1778ff
+RESULT: PASS
+/scratch/work/d062-out/drive-tool/module-006/d062-combined-client-backend-summary/scripts/verify_published.py:51: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+  tf.extractall(dest)
+/scratch/work/d062-out/drive-tool/module-006/d062-combined-client-backend-summary/scripts/verify_published.py:51: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+  tf.extractall(dest)
+[OK] drive_tool/file_service.py gitblob=b7e18c606f45066cd54ec66016e70e797486ef50 expected=b7e18c606f45066cd54ec66016e70e797486ef50
+[OK] tests/test_file_service.py gitblob=8b5248f9365d8cac6e1331bb4677dea48a1778ff expected=8b5248f9365d8cac6e1331bb4677dea48a1778ff
+added  : ['drive_tool/file_service.py', 'tests/test_file_service.py']
+removed: []
+changed: []
+published commit: 67d37b2bba1e2676d12c99eff0559c04df6174c8
+RESULT: PASS

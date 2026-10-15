@@ -1,0 +1,15 @@
+D062 combined client/backend candidate — execution environment
+captured: 2026-10-15T18:38:03Z (UTC)
+
+OS: Debian GNU/Linux 12 (bookworm)
+kernel: Linux 4.19.0-gvisor
+arch: x86_64
+
+python3.11: Python 3.11.2  -> /usr/bin/python3.11
+python3.12: Python 3.12.13  -> /usr/local/bin/python3.12
+git: git version 2.39.5
+curl: curl 7.88.1 (x86_64-pc-linux-gnu) libcurl/7.88.1 OpenSSL/3.0.19 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libidn2/2.3.3 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.10.0 nghttp2/1.52.0 librtmp/2.3 OpenLDAP/2.5.13
+
+test runner: PYTHONPATH=. <python> -m unittest -v <tests.test_*>
+note: tests/ is an implicit namespace package (no __init__.py), so modules
+      are enumerated explicitly rather than via 'unittest discover'.
