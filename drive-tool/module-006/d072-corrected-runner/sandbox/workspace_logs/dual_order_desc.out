@@ -1,0 +1,12 @@
+$ /usr/local/bin/python3.12 /tmp/d072base/d063-b7f8d17b-nhqnaiw3/logs/_dual_order_repro.py desc /tmp/d072base/d063-b7f8d17b-nhqnaiw3/extract/drive-tool-b7f8d17b9dcc4aec68d54b38f994290e05264e67 tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged
+
+test_metadata_failure_below_root_is_skipped_and_charged (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) ... skipped 'LocalAdapter unsupported on this platform'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK (skipped=1)
+
+--- stderr ---
+
+EXIT=0 timed_out=False seconds=0.37
