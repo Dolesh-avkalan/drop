@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_post_lease_save_failure_is_uncertain (tests.test_http_adapter.SaveUncertaintyTests.test_post_lease_save_failure_is_uncertain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d076-base/tests/test_http_adapter.py", line 731, in test_post_lease_save_failure_is_uncertain
+    with self.assertRaises(DriveClientError) as cm:
+AssertionError: DriveClientError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.075s
+
+FAILED (failures=1)
