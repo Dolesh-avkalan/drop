@@ -1,0 +1,7 @@
+mutation,result,detail
+M1_unbounded_reply_read,CAUGHT,3 failing test(s)
+M2_lost_connection_close,CAUGHT,5 failing test(s)
+M3_automatic_save_retry,CAUGHT,4 failing test(s)
+M4_raw_remote_error_leakage,CAUGHT,5 failing test(s)
+M5_cross_request_connection_reuse,CAUGHT,2 failing test(s)
+M6_wrong_eof_handling,CAUGHT,1 failing test(s)

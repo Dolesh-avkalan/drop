@@ -1,0 +1,7 @@
+===== python3.12 =====
+   M1_unbounded_reply_read,CAUGHT,3 failing; compiles=True
+   M2_lost_connection_close,CAUGHT,5 failing; compiles=True
+   M3_automatic_save_retry,CAUGHT,4 failing; compiles=True
+   M4_raw_remote_error_leakage,CAUGHT,5 failing; compiles=True
+   M5_cross_request_connection_reuse,CAUGHT,2 failing; compiles=True
+   M6_wrong_eof_handling,CAUGHT,1 failing; compiles=True

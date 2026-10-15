@@ -1,0 +1,22 @@
+== read (non-root required) ==
+read file_id='p/a.txt'                 -> ACCEPTED (reached network; wrapped)
+read file_id='p/dir/f.txt'             -> ACCEPTED (reached network; wrapped)
+read file_id='a.txt'                   -> ACCEPTED (reached network; wrapped)
+read file_id='docs/x'                  -> ACCEPTED (reached network; wrapped)
+read file_id='p'                       -> ACCEPTED (reached network; wrapped)
+read file_id='p/'                      -> REJECTED pre-network (ValueError)
+read file_id='/abs'                    -> REJECTED pre-network (ValueError)
+read file_id='p/../x'                  -> REJECTED pre-network (ValueError)
+read file_id='p/./x'                   -> REJECTED pre-network (ValueError)
+read file_id='root'                    -> REJECTED pre-network (ValueError)
+read file_id='p\\x'                    -> REJECTED pre-network (ValueError)
+== save (non-root required) ==
+save file_id='a.txt'                   -> ACCEPTED (reached network; wrapped)
+save file_id='p/a.txt'                 -> ACCEPTED (reached network; wrapped)
+save file_id='root'                    -> REJECTED pre-network (ValueError)
+== list (root allowed) ==
+list file_id='root'                    -> ACCEPTED (reached network; wrapped)
+list file_id='a.txt'                   -> ACCEPTED (reached network; wrapped)
+list file_id='p/a.txt'                 -> ACCEPTED (reached network; wrapped)
+
+EXPECTED under director rule: non-root ids not starting 'p/' (a.txt, docs/x, p) -> REJECTED pre-network.

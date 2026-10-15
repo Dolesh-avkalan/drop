@@ -1,0 +1,22 @@
+# SHA-256 manifest for D047 evidence bundle (local Sarvam)
+# generated: 2026-10-15T17:01:56Z
+# exact committed source: branch feature/module-006a-client, head 81a6485c300f0a9cecc9c902c90360379c17e946
+# (see source_sha256.txt for the two committed file hashes)
+# logs are summary form: unittest progress-dot lines removed
+35ca8e867ae9f133e95197dedcec0664ab9efccb36cc4dc59eb50281389459d9  ./baseline_py311.log
+172531a6fd86604c8434a697895bee688420805effb6c10ee86023a19a2de99e  ./baseline_py312.log
+9374ea6045264753f0dae647dbc0b426873f1482cd2b62ffbaecc8296534de13  ./env.txt
+d8c5b0f53414cb2cce8787a212b199c5eafb5db42052d74fbb0741dc012862ff  ./full_suite_py311.log
+9e9118fcedee6346fc3ff83a968fa6f3fdfffd0b3cd6dc9ca776d3dcb15f8613  ./full_suite_py312.log
+292fa8fc269d62b3d96a0af1c94760f3cc40cd11e4d61252e4fcf9a385766911  ./mutations/M1_unbounded_reply_read.log
+c6abeeaa080303798c4d763ff99ab1769b9f99b9408c13a23964cc9ecb9792ea  ./mutations/M2_lost_connection_close.log
+b285387084a5faa806173206dcf723eea51af1afc0f2a7c6e269cb89296397b0  ./mutations/M3_automatic_save_retry.log
+ab791ff8376729722df2efeafcb2af68ae35c559a7c2021cbd318ea0e561c928  ./mutations/M4_raw_remote_error_leakage.log
+b3399a2df228dfb43e08dd05818d3af6f87ebd7cf583ec2c113f2f32291e2abb  ./mutations/M5_cross_request_connection_reuse.log
+37d5ef0b0b71a7808784f7ca95ef57eb76c70fc153fb7adbe9e238e603260206  ./mutations/M6_wrong_eof_handling.log
+029f30641a81da74b6deb95fbd793fd7ebcf5c4fa165756e34b996f5c4ce6083  ./mutations_summary.txt
+d6c6a1d811902f501426cc0c63baf132243534b0d3c1c6eacceb946e5f23297c  ./new_file_py311.log
+6bdbbab95797f9df1e4ef1d5e8b58056d1d6c729a209c5af0ccbf799c5fc9e21  ./new_file_py312.log
+e3e6a26c6312fcf4e04c04aad0f04ab3bbdaa08a5464521ba35c95fa2bec1203  ./report.md
+6ca88385fe312b98ea1b67efdc81c82f8119799b13b20dc970b10a5b9511d2a8  ./run_mutations.py
+0a17066a285833ad6c6054bf4ea5db480d779255e152ad22eadc41a70764e7a3  ./source_sha256.txt

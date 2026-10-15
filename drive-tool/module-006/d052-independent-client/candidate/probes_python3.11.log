@@ -1,0 +1,46 @@
+PASS wire.list exact path/headers/body
+PASS wire.list includes name_contains when given
+PASS wire.find exact keys
+PASS wire.read exact keys
+PASS wire.save query urlencoded + octet-stream body
+PASS bounded declared CL over cap fails before body read
+PASS bounded missing CL (chunked) exactly cap ok
+PASS bounded chunked cap+1 excess fails
+PASS bounded error body over cap fails
+PASS bounded read declared CL over request fails before read
+PASS read duplicate offset header fails closed
+PASS read malformed decimal header fails closed
+PASS read invalid eof token fails closed
+PASS read wrong content-type fails closed
+PASS read missing header fails closed
+PASS read offset mismatch fails closed
+PASS read short window without eof fails closed
+PASS read exact fill with eof fails closed
+PASS read short window with eof ok (short content)
+PASS read stale observed_size under growth allowed
+PASS read bytes exceed requested length fails
+FAIL truncated chunked read body does not leak a raw exception  :: IncompleteRead(0 bytes read)
+PASS success malformed JSON -> unavailable
+PASS success ok!=true -> unavailable
+PASS known error codes recognized
+PASS unknown code -> unavailable
+PASS ok:true on non-200 -> unavailable
+PASS save unknown reply -> uncertain, not retry-safe
+PASS save transport failure (refused) -> uncertain, not retry-safe
+PASS read transport failure -> uncertain False, retry-safe True
+PASS no automatic retry on save (exactly one request)
+PASS no automatic retry on read (exactly one request)
+PASS redaction: token/root/remote text never leak
+PASS redaction: repr of client hides token
+PASS invalid options before any socket (list/find/read/save)
+PASS constructor invalid before network
+PASS connection + response closed on success
+PASS connection + response closed on transport error
+PASS connection + response closed on protocol error
+PASS new connection per call (no reuse)
+PASS cap+1 read via seam argument
+PASS read bounded read uses length+1
+PASS redirect not followed
+PASS concurrent independent requests
+
+44 probes, 43 passed, 1 failed
