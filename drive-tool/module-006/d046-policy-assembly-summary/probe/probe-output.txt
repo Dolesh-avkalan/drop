@@ -1,0 +1,12 @@
+=== root NUL/backslash semantics (actual characters) ===
+actual NUL  '/x'+NUL+'y': ValueError: root must not contain NUL
+single backslash  '/x\\y': ValueError: root must not contain backslash
+two backslashes  '/x\\\\y': ValueError: root must not contain backslash
+normal  '/srv/data': ACCEPTED
+root '/': ACCEPTED
+trailing slash  '/foo/': ValueError: root must not contain empty components
+
+=== registry immutability ===
+type(_by_id): <class 'mappingproxy'>
+immutable OK: TypeError 'mappingproxy' object does not support item assignment
+authorize still returns exact grant: True

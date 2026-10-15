@@ -1,0 +1,41 @@
+# D046 byte-SHA256 manifest
+# Generated 2026-10-15T16:47:23Z
+
+## Committed source/tests on drive-tool feature/module-006a-policy (head dc3c2af7a83055903708b2622ef05c735ebb1210)
+8feedd9499f52df32449acb4ce8d1d2e2a32e7cbf7d5ab2bed2f1a8547d9aa1c    branch-path: drive_tool/service_policy.py
+ada2c59e46cab5cc6b188b8d1ddefa9a25cfebe7d40e64df3ad65b3d5501959b    branch-path: tests/test_service_policy.py
+
+## Verbatim generated candidate (branch commit dae2ca040550adea80bee3541e5cfd9db6080127)
+537837dd2f90505ed0ef37905e4f5e0cdfcc2e39dc2c808dfc32e7b97aeedd6e    path: drive_tool/service_policy.verbatim.py
+d8d777681dd310e6612ac4bfea4c9389d770bb4d95bacfacfd6460e8b4db7f4d    path: tests/test_service_policy.verbatim.py
+
+## Generated answer file (drop@1aa5ba7 drive-tool/module-006/d045-deepseek-service-policy.md)
+820c9b43d6f22222e937fd9bbc66a50567dcfffce136e6318281157545d00fac    path: drive-tool/module-006/d045-deepseek-service-policy.md
+
+## Evidence files in this bundle (drive-tool/module-006/d046-policy-assembly/)
+ae1a729bc3f160da1d624b1bab03621737d3652c7e854d9ed19054c202cebdd5  ./D046-REPORT.md
+6058112fad66c6971ee68b4a064dd67f6146ae83caf954dacb0d24c1c24ee5ec  ./logs/final-full-3.11.log
+df6d9032bb2018033121f577fe77a17e0126e21c1c3cd646ca0b4c3057424e47  ./logs/final-full-3.12.log
+806c3207eac2e8adbb53088fec93f4e399bead831aaca5d406d7f259b38e439b  ./logs/final-policy-3.11.log
+d7a8d795fd5fb27f947ac520f7acd4ac0ccd27ee04b561b8d8c8fe27c55be404  ./logs/final-policy-3.12.log
+6d8298f0a147fa241555a2ae16b1e2461aabb3d1738688c4894983abdba8d58e  ./logs/initial-full-3.11.log
+8ad451ad312aa63bc643faca3aa2eeec7a97b267de689a5da688f6f8cc6cdee1  ./logs/initial-full-3.12.log
+48b3ece34e53c03f5a66c234db7699adee6204012d8f71e2c8df3d728ab6f521  ./logs/initial-policy-3.11.log
+1ece4927bccdb59781b339fe0ebc1cec30a394f275f2770fb9996d534f093eb0  ./logs/initial-policy-3.12.log
+927b9e9abb2a190ea45f5f12f7811680a4bc3b0ad847893c9d3ceb87b5358c3c  ./logs/mutation-summary.txt
+4e9cc5e481b6d10b3a49b4825bd24403a08418806c4f42102196bc546692e368  ./logs/mutations/M1_early_auth_return.python3.11.log
+aa9d824034a80381cb0467f029ff30131d6a4c1d69867714daf5b9ff5e140bda  ./logs/mutations/M1_early_auth_return.python3.12.log
+631c023a3b44a2469d23b571b0d2d1f93d7ea9fe9bb1e89be504a67beaf6d5e4  ./logs/mutations/M2_duplicate_digest_acceptance.python3.11.log
+6bb5a14ee05eb714ef571e3d5c8927f5c4db1c082bbece671947dee26c2c40a7  ./logs/mutations/M2_duplicate_digest_acceptance.python3.12.log
+fac2693ec80888f0f670ea9f505def51872dd227cb6484e9214cbd6f8305f75a  ./logs/mutations/M3_cross_agent_alias_fallback.python3.11.log
+d37a4c99b2145b354e0af675733040fc2893cb486720bd0e90a7469e399a31e8  ./logs/mutations/M3_cross_agent_alias_fallback.python3.12.log
+608253b86102539dd28fcc8bbb927c0be921a3213fb9fde16740b1b6045ebd8b  ./logs/mutations/M4_readonly_save_bypass.python3.11.log
+823e13548519ffcddc5bc49cda253c487a7b745d08e916bd3475e469d06367b0  ./logs/mutations/M4_readonly_save_bypass.python3.12.log
+0d690be61cd5f189adea2836c328def4cef21b397b072a7e1a1a74f74973d4ca  ./logs/mutations/M5_malformed_root_acceptance.python3.11.log
+02fac1bf9940856bf2b7e430e156e446552877bb8fcddd4875561452c4ac1dcc  ./logs/mutations/M5_malformed_root_acceptance.python3.12.log
+943ecc1407e9ff178d5708212dd52ef8be9c07dfa77ed45631ef29ad970b8af9  ./logs/mutations/M6_cap_upper_bound_bypass.python3.11.log
+268f251fac47a73aa1f576d473461b0a60f13c97353882964fcb40d65548c237  ./logs/mutations/M6_cap_upper_bound_bypass.python3.12.log
+bee460289c6968dd58632d0e125473e977dc7fb37f42debbe4e8ba70c9356a1c  ./probe/probe-output.txt
+7b7c587230a930f2c1211624fca80c7211d0d8ffcf5913a1aa65e74be7be2b0e  ./probe/probe_nul_backslash_and_registry.py
+abcb1ccfa6142b6a9d8a95a52e6e04670e463cac0b226f7a49659a1dfd5d6e6a  ./scripts/extract.py
+034f7264c9d543f2536a212f35d36085aafd4844572fcabf518d432143409d42  ./scripts/mutation_runner.py

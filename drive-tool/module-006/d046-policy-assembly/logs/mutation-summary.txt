@@ -1,0 +1,26 @@
+M1_early_auth_return: CAUGHT
+    python3.11: exit=1 | FAILED (failures=1) | failed=['test_compares_all_digests_no_early_return']
+    python3.12: exit=1 | FAILED (failures=1) | failed=['test_compares_all_digests_no_early_return']
+M2_duplicate_digest_acceptance: CAUGHT
+    python3.11: exit=1 | FAILED (failures=1) | failed=['test_duplicate_token_digest_rejected']
+    python3.12: exit=1 | FAILED (failures=1) | failed=['test_duplicate_token_digest_rejected']
+M3_cross_agent_alias_fallback: CAUGHT
+    python3.11: exit=1 | FAILED (failures=2) | failed=['test_allowed_returns_exact_object', 'test_same_alias_across_agents_isolated']
+    python3.12: exit=1 | FAILED (failures=2) | failed=['test_allowed_returns_exact_object', 'test_same_alias_across_agents_isolated']
+M4_readonly_save_bypass: CAUGHT
+    python3.11: exit=1 | FAILED (failures=4) | failed=['test_caps_do_not_grant_absent_operations', 'test_denied_message_identical_across_reasons', 'test_read_only_denies_save', 'test_save_only_denies_read']
+    python3.12: exit=1 | FAILED (failures=4) | failed=['test_caps_do_not_grant_absent_operations', 'test_denied_message_identical_across_reasons', 'test_read_only_denies_save', 'test_save_only_denies_read']
+M5_malformed_root_acceptance: CAUGHT
+    python3.11: exit=1 | FAILED (failures=2) | failed=['test_root_backslash_rejected', 'test_root_nul_rejected']
+    python3.12: exit=1 | FAILED (failures=2) | failed=['test_root_backslash_rejected', 'test_root_nul_rejected']
+M6_cap_upper_bound_bypass: CAUGHT
+    python3.11: exit=1 | FAILED (failures=1) | failed=['test_cap_too_large_rejected']
+    python3.12: exit=1 | FAILED (failures=1) | failed=['test_cap_too_large_rejected']
+
+=== SUMMARY ===
+M1_early_auth_return: CAUGHT  (intended: test_compares_all_digests_no_early_return)
+M2_duplicate_digest_acceptance: CAUGHT  (intended: test_duplicate_token_digest_rejected)
+M3_cross_agent_alias_fallback: CAUGHT  (intended: test_same_alias_across_agents_isolated / test_unknown_agent_denied)
+M4_readonly_save_bypass: CAUGHT  (intended: test_read_only_denies_save / test_save_only_denies_read / test_caps_do_not_grant_absent_operations)
+M5_malformed_root_acceptance: CAUGHT  (intended: test_root_nul_rejected / test_root_backslash_rejected)
+M6_cap_upper_bound_bypass: CAUGHT  (intended: test_cap_too_large_rejected)
