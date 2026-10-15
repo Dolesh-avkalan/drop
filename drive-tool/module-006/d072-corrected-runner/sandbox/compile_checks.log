@@ -1,0 +1,17 @@
+=== compile check: corrected runner ===
+$ python3.11 -m py_compile runner/run_cloud_stress.py
+OK 3.11 (Python 3.11.2)
+$ python3.12 -m py_compile runner/run_cloud_stress.py
+OK 3.12 (Python 3.12.13)
+
+=== compile check: unchanged payload ===
+$ python3.11 -m py_compile runner/stress_checks.py
+OK 3.11
+$ python3.12 -m py_compile runner/stress_checks.py
+OK 3.12
+
+=== compile check: original (D063) runner ===
+$ python3.11 -m py_compile originals/runner/run_cloud_stress.py
+OK 3.11
+$ python3.12 -m py_compile originals/runner/run_cloud_stress.py
+OK 3.12
