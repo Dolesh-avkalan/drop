@@ -1,0 +1,18 @@
+# MODULE-005B d040-implementation artifact manifest
+# Generated over the exact bytes published in this drop.
+# path | bytes | sha256
+REPORT.md | 5680 | 59679a1ee645943bea4630f5afe601f24fe3ff5cca4415ae3a9c2b84bdb47f79
+raw/full_suite_python3.11.log | 47767 | a28245e9ac782482de24ab44a0087f20d391f9c2111a42ea180966f0c404184d
+raw/full_suite_python3.12.log | 47767 | e36ebf6c5d821d69cbd7b070574b269d84d7dc0e11f1dcc4b04a37c2a6c13b82
+raw/mutation_M1_read_bytes_and_slice.log | 68104 | 3f2ce9016ec61461154f1d93294aa250aabb9272067d2a0a874d794a09a0bc8f
+raw/mutation_M2_unbounded_pread_request.log | 59564 | 1b728bdb6ecce16a4cc842d828eba90552cbb1e5a638b4fdf6b24689396922db
+raw/mutation_M3_early_stop_on_short_read.log | 52742 | f9c2b9721d97d8a75c62c44797678946f863602b71941b2ba151d3911b2da094
+raw/mutation_M4_incorrect_exact_window_eof.log | 49424 | a808f18daf41418024a5dfe292a2b59a17b465b10e066ee5c56372f8c395828a
+raw/mutation_M5_missing_no_follow.log | 57420 | 11bf42c3ca73cd2ad181f0bae616da6bab5ce4ff3a3a2df62316eae1d0e9e849
+raw/mutation_M6a_lost_fd_cleanup.log | 50921 | d9b7d1b7bd39bff56a91bd5ab14e6f96664efe7ef8effb33a9e1d8b14d7608a7
+raw/mutation_M6b_error_priority_masked.log | 49175 | 826c2cd14de64c4d70fe41f86c24f7e1bd9df73a6741a3732527f77f0dfbff2a
+raw/mutation_baseline.log | 47767 | bb2eeb2706362d69e14231307ca9d764355ec95e0e30a46ee39598dca70d8134
+raw/mutation_summary_python3.11.log | 2410 | 015a33495c4f057839e08435ff77736a8520962efe3c771449b3774a557e39db
+raw/mutation_summary_python3.12.log | 2410 | 56e4b5a187c83d044424ac3b8f978635eab80f6fec309e649f08ed18105cf859
+scripts/mutation_runner.py | 6901 | e9e4ed5db6a671093a4fe0f21dca671621bf8afc6bfa97861040e4df5118e14b
+scripts/run_full_suite.sh | 580 | e7d0967aeee7c8154d1dab3bd46d3ab873f037eacf1304457ca9dbeb4012afa2

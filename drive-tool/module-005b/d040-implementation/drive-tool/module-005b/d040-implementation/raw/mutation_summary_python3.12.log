@@ -1,0 +1,19 @@
+[baseline] exit=0 Ran 351 tests in 3.856s | OK caught=[]
+[M1_read_bytes_and_slice] CAUGHT (exit=1) caught_by=25: ['test_concurrent_reads_with_independent_offsets', 'test_default_window_is_min_262144_and_cap', 'test_each_concurrent_call_opens_its_own_descriptor', 'test_eintr_is_retried', 'test_explicit_window_honoured', 'test_growth_after_fstat_can_yield_data']
+[M2_unbounded_pread_request] CAUGHT (exit=1) caught_by=18: ['test_concurrent_reads_with_independent_offsets', 'test_default_window_is_min_262144_and_cap', 'test_each_concurrent_call_opens_its_own_descriptor', 'test_eintr_is_retried', 'test_explicit_window_honoured', 'test_length_equal_to_cap_is_accepted']
+[M3_early_stop_on_short_read] CAUGHT (exit=1) caught_by=9: ['test_growth_after_fstat_can_yield_data', 'test_growth_after_fstat_is_visible_and_eof_from_pread', 'test_no_pread_after_eof_is_observed', 'test_one_byte_chunks_fill_the_whole_window', 'test_pread_failure_after_partial_data_is_not_a_partial_success', 'test_short_nonempty_read_is_not_treated_as_eof']
+[M4_incorrect_exact_window_eof] CAUGHT (exit=1) caught_by=3: ['test_eof_not_derived_from_observed_size', 'test_exact_fill_is_not_eof_even_though_size_matches', 'test_exact_window_that_fills_request_is_not_eof']
+[M5_missing_no_follow] CAUGHT (exit=1) caught_by=7: ['test_adversarial_swap_target_for_symlink_before_open', 'test_adversarial_symlink_swap_between_stat_and_read_and_mid_traversal', 'test_file_and_dir_open_flags_share_safe_flags', 'test_final_and_intermediate_symlinks_rejected_and_omitted_from_listing', 'test_final_symlink_rejected', 'test_swapped_symlink_cannot_escape']
+[M6a_lost_fd_cleanup] CAUGHT (exit=1) caught_by=5: ['test_linux_proc_self_fd_stable', 'test_no_fd_growth_across_success_and_failures', 'test_parent_handoff_close_failure_releases_child', 'test_success_and_failure_release_every_fd_once', 'test_success_path_close_failure_wrapped']
+[M6b_error_priority_masked] CAUGHT (exit=1) caught_by=2: ['test_primary_and_cleanup_errors_no_leak_no_retry', 'test_primary_pread_error_wins_over_close_failure']
+
+=== SUMMARY ===
+M1_read_bytes_and_slice: CAUGHT (25 tests)
+M2_unbounded_pread_request: CAUGHT (18 tests)
+M3_early_stop_on_short_read: CAUGHT (9 tests)
+M4_incorrect_exact_window_eof: CAUGHT (3 tests)
+M5_missing_no_follow: CAUGHT (7 tests)
+M6a_lost_fd_cleanup: CAUGHT (5 tests)
+M6b_error_priority_masked: CAUGHT (2 tests)
+
+mutants=7 caught=7 survivors=0
