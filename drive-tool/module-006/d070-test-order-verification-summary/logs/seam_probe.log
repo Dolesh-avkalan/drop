@@ -1,0 +1,42 @@
+########## python3.11 ##########
+=== SEAM ENFORCEMENT PROBE (independent of the test assertions) ===
+
+order=['sub', 'a.txt', 'b.txt']
+  raw fs order (root)       = ['sub']
+  seam-yielded order (root) = ['sub']   -> OK
+  raw fs order (sub)        = ['a.txt', 'b.txt']
+  seam-yielded order (sub)  = ['a.txt', 'b.txt']   -> OK
+  scan_children(root).inspected = 1 complete=True
+  scan_children(sub).inspected  = 2 complete=True
+
+order=['sub', 'b.txt', 'a.txt']
+  raw fs order (root)       = ['sub']
+  seam-yielded order (root) = ['sub']   -> OK
+  raw fs order (sub)        = ['a.txt', 'b.txt']
+  seam-yielded order (sub)  = ['b.txt', 'a.txt']   -> OK
+  scan_children(root).inspected = 1 complete=True
+  scan_children(sub).inspected  = 2 complete=True
+
+SEAM ENFORCES BOTH NESTED ORDERS: True
+exit=0
+########## python3.12 ##########
+=== SEAM ENFORCEMENT PROBE (independent of the test assertions) ===
+
+order=['sub', 'a.txt', 'b.txt']
+  raw fs order (root)       = ['sub']
+  seam-yielded order (root) = ['sub']   -> OK
+  raw fs order (sub)        = ['a.txt', 'b.txt']
+  seam-yielded order (sub)  = ['a.txt', 'b.txt']   -> OK
+  scan_children(root).inspected = 1 complete=True
+  scan_children(sub).inspected  = 2 complete=True
+
+order=['sub', 'b.txt', 'a.txt']
+  raw fs order (root)       = ['sub']
+  seam-yielded order (root) = ['sub']   -> OK
+  raw fs order (sub)        = ['a.txt', 'b.txt']
+  seam-yielded order (sub)  = ['b.txt', 'a.txt']   -> OK
+  scan_children(root).inspected = 1 complete=True
+  scan_children(sub).inspected  = 2 complete=True
+
+SEAM ENFORCES BOTH NESTED ORDERS: True
+exit=0

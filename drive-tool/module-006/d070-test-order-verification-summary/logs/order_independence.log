@@ -1,0 +1,18 @@
+## python3.11
+=== ORDER-INDEPENDENCE (no filesystem order masking) ===
+seam_order=['sub', 'a.txt', 'b.txt'] creation_order=['a.txt', 'b.txt'] raw_fs=['a.txt', 'b.txt'] -> inspected=2 (expected 2) skipped=('p/sub',) truncated=True reason=skipped OK
+seam_order=['sub', 'a.txt', 'b.txt'] creation_order=['b.txt', 'a.txt'] raw_fs=['b.txt', 'a.txt'] -> inspected=2 (expected 2) skipped=('p/sub',) truncated=True reason=skipped OK
+seam_order=['sub', 'b.txt', 'a.txt'] creation_order=['a.txt', 'b.txt'] raw_fs=['a.txt', 'b.txt'] -> inspected=3 (expected 3) skipped=('p/sub',) truncated=True reason=skipped OK
+seam_order=['sub', 'b.txt', 'a.txt'] creation_order=['b.txt', 'a.txt'] raw_fs=['b.txt', 'a.txt'] -> inspected=3 (expected 3) skipped=('p/sub',) truncated=True reason=skipped OK
+
+PATCHED ASSERTION IS FILESYSTEM-ORDER INDEPENDENT: True
+exit=0
+## python3.12
+=== ORDER-INDEPENDENCE (no filesystem order masking) ===
+seam_order=['sub', 'a.txt', 'b.txt'] creation_order=['a.txt', 'b.txt'] raw_fs=['a.txt', 'b.txt'] -> inspected=2 (expected 2) skipped=('p/sub',) truncated=True reason=skipped OK
+seam_order=['sub', 'a.txt', 'b.txt'] creation_order=['b.txt', 'a.txt'] raw_fs=['b.txt', 'a.txt'] -> inspected=2 (expected 2) skipped=('p/sub',) truncated=True reason=skipped OK
+seam_order=['sub', 'b.txt', 'a.txt'] creation_order=['a.txt', 'b.txt'] raw_fs=['a.txt', 'b.txt'] -> inspected=3 (expected 3) skipped=('p/sub',) truncated=True reason=skipped OK
+seam_order=['sub', 'b.txt', 'a.txt'] creation_order=['b.txt', 'a.txt'] raw_fs=['b.txt', 'a.txt'] -> inspected=3 (expected 3) skipped=('p/sub',) truncated=True reason=skipped OK
+
+PATCHED ASSERTION IS FILESYSTEM-ORDER INDEPENDENT: True
+exit=0

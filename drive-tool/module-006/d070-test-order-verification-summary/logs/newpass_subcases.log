@@ -1,0 +1,12 @@
+########## python3.11 : NEWPASS SUBCASES ##########
+--- subcase results ---
+  PASS  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'a.txt', 'b.txt'], expected_inspected=2)
+  PASS  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'b.txt', 'a.txt'], expected_inspected=3)
+subtests=2 failures=0 errors=0
+exit=0
+########## python3.12 : NEWPASS SUBCASES ##########
+--- subcase results ---
+  PASS  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'a.txt', 'b.txt'], expected_inspected=2)
+  PASS  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'b.txt', 'a.txt'], expected_inspected=3)
+subtests=2 failures=0 errors=0
+exit=0

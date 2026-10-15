@@ -1,0 +1,16 @@
+diff --git a/drive_tool/local.py b/drive_tool/local.py
+index 74a45c6..6438054 100644
+--- a/drive_tool/local.py
++++ b/drive_tool/local.py
+@@ -645,7 +645,10 @@ class LocalAdapter:
+         if isinstance(exc, ScanFailure):
+             return exc
+         if entry_count > 0:
+-            return ScanFailure(entry_count, exc)
++            # D070 MUTATION (isolated copy only; never committed to candidate):
++            # under-charge by 1 -- the entry that raised from the metadata/stat
++            # seam is treated as uncharged.
++            return ScanFailure(entry_count - 1, exc)
+         return exc
+ 
+     # -- root initialization ---------------------------------------------------

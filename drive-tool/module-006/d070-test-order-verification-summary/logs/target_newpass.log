@@ -1,0 +1,16 @@
+########## python3.11 : TARGET (patched) ##########
+test_metadata_failure_below_root_is_skipped_and_charged (__main__.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.008s
+
+OK
+exit=0
+########## python3.12 : TARGET (patched) ##########
+test_metadata_failure_below_root_is_skipped_and_charged (__main__.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.008s
+
+OK
+exit=0

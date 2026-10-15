@@ -1,0 +1,60 @@
+########## python3.11 : MUTATION vs patched target (both subcases MUST fail) ##########
+test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) ... 
+  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'a.txt', 'b.txt'], expected_inspected=2) ... FAIL
+  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'b.txt', 'a.txt'], expected_inspected=3) ... FAIL
+
+======================================================================
+FAIL: test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'a.txt', 'b.txt'], expected_inspected=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d070/mutation/repo/tests/test_partial_scan_review_fixes.py", line 412, in test_metadata_failure_below_root_is_skipped_and_charged
+    self.assertEqual(result.inspected, expected_inspected)
+AssertionError: 1 != 2
+
+======================================================================
+FAIL: test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'b.txt', 'a.txt'], expected_inspected=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d070/mutation/repo/tests/test_partial_scan_review_fixes.py", line 412, in test_metadata_failure_below_root_is_skipped_and_charged
+    self.assertEqual(result.inspected, expected_inspected)
+AssertionError: 2 != 3
+
+----------------------------------------------------------------------
+Ran 1 test in 0.009s
+
+FAILED (failures=2)
+--- subcase results ---
+  FAIL  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'a.txt', 'b.txt'], expected_inspected=2)
+  FAIL  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'b.txt', 'a.txt'], expected_inspected=3)
+subtests=2 failures=2 errors=0
+exit=1
+########## python3.12 : MUTATION vs patched target (both subcases MUST fail) ##########
+test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) ... 
+  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'a.txt', 'b.txt'], expected_inspected=2) ... FAIL
+  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'b.txt', 'a.txt'], expected_inspected=3) ... FAIL
+
+======================================================================
+FAIL: test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'a.txt', 'b.txt'], expected_inspected=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d070/mutation/repo/tests/test_partial_scan_review_fixes.py", line 412, in test_metadata_failure_below_root_is_skipped_and_charged
+    self.assertEqual(result.inspected, expected_inspected)
+AssertionError: 1 != 2
+
+======================================================================
+FAIL: test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'b.txt', 'a.txt'], expected_inspected=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d070/mutation/repo/tests/test_partial_scan_review_fixes.py", line 412, in test_metadata_failure_below_root_is_skipped_and_charged
+    self.assertEqual(result.inspected, expected_inspected)
+AssertionError: 2 != 3
+
+----------------------------------------------------------------------
+Ran 1 test in 0.010s
+
+FAILED (failures=2)
+--- subcase results ---
+  FAIL  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'a.txt', 'b.txt'], expected_inspected=2)
+  FAIL  test_metadata_failure_below_root_is_skipped_and_charged (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) (order=['sub', 'b.txt', 'a.txt'], expected_inspected=3)
+subtests=2 failures=2 errors=0
+exit=1

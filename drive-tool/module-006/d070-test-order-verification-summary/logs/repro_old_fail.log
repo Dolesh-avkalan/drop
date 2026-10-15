@@ -1,0 +1,48 @@
+########## python3.11 : OLD-FAIL REPRODUCTION ##########
+test_old_body_filesystem_order (__main__.OldBodyRepro.test_old_body_filesystem_order)
+Original order pin only -> passes here because readdir gave a.txt first. ... ok
+test_old_body_reversed_nested_order (__main__.OldBodyRepro.test_old_body_reversed_nested_order)
+Deterministic reversed nested order -> original assertion fails. ... FAIL
+
+======================================================================
+FAIL: test_old_body_reversed_nested_order (__main__.OldBodyRepro.test_old_body_reversed_nested_order)
+Deterministic reversed nested order -> original assertion fails.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d070/repo/../scripts/repro_old_fail.py", line 60, in test_old_body_reversed_nested_order
+    self._run_old_body(["sub", "b.txt", "a.txt"])
+  File "/scratch/work/d070/repo/../scripts/repro_old_fail.py", line 47, in _run_old_body
+    self.assertEqual(result.inspected, 2)
+AssertionError: 3 != 2
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.034s
+
+FAILED (failures=1)
+    [order=['sub']] actual inspected=2 skipped=('p/sub',) truncated=True reason=skipped
+    [order=['sub', 'b.txt', 'a.txt']] actual inspected=3 skipped=('p/sub',) truncated=True reason=skipped
+exit=1
+########## python3.12 : OLD-FAIL REPRODUCTION ##########
+test_old_body_filesystem_order (__main__.OldBodyRepro.test_old_body_filesystem_order)
+Original order pin only -> passes here because readdir gave a.txt first. ... ok
+test_old_body_reversed_nested_order (__main__.OldBodyRepro.test_old_body_reversed_nested_order)
+Deterministic reversed nested order -> original assertion fails. ... FAIL
+
+======================================================================
+FAIL: test_old_body_reversed_nested_order (__main__.OldBodyRepro.test_old_body_reversed_nested_order)
+Deterministic reversed nested order -> original assertion fails.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d070/repo/../scripts/repro_old_fail.py", line 60, in test_old_body_reversed_nested_order
+    self._run_old_body(["sub", "b.txt", "a.txt"])
+  File "/scratch/work/d070/repo/../scripts/repro_old_fail.py", line 47, in _run_old_body
+    self.assertEqual(result.inspected, 2)
+AssertionError: 3 != 2
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.009s
+
+FAILED (failures=1)
+    [order=['sub']] actual inspected=2 skipped=('p/sub',) truncated=True reason=skipped
+    [order=['sub', 'b.txt', 'a.txt']] actual inspected=3 skipped=('p/sub',) truncated=True reason=skipped
+exit=1

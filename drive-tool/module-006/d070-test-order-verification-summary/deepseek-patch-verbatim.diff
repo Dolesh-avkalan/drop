@@ -1,0 +1,42 @@
+--- a/tests/test_partial_scan_review_fixes.py
++++ b/tests/test_partial_scan_review_fixes.py
+@@ -395,17 +395,23 @@
+     def test_metadata_failure_below_root_is_skipped_and_charged(self):
+-        with tempfile.TemporaryDirectory() as td:
+-            root = Path(td)
+-            (root / "sub").mkdir()
+-            _write_files(root / "sub", ["a.txt", "b.txt"])
+-            adapter = self._adapter(root, order=["sub"])
+-            boom = LocalStorageError("sub metadata boom")
+-            adapter.probe.build_error = {"a.txt": boom}
+-            try:
+-                result = find(adapter, FileRef("src", ROOT_ID), "zzz", max_entries=100)
+-                # root (1) + sub's first raw entry (1) = 2.
+-                self.assertEqual(result.inspected, 2)
+-                self.assertEqual(result.skipped, ("p/sub",))
+-                self.assertTrue(result.truncated)
+-                self.assertEqual(result.reason, "skipped")
+-            finally:
+-                adapter.close()
++        cases = (
++            (["sub", "a.txt", "b.txt"], 2),
++            (["sub", "b.txt", "a.txt"], 3),
++        )
++        for order, expected_inspected in cases:
++            with self.subTest(order=order, expected_inspected=expected_inspected):
++                with tempfile.TemporaryDirectory() as td:
++                    root = Path(td)
++                    (root / "sub").mkdir()
++                    _write_files(root / "sub", ["a.txt", "b.txt"])
++                    adapter = self._adapter(root, order=order)
++                    boom = LocalStorageError("sub metadata boom")
++                    adapter.probe.build_error = {"a.txt": boom}
++                    try:
++                        result = find(adapter, FileRef("src", ROOT_ID), "zzz", max_entries=100)
++                        # root (1) + charged sub entries at/after the failure.
++                        self.assertEqual(result.inspected, expected_inspected)
++                        self.assertEqual(result.skipped, ("p/sub",))
++                        self.assertTrue(result.truncated)
++                        self.assertEqual(result.reason, "skipped")
++                    finally:
++                        adapter.close()
