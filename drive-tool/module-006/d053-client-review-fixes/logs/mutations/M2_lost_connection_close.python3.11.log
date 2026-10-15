@@ -1,0 +1,142 @@
+test_declared_content_length_over_cap_fails_before_read (tests.test_service_client.TestBoundedReplies.test_declared_content_length_over_cap_fails_before_read) ... ok
+test_error_body_over_cap_fails (tests.test_service_client.TestBoundedReplies.test_error_body_over_cap_fails) ... ok
+test_json_success_body_over_cap_fails (tests.test_service_client.TestBoundedReplies.test_json_success_body_over_cap_fails) ... ok
+test_read_declared_length_over_request_fails_before_read (tests.test_service_client.TestBoundedReplies.test_read_declared_length_over_request_fails_before_read) ... ok
+test_read_over_requested_length_fails (tests.test_service_client.TestBoundedReplies.test_read_over_requested_length_fails) ... ok
+test_save_success_body_over_cap_is_uncertain (tests.test_service_client.TestBoundedReplies.test_save_success_body_over_cap_is_uncertain) ... ok
+test_concurrent_calls_are_independent (tests.test_service_client.TestCloseAndIsolation.test_concurrent_calls_are_independent) ... ok
+test_connection_and_response_closed_on_error (tests.test_service_client.TestCloseAndIsolation.test_connection_and_response_closed_on_error) ... FAIL
+test_connection_and_response_closed_on_success (tests.test_service_client.TestCloseAndIsolation.test_connection_and_response_closed_on_success) ... FAIL
+test_new_connection_per_call_no_reuse (tests.test_service_client.TestCloseAndIsolation.test_new_connection_per_call_no_reuse) ... FAIL
+test_open_returns_a_new_connection_each_time (tests.test_service_client.TestCloseAndIsolation.test_open_returns_a_new_connection_each_time) ... ok
+test_two_calls_on_one_client_use_two_connections (tests.test_service_client.TestCloseAndIsolation.test_two_calls_on_one_client_use_two_connections) ... ok
+test_constructor_performs_no_network (tests.test_service_client.TestConstructor.test_constructor_performs_no_network) ... ok
+test_port_range_errors (tests.test_service_client.TestConstructor.test_port_range_errors) ... ok
+test_port_type_errors (tests.test_service_client.TestConstructor.test_port_type_errors) ... ok
+test_timeout_accepts_positive_int (tests.test_service_client.TestConstructor.test_timeout_accepts_positive_int) ... ok
+test_timeout_range_errors (tests.test_service_client.TestConstructor.test_timeout_range_errors) ... ok
+test_timeout_type_errors (tests.test_service_client.TestConstructor.test_timeout_type_errors) ... ok
+test_token_character_errors (tests.test_service_client.TestConstructor.test_token_character_errors) ... ok
+test_token_length_errors (tests.test_service_client.TestConstructor.test_token_length_errors) ... ok
+test_token_type_error (tests.test_service_client.TestConstructor.test_token_type_error) ... ok
+test_valid_constructor_and_repr_is_redacted (tests.test_service_client.TestConstructor.test_valid_constructor_and_repr_is_redacted) ... ok
+test_error_is_redacted_even_if_server_echoes_token (tests.test_service_client.TestErrorEnvelopes.test_error_is_redacted_even_if_server_echoes_token) ... ok
+test_known_codes_recognized (tests.test_service_client.TestErrorEnvelopes.test_known_codes_recognized) ... ok
+test_malformed_json_maps_to_unavailable (tests.test_service_client.TestErrorEnvelopes.test_malformed_json_maps_to_unavailable) ... ok
+test_missing_flags_use_read_only_defaults (tests.test_service_client.TestErrorEnvelopes.test_missing_flags_use_read_only_defaults) ... ok
+test_missing_flags_use_write_defaults_for_save (tests.test_service_client.TestErrorEnvelopes.test_missing_flags_use_write_defaults_for_save) ... ok
+test_ok_true_on_non_200_maps_to_unavailable (tests.test_service_client.TestErrorEnvelopes.test_ok_true_on_non_200_maps_to_unavailable) ... ok
+test_uncertainty_flags_honored (tests.test_service_client.TestErrorEnvelopes.test_uncertainty_flags_honored) ... ok
+test_unknown_code_maps_to_unavailable (tests.test_service_client.TestErrorEnvelopes.test_unknown_code_maps_to_unavailable) ... ok
+test_find_custom_bounds (tests.test_service_client.TestFindWire.test_find_custom_bounds) ... ok
+test_find_request_and_reply (tests.test_service_client.TestFindWire.test_find_request_and_reply) ... ok
+test_list_name_contains_omitted_when_none (tests.test_service_client.TestListWire.test_list_name_contains_omitted_when_none) ... ok
+test_list_name_contains_present_and_utf8 (tests.test_service_client.TestListWire.test_list_name_contains_present_and_utf8) ... ok
+test_list_request_and_reply (tests.test_service_client.TestListWire.test_list_request_and_reply) ... ok
+test_read_duplicate_header_fails_closed (tests.test_service_client.TestReadWire.test_read_duplicate_header_fails_closed) ... ok
+test_read_exact_fill_is_not_eof (tests.test_service_client.TestReadWire.test_read_exact_fill_is_not_eof) ... ok
+test_read_exact_fill_with_eof_is_protocol_invalid (tests.test_service_client.TestReadWire.test_read_exact_fill_with_eof_is_protocol_invalid) ... ok
+test_read_invalid_decimal_header_fails_closed (tests.test_service_client.TestReadWire.test_read_invalid_decimal_header_fails_closed) ... ok
+test_read_invalid_eof_token_fails_closed (tests.test_service_client.TestReadWire.test_read_invalid_eof_token_fails_closed) ... ok
+test_read_missing_header_fails_closed (tests.test_service_client.TestReadWire.test_read_missing_header_fails_closed) ... ok
+test_read_offset_mismatch_fails_closed (tests.test_service_client.TestReadWire.test_read_offset_mismatch_fails_closed) ... ok
+test_read_reply_is_frozen (tests.test_service_client.TestReadWire.test_read_reply_is_frozen) ... ok
+test_read_request_and_reply (tests.test_service_client.TestReadWire.test_read_request_and_reply) ... ok
+test_read_short_window_without_eof_fails_closed (tests.test_service_client.TestReadWire.test_read_short_window_without_eof_fails_closed) ... ok
+test_read_stale_size_under_growth_is_allowed (tests.test_service_client.TestReadWire.test_read_stale_size_under_growth_is_allowed) ... ok
+test_read_wrong_content_type_fails_closed (tests.test_service_client.TestReadWire.test_read_wrong_content_type_fails_closed) ... ok
+test_redirect_is_not_followed (tests.test_service_client.TestRedirects.test_redirect_is_not_followed) ... ok
+test_body_error_is_redacted (tests.test_service_client.TestResponseBodyTransportErrors.test_body_error_is_redacted) ... ok
+test_error_path_body_timeout_maps_to_timeout (tests.test_service_client.TestResponseBodyTransportErrors.test_error_path_body_timeout_maps_to_timeout) ... ok
+test_no_retry_on_body_transport_error (tests.test_service_client.TestResponseBodyTransportErrors.test_no_retry_on_body_transport_error) ... ok
+test_read_body_incomplete_read_is_unavailable (tests.test_service_client.TestResponseBodyTransportErrors.test_read_body_incomplete_read_is_unavailable) ... ok
+test_read_body_malformed_chunk_is_unavailable (tests.test_service_client.TestResponseBodyTransportErrors.test_read_body_malformed_chunk_is_unavailable) ... ok
+test_read_body_timeout_is_safe_timeout (tests.test_service_client.TestResponseBodyTransportErrors.test_read_body_timeout_is_safe_timeout) ... FAIL
+test_save_body_connection_reset_is_uncertain (tests.test_service_client.TestResponseBodyTransportErrors.test_save_body_connection_reset_is_uncertain) ... ok
+test_save_body_timeout_is_uncertain_not_retry_safe (tests.test_service_client.TestResponseBodyTransportErrors.test_save_body_timeout_is_uncertain_not_retry_safe) ... FAIL
+test_malformed_chunk_body_is_unavailable (tests.test_service_client.TestResponseBodyTransportErrorsFakeServer.test_malformed_chunk_body_is_unavailable) ... /usr/lib/python3.11/traceback.py:240: ResourceWarning: unclosed <socket.socket fd=4, family=2, type=1, proto=6, laddr=('127.0.0.1', 48280)>
+  tb.tb_frame.clear()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_stalled_body_read_is_timeout (tests.test_service_client.TestResponseBodyTransportErrorsFakeServer.test_stalled_body_read_is_timeout) ... /usr/lib/python3.11/traceback.py:240: ResourceWarning: unclosed <socket.socket fd=4, family=2, type=1, proto=6, laddr=('127.0.0.1', 55995), raddr=('127.0.0.1', 49385)>
+  tb.tb_frame.clear()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_truncated_chunked_body_is_unavailable (tests.test_service_client.TestResponseBodyTransportErrorsFakeServer.test_truncated_chunked_body_is_unavailable) ... /usr/lib/python3.11/traceback.py:240: ResourceWarning: unclosed <socket.socket fd=4, family=2, type=1, proto=6, laddr=('127.0.0.1', 46676), raddr=('127.0.0.1', 57249)>
+  tb.tb_frame.clear()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_save_flag_encoding (tests.test_service_client.TestSaveWire.test_save_flag_encoding) ... ok
+test_save_never_puts_credentials_in_query (tests.test_service_client.TestSaveWire.test_save_never_puts_credentials_in_query) ... ok
+test_save_query_quoting_round_trips (tests.test_service_client.TestSaveWire.test_save_query_quoting_round_trips) ... ok
+test_save_request_and_reply (tests.test_service_client.TestSaveWire.test_save_request_and_reply) ... ok
+test_connection_refused_is_unavailable (tests.test_service_client.TestTransport.test_connection_refused_is_unavailable) ... ok
+test_no_automatic_retry_on_read_only (tests.test_service_client.TestTransport.test_no_automatic_retry_on_read_only) ... ok
+test_no_automatic_retry_on_save (tests.test_service_client.TestTransport.test_no_automatic_retry_on_save) ... ok
+test_save_transport_failure_is_uncertain_and_not_retry_safe (tests.test_service_client.TestTransport.test_save_transport_failure_is_uncertain_and_not_retry_safe) ... FAIL
+test_timeout_maps_to_timeout_code (tests.test_service_client.TestTransport.test_timeout_maps_to_timeout_code) ... FAIL
+test_find_validation (tests.test_service_client.TestValidationBeforeNetwork.test_find_validation) ... ok
+test_list_validation (tests.test_service_client.TestValidationBeforeNetwork.test_list_validation) ... ok
+test_read_validation (tests.test_service_client.TestValidationBeforeNetwork.test_read_validation) ... ok
+test_save_validation (tests.test_service_client.TestValidationBeforeNetwork.test_save_validation) ... ok
+
+======================================================================
+FAIL: test_connection_and_response_closed_on_error (tests.test_service_client.TestCloseAndIsolation.test_connection_and_response_closed_on_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutants-d053/M2_lost_connection_close/tests/test_service_client.py", line 823, in test_connection_and_response_closed_on_error
+    self.assertTrue(conn.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_connection_and_response_closed_on_success (tests.test_service_client.TestCloseAndIsolation.test_connection_and_response_closed_on_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutants-d053/M2_lost_connection_close/tests/test_service_client.py", line 813, in test_connection_and_response_closed_on_success
+    self.assertTrue(conn.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_new_connection_per_call_no_reuse (tests.test_service_client.TestCloseAndIsolation.test_new_connection_per_call_no_reuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutants-d053/M2_lost_connection_close/tests/test_service_client.py", line 853, in test_new_connection_per_call_no_reuse
+    self.assertTrue(c1.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_read_body_timeout_is_safe_timeout (tests.test_service_client.TestResponseBodyTransportErrors.test_read_body_timeout_is_safe_timeout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutants-d053/M2_lost_connection_close/tests/test_service_client.py", line 1006, in test_read_body_timeout_is_safe_timeout
+    self.assertTrue(conn.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_save_body_timeout_is_uncertain_not_retry_safe (tests.test_service_client.TestResponseBodyTransportErrors.test_save_body_timeout_is_uncertain_not_retry_safe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutants-d053/M2_lost_connection_close/tests/test_service_client.py", line 1019, in test_save_body_timeout_is_uncertain_not_retry_safe
+    self.assertTrue(conn.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_save_transport_failure_is_uncertain_and_not_retry_safe (tests.test_service_client.TestTransport.test_save_transport_failure_is_uncertain_and_not_retry_safe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutants-d053/M2_lost_connection_close/tests/test_service_client.py", line 782, in test_save_transport_failure_is_uncertain_and_not_retry_safe
+    self.assertTrue(conn.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_timeout_maps_to_timeout_code (tests.test_service_client.TestTransport.test_timeout_maps_to_timeout_code)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/mutants-d053/M2_lost_connection_close/tests/test_service_client.py", line 771, in test_timeout_maps_to_timeout_code
+    self.assertTrue(resp_conn.closed)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 72 tests in 2.759s
+
+FAILED (failures=7)

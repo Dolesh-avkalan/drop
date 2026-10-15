@@ -1,0 +1,21 @@
+M1_unbounded_reply_read: CAUGHT  (intended: bounded reply read (never read unbounded))
+    python3.11: exit=1 | FAILED (failures=3) | ['test_connection_and_response_closed_on_error', 'test_connection_and_response_closed_on_success', 'test_new_connection_per_call_no_reuse']
+    python3.12: exit=1 | FAILED (failures=3) | ['test_connection_and_response_closed_on_error', 'test_connection_and_response_closed_on_success', 'test_new_connection_per_call_no_reuse']
+M2_lost_connection_close: CAUGHT  (intended: connection closed every call)
+    python3.11: exit=1 | FAILED (failures=7) | ['test_connection_and_response_closed_on_error', 'test_connection_and_response_closed_on_success', 'test_new_connection_per_call_no_reuse', 'test_read_body_timeout_is_safe_timeout', 'test_save_body_timeout_is_uncertain_not_retry_safe', 'test_save_transport_failure_is_uncertain_and_not_retry_safe', 'test_timeout_maps_to_timeout_code']
+    python3.12: exit=1 | FAILED (failures=7) | ['test_connection_and_response_closed_on_error', 'test_connection_and_response_closed_on_success', 'test_new_connection_per_call_no_reuse', 'test_read_body_timeout_is_safe_timeout', 'test_save_body_timeout_is_uncertain_not_retry_safe', 'test_save_transport_failure_is_uncertain_and_not_retry_safe', 'test_timeout_maps_to_timeout_code']
+M3_automatic_save_retry: CAUGHT  (intended: no automatic retry on save)
+    python3.11: exit=1 | FAILED (failures=1) | ['test_save_body_timeout_is_uncertain_not_retry_safe']
+    python3.12: exit=1 | FAILED (failures=1) | ['test_save_body_timeout_is_uncertain_not_retry_safe']
+M4_raw_remote_error_leak: CAUGHT  (intended: raw remote error text never leaks)
+    python3.11: exit=1 | FAILED (failures=1) | ['test_error_is_redacted_even_if_server_echoes_token']
+    python3.12: exit=1 | FAILED (failures=1) | ['test_error_is_redacted_even_if_server_echoes_token']
+M5_cross_request_reuse: CAUGHT  (intended: a fresh connection per call (no reuse))
+    python3.11: exit=1 | FAILED (failures=2) | ['test_concurrent_calls_are_independent', 'test_open_returns_a_new_connection_each_time']
+    python3.12: exit=1 | FAILED (failures=2) | ['test_concurrent_calls_are_independent', 'test_open_returns_a_new_connection_each_time']
+M6_wrong_eof_handling: CAUGHT  (intended: exact-fill window is not EOF)
+    python3.11: exit=1 | FAILED (failures=1) | ['test_read_exact_fill_with_eof_is_protocol_invalid']
+    python3.12: exit=1 | FAILED (failures=1) | ['test_read_exact_fill_with_eof_is_protocol_invalid']
+M7_revert_body_transport_fix: CAUGHT  (intended: body transport errors map to a safe DriveClientError)
+    python3.11: exit=1 | FAILED (errors=11) | ['test_body_error_is_redacted', 'test_error_path_body_timeout_maps_to_timeout', 'test_no_retry_on_body_transport_error', 'test_read_body_incomplete_read_is_unavailable', 'test_read_body_malformed_chunk_is_unavailable', 'test_read_body_timeout_is_safe_timeout', 'test_save_body_connection_reset_is_uncertain', 'test_save_body_timeout_is_uncertain_not_retry_safe', 'test_malformed_chunk_body_is_unavailable', 'test_stalled_body_read_is_timeout', 'test_truncated_chunked_body_is_unavailable']
+    python3.12: exit=1 | FAILED (errors=11) | ['test_body_error_is_redacted', 'test_error_path_body_timeout_maps_to_timeout', 'test_no_retry_on_body_transport_error', 'test_read_body_incomplete_read_is_unavailable', 'test_read_body_malformed_chunk_is_unavailable', 'test_read_body_timeout_is_safe_timeout', 'test_save_body_connection_reset_is_uncertain', 'test_save_body_timeout_is_uncertain_not_retry_safe', 'test_malformed_chunk_body_is_unavailable', 'test_stalled_body_read_is_timeout', 'test_truncated_chunked_body_is_unavailable']

@@ -1,0 +1,5 @@
+dup_CL_2_then_5: DriveClientError(code='unavailable')
+dup_CL_100_then_2: DriveClientError(code='unavailable')
+dup_CT_both_octet: DriveClientError(code='unavailable')
+dup_CT_mixed: DriveClientError(code='unavailable')
+single_valid_control: ACCEPTED ReadReply(data=b'abc', eof=True)

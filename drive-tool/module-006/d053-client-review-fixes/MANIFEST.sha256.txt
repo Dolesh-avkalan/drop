@@ -1,0 +1,46 @@
+# D053 byte-SHA256 manifest
+# Generated 2026-10-15T17:33:02Z
+
+## Committed on drive-tool feature/module-006a-client-review-fixes (head 53450a4cb71f555addd94eb5a700c777e7f5b1e6, tree 48ab4ef31a36ed2d36c8d6dfc5bd75bb90fd0b27)
+f5dc7052d8fd2cc71d9eb9050203e34ce7d360e82acd9429f5dbe404399d7780    path: drive_tool/service_client.py
+70f80391f31927701b09fc2e18586aacdaf0b844729e6704552220fbf11d6010    path: tests/test_service_client.py
+
+## Old candidate drive-tool@81a6485c300f0a9cecc9c902c90360379c17e946 (unmodified)
+  path: 3df94000e249c9c564bd11a9142417a10494b426a24980e54849dd8730310785  drive_tool/service_client.py
+  path: fcda8541a51d83210cb479c0d0214e3c766895494ea4c1210fcd828ef28be2b1  tests/test_service_client.py
+
+## Evidence files in this bundle (drive-tool/module-006/d053-client-review-fixes/)
+50e9b3a33cc1274c3dba95b616409f3e5972f4c5921aa4e673791d5f98303061  ./D053-REPORT.md
+1cfa191385addfab98d43c927ab519471bd61103483f2bea6789b6a992ab7e29  ./env.txt
+8c5f4fb896974e46268c9510820e271d0c8c47477ea7af6fc90e663a195a2bcc  ./logs/mutation-summary.txt
+b0403216459d3ae24cf1172174ea78aff21373609cb477400cc6ab37eb3e6178  ./logs/mutations/M1_unbounded_reply_read.python3.11.log
+51a4d6aa67ef8fb1029b667b5880c0384da2db9246e0a0247e25eb5b30924060  ./logs/mutations/M1_unbounded_reply_read.python3.12.log
+880f717dc9697c3c88ffe7db61ec4bb8299516a96455692c603408aff021c9ff  ./logs/mutations/M2_lost_connection_close.python3.11.log
+6f9a579900344b7d1200acb9349d621ad275944243cd269c36f2e74a8d34e775  ./logs/mutations/M2_lost_connection_close.python3.12.log
+d234754992186016bbdcdcd24c5d8667111efd32d4cdbc6e47834c39e678f7b3  ./logs/mutations/M3_automatic_save_retry.python3.11.log
+d60a8315c080840db06e5893919b59413cd29a6e8dde77e16676ffdc8a221efd  ./logs/mutations/M3_automatic_save_retry.python3.12.log
+34be1f19fde02b26cabb370511a5ee4579477391d19121daa4340505838361b7  ./logs/mutations/M4_raw_remote_error_leak.python3.11.log
+34be1f19fde02b26cabb370511a5ee4579477391d19121daa4340505838361b7  ./logs/mutations/M4_raw_remote_error_leak.python3.12.log
+8d92d1f8a8cc17ef72b14016535d0bcc282fe0eb7ac9df824c9c96e4c9b27691  ./logs/mutations/M5_cross_request_reuse.python3.11.log
+dd9ddfdce17418cde4d606e25ab74be8b8704ac4845c17c55bc6f0b37e85a9bf  ./logs/mutations/M5_cross_request_reuse.python3.12.log
+ea54e4d00ab22b8b3661f53fe215e2a590f4326c09cad9324287300b5afc5625  ./logs/mutations/M6_wrong_eof_handling.python3.11.log
+fbc5d8cb9c65b9d8ee555c86079b79c9567a16c447df824824ef465b1bf0a7d1  ./logs/mutations/M6_wrong_eof_handling.python3.12.log
+c341d0e9a113d9d22f9c0ba9060e5a0d3465b3a14ba75bf30a9e74fece3eba14  ./logs/mutations/M7_revert_body_transport_fix.python3.11.log
+42ea1c2406e5e3ed07ca07ff2a3ddbd7e0188342277075ea391457f50dd5e7ba  ./logs/mutations/M7_revert_body_transport_fix.python3.12.log
+ce140119625807fe6be235575b15d5f3292e9563779b8e18e9f1e8bd7c57bb1a  ./logs/newpass-client-3.11.log
+33d11cbba50410841efd7a95ace085cdb184d7fc8f18d91e16fc21faf22abed8  ./logs/newpass-client-3.12.log
+2a431468e98e5c6fc38386f8103e02969cc33f6579476d55238e179161920cc9  ./logs/newpass-full-3.11.log
+20e3d4d0e1474c48cf97cb5651c277b2cc04696ba7c4e2965b55739b9fd4dce0  ./logs/newpass-full-3.12.log
+71532da20275a03b3640b5d7bb7b9584cbfd271b9aef772135772f6c56c099af  ./logs/newpass-repro-3.11.txt
+7050c7b59a4b94df1127bdc422c471ca2290d9123508928f71e9275186819e57  ./logs/old-dup-client-3.11.txt
+7050c7b59a4b94df1127bdc422c471ca2290d9123508928f71e9275186819e57  ./logs/old-dup-client-3.12.txt
+e98e1a2a22998b8bde95ca17ed33d97f96d336a02847c6798911e2e5925e0c45  ./logs/oldfail-finaltests-3.11.log
+cf3eefe633e6e1b7705ae79d39ca12fa70ea554da12ae8099b3be9b94e0a2b14  ./logs/oldfail-finaltests-3.12.log
+e092ad291d8f6a88b56b64e490529eea39c82df111d9b18ba213e0cd32b7ef23  ./logs/oldfail-repro-3.11.txt
+88a070d40371d53fde7ce7919a2fecf501e9f5bcaff3eb8865c8541a7997618b  ./logs/probe-headers-3.11.txt
+a27ab23009c02067235911511ab14e23c300805ed2a380544c5544b3407d9a6a  ./logs/probe-headers-3.12.txt
+238f2f3c7be0986b15f9f7f517df496313e1bf74467a1b613934a924ed04d4cf  ./scripts/insert_tests.py
+976eefff34b0c8fdc5ad1cc9c4e4535b73cc9128b9db1074ef6bc8e6a81f4980  ./scripts/mutation_runner.py
+28a3ecf3fcdda5b9e411740b501508a164825982340704ead1cf297c1ed914dd  ./scripts/probe_client_dupes.py
+0d0095d5a5525a11a83d82463ecf78afbe0c789e8c2cc8dff1bfac66ae5bf9e6  ./scripts/probe_headers.py
+e85f7cfeaeed1bbf570b3921e18a98deaae795287342c445d68f860152dfc1b0  ./scripts/repro_oldfail.py

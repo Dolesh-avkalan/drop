@@ -1,0 +1,40 @@
+--- A_dup_CL_2_then_5 ---
+  status: 200
+  getheader('Content-Length'): '2, 5'
+  get_all('Content-Length'): ['2', '5']
+  getheader('Content-Type'): None
+  get_all('Content-Type'): None
+  get_all('X-Drive-Offset'): None
+  read(8): b'{}'
+--- B_dup_CL_100_then_2 ---
+  status: 200
+  getheader('Content-Length'): '100, 2'
+  get_all('Content-Length'): ['100', '2']
+  getheader('Content-Type'): None
+  get_all('Content-Type'): None
+  get_all('X-Drive-Offset'): None
+  read raised: builtins.TimeoutError timed out
+--- C_dup_ContentType ---
+  status: 200
+  getheader('Content-Length'): '3'
+  get_all('Content-Length'): ['3']
+  getheader('Content-Type'): 'application/octet-stream, text/plain'
+  get_all('Content-Type'): ['application/octet-stream', 'text/plain']
+  get_all('X-Drive-Offset'): None
+  read(8): b'abc'
+--- D_CL_and_TE ---
+  status: 200
+  getheader('Content-Length'): '3'
+  get_all('Content-Length'): ['3']
+  getheader('Content-Type'): None
+  get_all('Content-Type'): None
+  get_all('X-Drive-Offset'): None
+  read raised: builtins.TimeoutError timed out
+--- E_dup_XDrive_Offset ---
+  status: 200
+  getheader('Content-Length'): '3'
+  get_all('Content-Length'): ['3']
+  getheader('Content-Type'): None
+  get_all('Content-Type'): None
+  get_all('X-Drive-Offset'): ['0', '5']
+  read(8): b'abc'
