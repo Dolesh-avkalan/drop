@@ -1,0 +1,7 @@
+d035 MODULE-005A review-fixes raw evidence (Sarvam)
+date: 2026-10-15T15:25:01Z
+uname: Linux claw-sandbox-a14765705ccac2c14de5581ac8 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 GNU/Linux
+os: Debian GNU/Linux 12 (bookworm)
+python3.11: Python 3.11.2
+python3.12: Python 3.12.13
+candidate base: 593759a40645386427bad35d53e8b856aeaa68d5

@@ -1,0 +1,115 @@
+test_malformed_failure_error_at_root_raises (tests.test_partial_scan_review_fixes.MalformedFailureValidationTests.test_malformed_failure_error_at_root_raises) ... ok
+test_malformed_failure_error_below_root_raises_not_skipped (tests.test_partial_scan_review_fixes.MalformedFailureValidationTests.test_malformed_failure_error_below_root_raises_not_skipped) ... FAIL
+test_valid_root_failure_identity_and_cause_preserved (tests.test_partial_scan_review_fixes.MalformedFailureValidationTests.test_valid_root_failure_identity_and_cause_preserved) ... ok
+test_existing_scanfailure_not_double_wrapped (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_existing_scanfailure_not_double_wrapped) ... ok
+test_metadata_failure_at_root_find_reraises_original (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_at_root_find_reraises_original) ... ok
+test_metadata_failure_below_root_is_skipped_and_charged (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) ... FAIL
+test_metadata_storage_error_after_prefix_is_scanfailure (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_storage_error_after_prefix_is_scanfailure) ... ERROR
+test_next_seam_storage_error_after_prefix_is_scanfailure (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_next_seam_storage_error_after_prefix_is_scanfailure) ... ERROR
+test_no_sibling_scan_after_failed_work_exhausts_budget (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_no_sibling_scan_after_failed_work_exhausts_budget) ... ok
+test_primary_and_cleanup_errors_no_leak_no_retry (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_primary_and_cleanup_errors_no_leak_no_retry) ... ERROR
+test_stat_storage_error_after_prefix_is_scanfailure (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_stat_storage_error_after_prefix_is_scanfailure) ... ERROR
+test_storage_error_before_any_entry_is_unchanged (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_storage_error_before_any_entry_is_unchanged) ... ok
+test_empty_skipped_truly_exhausted_is_complete (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_empty_skipped_truly_exhausted_is_complete) ... ok
+test_max_depth_reason_takes_precedence_over_skipped (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_max_depth_reason_takes_precedence_over_skipped) ... ok
+test_max_results_reason_takes_precedence_over_skipped (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_max_results_reason_takes_precedence_over_skipped) ... ok
+test_midscan_skipped_subdir_is_not_complete (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_midscan_skipped_subdir_is_not_complete) ... FAIL
+test_prescan_skipped_subdir_is_not_complete (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_prescan_skipped_subdir_is_not_complete) ... FAIL
+test_skipped_means_unknown_not_not_found (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_skipped_means_unknown_not_not_found) ... FAIL
+
+======================================================================
+ERROR: test_metadata_storage_error_after_prefix_is_scanfailure (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_storage_error_after_prefix_is_scanfailure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 312, in test_metadata_storage_error_after_prefix_is_scanfailure
+    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+  File "/scratch/work/pristine/drive_tool/local.py", line 1208, in scan_children
+    self._build_metadata(
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 136, in _build_metadata
+    raise exc
+drive_tool.local.LocalStorageError: metadata boom
+
+======================================================================
+ERROR: test_next_seam_storage_error_after_prefix_is_scanfailure (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_next_seam_storage_error_after_prefix_is_scanfailure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 361, in test_next_seam_storage_error_after_prefix_is_scanfailure
+    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+  File "/scratch/work/pristine/drive_tool/local.py", line 1161, in scan_children
+    entry = next(entries)
+            ^^^^^^^^^^^^^
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 109, in __next__
+    raise self._probe.next_error
+drive_tool.local.LocalStorageError: iteration seam boom
+
+======================================================================
+ERROR: test_primary_and_cleanup_errors_no_leak_no_retry (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_primary_and_cleanup_errors_no_leak_no_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 454, in test_primary_and_cleanup_errors_no_leak_no_retry
+    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+  File "/scratch/work/pristine/drive_tool/local.py", line 1184, in scan_children
+    st = entry.stat(follow_symlinks=False)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 81, in stat
+    raise exc
+drive_tool.local.LocalStorageError: primary boom
+
+======================================================================
+ERROR: test_stat_storage_error_after_prefix_is_scanfailure (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_stat_storage_error_after_prefix_is_scanfailure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 328, in test_stat_storage_error_after_prefix_is_scanfailure
+    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+  File "/scratch/work/pristine/drive_tool/local.py", line 1184, in scan_children
+    st = entry.stat(follow_symlinks=False)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 81, in stat
+    raise exc
+drive_tool.local.LocalStorageError: stat seam boom
+
+======================================================================
+FAIL: test_malformed_failure_error_below_root_raises_not_skipped (tests.test_partial_scan_review_fixes.MalformedFailureValidationTests.test_malformed_failure_error_below_root_raises_not_skipped)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 279, in test_malformed_failure_error_below_root_raises_not_skipped
+    with self.assertRaises(StorageError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: StorageError not raised
+
+======================================================================
+FAIL: test_metadata_failure_below_root_is_skipped_and_charged (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 406, in test_metadata_failure_below_root_is_skipped_and_charged
+    self.assertEqual(result.inspected, 2)
+AssertionError: 1 != 2
+
+======================================================================
+FAIL: test_midscan_skipped_subdir_is_not_complete (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_midscan_skipped_subdir_is_not_complete)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 210, in test_midscan_skipped_subdir_is_not_complete
+    self.assertTrue(result.truncated)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_prescan_skipped_subdir_is_not_complete (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_prescan_skipped_subdir_is_not_complete)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 198, in test_prescan_skipped_subdir_is_not_complete
+    self.assertTrue(result.truncated)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_skipped_means_unknown_not_not_found (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_skipped_means_unknown_not_not_found)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/pristine/tests/test_partial_scan_review_fixes.py", line 218, in test_skipped_means_unknown_not_not_found
+    self.assertFalse(not result.truncated and result.items == ())
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.041s
+
+FAILED (failures=5, errors=4)

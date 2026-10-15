@@ -1,0 +1,32 @@
+===== python3.11 =====
+X-a remove skipped terminal truncation (F-B, search.py): CAUGHT
+    caught by: (test_partial_scan.SearchBatchValidationTests.test_subdir_scanfailure_is_skipped_and_charged)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged)
+    caught by: (test_partial_scan_review_fixes.SkippedCompletenessTests.test_midscan_skipped_subdir_is_not_complete)
+    caught by: (test_partial_scan_review_fixes.SkippedCompletenessTests.test_prescan_skipped_subdir_is_not_complete)
+    caught by: (test_partial_scan_review_fixes.SkippedCompletenessTests.test_skipped_means_unknown_not_not_found)
+    caught by: (test_search.FindFakeAdapterTests.test_subdirectory_storage_error_skipped)
+X-b restore root-only failure.error validation (F-A, search.py): CAUGHT
+    caught by: (test_partial_scan_review_fixes.MalformedFailureValidationTests.test_malformed_failure_error_below_root_raises_not_skipped)
+X-c remove generic post-yield StorageError wrapping (F-C, local.py): CAUGHT
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_storage_error_after_prefix_is_scanfailure)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_next_seam_storage_error_after_prefix_is_scanfailure)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_primary_and_cleanup_errors_no_leak_no_retry)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_stat_storage_error_after_prefix_is_scanfailure)
+===== python3.12 =====
+X-a remove skipped terminal truncation (F-B, search.py): CAUGHT
+    caught by: (test_partial_scan.SearchBatchValidationTests.test_subdir_scanfailure_is_skipped_and_charged)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged)
+    caught by: (test_partial_scan_review_fixes.SkippedCompletenessTests.test_midscan_skipped_subdir_is_not_complete)
+    caught by: (test_partial_scan_review_fixes.SkippedCompletenessTests.test_prescan_skipped_subdir_is_not_complete)
+    caught by: (test_partial_scan_review_fixes.SkippedCompletenessTests.test_skipped_means_unknown_not_not_found)
+    caught by: (test_search.FindFakeAdapterTests.test_subdirectory_storage_error_skipped)
+X-b restore root-only failure.error validation (F-A, search.py): CAUGHT
+    caught by: (test_partial_scan_review_fixes.MalformedFailureValidationTests.test_malformed_failure_error_below_root_raises_not_skipped)
+X-c remove generic post-yield StorageError wrapping (F-C, local.py): CAUGHT
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_storage_error_after_prefix_is_scanfailure)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_next_seam_storage_error_after_prefix_is_scanfailure)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_primary_and_cleanup_errors_no_leak_no_retry)
+    caught by: (test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_stat_storage_error_after_prefix_is_scanfailure)
