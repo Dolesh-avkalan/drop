@@ -1,0 +1,77 @@
+{
+  "M1": {
+    "desc": "publish with rename instead of link when overwrite=False",
+    "ran": 199,
+    "summary": "FAILED (failures=2, errors=9)",
+    "failing": [
+      "test_concurrent_two_writers_race_overwrite_false",
+      "test_mutation_guard_fsync_called_on_file_and_dir_fds",
+      "test_mutation_guard_temp_open_flags_and_mode",
+      "test_name_validation_all_invalid_classes",
+      "test_seam_dir_fsync_failure_does_not_double_unlink",
+      "test_seam_link_failures_eexist_and_eperm_clean_up",
+      "test_seam_write_handles_short_writes_and_eintr",
+      "test_write_and_read_back_root_and_nested",
+      "test_write_empty_and_exact_max_write_bytes",
+      "test_write_overwrite_false_existing_file",
+      "test_write_overwrite_false_existing_symlink"
+    ],
+    "same_on_311": true,
+    "ran311": 199,
+    "summary311": "FAILED (failures=2, errors=9)"
+  },
+  "M2": {
+    "desc": "skip the temp-file cleanup on error",
+    "ran": 199,
+    "summary": "FAILED (failures=9)",
+    "failing": [
+      "test_concurrent_two_writers_race_overwrite_false",
+      "test_seam_file_fsync_failure_cleans_up",
+      "test_seam_link_failures_eexist_and_eperm_clean_up",
+      "test_seam_rename_failure_cleans_up",
+      "test_seam_temp_close_failure_before_publish_cleans_up",
+      "test_seam_write_zero_return_or_midway_oserror_cleans_up",
+      "test_write_overwrite_false_existing_file",
+      "test_write_overwrite_false_existing_symlink",
+      "test_write_overwrite_true_rejects_directory_symlink_fifo"
+    ],
+    "same_on_311": true,
+    "ran311": 199,
+    "summary311": "FAILED (failures=9)"
+  },
+  "M3": {
+    "desc": "drop O_NOFOLLOW from the temp-file open",
+    "ran": 199,
+    "summary": "FAILED (failures=1)",
+    "failing": [
+      "test_mutation_guard_temp_open_flags_and_mode"
+    ],
+    "same_on_311": true,
+    "ran311": 199,
+    "summary311": "FAILED (failures=1)"
+  },
+  "M4": {
+    "desc": "drop the TEMP_PREFIX filter in list_children",
+    "ran": 199,
+    "summary": "FAILED (failures=1)",
+    "failing": [
+      "test_list_children_hides_temp_prefix_but_counts_toward_limit"
+    ],
+    "same_on_311": true,
+    "ran311": 199,
+    "summary311": "FAILED (failures=1)"
+  },
+  "M5": {
+    "desc": "skip the parent-directory fsync (write_bytes and mkdir)",
+    "ran": 199,
+    "summary": "FAILED (failures=2, errors=1)",
+    "failing": [
+      "test_mkdir_create_and_exist_ok_matrix",
+      "test_mutation_guard_fsync_called_on_file_and_dir_fds",
+      "test_seam_dir_fsync_failure_does_not_double_unlink"
+    ],
+    "same_on_311": true,
+    "ran311": 199,
+    "summary311": "FAILED (failures=2, errors=1)"
+  }
+}
