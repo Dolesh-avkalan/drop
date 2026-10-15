@@ -1,0 +1,11 @@
+# D073 compile + import
+
+$ python3.11 -m py_compile drive_tool/http_adapter.py tests/test_http_adapter.py
+py3.11 compile: OK
+$ python3.12 -m py_compile ...
+py3.12 compile: OK
+
+$ PYTHONPATH=. python3.11 -c 'import drive_tool.http_adapter'
+py3.11 import OK, __all__ len 17
+$ PYTHONPATH=. python3.12 -c 'import drive_tool.http_adapter'
+py3.12 import OK, __all__ len 17
