@@ -1,0 +1,11 @@
+# D077 compile + import (published branch, fetched bytes)
+
+$ python3.11 -m py_compile tests/test_partial_scan_review_fixes.py
+py3.11 compile: OK
+$ python3.12 -m py_compile tests/test_partial_scan_review_fixes.py
+py3.12 compile: OK
+
+$ python3.11 -c 'import tests.test_partial_scan_review_fixes'
+py3.11 import OK
+$ python3.12 -c 'import tests.test_partial_scan_review_fixes'
+py3.12 import OK

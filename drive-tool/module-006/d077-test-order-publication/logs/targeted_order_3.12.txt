@@ -1,0 +1,6 @@
+test_metadata_failure_below_root_is_skipped_and_charged (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.008s
+
+OK

@@ -1,0 +1,23 @@
+test_malformed_failure_error_at_root_raises (tests.test_partial_scan_review_fixes.MalformedFailureValidationTests.test_malformed_failure_error_at_root_raises) ... ok
+test_malformed_failure_error_below_root_raises_not_skipped (tests.test_partial_scan_review_fixes.MalformedFailureValidationTests.test_malformed_failure_error_below_root_raises_not_skipped) ... ok
+test_valid_root_failure_identity_and_cause_preserved (tests.test_partial_scan_review_fixes.MalformedFailureValidationTests.test_valid_root_failure_identity_and_cause_preserved) ... ok
+test_existing_scanfailure_not_double_wrapped (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_existing_scanfailure_not_double_wrapped) ... ok
+test_metadata_failure_at_root_find_reraises_original (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_at_root_find_reraises_original) ... ok
+test_metadata_failure_below_root_is_skipped_and_charged (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) ... ok
+test_metadata_storage_error_after_prefix_is_scanfailure (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_storage_error_after_prefix_is_scanfailure) ... ok
+test_next_seam_storage_error_after_prefix_is_scanfailure (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_next_seam_storage_error_after_prefix_is_scanfailure) ... ok
+test_no_sibling_scan_after_failed_work_exhausts_budget (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_no_sibling_scan_after_failed_work_exhausts_budget) ... ok
+test_primary_and_cleanup_errors_no_leak_no_retry (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_primary_and_cleanup_errors_no_leak_no_retry) ... ok
+test_stat_storage_error_after_prefix_is_scanfailure (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_stat_storage_error_after_prefix_is_scanfailure) ... ok
+test_storage_error_before_any_entry_is_unchanged (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_storage_error_before_any_entry_is_unchanged) ... ok
+test_empty_skipped_truly_exhausted_is_complete (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_empty_skipped_truly_exhausted_is_complete) ... ok
+test_max_depth_reason_takes_precedence_over_skipped (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_max_depth_reason_takes_precedence_over_skipped) ... ok
+test_max_results_reason_takes_precedence_over_skipped (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_max_results_reason_takes_precedence_over_skipped) ... ok
+test_midscan_skipped_subdir_is_not_complete (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_midscan_skipped_subdir_is_not_complete) ... ok
+test_prescan_skipped_subdir_is_not_complete (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_prescan_skipped_subdir_is_not_complete) ... ok
+test_skipped_means_unknown_not_not_found (tests.test_partial_scan_review_fixes.SkippedCompletenessTests.test_skipped_means_unknown_not_not_found) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.032s
+
+OK

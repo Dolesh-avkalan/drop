@@ -1,0 +1,21 @@
+# D077 source identity
+
+repo:        Dolesh-avkalan/drive-tool
+branch:      feature/test-nested-scan-order
+base commit: b7f8d17b9dcc4aec68d54b38f994290e05264e67
+base tree:   4a4e27b9d3f75ffd7c841aa547eacef82734596e
+head commit: 8f3a80d91126f98a460316b9008661949a8cb6de
+head tree:   72c5d144c4f8399d8c71f1a610e3bf439efd0f8d
+
+tests/test_partial_scan_review_fixes.py (ONLY changed path):
+  base blob: f110f83c95b846bc853069194ff7759b690ebfca
+  head blob: c01003e7015915db3dcac15a168ff7aae3d423db  (= D070 corrected candidate)
+  bytes:     18702
+  sha256:    4da34a8a5ce25771befa6dc19159992439a79326e1c5450ea3e6533749bfac97
+
+D070 source: drop 556ca51743227275ce101f15b6d15a3e1febba66
+  path: drive-tool/module-006/d070-test-order-verification-summary/candidate/test_partial_scan_review_fixes.py
+  blob: c01003e7015915db3dcac15a168ff7aae3d423db
+
+scope vs base: exactly one modification (M tests/test_partial_scan_review_fixes.py);
+no production change, no other test touched.

@@ -1,0 +1,2 @@
+order=['sub', 'a.txt', 'b.txt']  inspected=2 (expected 2) skipped=('p/sub',) truncated=True reason='skipped' -> OK
+order=['sub', 'b.txt', 'a.txt']  inspected=3 (expected 3) skipped=('p/sub',) truncated=True reason='skipped' -> OK
