@@ -1,0 +1,45 @@
+bytes: 37502
+sha256: 191ad2be919fabdd2f4ec9edb0820165c2c4358ce05c93574514b5ee30a30ff3
+newline-count: 1099
+ast.parse: OK
+top-level classes: ['_ReqErrorSignal', '_TimeoutSignal', '_DisconnectSignal', '_ParsedRequest', '_WorkerSlot', 'DriveHTTPAdapter']
+top-level funcs: ['_no_dup_keys', '_no_nan_inf', '_parse_json_strict', '_parse_header_line']
+class method count: 32
+   - __init__
+   - _rollback_startup
+   - host
+   - port
+   - socket_timeout
+   - service
+   - __repr__
+   - close
+   - _wake_listener
+   - _accept_loop
+   - _worker_loop
+   - _busy_reject
+   - _send_with_deadline
+   - _safe_write
+   - _safe_send_error
+   - _finalize_connection
+   - _read_request
+   - _parse_request_line
+   - _parse_target
+   - _parse_headers
+   - _check_headers
+   - _read_body
+   - _serve
+   - _dispatch
+   - _extract_candidate_source_id
+   - _validate_json_payload
+   - _call_list
+   - _call_find
+   - _call_read
+   - _call_save
+   - _send_json_response
+   - _send_read_response
+__all__ entries: 17
+__all__ names not defined at top level (excl class): []
+missing required constants: []
+tokenize: OK (balanced, no unterminated string/bracket)
+last source line: '        self._safe_write(conn, head + data)'
+last 3 lines: ['\'            b"\\\\r\\\\n"\'', "'        )'", "'        self._safe_write(conn, head + data)'"]

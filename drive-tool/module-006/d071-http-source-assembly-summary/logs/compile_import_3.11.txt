@@ -1,0 +1,5 @@
+$ python3.11 -m py_compile drive_tool/http_adapter.py
+compile: OK (exit 0)
+$ python3.11 -c 'import drive_tool.http_adapter'
+import OK: DriveHTTPAdapter exports= 17
+exit=0

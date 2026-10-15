@@ -1,0 +1,6 @@
+OS: Debian GNU/Linux 12 (bookworm) x86_64
+python3.11: Python 3.11.2
+python3.12: Python 3.12.13
+pytest(3.12): pytest 9.1.1
+pytest(3.11 via PYTHONPATH=/scratch/work/py311libs): pytest 9.1.1
+date_utc: 2026-10-15T21:58:57Z
