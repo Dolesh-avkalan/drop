@@ -1,0 +1,34 @@
+--- candidate/drive_tool/service_client.py	2026-10-15 17:08:53.138437607 +0000
++++ d053/drive_tool/service_client.py	2026-10-15 17:32:16.000000000 +0000
+@@ -295,6 +295,15 @@
+     return DriveClientError(code, outcome_uncertain=write_op, retry_safe=not write_op)
+ 
+ 
++#: Exceptions the socket / HTTP layer can raise while a response *body* is being
++#: read (a stall, a truncation, a reset, or a malformed chunked frame). They are
++#: mapped through :func:`_wrap_transport` so a mid-body failure cannot escape as
++#: a raw stdlib exception. ``TimeoutError`` is a subclass of ``OSError`` and
++#: ``http.client.IncompleteRead``/``RemoteDisconnected`` subclass
++#: ``http.client.HTTPException``, so this tuple covers them.
++_TRANSPORT_ERRORS = (TimeoutError, http.client.HTTPException, OSError)
++
++
+ # ---------------------------------------------------------------------------
+ # Client
+ # ---------------------------------------------------------------------------
+@@ -541,6 +550,15 @@
+             raise DriveClientError(
+                 "unavailable", outcome_uncertain=write_op, retry_safe=not write_op
+             ) from None
++        except DriveClientError:
++            # Already a safe local error (for example a parsed error envelope):
++            # propagate it unchanged rather than remapping it.
++            raise
++        except _TRANSPORT_ERRORS as exc:
++            # A transport failure while reading the response body (stall,
++            # truncation, reset or malformed chunk) must also become a safe
++            # DriveClientError with the conservative write/read uncertainty.
++            raise _wrap_transport(exc, write_op=write_op) from None
+         finally:
+             if resp is not None:
+                 try:

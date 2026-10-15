@@ -1,0 +1,8 @@
+D055 canonical-ids candidate
+branch: feature/module-006a-client-canonical-ids
+head:   bcf5d457fd951a63a61ebd5c939001790526819a
+tree:   1f969300ac8257864c739e3ff1a5bdfae545e1d1
+parent/base: 53450a4cb71f555addd94eb5a700c777e7f5b1e6 (D053 candidate, single parent)
+drive_tool/service_client.py  blob d04c637de7b7ed2b9be78d5b18fde60519f71579  sha256 03c009ca1635be9a210c7ba3d2aa55cf90d4f64af8d6021a414294c94468a791
+tests/test_service_client.py blob 41d94d6ba0a184943ff6c80e1acc3d920ce18034  sha256 e10d6145bdaf52f54edd84cd8e693dd7c39a392c8aeca7bc10915b65ef8ae4f4
+scope vs 53450a4: exactly 2 files modified (drive_tool/service_client.py, tests/test_service_client.py); no other paths.

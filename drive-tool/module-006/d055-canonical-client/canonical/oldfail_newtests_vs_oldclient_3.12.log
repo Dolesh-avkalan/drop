@@ -1,0 +1,20 @@
+........E....................................................................
+======================================================================
+ERROR: test_nonroot_ids_without_prefix_rejected_before_socket (test_service_client.TestCanonicalFileIdPrefix.test_nonroot_ids_without_prefix_rejected_before_socket)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/oldclient_newtests/tests/test_service_client.py", line 1161, in test_nonroot_ids_without_prefix_rejected_before_socket
+    self._reject(c.read, "src", fid)
+  File "/scratch/work/oldclient_newtests/tests/test_service_client.py", line 1144, in _reject
+    fn(*args, **kwargs)
+  File "/scratch/work/oldclient_newtests/drive_tool/service_client.py", line 434, in read
+    return self._dispatch(
+           ^^^^^^^^^^^^^^^
+  File "/scratch/work/oldclient_newtests/drive_tool/service_client.py", line 518, in _dispatch
+    raise _wrap_transport(exc, write_op=write_op) from None
+drive_tool.service_client.DriveClientError: drive service error: unavailable
+
+----------------------------------------------------------------------
+Ran 77 tests in 2.582s
+
+FAILED (errors=1)

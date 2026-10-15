@@ -1,0 +1,9 @@
+PASS read truncated body -> unavailable False/True  :: code=unavailable u=False r=True
+PASS save truncated body -> unavailable True/False  :: code=unavailable u=True r=False
+PASS read stalled body -> timeout False/True  :: code=timeout u=False r=True dt=0.51s
+PASS save stalled body -> timeout True/False  :: code=timeout u=True r=False
+PASS mid-body failure: conn+resp closed
+PASS mid-body failure: redacted
+PASS no retry on body transport error  :: hits=1
+
+7 checks, 7 passed, 0 failed

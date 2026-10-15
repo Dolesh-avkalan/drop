@@ -1,0 +1,6 @@
+D053 candidate pin (verified, unmodified)
+commit: 53450a4cb71f555addd94eb5a700c777e7f5b1e6
+tree:   48ab4ef31a36ed2d36c8d6dfc5bd75bb90fd0b27
+parent: 81a6485c300f0a9cecc9c902c90360379c17e946 (single parent)
+scope vs 81a6485: exactly 2 files modified - drive_tool/service_client.py (+18), tests/test_service_client.py (+216)
+blobs: service_client.py 917df51feaf14f721bf90ffe19c12a32eccbc84f ; test_service_client.py 8322e8053830475a473452c5d5fc34cbaa72fb8f

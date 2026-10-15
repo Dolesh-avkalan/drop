@@ -1,0 +1,2 @@
+Files d053verify/drive_tool/service_client.py and canonical/drive_tool/service_client.py differ
+Files d053verify/tests/test_service_client.py and canonical/tests/test_service_client.py differ
