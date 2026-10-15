@@ -1,0 +1,8 @@
+MODULE-005A raw synthetic evidence (Sarvam)
+date: 2026-10-15T14:52:22Z
+cwd: /scratch/repos/drive-tool
+uname: Linux claw-sandbox-a14765705ccac2c14de5581ac8 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 GNU/Linux
+os: Debian GNU/Linux 12 (bookworm)
+python3.11: Python 3.11.2
+python3.12: Python 3.12.13
+python3: Python 3.12.13

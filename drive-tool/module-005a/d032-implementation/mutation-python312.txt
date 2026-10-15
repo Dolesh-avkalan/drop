@@ -1,0 +1,38 @@
+M1 discard partial matches (search.py): CAUGHT
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_early_match_retained_from_over_budget_directory)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_matches_ordered_within_scanned_prefix_only)
+    caught by: (test_search.FindLocalAdapterTests.test_local_exact_budget_is_conservatively_incomplete)
+M2 count only metadata (local.py): CAUGHT
+    caught by: (test_partial_scan.LocalScanTests.test_counts_all_raw_and_returns_only_supported)
+    caught by: (test_partial_scan.LocalScanTests.test_mixed_hidden_temp_symlink_fifo_all_charged)
+    caught by: (test_partial_scan.LocalScanTests.test_vanishing_entries_are_charged_but_omitted)
+M3 read B+1 entries (local.py): CAUGHT
+    caught by: (test_partial_scan.LocalScanTests.test_exact_budget_is_incomplete_and_never_probes_b_plus_1)
+    caught by: (test_partial_scan.LocalScanTests.test_mixed_hidden_temp_symlink_fifo_all_charged)
+    caught by: (test_partial_scan.LocalScanTests.test_over_budget_stops_at_b_without_b_plus_1)
+    caught by: (test_partial_scan.LocalScanTests.test_scandir_order_is_the_physical_prefix)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_early_match_retained_from_over_budget_directory)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_huge_directory_stops_after_exactly_b_no_b_plus_1)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_matches_ordered_within_scanned_prefix_only)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_repeated_partial_and_failing_scans_no_fd_growth)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_result_limit_in_partial_folder_charges_full_batch)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_zero_item_partial_scan_is_truncation)
+    caught by: (test_search.FindLocalAdapterTests.test_local_exact_budget_is_conservatively_incomplete)
+M4 complete=True at a hard cap without EOF (local.py): CAUGHT
+    caught by: (test_partial_scan.LocalScanTests.test_exact_budget_is_incomplete_and_never_probes_b_plus_1)
+    caught by: (test_partial_scan.LocalScanTests.test_mixed_hidden_temp_symlink_fifo_all_charged)
+    caught by: (test_partial_scan.LocalScanTests.test_over_budget_stops_at_b_without_b_plus_1)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_early_match_retained_from_over_budget_directory)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_huge_directory_stops_after_exactly_b_no_b_plus_1)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_matches_ordered_within_scanned_prefix_only)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_zero_item_partial_scan_is_truncation)
+    caught by: (test_search.FindLocalAdapterTests.test_local_exact_budget_is_conservatively_incomplete)
+M5 ignore ScanFailure.inspected (search.py): CAUGHT
+    caught by: (test_partial_scan.SearchBatchValidationTests.test_no_scans_after_failed_work_exhausts_budget)
+    caught by: (test_partial_scan.SearchBatchValidationTests.test_subdir_scanfailure_is_skipped_and_charged)
+M6 scan a sibling after failed work exhausted the budget (search.py): CAUGHT
+    caught by: (test_partial_scan.SearchBatchValidationTests.test_no_scans_after_failed_work_exhausts_budget)
+M7 leak iterator/fd on partial return (local.py): CAUGHT
+    caught by: (test_partial_scan.ScanFailureAccountingTests.test_descriptor_cleanup_failure_is_scanfailure)
+    caught by: (test_partial_scan.ScanFailureAccountingTests.test_no_fd_growth_on_partial_and_failing_scans)
+    caught by: (test_partial_scan_proofs.PartialScanProofTests.test_repeated_partial_and_failing_scans_no_fd_growth)
