@@ -1,0 +1,3 @@
+_os_link (old test seam)   overwrite=True -> SAVE SUCCEEDED (no error) | published=True bytes=b'FAULT-PAYLOAD' | temp_leftovers=0
+_os_rename post-publish    overwrite=True -> DriveClientError(code=unavailable, uncertain=True, retry_safe=False) | published=True bytes=b'FAULT-PAYLOAD' | temp_leftovers=0
+_os_rename pre-publish     overwrite=True -> DriveClientError(code=unavailable, uncertain=True, retry_safe=False) | published=False bytes=None | temp_leftovers=0

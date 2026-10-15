@@ -1,0 +1,1 @@
+M	tests/test_http_adapter.py

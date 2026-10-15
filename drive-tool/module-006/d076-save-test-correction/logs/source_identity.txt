@@ -1,0 +1,17 @@
+# D076 source identity
+
+repo:                Dolesh-avkalan/drive-tool
+branch:              feature/module-006b-http-save-test
+base commit:         cc9c994e64a52793949b58699f707c53f47c4369
+base tree:           e6d4af27b14694d3aad698a1b37fb99b248219ab
+head commit:         f304425ab774158090edd69f1b605bcc3b03096d
+head tree:           87569b2b8a82c821497d9e784c568d5f75f3e5d7
+
+tests/test_http_adapter.py (the ONLY changed path):
+  blob:   b571032c3e938abfb2a17f1dde44bb370469e4c4  (base)
+  blob:   80798e3200064a09e4c84a2b264c4f764b64599c  (head)
+  bytes:  51582
+  sha256: 23dfe5ddbca815759ac26d378b4c70b84eb9c7374f52131cf328dc687e56f467
+
+scope vs base: exactly one modification (M tests/test_http_adapter.py);
+production (drive_tool/http_adapter.py) and all auth/digit tests unchanged.

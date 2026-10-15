@@ -1,0 +1,41 @@
+diff --git a/tests/test_http_adapter.py b/tests/test_http_adapter.py
+index b571032..80798e3 100644
+--- a/tests/test_http_adapter.py
++++ b/tests/test_http_adapter.py
+@@ -722,20 +722,32 @@ class SaveUncertaintyTests(_Base):
+         s = self.instrumented()
+         a = self.make(service=s)
+         c = self.client(a, _MAIN_TOKEN)
+-        orig = local_write.LocalWriter._os_link
++        # overwrite=True publishes through _os_rename, not _os_link: the fault
++        # must be injected on the primitive the save actually uses, and only
++        # after it commits, so the failure is genuinely post-publish.
++        target = os.path.join(self.roots["main"], "savepool", "fault.bin")
++        self.assertFalse(os.path.exists(target))
++        orig = local_write.LocalWriter._os_rename
+         def boom(self, *args, **kwargs):
+-            orig(self, *args, **kwargs)
++            orig(self, *args, **kwargs)   # real atomic rename: bytes published
+             raise OSError(errno.EIO, "injected post-publish failure")
+-        local_write.LocalWriter._os_link = boom
++        local_write.LocalWriter._os_rename = boom
+         try:
+             with self.assertRaises(DriveClientError) as cm:
+                 c.save("main", "p/savepool/fault.bin", b"FAULT-PAYLOAD",
+                        overwrite=True)
+         finally:
+-            local_write.LocalWriter._os_link = orig
++            local_write.LocalWriter._os_rename = orig
+         self.assertEqual(cm.exception.code, "unavailable")
+         self.assertTrue(cm.exception.outcome_uncertain)
+         self.assertFalse(cm.exception.retry_safe)
++        # post-publish: the committed bytes really are on disk ...
++        with open(target, "rb") as fh:
++            self.assertEqual(fh.read(), b"FAULT-PAYLOAD")
++        # ... and the failed save left no stale temp file behind.
++        leftovers = [n for n in os.listdir(os.path.dirname(target))
++                     if n.startswith(local_write.TEMP_PREFIX)]
++        self.assertEqual(leftovers, [])
+ @unittest.skipUnless(_ADAPTER_AVAILABLE, _SKIP_REASON)
+ class ReadSemanticsTests(_Base):
+     def test_empty_body_with_eof_header_accepted(self):

@@ -1,0 +1,11 @@
+# D076 compile + import (patched tree)
+
+$ python3.11 -m py_compile tests/test_http_adapter.py
+py3.11 compile: OK
+$ python3.12 -m py_compile tests/test_http_adapter.py
+py3.12 compile: OK
+
+$ python3.11 -c 'import tests.test_http_adapter'
+py3.11 import OK, adapter_available True
+$ python3.12 -c 'import tests.test_http_adapter'
+py3.12 import OK, adapter_available True

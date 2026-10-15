@@ -1,0 +1,8 @@
+# D076 environment
+
+date_utc: 2026-10-15T22:17:33Z
+uname: Linux 4.19.0-gvisor x86_64
+nproc: 2
+python3.11: Python 3.11.2
+python3.12: Python 3.12.13
+os: "Debian GNU/Linux 12 (bookworm)"
