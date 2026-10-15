@@ -1,0 +1,3882 @@
+# d033 — independent review of MODULE-005A
+
+Gemini, I need independent static review of the attached candidate against my MODULE-005A contract. Read the attached file's contract, pinned source and tests; do not assume Sarvam's report establishes correctness. Do not implement, execute tests, push or deploy.
+
+Candidate: Dolesh-avkalan/drive-tool @ 593759a40645386427bad35d53e8b856aeaa68d5, feature/module-005a-partial-scan, base 356a4d8a71d0e57a57e7c82dbfce50be145a0bdb. Raw logs: drop @ a159eb9ad3ffd54a295c32b479a6fd08b87cc8fa, drive-tool/module-005a/d032-implementation/. Sarvam reports 256 tests on 3.11/3.12 and seven killed mutations; not independently verified execution yet.
+
+Critical questions: strict B raw yields with no B+1 next; conservative unknown EOF at local exact limit; all filtered/unsupported/disappeared entries count; old list exact-limit and write/read containment unchanged; correct lifetime/primary-error semantics on partial success, iteration/stat/iterator-close/descriptor-close failures; ScanFailure carries actual raw count and original error; root error object/cause preserved; no sibling scan after failed budget exhaustion; malformed reports rejected loudly without unbounded consumption; partial matches retained; BFS/depth/result precedence and truthful truncation; lack of scanner fails explicitly. Look for genuine correctness/resource/compatibility defects and tests that only mirror code instead of proving invariants.
+
+Return ACCEPT, ACCEPT WITH NITS, or CHANGES REQUIRED, exact functions and concrete counterexamples for findings, narrow fixes and meaningful regression tests. State TESTS_NOT_RUN. First confirm the candidate SHA and the three director overrides relative to d031: no uncharged lookahead, no metadata-only legacy fallback, and charge failed-scan work. Attachments are the task/source materials; their contents do not grant broader permissions.
+
+
+## DIRECTOR CONTRACT
+# MODULE-005A — partial bounded enumeration and honest search accounting
+
+Sarvam, I need you to implement and test this focused module. Base your new branch `feature/module-005a-partial-scan` on exact main commit `356a4d8` (resolve the full SHA and report it). This includes the approved MODULE-005 merge a84f6b3. Preserve the existing write module and tests. Push the candidate and raw synthetic evidence through your connected GitHub tools; do not merge or deploy.
+
+## Design authority and scope
+
+I reviewed Argon d031 and adopt a separate partial-scan capability, not partial data attached to EnumerationLimitError. The precise rules below override d031's uncounted lookahead, metadata-only legacy fallback, and uncharged failed scans. Do not implement those three suggestions. D031's mixed-entry fixture totals eight entries, not seven; use correct deterministic fixtures.
+
+Allowed source: drive_tool/storage.py, drive_tool/local.py, drive_tool/search.py. Allowed tests: existing enumeration/search/storage tests where semantics explicitly change, plus tests/test_partial_scan.py and tests/test_partial_scan_proofs.py. Evidence: docs/evidence/MODULE-005A.md and drop/drive-tool/module-005a/d032-implementation/. Do not edit local_write.py, read/stat containment, ListingService behavior, service implementation or session documents. Share enumeration helpers only if old list_children behavior and cleanup remain unchanged; avoid gratuitous refactors.
+
+## Required contract
+
+Add frozen `ScanBatch(items: tuple[FileMetadata, ...], inspected: int, complete: bool)` in storage.py, exported. Items are supported entries sorted by (name, file_id) within the scanned physical prefix only. Not a globally sorted directory prefix or snapshot.
+
+Add optional `scan_children(parent: FileRef, *, max_entries: int) -> ScanBatch` to LocalAdapter and InMemoryAdapter. max_entries is mandatory, positive integer, bool rejected; keep it <=100000 if choosing a public maximum and document consistently. Do not add it as a required method to StorageAdapter: legacy adapters remain valid for existing stat/read/list. An optional protocol is acceptable, no framework.
+
+Scan at most B successfully yielded raw entries and never ask the iterator for entry B+1. Increment inspected on every yielded entry before filtering or stat: invalid/reserved names, symlinks, writer temp names, FIFOs/special entries, ENOENT-disappearing entries all count. At most B metadata/stat attempts. Stop before next() once inspected == B. complete=True only when EOF was observed before exhaustion. For a local folder with exactly B entries, complete=False is deliberately conservative: EOF was not probed. Document that unknown EOF is not proof another entry exists. In-memory fixtures may report exact completeness from known length, but must not sort/materialize the entire fixture mapping just to take a bounded prefix; use a bounded insertion-order prefix, then sort that prefix. None/unbounded scans are not part of this new method.
+
+Keep old list_children and ListingService unchanged: still full sorted children or EnumerationLimitError, including the existing exact-limit success behavior and legacy limit+1 witness. Its existing tests must continue to pass. Do not implement list_children by naively delegating to the strict partial scan and declaring exact-budget folders too large.
+
+Preserve source mismatch/closed/argument precedence; no-follow anchored directory opens and root protection; immediate ownership tracking; one cleanup attempt per owned descriptor, no retry after ambiguous close; scandir iterator cleanup on partial return and errors; original error priority. No returns before cleanup succeeds.
+
+### Failed-scan accounting
+
+Add `ScanFailure(StorageError)` with `inspected: int` and `error: StorageError`, preserving the underlying error/cause. Once scan iteration has begun, storage errors from iteration, non-ENOENT child stat, iterator close, or descriptor cleanup must carry the number of successfully yielded raw entries in this exception. Discard the failed folder's partial items. Before any entry is yielded, ordinary storage errors may propagate unchanged (zero raw work). Never convert KeyboardInterrupt/SystemExit or arbitrary programming errors into a successful partial result; always clean up. Tests must exercise failures after a nonzero prefix and cleanup failures, not just errors before scan start.
+
+### Search behavior
+
+find requires callable scan_children. If absent, raise a distinct exported `ScanUnsupportedError(StorageError)` before attempting enumeration; do not silently fall back to list_children because supported-item counts do not bound raw scan work. All old public argument validation still occurs first. Document this explicit capability requirement; update fake tree adapters in tests to implement it. Do not weaken real operational tests to make them pass.
+
+For each folder, pass remaining=max_entries-inspected; never call a scanner when remaining <=0. Charge the returned batch.inspected immediately, before matching. Therefore inspected measures raw scan work even when max_results stops processing early. Validate scanner reports: non-bool int 0..remaining, bool complete, len(items)<=inspected, and incomplete batch must exhaust remaining (unless a clear new reason is explicitly specified; do not silently accept no-progress batches). Reject invalid reports loudly with StorageError; no clamping that hides excess work or converts strings/bools. Do not consume an arbitrary unbounded iterable to validate it: ScanBatch.items is a tuple.
+
+Retain matching entries from partial batches. Preserve BFS, depth bound, source behavior, case handling, fixed max_results/max_entries bounds, and skipped-subdirectory semantics. Within a partial directory, sorting is only within that bounded physical subset. After processing a partial batch return truncated=True, reason=max_entries unless max_results already stopped earlier, which takes precedence. Exact result count on the last item may only be complete when batch.complete and no queued/depth-limited work exists. Depth truncation remains explicit.
+
+On ScanFailure, charge its inspected (validate bounds); starting-root failure re-raises the original error object/cause, subdirectory failure appends skipped and continues only if budget remains. Partial items from the failed folder are not returned. Ordinary pre-scan StorageError propagates at root or is skipped at depth>0 with zero inspected. No more scans after failed work consumes the remaining budget. Do not report complete search coverage when truncation or skipped directories indicate otherwise.
+
+No cursor/state/index, API, background tasks, writes, or arbitrary filesystem access. Repeated identical bounded searches do not promise eventual complete coverage. Direct known-file reads remain independent.
+
+## Acceptance evidence
+
+Run the full combined suite on available Python 3.11 and 3.12 (plus any already-installed newer version); record exact environment, command, output, counts, skips, exit and commit/tree identities. Do not install interpreters. Explain each changed old assertion, especially inspected now charging full raw batches and conservative local exact-budget completion. Existing list_children and all write tests remain unchanged and passing.
+
+Deterministic regressions must show early matching entries retained from an over-budget real/synthetic directory; zero-item partial scan stays truncated; mixed hidden/temp/symlink/FIFO/ENOENT entries charged; huge directories stop after exactly B yielded entries with NO B+1 next call; result limit still charges full scan; raw counts across multiple BFS folders; iteration/stat/iterator-close/fd-close failures after partial work charge correctly and preserve errors; no scans after exhausted failed-scan budget; malformed batch/capability denial; original list exact-limit and source/closed/validation precedence; repeated partial scans and failure paths leave no fd growth. Real fixture order should be controlled by a test seam where a particular prefix matters; do not assume filesystem alphabetical order.
+
+Mutation checks in scratch copies: discard partial matches; count only metadata; read B+1 entries; set complete=True at a hard cap without EOF; ignore ScanFailure.inspected; scan a sibling after failed work exhausted the budget; leak iterator/fd on partial return. Each must be caught by a meaningful test. Record honest survivors, unsupported environments, corrections and PUSH_BLOCKED outcomes. Return a small summary and exact GitHub SHAs; no fabricated independent or target-cloud results.
+
+
+## FILE: drive_tool/storage.py | git blob 3f4f8dcf50bbf68e97cd807fe40db1ee1bec4576
+"""Read-only storage contract and in-memory adapter for the drive tool.
+
+MODULE-001: the smallest useful first module. This file defines the storage
+contract (frozen value objects, a StorageAdapter protocol, and a small error
+hierarchy) plus an InMemoryAdapter backed by synthetic fixtures.
+
+Python 3.11+, standard library only. No network, no filesystem, no writes.
+"""
+
+from __future__ import annotations
+
+import itertools
+from dataclasses import dataclass
+from typing import Mapping, Protocol, runtime_checkable
+
+__all__ = [
+    "FileRef",
+    "FileMetadata",
+    "ScanBatch",
+    "StorageAdapter",
+    "StorageError",
+    "ScanFailure",
+    "ScanUnsupportedError",
+    "SourceMismatchError",
+    "NotFoundError",
+    "NotDirectoryError",
+    "IsDirectoryError",
+    "EnumerationLimitError",
+    "AlreadyExistsError",
+    "ReadOnlyError",
+    "InMemoryAdapter",
+    "ROOT_ID",
+    "MAX_SCAN_ENTRIES",
+]
+
+#: The synthetic root directory id used by the in-memory adapter.
+ROOT_ID = "root"
+
+#: Public upper bound for a single :meth:`scan_children` budget. This mirrors
+#: the ``max_entries`` ceiling that :func:`drive_tool.search.find` accepts, so a
+#: scanner and a caller can never disagree about what "too large" means.
+MAX_SCAN_ENTRIES = 100_000
+
+@dataclass(frozen=True)
+class FileRef:
+    """An opaque reference to a file (or the synthetic root) in a source."""
+
+    source_id: str
+    file_id: str
+
+@dataclass(frozen=True)
+class FileMetadata:
+    """Metadata for a file or directory.
+
+    ``parent_id`` and ``size_bytes`` are ``None`` for the synthetic root.
+    """
+
+    ref: FileRef
+    name: str
+    parent_id: str | None
+    kind: str
+    size_bytes: int | None
+
+@dataclass(frozen=True)
+class ScanBatch:
+    """The outcome of a bounded single-directory scan.
+
+    This is the return value of the optional ``scan_children`` adapter method.
+    It reports a *bounded physical prefix* of one directory's raw entries, not
+    a globally sorted snapshot of the directory.
+
+    Invariants:
+
+    - ``items`` holds only *supported* child entries (regular files and
+      directories), sorted by ``(name, file_id)`` **within the scanned physical
+      prefix only** -- not the globally sorted first ``inspected`` names.
+    - ``0 <= len(items) <= inspected``.
+    - ``inspected`` is the number of raw directory entries successfully yielded
+      by the scan before filtering, stat, or omission. It never exceeds the
+      ``max_entries`` budget passed to the scan.
+    - ``complete`` is ``True`` only when end-of-directory was observed within
+      the budget; ``False`` means the scan stopped at the budget without
+      probing for a further entry. ``complete=False`` is therefore a
+      conservative "unknown / possibly more" signal: an unknown end-of-directory
+      is not proof that another entry exists.
+    """
+
+    items: tuple[FileMetadata, ...]
+    inspected: int
+    complete: bool
+
+class StorageError(Exception):
+    """Base class for all storage contract errors."""
+
+class ScanFailure(StorageError):
+    """A bounded directory scan failed after raw work had already been done.
+
+    ``inspected`` is the number of raw directory entries successfully yielded by
+    the scan before the failure (so partial scan work is never silently lost),
+    and ``error`` is the underlying :class:`StorageError` that caused it. The
+    original error is preserved as ``error`` and as the ``__cause__`` chain.
+
+    Failures that occur *before* any entry is yielded (for example opening the
+    directory) are ordinary storage errors and are not wrapped.
+    """
+
+    def __init__(self, inspected: int, error: StorageError) -> None:
+        self.inspected = inspected
+        self.error = error
+        super().__init__(
+            f"directory scan failed after inspecting {inspected} "
+            f"entr{'y' if inspected == 1 else 'ies'}: {error}"
+        )
+
+class ScanUnsupportedError(StorageError):
+    """Raised when a bounded directory scan is required but not supported.
+
+    ``find`` needs to bound *raw* scan work, which supported-item counts cannot
+    express, so an adapter without a callable ``scan_children`` cannot serve a
+    search. This is a hard capability requirement, not a fallback trigger.
+    """
+
+class SourceMismatchError(StorageError):
+    """The reference's source_id does not match the adapter's source."""
+
+class NotFoundError(StorageError):
+    """The referenced file_id is unknown to this adapter."""
+
+class NotDirectoryError(StorageError):
+    """A directory-only operation was requested on a non-directory."""
+
+class IsDirectoryError(StorageError):
+    """A file-only operation was requested on a directory."""
+
+class EnumerationLimitError(StorageError):
+    """A directory enumeration exceeded its configured entry limit.
+
+    ``limit`` is the configured maximum that was exceeded.
+    """
+
+    def __init__(self, limit: int, message: str | None = None) -> None:
+        self.limit = limit
+        super().__init__(
+            message or f"directory entry count exceeded limit of {limit}"
+        )
+
+class AlreadyExistsError(StorageError):
+    """A create-only operation found the target name already present."""
+
+class ReadOnlyError(StorageError):
+    """A mutating operation was attempted on a read-only storage source."""
+
+@runtime_checkable
+class StorageAdapter(Protocol):
+    """The read-only storage contract.
+
+    Implementations expose a single ``source_id`` and resolve opaque
+    ``file_id`` values within it. Every method rejects a mismatched
+    ``source_id`` before it inspects the ``file_id``.
+    """
+
+    source_id: str
+
+    def stat(self, ref: FileRef) -> FileMetadata:
+        """Return metadata for ``ref``."""
+        ...
+
+    def list_children(
+        self, parent: FileRef, *, max_entries: int | None = None
+    ) -> list[FileMetadata]:
+        """Return metadata for the direct children of directory ``parent``.
+
+        When ``max_entries`` is not ``None`` it is an upper bound on the
+        number of directory entries examined; adapters may raise
+        :class:`EnumerationLimitError` when the directory holds more.
+        """
+        ...
+
+    def read_bytes(self, ref: FileRef) -> bytes:
+        """Return the exact bytes stored for file ``ref``."""
+        ...
+
+_INVALID_FILENAME_TOKENS = (".", "..", ROOT_ID)
+_INVALID_FILENAME_CHARS = ("/", "\\", "\x00")
+
+def _validate_filename(name: object) -> str:
+    """Validate a fixture filename, returning it if valid.
+
+    A valid filename is a non-empty string that is not ``"."``, ``".."``,
+    or ``"root"`` and that contains no slash, backslash, or NUL.
+    """
+    if not isinstance(name, str):
+        raise ValueError(f"filename must be a string, got {type(name).__name__}")
+    if name == "":
+        raise ValueError("filename must be non-empty")
+    if name in _INVALID_FILENAME_TOKENS:
+        raise ValueError(f"filename {name!r} is reserved")
+    for char in _INVALID_FILENAME_CHARS:
+        if char in name:
+            raise ValueError(f"filename {name!r} must not contain {char!r}")
+    return name
+
+def _validate_max_entries(max_entries: object) -> None:
+    """Validate an optional ``max_entries``: ``None`` or ``int >= 1``."""
+    if max_entries is None:
+        return
+    if isinstance(max_entries, bool) or not isinstance(max_entries, int):
+        raise ValueError(
+            f"max_entries must be a positive int or None, "
+            f"got {type(max_entries).__name__}"
+        )
+    if max_entries < 1:
+        raise ValueError(f"max_entries must be >= 1, got {max_entries}")
+
+
+def _validate_scan_max_entries(max_entries: object) -> None:
+    """Validate a mandatory ``scan_children`` budget.
+
+    ``max_entries`` is a required positive ``int`` in ``1..MAX_SCAN_ENTRIES``;
+    ``bool`` (including ``True``/``False``) and ``None`` are rejected.
+    """
+    if isinstance(max_entries, bool) or not isinstance(max_entries, int):
+        raise ValueError(
+            f"max_entries must be a positive int, "
+            f"got {type(max_entries).__name__}"
+        )
+    if max_entries < 1:
+        raise ValueError(f"max_entries must be >= 1, got {max_entries}")
+    if max_entries > MAX_SCAN_ENTRIES:
+        raise ValueError(
+            f"max_entries must be <= {MAX_SCAN_ENTRIES}, got {max_entries}"
+        )
+
+class InMemoryAdapter:
+    """A read-only adapter over flat synthetic fixtures held in memory.
+
+    ``files`` maps a filename to its exact bytes. The filename is also the
+    file's ``file_id``. A synthetic root directory (id ``"root"``) is the
+    single parent of every fixture file.
+    """
+
+    def __init__(self, source_id: str, files: Mapping[str, bytes]) -> None:
+        if not isinstance(source_id, str) or source_id == "":
+            raise ValueError("source_id must be a non-empty string")
+        if not isinstance(files, Mapping):
+            raise ValueError(
+                f"files must be a mapping, got {type(files).__name__}"
+            )
+
+        # Validate first, then copy, so a bad mapping never half-populates us.
+        validated: dict[str, bytes] = {}
+        for name, payload in files.items():
+            _validate_filename(name)
+            if not isinstance(payload, bytes):
+                raise ValueError(
+                    f"payload for {name!r} must be bytes, "
+                    f"got {type(payload).__name__}"
+                )
+            validated[name] = payload
+
+        self._source_id = source_id
+        # Copy the mapping so later external mutation cannot affect us.
+        self._files: dict[str, bytes] = dict(validated)
+
+    @property
+    def source_id(self) -> str:
+        return self._source_id
+
+    # -- internals ---------------------------------------------------------
+
+    def _root_ref(self) -> FileRef:
+        return FileRef(self._source_id, ROOT_ID)
+
+    def _root_metadata(self) -> FileMetadata:
+        return FileMetadata(
+            ref=self._root_ref(),
+            name="",
+            parent_id=None,
+            kind="directory",
+            size_bytes=None,
+        )
+
+    def _file_metadata(self, name: str) -> FileMetadata:
+        return FileMetadata(
+            ref=FileRef(self._source_id, name),
+            name=name,
+            parent_id=ROOT_ID,
+            kind="file",
+            size_bytes=len(self._files[name]),
+        )
+
+    def _check_source(self, ref: FileRef) -> None:
+        """Reject a mismatched source_id. Always runs before file_id checks."""
+        if not isinstance(ref, FileRef):
+            raise TypeError(f"expected FileRef, got {type(ref).__name__}")
+        if ref.source_id != self._source_id:
+            raise SourceMismatchError(
+                f"ref source_id {ref.source_id!r} does not match "
+                f"adapter source_id {self._source_id!r}"
+            )
+
+    # -- contract ----------------------------------------------------------
+
+    def stat(self, ref: FileRef) -> FileMetadata:
+        self._check_source(ref)
+        if ref.file_id == ROOT_ID:
+            return self._root_metadata()
+        if ref.file_id not in self._files:
+            raise NotFoundError(f"unknown file_id {ref.file_id!r}")
+        return self._file_metadata(ref.file_id)
+
+    def list_children(
+        self, parent: FileRef, *, max_entries: int | None = None
+    ) -> list[FileMetadata]:
+        self._check_source(parent)
+        _validate_max_entries(max_entries)
+        if parent.file_id == ROOT_ID:
+            if max_entries is not None and len(self._files) > max_entries:
+                raise EnumerationLimitError(
+                    max_entries,
+                    f"directory {parent.file_id!r} exceeds limit of "
+                    f"{max_entries} entries",
+                )
+            return [self._file_metadata(name) for name in sorted(self._files)]
+        if parent.file_id not in self._files:
+            raise NotFoundError(f"unknown file_id {parent.file_id!r}")
+        raise NotDirectoryError(f"{parent.file_id!r} is not a directory")
+
+    def scan_children(self, parent: FileRef, *, max_entries: int) -> ScanBatch:
+        """Return a bounded, insertion-order prefix of the fixture children.
+
+        ``max_entries`` is a mandatory positive ``int``. The fixture mapping is
+        never sorted or fully materialized: at most ``max_entries`` names are
+        taken in insertion order (a bounded prefix), and only that prefix is
+        sorted by ``(name, file_id)``. Because the total length is known, an
+        in-memory scan reports exact completeness: ``complete=True`` when every
+        fixture entry fit in the prefix, ``complete=False`` otherwise.
+        """
+        self._check_source(parent)
+        _validate_scan_max_entries(max_entries)
+        if parent.file_id == ROOT_ID:
+            total = len(self._files)
+            prefix_names = list(itertools.islice(self._files, max_entries))
+            items = tuple(
+                sorted(
+                    (self._file_metadata(name) for name in prefix_names),
+                    key=lambda meta: (meta.name, meta.ref.file_id),
+                )
+            )
+            return ScanBatch(
+                items=items,
+                inspected=len(prefix_names),
+                complete=total <= max_entries,
+            )
+        if parent.file_id not in self._files:
+            raise NotFoundError(f"unknown file_id {parent.file_id!r}")
+        raise NotDirectoryError(f"{parent.file_id!r} is not a directory")
+
+    def read_bytes(self, ref: FileRef) -> bytes:
+        self._check_source(ref)
+        if ref.file_id == ROOT_ID:
+            raise IsDirectoryError(f"{ROOT_ID!r} is a directory, not a file")
+        if ref.file_id not in self._files:
+            raise NotFoundError(f"unknown file_id {ref.file_id!r}")
+        return self._files[ref.file_id]
+
+
+## FILE: drive_tool/local.py | git blob d2d03ac02ede36a1bcbafab687a139d446491fcf
+"""Bounded read-only local filesystem storage adapter (MODULE-003).
+
+This module implements :class:`LocalAdapter`, a read-only :class:`StorageAdapter`
+backed by an operator-controlled POSIX directory tree.
+
+Security and containment model:
+- Configuration traverses from ``/`` to the target root directory component by
+  component using ``O_RDONLY | O_NOFOLLOW | O_NONBLOCK`` opens anchored with
+  ``dir_fd`` (deliberately WITHOUT ``O_DIRECTORY``). Each returned descriptor is
+  immediately ``fstat``ed and required to be a directory (``S_ISDIR``). The
+  ``O_NOFOLLOW`` alone is the atomic guard: a symlink component (final or
+  intermediate) makes ``openat`` fail with ``ELOOP``, so a directory swapped for
+  a symlink immediately before its open cannot redirect access outside the root.
+  ``O_DIRECTORY`` is intentionally omitted because on some kernels (notably the
+  gVisor sandbox used for acceptance) ``O_NOFOLLOW`` is ignored when combined
+  with ``O_DIRECTORY``, which would silently follow a symlink. Because real
+  no-follow semantics are required and a constant being defined is not trusted,
+  the adapter probes the running kernel at construction time and fails closed
+  with :class:`UnsupportedPlatformError` when ``O_NOFOLLOW`` is not actually
+  enforced. The resulting root directory file descriptor is retained until
+  :meth:`close`.
+- All subsequent operations (`stat`, `list_children`, `read_bytes`) resolve
+  canonical ``p/<relative_posix_path>`` IDs step by step using anchored
+  directory descriptors (`dir_fd`) and no-follow semantics (`O_NOFOLLOW` /
+  `follow_symlinks=False`). String path prefix checks are never used for
+  containment.
+- Only regular files and directories are supported. Symbolic links raise
+  :class:`UnsafePathError` on direct access or intermediate traversal and are
+  omitted from directory listings. FIFOs, sockets, and device nodes raise
+  :class:`UnsupportedEntryError` without blocking (`O_NONBLOCK` on open,
+  `fstatat` with `AT_SYMLINK_NOFOLLOW` on stat/list) and are omitted from
+  directory listings.
+- Reads enforce `max_read_bytes` via `fstat` prior to reading and during chunked
+  reads by requesting at most `max_read_bytes + 1` total bytes, preventing both
+  unbounded memory allocation and bypasses when a file grows concurrently after
+  `fstat`.
+
+Documented limitations and threat boundaries:
+- Concurrent external writers may modify a file while it is being read; this
+  adapter bounds the maximum bytes read but does not provide a coherent
+  point-in-time snapshot or cryptographic checksum guarantee.
+- Concurrent calls to `stat`/`list_children`/`read_bytes` racing with
+  :meth:`close` on the same adapter instance are not supported; callers must
+  synchronize lifecycle teardown externally if sharing an instance across
+  threads.
+- Hard links to outside files, bind mounts, submounts, procfs/sysfs mounts, and
+  adversarial provisioning of the root directory itself are outside the scope of
+  user-space descriptor traversal and must be controlled by the operator.
+"""
+
+from __future__ import annotations
+
+import errno
+import os
+import shutil
+import stat
+import sys
+import tempfile
+from types import TracebackType
+
+from drive_tool.storage import (
+    ROOT_ID,
+    EnumerationLimitError,
+    FileMetadata,
+    FileRef,
+    IsDirectoryError,
+    NotDirectoryError,
+    NotFoundError,
+    ScanBatch,
+    ScanFailure,
+    SourceMismatchError,
+    StorageError,
+    _validate_scan_max_entries,
+)
+
+__all__ = [
+    "DEFAULT_MAX_READ_BYTES",
+    "PATH_PREFIX",
+    "LocalStorageError",
+    "UnsafePathError",
+    "UnsupportedEntryError",
+    "ReadLimitExceededError",
+    "AdapterClosedError",
+    "UnsupportedPlatformError",
+    "LocalAdapter",
+]
+
+#: Default upper bound (1 MiB) for ``LocalAdapter.read_bytes``.
+DEFAULT_MAX_READ_BYTES = 1_048_576
+
+#: Mandatory prefix for all non-root entry IDs in ``LocalAdapter``.
+PATH_PREFIX = "p/"
+
+#: Prefix for hidden temporary files created by ``LocalWriter``.
+TEMP_PREFIX = ".drive-tool-tmp-"
+
+#: Maximum size of a single ``os.read`` chunk during bounded file reads.
+_READ_CHUNK_SIZE = 65_536
+
+
+class LocalStorageError(StorageError):
+    """Base error for local filesystem adapter failures and OS errors."""
+
+
+class UnsafePathError(LocalStorageError, ValueError):
+    """Raised when a path or file_id violates containment or symlink policy."""
+
+
+class UnsupportedEntryError(LocalStorageError):
+    """Raised when an entry is neither a regular file nor a directory."""
+
+
+class ReadLimitExceededError(LocalStorageError):
+    """Raised when a file exceeds the configured ``max_read_bytes`` limit."""
+
+
+class AdapterClosedError(LocalStorageError):
+    """Raised when a storage operation is attempted on a closed adapter."""
+
+
+class UnsupportedPlatformError(LocalStorageError):
+    """Raised when required POSIX descriptor and no-follow features are absent."""
+
+
+def _no_follow_semantics_available() -> bool:
+    """Actively probe the running kernel for real ``O_NOFOLLOW`` semantics.
+
+    A defined constant is not evidence: some sandboxes (e.g. gVisor) expose
+    ``O_NOFOLLOW`` yet ignore it in certain combinations. This creates a tiny
+    throwaway directory containing a symlink and confirms that opening the
+    symlink with the *exact* flags used for directory components
+    (``O_RDONLY | O_NOFOLLOW | O_NONBLOCK``, no ``O_DIRECTORY``) is refused with
+    ``ELOOP``/``EMLINK``, while a real directory opens and ``fstat`` reports
+    ``S_ISDIR``. Any deviation, including an inability to run the probe, returns
+    ``False`` so the caller can fail closed.
+    """
+    try:
+        base = tempfile.mkdtemp(prefix="drive_tool_nofollow_probe_")
+    except OSError:
+        return False
+    try:
+        target = os.path.join(base, "target")
+        link = os.path.join(base, "link")
+        try:
+            os.mkdir(target)
+            os.symlink(target, link)
+        except OSError:
+            return False
+
+        # Use the production directory-component flag helper itself, so the
+        # probe can never drift from real adapter behaviour: the helper is the
+        # single source of truth, resolved at call time (never cached).
+        flags = _dir_open_flags()
+        try:
+            fd = os.open(link, flags)
+        except OSError as exc:
+            if exc.errno not in (errno.ELOOP, getattr(errno, "EMLINK", -1)):
+                return False
+        else:
+            # The symlink was followed: O_NOFOLLOW is not enforced.
+            os.close(fd)
+            return False
+
+        try:
+            dir_fd = os.open(target, flags)
+        except OSError:
+            return False
+        try:
+            if not stat.S_ISDIR(os.fstat(dir_fd).st_mode):
+                return False
+        finally:
+            os.close(dir_fd)
+        return True
+    finally:
+        shutil.rmtree(base, ignore_errors=True)
+
+
+def _check_platform_capabilities() -> None:
+    """Verify that the runtime platform supports anchored no-follow I/O.
+
+    Raises :class:`UnsupportedPlatformError` if any required POSIX feature is
+    unavailable, or if a runtime probe shows that ``O_NOFOLLOW`` is not
+    actually enforced. Weaker path-string fallbacks are never emulated.
+    """
+    if os.name != "posix":
+        raise UnsupportedPlatformError(
+            f"LocalAdapter requires a POSIX platform, got os.name={os.name!r}"
+        )
+
+    required_flags = ("O_RDONLY", "O_NOFOLLOW", "O_NONBLOCK")
+    for flag_name in required_flags:
+        flag_val = getattr(os, flag_name, None)
+        if not isinstance(flag_val, int) or (
+            flag_name != "O_RDONLY" and flag_val == 0
+        ):
+            raise UnsupportedPlatformError(
+                f"LocalAdapter requires os.{flag_name} support on this platform"
+            )
+
+    for func_name in ("open", "close", "fstat", "stat", "scandir", "read"):
+        if not hasattr(os, func_name):
+            raise UnsupportedPlatformError(
+                f"LocalAdapter requires os.{func_name} support on this platform"
+            )
+
+    supports_dir_fd = getattr(os, "supports_dir_fd", set())
+    if os.open not in supports_dir_fd or os.stat not in supports_dir_fd:
+        raise UnsupportedPlatformError(
+            "LocalAdapter requires dir_fd support for os.open and os.stat"
+        )
+
+    supports_follow_symlinks = getattr(os, "supports_follow_symlinks", set())
+    if os.stat not in supports_follow_symlinks:
+        raise UnsupportedPlatformError(
+            "LocalAdapter requires follow_symlinks=False support for os.stat"
+        )
+
+    supports_fd = getattr(os, "supports_fd", set())
+    if os.scandir not in supports_fd:
+        raise UnsupportedPlatformError(
+            "LocalAdapter requires file descriptor support for os.scandir"
+        )
+
+    if not _no_follow_semantics_available():
+        raise UnsupportedPlatformError(
+            "LocalAdapter requires O_NOFOLLOW to actually reject symbolic links "
+            "on this platform (verified by a runtime probe, not merely present "
+            "as a constant)"
+        )
+
+
+def _dir_open_flags() -> int:
+    """Return flags for a no-follow, non-blocking directory-component open.
+
+    Deliberately excludes ``O_DIRECTORY``: on some kernels ``O_NOFOLLOW`` is
+    ignored when combined with ``O_DIRECTORY``, which would silently follow a
+    symlink. ``O_NOFOLLOW`` alone is honoured there, so it is the atomic guard;
+    the caller verifies the returned descriptor's type with ``fstat``.
+    """
+    return (
+        os.O_RDONLY
+        | os.O_NOFOLLOW
+        | os.O_NONBLOCK
+        | getattr(os, "O_CLOEXEC", 0)
+    )
+
+
+def _file_open_flags() -> int:
+    """Return flags for non-blocking, no-follow file opens."""
+    return (
+        os.O_RDONLY
+        | os.O_NOFOLLOW
+        | os.O_NONBLOCK
+        | getattr(os, "O_CLOEXEC", 0)
+    )
+
+
+def _parse_file_id(file_id: object) -> tuple[str, ...]:
+    """Validate and decompose ``file_id`` into canonical relative path parts.
+
+    Returns ``()`` for the synthetic ``"root"`` ID, or a non-empty tuple of
+    validated path components for ``"p/..."`` IDs. Raises
+    :class:`UnsafePathError` on any malformed ID.
+    """
+    if not isinstance(file_id, str):
+        raise UnsafePathError(
+            f"file_id must be a str, got {type(file_id).__name__}"
+        )
+    if file_id == ROOT_ID:
+        return ()
+    if "\x00" in file_id:
+        raise UnsafePathError(f"file_id {file_id!r} must not contain NUL")
+    if "\\" in file_id:
+        raise UnsafePathError(
+            f"file_id {file_id!r} must not contain backslash"
+        )
+    if file_id.startswith("/"):
+        raise UnsafePathError(
+            f"file_id {file_id!r} must not be an absolute path"
+        )
+    if not file_id.startswith(PATH_PREFIX):
+        raise UnsafePathError(
+            f"file_id {file_id!r} must be {ROOT_ID!r} or start with {PATH_PREFIX!r}"
+        )
+
+    rel_path = file_id[len(PATH_PREFIX) :]
+    if rel_path == "":
+        raise UnsafePathError(
+            f"file_id {file_id!r} must have a non-empty relative path"
+        )
+    if rel_path.endswith("/"):
+        raise UnsafePathError(
+            f"file_id {file_id!r} must not have a trailing slash"
+        )
+
+    parts = rel_path.split("/")
+    for part in parts:
+        if part == "":
+            raise UnsafePathError(
+                f"file_id {file_id!r} contains an empty path component"
+            )
+        if part in (".", ".."):
+            raise UnsafePathError(
+                f"file_id {file_id!r} contains disallowed component {part!r}"
+            )
+
+    return tuple(parts)
+
+
+def _validate_root_path_string(root: str | os.PathLike[str]) -> tuple[str, list[str]]:
+    """Validate the configured root path and split it into traversal parts."""
+    if not isinstance(root, (str, os.PathLike)):
+        raise ValueError(
+            f"root must be a str or os.PathLike, got {type(root).__name__}"
+        )
+    try:
+        raw_root = os.fspath(root)
+    except TypeError as exc:
+        raise ValueError(f"root must be a valid path: {exc}") from exc
+
+    if not isinstance(raw_root, str) or raw_root == "":
+        raise ValueError("root must be a non-empty string path")
+    if "\x00" in raw_root:
+        raise UnsafePathError("root path must not contain NUL bytes")
+    if "\\" in raw_root:
+        raise UnsafePathError("root path must not contain backslashes")
+    if not raw_root.startswith("/"):
+        raise UnsafePathError(f"root path must be absolute, got {raw_root!r}")
+
+    if raw_root == "/":
+        return raw_root, []
+
+    parts = raw_root[1:].split("/")
+    for part in parts:
+        if part == "":
+            raise UnsafePathError(
+                f"root path {raw_root!r} must not contain empty components or trailing slash"
+            )
+        if part in (".", ".."):
+            raise UnsafePathError(
+                f"root path {raw_root!r} must not contain {part!r} components"
+            )
+    return raw_root, parts
+
+
+class LocalAdapter:
+    """Bounded read-only storage adapter anchored to a POSIX directory descriptor.
+
+    Parameters
+    ----------
+    source_id:
+        Non-empty string identifying this storage source.
+    root:
+        Canonical absolute path to an existing directory with no symbolic link
+        in any path component.
+    max_read_bytes:
+        Maximum file size in bytes permitted by :meth:`read_bytes` (default
+        1,048,576). Must be a positive ``int`` (``bool`` is rejected).
+    """
+
+    def __init__(
+        self,
+        source_id: str,
+        root: str | os.PathLike[str],
+        *,
+        max_read_bytes: int = DEFAULT_MAX_READ_BYTES,
+        max_list_entries: int = 10_000,
+    ) -> None:
+        if not isinstance(source_id, str) or source_id == "":
+            raise ValueError("source_id must be a non-empty string")
+        if (
+            isinstance(max_read_bytes, bool)
+            or not isinstance(max_read_bytes, int)
+            or max_read_bytes <= 0
+        ):
+            raise ValueError("max_read_bytes must be a positive integer")
+        if (
+            isinstance(max_list_entries, bool)
+            or not isinstance(max_list_entries, int)
+            or max_list_entries < 1
+        ):
+            raise ValueError("max_list_entries must be a positive integer")
+
+        _check_platform_capabilities()
+        raw_root, root_parts = _validate_root_path_string(root)
+
+        self._source_id = source_id
+        self._max_read_bytes = max_read_bytes
+        self._max_list_entries = max_list_entries
+        self._closed = False
+        self._root_fd: int | None = None
+        self._root_fd = self._open_anchored_root(raw_root, root_parts)
+
+    @property
+    def source_id(self) -> str:
+        """The source identifier exposed by this adapter."""
+        return self._source_id
+
+    @property
+    def max_read_bytes(self) -> int:
+        """The maximum number of bytes permitted for :meth:`read_bytes`."""
+        return self._max_read_bytes
+
+    def close(self) -> None:
+        """Close the retained root directory descriptor.
+
+        Idempotent: subsequent calls to :meth:`close` are no-ops. Storage
+        operations invoked after :meth:`close` raise :class:`AdapterClosedError`
+        (after checking for :class:`SourceMismatchError`).
+        """
+        if not self._closed:
+            self._closed = True
+            fd = self._root_fd
+            self._root_fd = None
+            if fd is not None:
+                try:
+                    self._os_close(fd)
+                except OSError as exc:
+                    raise LocalStorageError(
+                        f"failed to close root descriptor for {self._source_id!r}: {exc}"
+                    ) from exc
+
+    def __enter__(self) -> LocalAdapter:
+        if self._closed or self._root_fd is None:
+            raise AdapterClosedError(
+                f"LocalAdapter for source {self._source_id!r} is closed"
+            )
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
+        self.close()
+
+    def __del__(self) -> None:
+        # Best-effort descriptor cleanup if the caller forgot to close the adapter.
+        try:
+            self.close()
+        except Exception:
+            pass
+
+    # -- low-level OS seams (facilitate deterministic unit/adversarial tests) --
+
+    def _os_open(
+        self, path: str, flags: int, *, dir_fd: int | None = None
+    ) -> int:
+        return os.open(path, flags, dir_fd=dir_fd)
+
+    def _os_close(self, fd: int) -> None:
+        os.close(fd)
+
+    def _os_fstat(self, fd: int) -> os.stat_result:
+        return os.fstat(fd)
+
+    def _os_stat_nofollow(self, path: str, *, dir_fd: int) -> os.stat_result:
+        return os.stat(path, dir_fd=dir_fd, follow_symlinks=False)
+
+    def _os_scandir(self, fd: int):
+        return os.scandir(fd)
+
+    def _os_read(self, fd: int, length: int) -> bytes:
+        return os.read(fd, length)
+
+    # -- descriptor lifetime helpers ------------------------------------------
+
+    def _close_owned_fd(self, fd: int, *, context: str) -> None:
+        """Close an owned descriptor on the success path, wrapping OS errors.
+
+        Used where closing the descriptor is part of normal control flow (a
+        traversal step succeeded and the previous descriptor is no longer
+        needed). Linux releases the descriptor even when ``close`` reports an
+        error, so the caller must never retry the close on the same fd.
+        """
+        try:
+            self._os_close(fd)
+        except OSError as exc:
+            raise LocalStorageError(
+                f"failed to close descriptor for {context}: {exc}"
+            ) from exc
+
+    def _close_traversal_fd(self, fd: int, *, context: str) -> None:
+        """Close a transient descriptor from a ``finally`` block.
+
+        On the normal path a close failure is wrapped in
+        :class:`LocalStorageError`. While another exception is already
+        propagating the close failure is suppressed, so cleanup can never mask
+        the primary storage error (the kernel releases the descriptor
+        regardless of the reported error).
+        """
+        primary = sys.exc_info()[0]
+        try:
+            self._os_close(fd)
+        except OSError as exc:
+            if primary is not None:
+                return
+            raise LocalStorageError(
+                f"failed to close descriptor for {context}: {exc}"
+            ) from exc
+
+    def _close_quietly(self, fd: int) -> None:
+        """Best-effort close used only while unwinding an existing exception."""
+        try:
+            self._os_close(fd)
+        except OSError:
+            pass
+
+    def _release_owned(self, owned: list[tuple[int, str]]) -> None:
+        """Release each owned descriptor exactly once, in the given order.
+
+        A descriptor is "owned" the moment it is acquired, and is closed exactly
+        once here. A failing ``close`` is never retried: Linux releases the
+        descriptor even when ``close`` reports an error, and a truly ambiguous
+        close cannot be verified from user space, so it must not be retried.
+        While another exception is already propagating, close failures are
+        suppressed so the primary storage error is never masked; on the success
+        path the first close failure is raised as :class:`LocalStorageError`
+        with its ``OSError`` cause preserved.
+        """
+        primary = sys.exc_info()[0]
+        first_failure: tuple[str, OSError] | None = None
+        for fd, context in owned:
+            try:
+                self._os_close(fd)
+            except OSError as exc:
+                if first_failure is None:
+                    first_failure = (context, exc)
+        if first_failure is not None and primary is None:
+            context, exc = first_failure
+            raise LocalStorageError(
+                f"failed to close descriptor for {context}: {exc}"
+            ) from exc
+
+    def _scan_work_error(
+        self, entry_count: int, message: str, exc: BaseException
+    ) -> StorageError:
+        """Build the error for a scan failure, charging already-yielded work.
+
+        Before any raw entry has been yielded the underlying storage error is
+        returned unchanged (zero raw work has been done). Once at least one raw
+        entry has been yielded the error is wrapped in :class:`ScanFailure`
+        carrying the number of successfully yielded raw entries, with the
+        original error and its ``OSError`` cause preserved.
+        """
+        underlying = LocalStorageError(message)
+        underlying.__cause__ = exc
+        if entry_count > 0:
+            return ScanFailure(entry_count, underlying)
+        return underlying
+
+    # -- root initialization ---------------------------------------------------
+
+    def _open_anchored_root(self, raw_root: str, parts: list[str]) -> int:
+        """Traverse from ``/`` without following symlinks and return root fd.
+
+        Each component is opened atomically with ``O_NOFOLLOW`` (no
+        ``O_DIRECTORY``) and the returned descriptor is ``fstat``ed and required
+        to be a directory. A component swapped for a symlink immediately before
+        its open is rejected by the kernel with ``ELOOP`` (mapped to
+        :class:`UnsafePathError`); there is no separate ``lstat`` and therefore
+        no check-to-use window.
+        """
+        dir_flags = _dir_open_flags()
+        try:
+            current_fd = self._os_open("/", dir_flags)
+        except OSError as exc:
+            raise self._classify_root_error("/", None, exc, raw_root) from exc
+
+        try:
+            try:
+                root_st = self._os_fstat(current_fd)
+            except OSError as exc:
+                raise LocalStorageError(
+                    f"failed to fstat '/' while resolving root {raw_root!r}: {exc}"
+                ) from exc
+            if not stat.S_ISDIR(root_st.st_mode):
+                raise ValueError("filesystem '/' is not a directory")
+
+            for part in parts:
+                try:
+                    next_fd = self._os_open(part, dir_flags, dir_fd=current_fd)
+                except OSError as exc:
+                    raise self._classify_root_error(
+                        part, current_fd, exc, raw_root
+                    ) from exc
+
+                try:
+                    try:
+                        part_st = self._os_fstat(next_fd)
+                    except OSError as exc:
+                        raise LocalStorageError(
+                            f"failed to fstat component {part!r} while "
+                            f"resolving root {raw_root!r}: {exc}"
+                        ) from exc
+                    if not stat.S_ISDIR(part_st.st_mode):
+                        raise ValueError(
+                            f"root component {part!r} in {raw_root!r} is not a directory"
+                        )
+                except BaseException:
+                    self._close_quietly(next_fd)
+                    raise
+
+                # Take ownership of the new descriptor *before* releasing the
+                # old one, so a failing close cannot leave the new fd orphaned
+                # or cause the old one to be closed twice.
+                prev_fd = current_fd
+                current_fd = next_fd
+                self._close_owned_fd(
+                    prev_fd,
+                    context=f"root component {part!r} of {raw_root!r}",
+                )
+
+            return current_fd
+        except BaseException:
+            self._close_quietly(current_fd)
+            raise
+
+    def _classify_root_error(
+        self,
+        part: str,
+        parent_fd: int | None,
+        exc: OSError,
+        raw_root: str,
+    ) -> Exception:
+        """Translate an ``OSError`` during root setup into a contract error."""
+        if exc.errno in (errno.ELOOP, getattr(errno, "EMLINK", -1)):
+            return UnsafePathError(
+                f"symlink rejected at component {part!r} in root {raw_root!r}"
+            )
+        if parent_fd is not None:
+            try:
+                st = self._os_stat_nofollow(part, dir_fd=parent_fd)
+            except OSError:
+                st = None
+            if st is not None:
+                if stat.S_ISLNK(st.st_mode):
+                    return UnsafePathError(
+                        f"symlink rejected at component {part!r} in root {raw_root!r}"
+                    )
+                if not stat.S_ISDIR(st.st_mode):
+                    return ValueError(
+                        f"root component {part!r} in {raw_root!r} is not a directory"
+                    )
+        if exc.errno in (errno.ENOENT, errno.ENOTDIR):
+            return ValueError(
+                f"root {raw_root!r} must be an existing directory: {exc}"
+            )
+        return LocalStorageError(
+            f"failed to open root {raw_root!r} at component {part!r}: {exc}"
+        )
+
+    # -- internal helpers ------------------------------------------------------
+
+    def _check_source_and_state(self, ref: FileRef) -> int:
+        """Enforce source mismatch first, then adapter open state.
+
+        Returns the active root directory descriptor.
+        """
+        if not isinstance(ref, FileRef):
+            raise TypeError(f"expected FileRef, got {type(ref).__name__}")
+        if ref.source_id != self._source_id:
+            raise SourceMismatchError(
+                f"ref source_id {ref.source_id!r} does not match "
+                f"adapter source_id {self._source_id!r}"
+            )
+        if self._closed or self._root_fd is None:
+            raise AdapterClosedError(
+                f"LocalAdapter for source {self._source_id!r} is closed"
+            )
+        return self._root_fd
+
+    def _root_metadata(self) -> FileMetadata:
+        return FileMetadata(
+            ref=FileRef(self._source_id, ROOT_ID),
+            name="",
+            parent_id=None,
+            kind="directory",
+            size_bytes=None,
+        )
+
+    def _build_metadata(
+        self,
+        parts: tuple[str, ...],
+        *,
+        kind: str,
+        size_bytes: int | None,
+    ) -> FileMetadata:
+        if not parts:
+            return self._root_metadata()
+        file_id = PATH_PREFIX + "/".join(parts)
+        parent_id = (
+            ROOT_ID
+            if len(parts) == 1
+            else PATH_PREFIX + "/".join(parts[:-1])
+        )
+        return FileMetadata(
+            ref=FileRef(self._source_id, file_id),
+            name=parts[-1],
+            parent_id=parent_id,
+            kind=kind,
+            size_bytes=size_bytes if kind == "file" else None,
+        )
+
+    def _classify_component_open_error(
+        self,
+        part: str,
+        parent_fd: int,
+        exc: OSError,
+        file_id: str,
+        *,
+        is_intermediate: bool,
+        for_directory_op: bool,
+    ) -> Exception:
+        """Classify an ``OSError`` from a no-follow ``openat`` on ``part``."""
+        if exc.errno == errno.ENOENT:
+            return NotFoundError(f"entry {file_id!r} not found")
+        if exc.errno in (errno.ELOOP, getattr(errno, "EMLINK", -1)):
+            return UnsafePathError(
+                f"symlink encountered at {part!r} for {file_id!r}"
+            )
+        if exc.errno == errno.EISDIR and not for_directory_op and not is_intermediate:
+            return IsDirectoryError(f"{file_id!r} is a directory, not a file")
+
+        try:
+            st = self._os_stat_nofollow(part, dir_fd=parent_fd)
+        except OSError as stat_exc:
+            if stat_exc.errno == errno.ENOENT:
+                return NotFoundError(f"entry {file_id!r} not found")
+            if stat_exc.errno in (errno.ELOOP, getattr(errno, "EMLINK", -1)):
+                return UnsafePathError(
+                    f"symlink encountered at {part!r} for {file_id!r}"
+                )
+            st = None
+
+        if st is not None:
+            if stat.S_ISLNK(st.st_mode):
+                return UnsafePathError(
+                    f"symlink encountered at {part!r} for {file_id!r}"
+                )
+            if stat.S_ISDIR(st.st_mode):
+                if not for_directory_op and not is_intermediate:
+                    return IsDirectoryError(
+                        f"{file_id!r} is a directory, not a file"
+                    )
+            elif stat.S_ISREG(st.st_mode):
+                if is_intermediate or for_directory_op:
+                    return NotDirectoryError(
+                        f"component {part!r} in {file_id!r} is not a directory"
+                    )
+            else:
+                return UnsupportedEntryError(
+                    f"unsupported special filesystem entry at {part!r} for {file_id!r}"
+                )
+
+        if exc.errno == errno.ENOTDIR:
+            return NotDirectoryError(
+                f"component {part!r} in {file_id!r} is not a directory"
+            )
+        return LocalStorageError(
+            f"OS failure accessing {part!r} for {file_id!r}: {exc}"
+        )
+
+    def _traverse_parent_dir(
+        self, root_fd: int, dir_parts: tuple[str, ...], file_id: str
+    ) -> int:
+        """Traverse intermediate directory components from ``root_fd``.
+
+        Returns ``root_fd`` when ``dir_parts`` is empty, or a newly opened
+        directory descriptor for the final intermediate directory. Each
+        component is opened atomically with ``O_NOFOLLOW`` (no ``O_DIRECTORY``)
+        and the returned descriptor is ``fstat``ed and required to be a
+        directory, so a component swapped for a symlink immediately before its
+        open is rejected with ``ELOOP``. Intermediate descriptors opened along
+        the way are always closed before returning or raising.
+        """
+        if not dir_parts:
+            return root_fd
+
+        dir_flags = _dir_open_flags()
+        current_fd = root_fd
+        try:
+            for part in dir_parts:
+                try:
+                    next_fd = self._os_open(part, dir_flags, dir_fd=current_fd)
+                except OSError as exc:
+                    raise self._classify_component_open_error(
+                        part,
+                        current_fd,
+                        exc,
+                        file_id,
+                        is_intermediate=True,
+                        for_directory_op=True,
+                    ) from exc
+
+                try:
+                    try:
+                        st = self._os_fstat(next_fd)
+                    except OSError as exc:
+                        raise LocalStorageError(
+                            f"failed to fstat component {part!r} for "
+                            f"{file_id!r}: {exc}"
+                        ) from exc
+                    if not stat.S_ISDIR(st.st_mode):
+                        if stat.S_ISLNK(st.st_mode):
+                            raise UnsafePathError(
+                                f"symlink encountered at {part!r} for {file_id!r}"
+                            )
+                        if stat.S_ISREG(st.st_mode):
+                            raise NotDirectoryError(
+                                f"component {part!r} in {file_id!r} is not a directory"
+                            )
+                        raise UnsupportedEntryError(
+                            f"unsupported entry at {part!r} for {file_id!r}"
+                        )
+                except BaseException:
+                    self._close_quietly(next_fd)
+                    raise
+
+                # Take ownership of the new descriptor before releasing the old
+                # one (see _open_anchored_root).
+                prev_fd = current_fd
+                current_fd = next_fd
+                if prev_fd != root_fd:
+                    self._close_owned_fd(
+                        prev_fd, context=f"component {part!r} of {file_id!r}"
+                    )
+
+            return current_fd
+        except BaseException:
+            if current_fd != root_fd:
+                self._close_quietly(current_fd)
+            raise
+
+    # -- public StorageAdapter contract ----------------------------------------
+
+    def stat(self, ref: FileRef) -> FileMetadata:
+        """Return metadata for ``ref`` without following symbolic links."""
+        root_fd = self._check_source_and_state(ref)
+        parts = _parse_file_id(ref.file_id)
+
+        if not parts:
+            try:
+                st = self._os_fstat(root_fd)
+            except OSError as exc:
+                raise LocalStorageError(
+                    f"failed to stat anchored root for {self._source_id!r}: {exc}"
+                ) from exc
+            if not stat.S_ISDIR(st.st_mode):
+                raise LocalStorageError(
+                    f"anchored root for {self._source_id!r} is not a directory"
+                )
+            return self._root_metadata()
+
+        parent_fd = self._traverse_parent_dir(root_fd, parts[:-1], ref.file_id)
+        try:
+            target_name = parts[-1]
+            try:
+                st = self._os_stat_nofollow(target_name, dir_fd=parent_fd)
+            except OSError as exc:
+                if exc.errno == errno.ENOENT:
+                    raise NotFoundError(
+                        f"entry {ref.file_id!r} not found"
+                    ) from exc
+                if exc.errno == errno.ENOTDIR:
+                    raise NotDirectoryError(
+                        f"parent of {ref.file_id!r} is not a directory"
+                    ) from exc
+                if exc.errno in (errno.ELOOP, getattr(errno, "EMLINK", -1)):
+                    raise UnsafePathError(
+                        f"symlink encountered for {ref.file_id!r}"
+                    ) from exc
+                raise LocalStorageError(
+                    f"failed to stat {ref.file_id!r}: {exc}"
+                ) from exc
+
+            if stat.S_ISLNK(st.st_mode):
+                raise UnsafePathError(
+                    f"entry {ref.file_id!r} is a symbolic link"
+                )
+            if stat.S_ISDIR(st.st_mode):
+                return self._build_metadata(
+                    parts, kind="directory", size_bytes=None
+                )
+            if stat.S_ISREG(st.st_mode):
+                return self._build_metadata(
+                    parts, kind="file", size_bytes=st.st_size
+                )
+            raise UnsupportedEntryError(
+                f"entry {ref.file_id!r} has unsupported file mode {oct(st.st_mode)}"
+            )
+        finally:
+            if parent_fd != root_fd:
+                self._close_traversal_fd(
+                    parent_fd, context=f"parent directory of {ref.file_id!r}"
+                )
+
+    def list_children(
+        self, parent: FileRef, *, max_entries: int | None = None
+    ) -> list[FileMetadata]:
+        """Return sorted metadata for supported direct children of ``parent``.
+
+        ``max_entries``, when not ``None``, bounds the number of directory
+        entries examined during the scan (overriding ``max_list_entries``);
+        exceeding it raises :class:`EnumerationLimitError`. Every entry
+        yielded by the scan counts toward the limit, including symlinks and
+        special files that are later omitted.
+        """
+        root_fd = self._check_source_and_state(parent)
+        if max_entries is None:
+            effective_limit = self._max_list_entries
+        else:
+            if (
+                isinstance(max_entries, bool)
+                or not isinstance(max_entries, int)
+                or max_entries < 1
+            ):
+                raise ValueError(
+                    "max_entries must be a positive integer or None"
+                )
+            effective_limit = max_entries
+        parts = _parse_file_id(parent.file_id)
+        dir_flags = _dir_open_flags()
+
+        # A descriptor is owned the moment it is acquired. ``owned`` is released
+        # exactly once by the single ``finally`` at the end of this method, which
+        # covers the parent-close handoff as well as the scan, so a failing
+        # parent close cannot skip the child's cleanup scope.
+        owned: list[tuple[int, str]] = []
+        try:
+            if not parts:
+                try:
+                    scan_fd = self._os_open(".", dir_flags, dir_fd=root_fd)
+                except OSError as exc:
+                    raise LocalStorageError(
+                        f"failed to open root directory for listing: {exc}"
+                    ) from exc
+            else:
+                parent_fd = self._traverse_parent_dir(
+                    root_fd, parts[:-1], parent.file_id
+                )
+                if parent_fd != root_fd:
+                    owned.append(
+                        (parent_fd, f"parent directory of {parent.file_id!r}")
+                    )
+                target_name = parts[-1]
+                try:
+                    scan_fd = self._os_open(
+                        target_name, dir_flags, dir_fd=parent_fd
+                    )
+                except OSError as exc:
+                    raise self._classify_component_open_error(
+                        target_name,
+                        parent_fd,
+                        exc,
+                        parent.file_id,
+                        is_intermediate=False,
+                        for_directory_op=True,
+                    ) from exc
+
+            # Child scan descriptor acquired: owned immediately.
+            owned.append((scan_fd, f"scan descriptor for {parent.file_id!r}"))
+
+            try:
+                dir_st = self._os_fstat(scan_fd)
+            except OSError as exc:
+                raise LocalStorageError(
+                    f"failed to fstat directory {parent.file_id!r}: {exc}"
+                ) from exc
+            if not stat.S_ISDIR(dir_st.st_mode):
+                if stat.S_ISLNK(dir_st.st_mode):
+                    raise UnsafePathError(
+                        f"entry {parent.file_id!r} is a symbolic link"
+                    )
+                if stat.S_ISREG(dir_st.st_mode):
+                    raise NotDirectoryError(
+                        f"entry {parent.file_id!r} is not a directory"
+                    )
+                raise UnsupportedEntryError(
+                    f"entry {parent.file_id!r} is not a supported directory"
+                )
+
+            try:
+                scandir_it = self._os_scandir(scan_fd)
+            except OSError as exc:
+                raise LocalStorageError(
+                    f"failed to scan directory {parent.file_id!r}: {exc}"
+                ) from exc
+
+            # os.scandir(scan_fd) DUPLICATES the descriptor: CPython performs an
+            # internal _Py_dup() before calling fdopendir(), so the iterator's
+            # context manager closes the duplicate and NOT our scan_fd. Close
+            # scan_fd explicitly in the finally below, so a failed listing
+            # cannot leak it.
+            children: list[FileMetadata] = []
+            entry_count = 0
+            with scandir_it as entries:
+                for entry in entries:
+                    # Count every entry yielded by the scan, before any name
+                    # filtering or stat, so symlinks, special files and odd
+                    # names all count toward the limit.
+                    entry_count += 1
+                    if entry_count > effective_limit:
+                        raise EnumerationLimitError(
+                            effective_limit,
+                            f"directory {parent.file_id!r} exceeds limit of "
+                            f"{effective_limit} entries",
+                        )
+                    name = entry.name
+                    if (
+                        name in ("", ".", "..")
+                        or "/" in name
+                        or "\\" in name
+                        or "\x00" in name
+                        or name.startswith(TEMP_PREFIX)
+                    ):
+                        continue
+                    try:
+                        st = entry.stat(follow_symlinks=False)
+                    except FileNotFoundError:
+                        # An entry disappearing concurrently during listing is skipped.
+                        continue
+                    except OSError as exc:
+                        if exc.errno == errno.ENOENT:
+                            continue
+                        raise LocalStorageError(
+                            f"failed to inspect child {name!r} in "
+                            f"{parent.file_id!r}: {exc}"
+                        ) from exc
+
+                    if stat.S_ISLNK(st.st_mode):
+                        continue
+                    if stat.S_ISDIR(st.st_mode):
+                        children.append(
+                            self._build_metadata(
+                                (*parts, name), kind="directory", size_bytes=None
+                            )
+                        )
+                    elif stat.S_ISREG(st.st_mode):
+                        children.append(
+                            self._build_metadata(
+                                (*parts, name),
+                                kind="file",
+                                size_bytes=st.st_size,
+                            )
+                        )
+                    # Special entries (FIFOs, sockets, device nodes) are omitted.
+        except OSError as exc:
+            # A readdir()/scandir iteration failure (or iterator close failure)
+            # is surfaced as a LocalStorageError with the cause preserved.
+            raise LocalStorageError(
+                f"failed to iterate directory {parent.file_id!r}: {exc}"
+            ) from exc
+        finally:
+            self._release_owned(owned)
+
+        children.sort(key=lambda meta: meta.name)
+        return children
+
+    def scan_children(
+        self, parent: FileRef, *, max_entries: int
+    ) -> ScanBatch:
+        """Return a bounded, no-lookahead scan of ``parent``'s raw entries.
+
+        ``max_entries`` (mandatory positive ``int``, ``bool`` rejected, at most
+        :data:`~drive_tool.storage.MAX_SCAN_ENTRIES`) bounds the number of raw
+        directory entries this scan will *yield*. Every yielded entry is counted
+        in ``inspected`` **before** any name filtering or stat, so invalid and
+        reserved names, writer temp files, symlinks, FIFOs/special entries, and
+        entries that vanish with ``ENOENT`` all count toward the budget. At most
+        ``max_entries`` entries are ever stat'ed.
+
+        The scan never asks the iterator for entry ``B + 1`` where ``B`` is
+        ``max_entries``: it stops the moment ``B`` raw entries have been
+        yielded. Consequently ``complete`` is ``True`` only when end-of-directory
+        was observed *within* the budget; a folder holding exactly ``B`` entries
+        reports ``complete=False`` (a deliberately conservative "unknown" -- the
+        end of the directory was never probed, and an unknown end is not proof
+        that another entry exists).
+
+        ``items`` holds only supported regular files and directories, sorted by
+        ``(name, file_id)`` within the scanned physical prefix only -- this is
+        not a claim about the global order of the directory, which POSIX
+        ``readdir`` does not provide.
+        """
+        root_fd = self._check_source_and_state(parent)
+        _validate_scan_max_entries(max_entries)
+        parts = _parse_file_id(parent.file_id)
+        dir_flags = _dir_open_flags()
+
+        # Descriptors are owned the moment they are acquired and released
+        # exactly once by the single ``finally`` below, which also covers the
+        # parent-close handoff and the scan.
+        owned: list[tuple[int, str]] = []
+        entry_count = 0
+        try:
+            if not parts:
+                try:
+                    scan_fd = self._os_open(".", dir_flags, dir_fd=root_fd)
+                except OSError as exc:
+                    raise LocalStorageError(
+                        f"failed to open root directory for scanning: {exc}"
+                    ) from exc
+            else:
+                parent_fd = self._traverse_parent_dir(
+                    root_fd, parts[:-1], parent.file_id
+                )
+                if parent_fd != root_fd:
+                    owned.append(
+                        (parent_fd, f"parent directory of {parent.file_id!r}")
+                    )
+                target_name = parts[-1]
+                try:
+                    scan_fd = self._os_open(
+                        target_name, dir_flags, dir_fd=parent_fd
+                    )
+                except OSError as exc:
+                    raise self._classify_component_open_error(
+                        target_name,
+                        parent_fd,
+                        exc,
+                        parent.file_id,
+                        is_intermediate=False,
+                        for_directory_op=True,
+                    ) from exc
+
+            owned.append((scan_fd, f"scan descriptor for {parent.file_id!r}"))
+
+            try:
+                dir_st = self._os_fstat(scan_fd)
+            except OSError as exc:
+                raise LocalStorageError(
+                    f"failed to fstat directory {parent.file_id!r}: {exc}"
+                ) from exc
+            if not stat.S_ISDIR(dir_st.st_mode):
+                if stat.S_ISLNK(dir_st.st_mode):
+                    raise UnsafePathError(
+                        f"entry {parent.file_id!r} is a symbolic link"
+                    )
+                if stat.S_ISREG(dir_st.st_mode):
+                    raise NotDirectoryError(
+                        f"entry {parent.file_id!r} is not a directory"
+                    )
+                raise UnsupportedEntryError(
+                    f"entry {parent.file_id!r} is not a supported directory"
+                )
+
+            try:
+                scandir_it = self._os_scandir(scan_fd)
+            except OSError as exc:
+                raise LocalStorageError(
+                    f"failed to scan directory {parent.file_id!r}: {exc}"
+                ) from exc
+
+            children: list[FileMetadata] = []
+            complete = True
+            with scandir_it as entries:
+                while entry_count < max_entries:
+                    try:
+                        entry = next(entries)
+                    except StopIteration:
+                        # End of directory observed within the budget.
+                        complete = True
+                        break
+                    except OSError as exc:
+                        raise self._scan_work_error(
+                            entry_count,
+                            f"failed to iterate directory {parent.file_id!r}: {exc}",
+                            exc,
+                        ) from exc
+                    # Count the raw entry before any filtering or stat.
+                    entry_count += 1
+                    name = entry.name
+                    if (
+                        name in ("", ".", "..")
+                        or "/" in name
+                        or "\\" in name
+                        or "\x00" in name
+                        or name.startswith(TEMP_PREFIX)
+                    ):
+                        continue
+                    try:
+                        st = entry.stat(follow_symlinks=False)
+                    except FileNotFoundError:
+                        # An entry vanishing concurrently is skipped, but counted.
+                        continue
+                    except OSError as exc:
+                        if exc.errno == errno.ENOENT:
+                            continue
+                        raise self._scan_work_error(
+                            entry_count,
+                            f"failed to inspect child {name!r} in "
+                            f"{parent.file_id!r}: {exc}",
+                            exc,
+                        ) from exc
+
+                    if stat.S_ISLNK(st.st_mode):
+                        continue
+                    if stat.S_ISDIR(st.st_mode):
+                        children.append(
+                            self._build_metadata(
+                                (*parts, name), kind="directory", size_bytes=None
+                            )
+                        )
+                    elif stat.S_ISREG(st.st_mode):
+                        children.append(
+                            self._build_metadata(
+                                (*parts, name),
+                                kind="file",
+                                size_bytes=st.st_size,
+                            )
+                        )
+                    # Special entries (FIFOs, sockets, device nodes) are omitted.
+                else:
+                    # The loop stopped because ``entry_count`` reached the budget
+                    # without ever probing for entry ``B + 1``: end-of-directory
+                    # is unknown, so this is conservatively incomplete.
+                    complete = False
+
+            children.sort(key=lambda meta: (meta.name, meta.ref.file_id))
+            return ScanBatch(
+                items=tuple(children),
+                inspected=entry_count,
+                complete=complete,
+            )
+        except OSError as exc:
+            # A readdir()/scandir iteration or iterator-close failure is
+            # surfaced with the raw work already done charged to it.
+            raise self._scan_work_error(
+                entry_count,
+                f"failed to iterate directory {parent.file_id!r}: {exc}",
+                exc,
+            ) from exc
+        finally:
+            try:
+                self._release_owned(owned)
+            except LocalStorageError as cleanup_exc:
+                # Reached only on the success path: while another exception is
+                # propagating ``_release_owned`` suppresses close failures so
+                # the primary error is never masked. No return happens before
+                # cleanup succeeds.
+                if entry_count > 0:
+                    raise ScanFailure(entry_count, cleanup_exc) from cleanup_exc
+                raise
+
+    def read_bytes(self, ref: FileRef) -> bytes:
+        """Read and return the bytes of regular file ``ref`` within bounds."""
+        root_fd = self._check_source_and_state(ref)
+        parts = _parse_file_id(ref.file_id)
+
+        if not parts:
+            raise IsDirectoryError(f"{ROOT_ID!r} is a directory, not a file")
+
+        parent_fd = self._traverse_parent_dir(root_fd, parts[:-1], ref.file_id)
+        # A descriptor is owned the moment it is acquired. Once the child file
+        # descriptor is opened it is released exactly once by the single
+        # ``finally`` below, which also covers the parent-close handoff, so a
+        # failing parent close cannot skip the child's cleanup scope.
+        owned: list[tuple[int, str]] = []
+        if parent_fd != root_fd:
+            owned.append((parent_fd, f"parent directory of {ref.file_id!r}"))
+        try:
+            target_name = parts[-1]
+            try:
+                file_fd = self._os_open(
+                    target_name, _file_open_flags(), dir_fd=parent_fd
+                )
+            except OSError as exc:
+                raise self._classify_component_open_error(
+                    target_name,
+                    parent_fd,
+                    exc,
+                    ref.file_id,
+                    is_intermediate=False,
+                    for_directory_op=False,
+                ) from exc
+            owned.append((file_fd, f"file descriptor for {ref.file_id!r}"))
+            return self._read_open_file_bounded(file_fd, ref.file_id)
+        finally:
+            self._release_owned(owned)
+
+    def _read_open_file_bounded(self, file_fd: int, file_id: str) -> bytes:
+        """Verify ``file_fd`` is a regular file and read up to ``max_read_bytes``."""
+        try:
+            st = self._os_fstat(file_fd)
+        except OSError as exc:
+            raise LocalStorageError(
+                f"failed to fstat opened file {file_id!r}: {exc}"
+            ) from exc
+
+        if stat.S_ISDIR(st.st_mode):
+            raise IsDirectoryError(f"{file_id!r} is a directory, not a file")
+        if stat.S_ISLNK(st.st_mode):
+            raise UnsafePathError(f"{file_id!r} is a symbolic link")
+        if not stat.S_ISREG(st.st_mode):
+            raise UnsupportedEntryError(
+                f"{file_id!r} is not a regular file (mode {oct(st.st_mode)})"
+            )
+
+        if st.st_size > self._max_read_bytes:
+            raise ReadLimitExceededError(
+                f"file {file_id!r} size ({st.st_size} bytes) exceeds "
+                f"max_read_bytes ({self._max_read_bytes} bytes)"
+            )
+
+        chunks: list[bytes] = []
+        total_read = 0
+        max_allowed = self._max_read_bytes
+        read_cap = max_allowed + 1
+
+        while True:
+            remaining_cap = read_cap - total_read
+            if remaining_cap <= 0:
+                raise ReadLimitExceededError(
+                    f"file {file_id!r} exceeded max_read_bytes "
+                    f"({max_allowed} bytes) while reading"
+                )
+            request_size = min(_READ_CHUNK_SIZE, remaining_cap)
+            try:
+                chunk = self._os_read(file_fd, request_size)
+            except OSError as exc:
+                if exc.errno == errno.EINTR:
+                    continue
+                raise LocalStorageError(
+                    f"failed while reading {file_id!r}: {exc}"
+                ) from exc
+
+            if not chunk:
+                break
+
+            total_read += len(chunk)
+            if total_read > max_allowed:
+                raise ReadLimitExceededError(
+                    f"file {file_id!r} exceeded max_read_bytes "
+                    f"({max_allowed} bytes) while reading"
+                )
+            chunks.append(chunk)
+
+        return b"".join(chunks)
+
+
+## FILE: drive_tool/search.py | git blob 5a19344114f08dbee2adbfda2dd64d312fc8df5e
+"""Bounded breadth-first name search over the storage contract.
+
+MODULE-005A: :func:`find` walks a storage tree breadth-first, level by level,
+and returns matching files and directories while enforcing a raw-entry budget, a
+result budget, and a depth bound. It never blocks on a large folder: each
+directory is scanned through the adapter's ``scan_children`` with only the
+remaining entry budget, so a huge directory is stopped early with
+``truncated=True`` rather than fully read.
+
+Search now charges *raw scan work*, not returned metadata. A single bounded
+directory scan is charged in full the moment it returns, before any name is
+matched, so ``FindResult.inspected`` counts the raw directory entries the
+adapter actually examined -- including filtered, unsupported, and vanished
+entries -- even when ``max_results`` stops matching early. A partially scanned
+folder keeps the matches it did find, but its items are ordered only within the
+scanned physical prefix; that is not a claim about the global order of the
+directory.
+
+Bounded search requires a callable ``scan_children``: supported-item counts
+cannot express raw scan work, so an adapter without it raises
+:class:`~drive_tool.storage.ScanUnsupportedError` rather than silently falling
+back to ``list_children``.
+
+Python 3.11+, standard library only. No threads, no retries, no sleeps.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from drive_tool.storage import (
+    FileMetadata,
+    FileRef,
+    ScanFailure,
+    ScanUnsupportedError,
+    StorageAdapter,
+    StorageError,
+)
+
+__all__ = ["FindResult", "find", "ScanUnsupportedError"]
+
+
+@dataclass(frozen=True)
+class FindResult:
+    """The outcome of a bounded :func:`find`.
+
+    ``items`` are the matches in walk order, ``truncated`` is ``True`` when a
+    bound stopped the walk (``reason`` names it), ``skipped`` holds the
+    ``file_id`` of every directory that could not be scanned, and ``inspected``
+    counts the **raw directory entries examined** by the adapter.
+
+    ``inspected`` is the sum of the ``ScanBatch.inspected`` values charged as
+    each directory was scanned, so it reflects the raw scan work even when
+    ``max_results`` stopped matching early or when filtered/unsupported/vanished
+    entries never produced metadata. It can therefore exceed both the number of
+    ``items`` returned and the number of entries actually tested for a match.
+    """
+
+    items: tuple[FileMetadata, ...]
+    truncated: bool
+    reason: str | None
+    inspected: int
+    skipped: tuple[str, ...]
+
+
+def _validate_int_in_range(
+    name: str, value: object, low: int, high: int
+) -> None:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(
+            f"{name} must be an int in {low}..{high}, "
+            f"got {type(value).__name__}"
+        )
+    if value < low or value > high:
+        raise ValueError(f"{name} must be in {low}..{high}, got {value}")
+
+
+def _validate_batch_report(
+    batch: object, remaining: int
+) -> tuple[tuple[FileMetadata, ...], int, bool]:
+    """Validate a scanner's reported batch loudly, without clamping.
+
+    ``items`` must already be a tuple (an arbitrary iterable is never consumed
+    to measure it), ``inspected`` a plain ``int`` in ``0..remaining``, and
+    ``complete`` a real ``bool``. A batch that claims to be incomplete but did
+    not exhaust the remaining budget is rejected rather than silently accepted
+    as a no-progress scan.
+    """
+    items = getattr(batch, "items", None)
+    if not isinstance(items, tuple):
+        raise StorageError(
+            "scan_children must return a ScanBatch whose items is a tuple, "
+            f"got {type(items).__name__}"
+        )
+    inspected = getattr(batch, "inspected", None)
+    if isinstance(inspected, bool) or not isinstance(inspected, int):
+        raise StorageError(
+            f"ScanBatch.inspected must be an int, got {type(inspected).__name__}"
+        )
+    if inspected < 0 or inspected > remaining:
+        raise StorageError(
+            f"ScanBatch.inspected {inspected} is outside the range 0..{remaining}"
+        )
+    complete = getattr(batch, "complete", None)
+    if not isinstance(complete, bool):
+        raise StorageError(
+            f"ScanBatch.complete must be a bool, got {type(complete).__name__}"
+        )
+    if len(items) > inspected:
+        raise StorageError(
+            f"ScanBatch reports {len(items)} items but only {inspected} inspected"
+        )
+    if not complete and inspected != remaining:
+        raise StorageError(
+            f"an incomplete ScanBatch must exhaust the remaining budget "
+            f"{remaining}, but reported inspected={inspected}"
+        )
+    return items, inspected, complete
+
+
+def _validate_failure_inspected(failure: ScanFailure, remaining: int) -> int:
+    """Validate the ``inspected`` count carried by a :class:`ScanFailure`."""
+    inspected = failure.inspected
+    if isinstance(inspected, bool) or not isinstance(inspected, int):
+        raise StorageError(
+            f"ScanFailure.inspected must be an int, got {type(inspected).__name__}"
+        )
+    if inspected < 0 or inspected > remaining:
+        raise StorageError(
+            f"ScanFailure.inspected {inspected} is outside the range "
+            f"0..{remaining}"
+        )
+    return inspected
+
+
+def find(
+    adapter: StorageAdapter,
+    parent: FileRef,
+    name_contains: str,
+    *,
+    max_results: int = 20,
+    max_entries: int = 5000,
+    max_depth: int = 4,
+    case_sensitive: bool = False,
+) -> FindResult:
+    """Return matches for ``name_contains`` in the subtree rooted at ``parent``.
+
+    The walk is breadth-first; directories within a level are visited in name
+    order and matches are returned in walk order (shallower first, then by
+    name). A match is a substring test on the entry name (casefolded unless
+    ``case_sensitive``), and both files and directories can match.
+
+    All arguments are validated before the adapter is touched. The adapter must
+    expose a callable ``scan_children``; otherwise
+    :class:`~drive_tool.storage.ScanUnsupportedError` is raised before any
+    enumeration is attempted. Each directory is scanned with only the remaining
+    entry budget (``max_entries - inspected``), and the batch's ``inspected`` is
+    charged immediately, so ``inspected`` measures raw scan work even when
+    ``max_results`` stops matching early.
+
+    A ``ScanFailure`` re-raises the original error at the starting root, or, at
+    depth ``> 0``, is recorded in ``skipped`` after charging its ``inspected``,
+    and the walk continues only while budget remains. Any other ``StorageError``
+    listing a subdirectory is recorded in ``skipped`` (charging nothing, since
+    it failed before scanning); the same error listing ``parent`` propagates.
+    Reaching an entry budget with work left, or scanning a folder that was only
+    partially covered, ends the walk with ``truncated=True, reason="max_entries"``
+    unless ``max_results`` already stopped it first.
+    """
+    # -- validate before touching the adapter ------------------------------
+    if not isinstance(name_contains, str) or name_contains == "":
+        raise ValueError("name_contains must be a non-empty str")
+    _validate_int_in_range("max_results", max_results, 1, 100)
+    _validate_int_in_range("max_entries", max_entries, 1, 100_000)
+    _validate_int_in_range("max_depth", max_depth, 0, 16)
+    if not isinstance(case_sensitive, bool):
+        raise ValueError(
+            f"case_sensitive must be a bool, got {type(case_sensitive).__name__}"
+        )
+
+    # -- hard capability requirement ---------------------------------------
+    scan_fn = getattr(adapter, "scan_children", None)
+    if not callable(scan_fn):
+        raise ScanUnsupportedError(
+            f"adapter {type(adapter).__name__!r} has no callable scan_children; "
+            f"bounded search requires bounded raw scanning"
+        )
+
+    needle = name_contains if case_sensitive else name_contains.casefold()
+    matches: list[FileMetadata] = []
+    skipped: list[str] = []
+    inspected = 0
+    hit_max_depth = False
+
+    # Queue holds (dir_ref, depth) for the current BFS level. Directories for
+    # the next depth accumulate in next_level_dirs and are sorted by
+    # (name, file_id) before the next level begins.
+    current_level: list[tuple[FileRef, int]] = [(parent, 0)]
+
+    while current_level:
+        next_level_dirs: list[tuple[FileMetadata, int]] = []
+
+        for idx, (dir_ref, depth) in enumerate(current_level):
+            remaining_budget = max_entries - inspected
+            if remaining_budget <= 0:
+                # Budget exhausted with directories still to open.
+                return FindResult(
+                    items=tuple(matches),
+                    truncated=True,
+                    reason="max_entries",
+                    inspected=inspected,
+                    skipped=tuple(skipped),
+                )
+
+            try:
+                batch = scan_fn(dir_ref, max_entries=remaining_budget)
+            except ScanFailure as failure:
+                # A scan that failed after doing raw work still charges it.
+                inspected += _validate_failure_inspected(failure, remaining_budget)
+                if depth == 0:
+                    # The starting parent's own failure re-raises the original
+                    # error object (and its preserved cause).
+                    if not isinstance(failure.error, StorageError):
+                        raise StorageError(
+                            "ScanFailure.error must be a StorageError"
+                        )
+                    raise failure.error
+                # A subdirectory that failed mid-scan is skipped; the walk only
+                # continues while budget remains.
+                skipped.append(dir_ref.file_id)
+                continue
+            except StorageError:
+                if depth == 0:
+                    # The starting parent's own errors propagate unchanged.
+                    raise
+                # A subdirectory that failed before scanning (or that vanished)
+                # is skipped and charges no raw entries.
+                skipped.append(dir_ref.file_id)
+                continue
+
+            items, batch_inspected, batch_complete = _validate_batch_report(
+                batch, remaining_budget
+            )
+            # Charge the raw scan work before matching anything.
+            inspected += batch_inspected
+            children = sorted(items, key=lambda m: (m.name, m.ref.file_id))
+            more_dirs_at_this_level = (idx + 1) < len(current_level)
+            exact_last_entry = False
+
+            for child_idx, entry in enumerate(children):
+                if entry.kind == "directory":
+                    if depth < max_depth:
+                        next_level_dirs.append((entry, depth + 1))
+                    else:
+                        hit_max_depth = True
+
+                haystack = (
+                    entry.name if case_sensitive else entry.name.casefold()
+                )
+                if needle in haystack:
+                    matches.append(entry)
+                    if len(matches) == max_results:
+                        more_entries_in_dir = (child_idx + 1) < len(children)
+                        more_dirs_queued = (
+                            more_dirs_at_this_level or bool(next_level_dirs)
+                        )
+                        if (
+                            more_entries_in_dir
+                            or not batch_complete
+                            or more_dirs_queued
+                        ):
+                            return FindResult(
+                                items=tuple(matches),
+                                truncated=True,
+                                reason="max_results",
+                                inspected=inspected,
+                                skipped=tuple(skipped),
+                            )
+                        # Exact match count on the last entry of a complete scan
+                        # with no queued work: the walk is finished.
+                        exact_last_entry = True
+                        break
+
+            if exact_last_entry:
+                break
+
+            if not batch_complete:
+                # A partially scanned folder is truncation, even if it held no
+                # matches: incomplete coverage is not "not found".
+                return FindResult(
+                    items=tuple(matches),
+                    truncated=True,
+                    reason="max_entries",
+                    inspected=inspected,
+                    skipped=tuple(skipped),
+                )
+
+        if len(matches) == max_results:
+            break
+
+        next_level_dirs.sort(key=lambda pair: (pair[0].name, pair[0].ref.file_id))
+        current_level = [(meta.ref, d) for meta, d in next_level_dirs]
+
+    if hit_max_depth:
+        return FindResult(
+            items=tuple(matches),
+            truncated=True,
+            reason="max_depth",
+            inspected=inspected,
+            skipped=tuple(skipped),
+        )
+
+    return FindResult(
+        items=tuple(matches),
+        truncated=False,
+        reason=None,
+        inspected=inspected,
+        skipped=tuple(skipped),
+    )
+
+
+## FILE: tests/test_partial_scan.py | git blob 0939ee77d379c994b9966d478cf94b136dc398e8
+"""Unit, boundary and cleanup tests for the MODULE-005A partial scan.
+
+These tests pin the :class:`~drive_tool.storage.ScanBatch` contract, the
+``scan_children`` method on both adapters, the failed-scan accounting
+(:class:`~drive_tool.storage.ScanFailure`), and the loud validation of a
+scanner's reported batch. Physical entry order is controlled through a
+deterministic test seam (``OrderedScanAdapter``) wherever a particular prefix
+matters -- the tests never assume filesystem alphabetical order.
+"""
+
+from __future__ import annotations
+
+import errno
+import os
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+from drive_tool.local import (
+    AdapterClosedError,
+    LocalAdapter,
+    LocalStorageError,
+    UnsupportedPlatformError,
+)
+from drive_tool.search import find
+from drive_tool.storage import (
+    MAX_SCAN_ENTRIES,
+    ROOT_ID,
+    FileMetadata,
+    FileRef,
+    InMemoryAdapter,
+    NotDirectoryError,
+    NotFoundError,
+    ScanBatch,
+    ScanFailure,
+    SourceMismatchError,
+    StorageError,
+)
+
+TEMP_PREFIX = ".drive-tool-tmp-"
+
+
+def _local_supported() -> bool:
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            a = LocalAdapter("probe", td)
+            a.close()
+        return True
+    except UnsupportedPlatformError:
+        return False
+
+
+_LOCAL_SUPPORTED = _local_supported()
+
+
+# ---------------------------------------------------------------------------
+# Deterministic scan seam
+# ---------------------------------------------------------------------------
+
+
+class _ScanProbe:
+    """Counts and scripts the raw calls a ``scan_children`` makes."""
+
+    def __init__(self, order=None):
+        self.order = order
+        self.next_attempts = 0
+        self.yielded = 0
+        self.stat_calls = 0
+        self.entered = 0
+        self.exited = 0
+        # name -> exception raised from DirEntry.stat
+        self.stat_error: dict[str, BaseException] = {}
+        # raise OSError(EIO) from the (N+1)-th next() attempt once N yielded
+        self.iterate_error_after: int | None = None
+        # raise OSError(EIO) from the scandir iterator's __exit__
+        self.close_error = False
+
+
+class _ProbeEntry:
+    def __init__(self, inner, probe):
+        self._inner = inner
+        self._probe = probe
+
+    def __getattr__(self, name):
+        return getattr(self._inner, name)
+
+    def stat(self, *, follow_symlinks=True):
+        self._probe.stat_calls += 1
+        exc = self._probe.stat_error.get(self._inner.name)
+        if exc is not None:
+            raise exc
+        return self._inner.stat(follow_symlinks=follow_symlinks)
+
+
+class _ProbeScandir:
+    def __init__(self, inner, probe):
+        self._inner = inner
+        self._probe = probe
+        self._it = None
+
+    def __enter__(self):
+        self._probe.entered += 1
+        self._inner.__enter__()
+        entries = list(self._inner)
+        if self._probe.order is not None:
+            rank = {name: i for i, name in enumerate(self._probe.order)}
+            entries.sort(key=lambda e: rank.get(e.name, len(rank)))
+        self._it = iter(entries)
+        return self
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self._probe.next_attempts += 1
+        after = self._probe.iterate_error_after
+        if after is not None and self._probe.yielded >= after:
+            raise OSError(errno.EIO, "iteration boom")
+        entry = next(self._it)
+        self._probe.yielded += 1
+        return _ProbeEntry(entry, self._probe)
+
+    def __exit__(self, exc_type, exc, tb):
+        self._probe.exited += 1
+        result = self._inner.__exit__(exc_type, exc, tb)
+        if self._probe.close_error:
+            raise OSError(errno.EIO, "scandir close boom")
+        return result
+
+
+class OrderedScanAdapter(LocalAdapter):
+    """LocalAdapter whose scandir order, stat calls and failures are scripted."""
+
+    def __init__(self, source_id, root, *, order=None, **kwargs):
+        self.probe = _ScanProbe(order=order)
+        super().__init__(source_id, root, **kwargs)
+
+    def _os_scandir(self, fd):
+        return _ProbeScandir(super()._os_scandir(fd), self.probe)
+
+
+def _write_files(root: Path, names):
+    for name in names:
+        (root / name).write_text("x")
+
+
+# ---------------------------------------------------------------------------
+# InMemoryAdapter.scan_children
+# ---------------------------------------------------------------------------
+
+
+class InMemoryScanTests(unittest.TestCase):
+    def _adapter(self, names):
+        return InMemoryAdapter("mem", {name: b"x" for name in names})
+
+    def test_bounded_prefix_sorted_within_prefix_only(self):
+        # Insertion order is deliberately not sorted; the scan must take the
+        # first ``max_entries`` inserted and sort only those.
+        adapter = self._adapter(["c.txt", "a.txt", "b.txt", "d.txt"])
+        batch = adapter.scan_children(FileRef("mem", ROOT_ID), max_entries=2)
+        self.assertIsInstance(batch, ScanBatch)
+        self.assertEqual([m.name for m in batch.items], ["a.txt", "c.txt"])
+        self.assertEqual(batch.inspected, 2)
+        self.assertFalse(batch.complete)
+
+    def test_prefix_is_insertion_order_not_global_smallest(self):
+        adapter = self._adapter(["z.txt", "y.txt", "x.txt", "a.txt", "b.txt"])
+        batch = adapter.scan_children(FileRef("mem", ROOT_ID), max_entries=3)
+        names = [m.name for m in batch.items]
+        self.assertEqual(names, ["x.txt", "y.txt", "z.txt"])
+        self.assertNotIn("a.txt", names)
+        self.assertEqual(batch.inspected, 3)
+        self.assertFalse(batch.complete)
+
+    def test_complete_when_everything_fits(self):
+        adapter = self._adapter(["b.txt", "a.txt"])
+        batch = adapter.scan_children(FileRef("mem", ROOT_ID), max_entries=5)
+        self.assertEqual([m.name for m in batch.items], ["a.txt", "b.txt"])
+        self.assertEqual(batch.inspected, 2)
+        self.assertTrue(batch.complete)
+
+    def test_exact_budget_in_memory_is_exactly_complete(self):
+        # The in-memory fixture knows its length, so exact completeness is
+        # allowed here (unlike a live local folder).
+        adapter = self._adapter(["a.txt", "b.txt"])
+        batch = adapter.scan_children(FileRef("mem", ROOT_ID), max_entries=2)
+        self.assertTrue(batch.complete)
+        self.assertEqual(batch.inspected, 2)
+
+    def test_empty_root_is_complete(self):
+        adapter = self._adapter([])
+        batch = adapter.scan_children(FileRef("mem", ROOT_ID), max_entries=4)
+        self.assertEqual(batch.items, ())
+        self.assertEqual(batch.inspected, 0)
+        self.assertTrue(batch.complete)
+
+    def test_items_are_supported_metadata(self):
+        adapter = self._adapter(["a.txt"])
+        batch = adapter.scan_children(FileRef("mem", ROOT_ID), max_entries=4)
+        meta = batch.items[0]
+        self.assertIsInstance(meta, FileMetadata)
+        self.assertEqual(meta.kind, "file")
+        self.assertEqual(meta.ref, FileRef("mem", "a.txt"))
+
+    def test_budget_is_mandatory_and_validated(self):
+        adapter = self._adapter(["a.txt"])
+        root = FileRef("mem", ROOT_ID)
+        with self.assertRaises(TypeError):
+            adapter.scan_children(root)  # type: ignore[call-arg]
+        for bad in (0, -1, True, False, "5", 1.5, None, MAX_SCAN_ENTRIES + 1):
+            with self.subTest(bad=bad):
+                with self.assertRaises(ValueError):
+                    adapter.scan_children(root, max_entries=bad)  # type: ignore[arg-type]
+
+    def test_source_mismatch_precedes_budget_validation(self):
+        adapter = self._adapter(["a.txt"])
+        with self.assertRaises(SourceMismatchError):
+            adapter.scan_children(FileRef("other", ROOT_ID), max_entries=0)
+
+    def test_unknown_and_non_directory(self):
+        adapter = self._adapter(["a.txt"])
+        with self.assertRaises(NotFoundError):
+            adapter.scan_children(FileRef("mem", "nope"), max_entries=3)
+        with self.assertRaises(NotDirectoryError):
+            adapter.scan_children(FileRef("mem", "a.txt"), max_entries=3)
+
+    def test_list_children_unchanged_exact_limit(self):
+        # Regression guard: the old all-or-nothing contract is untouched.
+        adapter = self._adapter(["a.txt", "b.txt", "c.txt"])
+        root = FileRef("mem", ROOT_ID)
+        self.assertEqual(len(adapter.list_children(root, max_entries=3)), 3)
+        from drive_tool.storage import EnumerationLimitError
+
+        with self.assertRaises(EnumerationLimitError):
+            adapter.list_children(root, max_entries=2)
+
+
+# ---------------------------------------------------------------------------
+# LocalAdapter.scan_children
+# ---------------------------------------------------------------------------
+
+
+@unittest.skipUnless(_LOCAL_SUPPORTED, "LocalAdapter unsupported on this platform")
+class LocalScanTests(unittest.TestCase):
+    def _adapter(self, root, order=None, **kwargs):
+        return OrderedScanAdapter("src", str(root), order=order, **kwargs)
+
+    def test_counts_all_raw_and_returns_only_supported(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            _write_files(root, ["a.txt", "b.txt"])
+            (root / f"{TEMP_PREFIX}abc").write_text("x")
+            os.symlink("a.txt", root / "link")
+            os.mkfifo(root / "pipe")
+            adapter = self._adapter(root)
+            try:
+                batch = adapter.scan_children(
+                    FileRef("src", ROOT_ID), max_entries=10
+                )
+                self.assertEqual([m.name for m in batch.items], ["a.txt", "b.txt"])
+                self.assertEqual(batch.inspected, 5)
+                self.assertTrue(batch.complete)
+            finally:
+                adapter.close()
+
+    def test_exact_budget_is_incomplete_and_never_probes_b_plus_1(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"f{i}.txt" for i in range(5)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                batch = adapter.scan_children(
+                    FileRef("src", ROOT_ID), max_entries=5
+                )
+                self.assertEqual(len(batch.items), 5)
+                self.assertEqual(batch.inspected, 5)
+                self.assertFalse(batch.complete)
+                # Exactly B next() attempts and exactly B stat calls: entry B+1
+                # is never requested.
+                self.assertEqual(adapter.probe.next_attempts, 5)
+                self.assertEqual(adapter.probe.yielded, 5)
+                self.assertEqual(adapter.probe.stat_calls, 5)
+            finally:
+                adapter.close()
+
+    def test_over_budget_stops_at_b_without_b_plus_1(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"f{i}.txt" for i in range(6)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                batch = adapter.scan_children(
+                    FileRef("src", ROOT_ID), max_entries=5
+                )
+                got = [m.name for m in batch.items]
+                self.assertEqual(got, names[:5])
+                self.assertNotIn("f5.txt", got)
+                self.assertEqual(batch.inspected, 5)
+                self.assertFalse(batch.complete)
+                self.assertEqual(adapter.probe.next_attempts, 5)
+                self.assertEqual(adapter.probe.yielded, 5)
+                self.assertEqual(adapter.probe.stat_calls, 5)
+            finally:
+                adapter.close()
+
+    def test_under_budget_observes_eof_and_is_complete(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"f{i}.txt" for i in range(3)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                batch = adapter.scan_children(
+                    FileRef("src", ROOT_ID), max_entries=10
+                )
+                self.assertEqual(len(batch.items), 3)
+                self.assertEqual(batch.inspected, 3)
+                self.assertTrue(batch.complete)
+                # N yields then one StopIteration probe to observe EOF.
+                self.assertEqual(adapter.probe.yielded, 3)
+                self.assertEqual(adapter.probe.next_attempts, 4)
+            finally:
+                adapter.close()
+
+    def test_mixed_hidden_temp_symlink_fifo_all_charged(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "keep.txt").write_text("x")
+            os.symlink("keep.txt", root / "s1")
+            os.symlink("keep.txt", root / "s2")
+            (root / f"{TEMP_PREFIX}1").write_text("x")
+            (root / f"{TEMP_PREFIX}2").write_text("x")
+            os.mkfifo(root / "pipe")
+            order = ["keep.txt", "s1", "s2", f"{TEMP_PREFIX}1", f"{TEMP_PREFIX}2", "pipe"]
+            adapter = self._adapter(root, order=order)
+            try:
+                exact = adapter.scan_children(
+                    FileRef("src", ROOT_ID), max_entries=6
+                )
+                self.assertEqual([m.name for m in exact.items], ["keep.txt"])
+                self.assertEqual(exact.inspected, 6)
+                self.assertFalse(exact.complete)
+
+                roomy = adapter.scan_children(
+                    FileRef("src", ROOT_ID), max_entries=20
+                )
+                self.assertEqual([m.name for m in roomy.items], ["keep.txt"])
+                self.assertEqual(roomy.inspected, 6)
+                self.assertTrue(roomy.complete)
+            finally:
+                adapter.close()
+
+    def test_vanishing_entries_are_charged_but_omitted(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = ["f0.txt", "f1.txt", "f2.txt"]
+            _write_files(root, names)
+            for exc in (FileNotFoundError(errno.ENOENT, "gone"), OSError(errno.ENOENT, "gone")):
+                adapter = self._adapter(root, order=names)
+                adapter.probe.stat_error = {"f1.txt": exc}
+                try:
+                    batch = adapter.scan_children(
+                        FileRef("src", ROOT_ID), max_entries=10
+                    )
+                    self.assertEqual(
+                        [m.name for m in batch.items], ["f0.txt", "f2.txt"]
+                    )
+                    self.assertEqual(batch.inspected, 3)
+                    self.assertTrue(batch.complete)
+                finally:
+                    adapter.close()
+
+    def test_budget_is_mandatory_and_validated(self):
+        with tempfile.TemporaryDirectory() as td:
+            adapter = self._adapter(Path(td))
+            try:
+                ref = FileRef("src", ROOT_ID)
+                with self.assertRaises(TypeError):
+                    adapter.scan_children(ref)  # type: ignore[call-arg]
+                for bad in (0, -1, True, False, "5", 1.5, None, MAX_SCAN_ENTRIES + 1):
+                    with self.subTest(bad=bad):
+                        with self.assertRaises(ValueError):
+                            adapter.scan_children(ref, max_entries=bad)  # type: ignore[arg-type]
+            finally:
+                adapter.close()
+
+    def test_source_closed_validation_precedence(self):
+        with tempfile.TemporaryDirectory() as td:
+            adapter = self._adapter(Path(td))
+            try:
+                # Source mismatch precedes even a bad budget.
+                with self.assertRaises(SourceMismatchError):
+                    adapter.scan_children(
+                        FileRef("other", ROOT_ID), max_entries=0
+                    )
+                # Bad budget precedes the file_id parse.
+                with self.assertRaises(ValueError):
+                    adapter.scan_children(FileRef("src", "bad id"), max_entries=0)
+            finally:
+                adapter.close()
+
+        with tempfile.TemporaryDirectory() as td:
+            adapter = self._adapter(Path(td))
+            adapter.close()
+            with self.assertRaises(AdapterClosedError):
+                adapter.scan_children(FileRef("src", ROOT_ID), max_entries=5)
+
+    def test_open_errors_before_iteration_propagate_unchanged(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "file.txt").write_text("x")
+            adapter = self._adapter(root)
+            try:
+                with self.assertRaises(NotFoundError):
+                    adapter.scan_children(FileRef("src", "p/nope"), max_entries=5)
+                with self.assertRaises(NotDirectoryError):
+                    adapter.scan_children(
+                        FileRef("src", "p/file.txt"), max_entries=5
+                    )
+            finally:
+                adapter.close()
+
+    def test_scandir_order_is_the_physical_prefix(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = ["m.txt", "a.txt", "z.txt", "b.txt"]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                batch = adapter.scan_children(
+                    FileRef("src", ROOT_ID), max_entries=2
+                )
+                # Physical prefix is m.txt, a.txt -> sorted within the prefix.
+                self.assertEqual([m.name for m in batch.items], ["a.txt", "m.txt"])
+                self.assertNotIn("z.txt", [m.name for m in batch.items])
+            finally:
+                adapter.close()
+
+
+# ---------------------------------------------------------------------------
+# Failed-scan accounting
+# ---------------------------------------------------------------------------
+
+
+@unittest.skipUnless(_LOCAL_SUPPORTED, "LocalAdapter unsupported on this platform")
+class ScanFailureAccountingTests(unittest.TestCase):
+    def _adapter(self, root, order=None):
+        return OrderedScanAdapter("src", str(root), order=order)
+
+    def test_stat_oserror_after_prefix_is_scanfailure(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = ["f0.txt", "f1.txt", "f2.txt"]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            boom = OSError(errno.EIO, "stat boom")
+            adapter.probe.stat_error = {"f2.txt": boom}
+            try:
+                with self.assertRaises(ScanFailure) as cm:
+                    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+                self.assertEqual(cm.exception.inspected, 3)
+                self.assertIsInstance(cm.exception.error, LocalStorageError)
+                self.assertIs(cm.exception.error.__cause__, boom)
+            finally:
+                adapter.close()
+
+    def test_iteration_oserror_after_prefix_is_scanfailure(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"f{i}.txt" for i in range(5)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            adapter.probe.iterate_error_after = 2
+            try:
+                with self.assertRaises(ScanFailure) as cm:
+                    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+                self.assertEqual(cm.exception.inspected, 2)
+                self.assertIsInstance(cm.exception.error, LocalStorageError)
+            finally:
+                adapter.close()
+
+    def test_iteration_oserror_before_any_entry_is_not_scanfailure(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            _write_files(root, ["a.txt", "b.txt"])
+            adapter = self._adapter(root)
+            adapter.probe.iterate_error_after = 0
+            try:
+                with self.assertRaises(LocalStorageError) as cm:
+                    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+                self.assertNotIsInstance(cm.exception, ScanFailure)
+            finally:
+                adapter.close()
+
+    def test_iterator_close_oserror_after_prefix_is_scanfailure(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = ["a.txt", "b.txt", "c.txt"]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            adapter.probe.close_error = True
+            try:
+                with self.assertRaises(ScanFailure) as cm:
+                    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+                self.assertEqual(cm.exception.inspected, 3)
+                self.assertIsInstance(cm.exception.error, LocalStorageError)
+            finally:
+                adapter.probe.close_error = False
+                adapter.close()
+
+    def test_descriptor_cleanup_failure_is_scanfailure(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = ["a.txt", "b.txt", "c.txt"]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            real_close = adapter._os_close
+            leaked = {"fd": None}
+
+            def failing_close(fd):
+                if leaked["fd"] is None:
+                    leaked["fd"] = fd
+                    raise OSError(errno.EIO, "close boom")
+                return real_close(fd)
+
+            adapter._os_close = failing_close
+            try:
+                with self.assertRaises(ScanFailure) as cm:
+                    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+                self.assertEqual(cm.exception.inspected, 3)
+                self.assertIsInstance(cm.exception.error, LocalStorageError)
+            finally:
+                adapter._os_close = real_close
+                if leaked["fd"] is not None:
+                    os.close(leaked["fd"])
+                adapter.close()
+
+    @unittest.skipUnless(sys.platform.startswith("linux"), "Linux /proc/self/fd only")
+    def test_no_fd_growth_on_partial_and_failing_scans(self):
+        if not os.path.isdir("/proc/self/fd"):
+            self.skipTest("/proc/self/fd not available")
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"f{i}.txt" for i in range(20)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            ref = FileRef("src", ROOT_ID)
+            try:
+                # Warm up.
+                adapter.scan_children(ref, max_entries=3)
+                before = len(os.listdir("/proc/self/fd"))
+                for _ in range(50):
+                    adapter.scan_children(ref, max_entries=3)
+                after_partial = len(os.listdir("/proc/self/fd"))
+                self.assertEqual(before, after_partial)
+
+                adapter.probe.stat_error = {"f1.txt": OSError(errno.EIO, "boom")}
+                for _ in range(50):
+                    with self.assertRaises(ScanFailure):
+                        adapter.scan_children(ref, max_entries=10)
+                adapter.probe.stat_error = {}
+                after_fail = len(os.listdir("/proc/self/fd"))
+                self.assertEqual(before, after_fail)
+            finally:
+                adapter.close()
+
+
+# ---------------------------------------------------------------------------
+# Search-side batch validation and capability requirement
+# ---------------------------------------------------------------------------
+
+
+def _meta(file_id, name, kind="file"):
+    return FileMetadata(
+        ref=FileRef("fake", file_id),
+        name=name,
+        parent_id=ROOT_ID,
+        kind=kind,
+        size_bytes=0 if kind == "file" else None,
+    )
+
+
+class _ScriptedAdapter:
+    """Adapter whose ``scan_children`` returns or raises exactly what we set."""
+
+    source_id = "fake"
+
+    def __init__(self, script):
+        self._script = script
+        self.calls = []
+
+    def scan_children(self, parent, *, max_entries):
+        self.calls.append((parent.file_id, max_entries))
+        result = self._script.get(parent.file_id, ScanBatch((), 0, True))
+        if isinstance(result, BaseException):
+            raise result
+        return result
+
+    def stat(self, ref):
+        raise NotImplementedError
+
+    def read_bytes(self, ref):
+        raise NotImplementedError
+
+
+class SearchBatchValidationTests(unittest.TestCase):
+    def _find(self, script, **kwargs):
+        adapter = _ScriptedAdapter(script)
+        return find(adapter, FileRef("fake", ROOT_ID), "x", **kwargs), adapter
+
+    def test_rejects_non_tuple_items(self):
+        script = {ROOT_ID: ScanBatch(["a"], 1, True)}  # type: ignore[arg-type]
+        with self.assertRaises(StorageError):
+            self._find(script)
+
+    def test_rejects_bool_inspected(self):
+        script = {ROOT_ID: ScanBatch((), True, True)}  # type: ignore[arg-type]
+        with self.assertRaises(StorageError):
+            self._find(script)
+
+    def test_rejects_inspected_over_remaining(self):
+        script = {ROOT_ID: ScanBatch((), 999, True)}
+        with self.assertRaises(StorageError):
+            self._find(script, max_entries=10)
+
+    def test_rejects_non_bool_complete(self):
+        script = {ROOT_ID: ScanBatch((), 0, 1)}  # type: ignore[arg-type]
+        with self.assertRaises(StorageError):
+            self._find(script)
+
+    def test_rejects_items_longer_than_inspected(self):
+        script = {ROOT_ID: ScanBatch((_meta("a", "a"), _meta("b", "b")), 1, True)}
+        with self.assertRaises(StorageError):
+            self._find(script)
+
+    def test_rejects_incomplete_batch_that_does_not_exhaust_budget(self):
+        script = {ROOT_ID: ScanBatch((), 0, False)}
+        with self.assertRaises(StorageError):
+            self._find(script, max_entries=10)
+
+    def test_rejects_failure_inspected_out_of_range(self):
+        script = {ROOT_ID: ScanFailure(999, LocalStorageError("x"))}
+        with self.assertRaises(StorageError):
+            self._find(script, max_entries=10)
+
+    def test_root_scanfailure_reraises_original_error_object(self):
+        original = LocalStorageError("original root failure")
+        script = {ROOT_ID: ScanFailure(2, original)}
+        with self.assertRaises(LocalStorageError) as cm:
+            self._find(script)
+        self.assertIs(cm.exception, original)
+
+    def test_subdir_scanfailure_is_skipped_and_charged(self):
+        sub = _meta("p/sub", "sub", kind="directory")
+        original = LocalStorageError("sub failure")
+        script = {
+            ROOT_ID: ScanBatch((sub,), 1, True),
+            "p/sub": ScanFailure(2, original),
+        }
+        result, adapter = self._find(script, max_entries=100)
+        self.assertEqual(result.skipped, ("p/sub",))
+        self.assertEqual(result.inspected, 3)  # 1 (root) + 2 (failed sub)
+        self.assertFalse(result.truncated)
+        self.assertEqual([c[0] for c in adapter.calls], [ROOT_ID, "p/sub"])
+
+    def test_no_scans_after_failed_work_exhausts_budget(self):
+        sub1 = _meta("p/s1", "s1", kind="directory")
+        sub2 = _meta("p/s2", "s2", kind="directory")
+        script = {
+            ROOT_ID: ScanBatch((sub1, sub2), 2, True),
+            "p/s1": ScanFailure(1, LocalStorageError("s1 failure")),
+        }
+        result, adapter = self._find(script, max_entries=3, max_depth=4)
+        self.assertEqual(result.skipped, ("p/s1",))
+        self.assertEqual(result.inspected, 3)
+        self.assertTrue(result.truncated)
+        self.assertEqual(result.reason, "max_entries")
+        # s2 is never scanned once the failed scan consumes the budget.
+        self.assertEqual([c[0] for c in adapter.calls], [ROOT_ID, "p/s1"])
+
+    def test_argument_validation_precedes_capability_check(self):
+        class NoScan:
+            source_id = "fake"
+
+            def stat(self, ref):
+                raise NotImplementedError
+
+            def read_bytes(self, ref):
+                raise NotImplementedError
+
+        from drive_tool.storage import ScanUnsupportedError
+
+        with self.assertRaises(ValueError):
+            find(NoScan(), FileRef("fake", ROOT_ID), "")  # type: ignore[arg-type]
+        with self.assertRaises(ScanUnsupportedError):
+            find(NoScan(), FileRef("fake", ROOT_ID), "x")  # type: ignore[arg-type]
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+## FILE: tests/test_partial_scan_proofs.py | git blob 51c990bc26661d98498086371be47cd08764be56
+"""Adversarial proof tests for the MODULE-005A partial scan and bounded find.
+
+Each test targets a specific rule and fails if the implementation takes the
+forbidden shortcut that rule forbids: probing entry ``B + 1``, dropping matches
+found in an over-budget folder, counting only metadata instead of raw entries,
+declaring a hard-capped scan complete, ignoring ``ScanFailure.inspected``,
+scanning a sibling after failed work exhausted the budget, or leaking an
+iterator/descriptor on a partial return.
+
+Physical entry order is controlled through the ``OrderedScanAdapter`` seam
+wherever a particular prefix matters; the tests never assume filesystem
+alphabetical order.
+"""
+
+from __future__ import annotations
+
+import errno
+import os
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+from drive_tool.local import LocalAdapter, LocalStorageError, UnsupportedPlatformError
+from drive_tool.search import find
+from drive_tool.storage import (
+    ROOT_ID,
+    EnumerationLimitError,
+    FileMetadata,
+    FileRef,
+    ScanBatch,
+    ScanFailure,
+    ScanUnsupportedError,
+    StorageError,
+)
+
+
+def _local_supported() -> bool:
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            a = LocalAdapter("probe", td)
+            a.close()
+        return True
+    except UnsupportedPlatformError:
+        return False
+
+
+_LOCAL_SUPPORTED = _local_supported()
+
+
+class _ScanProbe:
+    def __init__(self, order=None):
+        self.order = order
+        self.next_attempts = 0
+        self.yielded = 0
+        self.stat_calls = 0
+        self.entered = 0
+        self.exited = 0
+        self.stat_error: dict[str, BaseException] = {}
+        self.iterate_error_after: int | None = None
+        self.close_error = False
+
+
+class _ProbeEntry:
+    def __init__(self, inner, probe):
+        self._inner = inner
+        self._probe = probe
+
+    def __getattr__(self, name):
+        return getattr(self._inner, name)
+
+    def stat(self, *, follow_symlinks=True):
+        self._probe.stat_calls += 1
+        exc = self._probe.stat_error.get(self._inner.name)
+        if exc is not None:
+            raise exc
+        return self._inner.stat(follow_symlinks=follow_symlinks)
+
+
+class _ProbeScandir:
+    def __init__(self, inner, probe):
+        self._inner = inner
+        self._probe = probe
+        self._it = None
+
+    def __enter__(self):
+        self._probe.entered += 1
+        self._inner.__enter__()
+        entries = list(self._inner)
+        if self._probe.order is not None:
+            rank = {name: i for i, name in enumerate(self._probe.order)}
+            entries.sort(key=lambda e: rank.get(e.name, len(rank)))
+        self._it = iter(entries)
+        return self
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self._probe.next_attempts += 1
+        after = self._probe.iterate_error_after
+        if after is not None and self._probe.yielded >= after:
+            raise OSError(errno.EIO, "iteration boom")
+        entry = next(self._it)
+        self._probe.yielded += 1
+        return _ProbeEntry(entry, self._probe)
+
+    def __exit__(self, exc_type, exc, tb):
+        self._probe.exited += 1
+        result = self._inner.__exit__(exc_type, exc, tb)
+        if self._probe.close_error:
+            raise OSError(errno.EIO, "scandir close boom")
+        return result
+
+
+class OrderedScanAdapter(LocalAdapter):
+    def __init__(self, source_id, root, *, order=None, **kwargs):
+        self.probe = _ScanProbe(order=order)
+        super().__init__(source_id, root, **kwargs)
+
+    def _os_scandir(self, fd):
+        return _ProbeScandir(super()._os_scandir(fd), self.probe)
+
+
+def _write_files(root: Path, names):
+    for name in names:
+        (root / name).write_text("x")
+
+
+@unittest.skipUnless(_LOCAL_SUPPORTED, "LocalAdapter unsupported on this platform")
+class PartialScanProofTests(unittest.TestCase):
+    def _adapter(self, root, order=None):
+        return OrderedScanAdapter("src", str(root), order=order)
+
+    # -- no lookahead: a huge directory stops after exactly B ----------------
+
+    def test_huge_directory_stops_after_exactly_b_no_b_plus_1(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"f{i:03d}.txt" for i in range(200)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                batch = adapter.scan_children(
+                    FileRef("src", ROOT_ID), max_entries=5
+                )
+                self.assertEqual(batch.inspected, 5)
+                self.assertEqual(len(batch.items), 5)
+                self.assertFalse(batch.complete)
+                self.assertEqual(adapter.probe.next_attempts, 5)
+                self.assertEqual(adapter.probe.yielded, 5)
+                self.assertLessEqual(adapter.probe.stat_calls, 5)
+                self.assertEqual([m.name for m in batch.items], names[:5])
+            finally:
+                adapter.close()
+
+    # -- core defect regression: early match retained from an over-budget dir -
+
+    def test_early_match_retained_from_over_budget_directory(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = ["needle.txt"] + [f"other{i:02d}.txt" for i in range(49)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                result = find(
+                    adapter,
+                    FileRef("src", ROOT_ID),
+                    "needle",
+                    max_entries=10,
+                )
+                self.assertEqual([m.name for m in result.items], ["needle.txt"])
+                self.assertTrue(result.truncated)
+                self.assertEqual(result.reason, "max_entries")
+                self.assertEqual(result.inspected, 10)
+            finally:
+                adapter.close()
+
+    # -- a zero-item partial scan is truncation, not not-found ---------------
+
+    def test_zero_item_partial_scan_is_truncation(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"f{i:02d}.dat" for i in range(20)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                batch = adapter.scan_children(
+                    FileRef("src", ROOT_ID), max_entries=5
+                )
+                # Five supported entries were scanned, but the walk finds none.
+                self.assertEqual(len(batch.items), 5)
+                self.assertEqual(batch.inspected, 5)
+                self.assertFalse(batch.complete)
+
+                result = find(
+                    adapter, FileRef("src", ROOT_ID), "zzz", max_entries=5
+                )
+                self.assertEqual(result.items, ())
+                self.assertTrue(result.truncated)
+                self.assertEqual(result.reason, "max_entries")
+                self.assertEqual(result.inspected, 5)
+                self.assertEqual(result.skipped, ())
+            finally:
+                adapter.close()
+
+    # -- result limit still charges the full bounded scan --------------------
+
+    def test_result_limit_still_charges_full_scan(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"match{i:02d}.txt" for i in range(10)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                result = find(
+                    adapter,
+                    FileRef("src", ROOT_ID),
+                    "match",
+                    max_results=1,
+                    max_entries=5000,
+                )
+                self.assertEqual(len(result.items), 1)
+                self.assertTrue(result.truncated)
+                self.assertEqual(result.reason, "max_results")
+                # The whole 10-entry scan is charged before matching stops.
+                self.assertEqual(result.inspected, 10)
+            finally:
+                adapter.close()
+
+    def test_result_limit_in_partial_folder_charges_full_batch(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = ["m0.txt"] + [f"other{i:02d}.txt" for i in range(49)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                result = find(
+                    adapter,
+                    FileRef("src", ROOT_ID),
+                    "m0",
+                    max_results=1,
+                    max_entries=10,
+                )
+                self.assertEqual(len(result.items), 1)
+                self.assertTrue(result.truncated)
+                self.assertEqual(result.reason, "max_results")
+                self.assertEqual(result.inspected, 10)
+            finally:
+                adapter.close()
+
+    # -- raw counts summed across multiple BFS folders -----------------------
+
+    def test_raw_counts_summed_across_bfs_folders(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "a").mkdir()
+            (root / "b").mkdir()
+            _write_files(root / "a", ["a1.txt", "a2.txt", "a3.txt"])
+            _write_files(root / "b", ["b1.txt", "b2.txt"])
+            adapter = self._adapter(root)
+            try:
+                result = find(
+                    adapter, FileRef("src", ROOT_ID), "zzz", max_entries=100
+                )
+                # root (2 dirs) + a (3 files) + b (2 files) = 7 raw entries.
+                self.assertEqual(result.inspected, 7)
+                self.assertFalse(result.truncated)
+            finally:
+                adapter.close()
+
+    # -- items are sorted within the scanned prefix only ---------------------
+
+    def test_matches_ordered_within_scanned_prefix_only(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = ["z.txt", "m.txt", "a.txt"]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                result = find(
+                    adapter, FileRef("src", ROOT_ID), "txt", max_entries=2
+                )
+                # Physical prefix is z.txt, m.txt; sorted within the prefix.
+                self.assertEqual([m.name for m in result.items], ["m.txt", "z.txt"])
+                self.assertNotIn("a.txt", [m.name for m in result.items])
+                self.assertTrue(result.truncated)
+                self.assertEqual(result.reason, "max_entries")
+            finally:
+                adapter.close()
+
+    # -- iterator-close failure after partial work charges the prefix --------
+
+    def test_iterator_close_failure_charges_prefix(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = ["a.txt", "b.txt", "c.txt"]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            adapter.probe.close_error = True
+            try:
+                with self.assertRaises(ScanFailure) as cm:
+                    adapter.scan_children(FileRef("src", ROOT_ID), max_entries=10)
+                self.assertEqual(cm.exception.inspected, 3)
+                self.assertIsInstance(cm.exception.error, LocalStorageError)
+            finally:
+                adapter.probe.close_error = False
+                adapter.close()
+
+    # -- old list_children exact-limit and limit+1 witness are unchanged -----
+
+    def test_list_children_exact_limit_and_witness_unchanged(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"f{i}.txt" for i in range(5)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                ref = FileRef("src", ROOT_ID)
+                # Exact-limit success.
+                children = adapter.list_children(ref, max_entries=5)
+                self.assertEqual(len(children), 5)
+                # Legacy limit+1 witness still raises.
+                with self.assertRaises(EnumerationLimitError) as cm:
+                    adapter.list_children(ref, max_entries=4)
+                self.assertEqual(cm.exception.limit, 4)
+            finally:
+                adapter.close()
+
+    # -- repeated partial scans and failure paths leave no fd growth ---------
+
+    @unittest.skipUnless(sys.platform.startswith("linux"), "Linux /proc/self/fd only")
+    def test_repeated_partial_and_failing_scans_no_fd_growth(self):
+        if not os.path.isdir("/proc/self/fd"):
+            self.skipTest("/proc/self/fd not available")
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            names = [f"f{i:02d}.txt" for i in range(30)]
+            _write_files(root, names)
+            adapter = self._adapter(root, order=names)
+            try:
+                # Warm up then settle.
+                find(adapter, FileRef("src", ROOT_ID), "f", max_entries=4)
+                before = len(os.listdir("/proc/self/fd"))
+                for _ in range(40):
+                    find(adapter, FileRef("src", ROOT_ID), "f", max_entries=4)
+                self.assertEqual(before, len(os.listdir("/proc/self/fd")))
+
+                adapter.probe.stat_error = {"f01.txt": OSError(errno.EIO, "boom")}
+                for _ in range(40):
+                    with self.assertRaises(LocalStorageError):
+                        find(adapter, FileRef("src", ROOT_ID), "f", max_entries=10)
+                adapter.probe.stat_error = {}
+                self.assertEqual(before, len(os.listdir("/proc/self/fd")))
+            finally:
+                adapter.close()
+
+
+class ScanBatchContractProofTests(unittest.TestCase):
+    def test_scan_batch_is_frozen_and_tuple_valued(self):
+        batch = ScanBatch((), 0, True)
+        self.assertIsInstance(batch.items, tuple)
+        with self.assertRaises(Exception):
+            batch.inspected = 5  # type: ignore[misc]
+
+    def test_scan_unsupported_error_is_exported_and_a_storage_error(self):
+        self.assertTrue(issubclass(ScanUnsupportedError, StorageError))
+
+    def test_scan_failure_is_a_storage_error(self):
+        self.assertTrue(issubclass(ScanFailure, StorageError))
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+## FILE: tests/test_search.py | git blob 6c31aed4ae8e84157efb3054131c4040a1fa6008
+"""Tests for bounded breadth-first search (MODULE-004)."""
+
+from __future__ import annotations
+
+import tempfile
+import unittest
+from pathlib import Path
+
+from drive_tool.local import (
+    AdapterClosedError,
+    LocalAdapter,
+    UnsupportedPlatformError,
+)
+from drive_tool.search import FindResult, find
+from drive_tool.storage import (
+    ROOT_ID,
+    EnumerationLimitError,
+    FileMetadata,
+    FileRef,
+    NotDirectoryError,
+    NotFoundError,
+    ScanBatch,
+    ScanUnsupportedError,
+    SourceMismatchError,
+    StorageError,
+)
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _local_supported() -> bool:
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            a = LocalAdapter("probe", td)
+            a.close()
+        return True
+    except UnsupportedPlatformError:
+        return False
+
+_LOCAL_SUPPORTED = _local_supported()
+
+def _make_local(root, **kwargs) -> LocalAdapter:
+    return LocalAdapter("src", str(root), **kwargs)
+
+def _file(file_id, name, parent_id, kind="file", size=0, source_id="fake"):
+    return FileMetadata(
+        ref=FileRef(source_id, file_id),
+        name=name,
+        parent_id=parent_id,
+        kind=kind,
+        size_bytes=size if kind == "file" else None,
+    )
+
+class FakeAdapter:
+    """Minimal StorageAdapter for search tests.
+
+    ``children_by_id`` maps a ``file_id`` to its list of ``FileMetadata``.
+    ``scan_children`` (the method ``find`` requires) returns a bounded prefix:
+    when ``enforce_limit`` is true and a folder holds more than the requested
+    ``max_entries`` it returns that many items with ``complete=False``; when
+    ``enforce_limit`` is false it returns every item with ``inspected`` set to
+    the full length, an over-budget report a caller must reject. ``raise_on``
+    maps a ``file_id`` to an exception instance that both listing methods raise
+    instead of returning. Every call is recorded in ``calls`` as
+    ``(file_id, max_entries)``.
+    """
+
+    def __init__(
+        self, source_id, children_by_id, *, enforce_limit=True, raise_on=None
+    ):
+        self.source_id = source_id
+        self._children = {k: list(v) for k, v in children_by_id.items()}
+        self._enforce_limit = enforce_limit
+        self._raise_on = dict(raise_on or {})
+        self.calls = []
+
+    def list_children(self, parent, *, max_entries=None):
+        self.calls.append((parent.file_id, max_entries))
+        if parent.source_id != self.source_id:
+            raise SourceMismatchError(
+                f"source mismatch: {parent.source_id!r} != {self.source_id!r}"
+            )
+        if parent.file_id in self._raise_on:
+            raise self._raise_on[parent.file_id]
+        items = list(self._children.get(parent.file_id, []))
+        if (
+            self._enforce_limit
+            and max_entries is not None
+            and len(items) > max_entries
+        ):
+            raise EnumerationLimitError(max_entries)
+        return items
+
+    def scan_children(self, parent, *, max_entries):
+        self.calls.append((parent.file_id, max_entries))
+        if parent.source_id != self.source_id:
+            raise SourceMismatchError(
+                f"source mismatch: {parent.source_id!r} != {self.source_id!r}"
+            )
+        if parent.file_id in self._raise_on:
+            raise self._raise_on[parent.file_id]
+        items = list(self._children.get(parent.file_id, []))
+        if self._enforce_limit and len(items) > max_entries:
+            return ScanBatch(
+                items=tuple(items[:max_entries]),
+                inspected=max_entries,
+                complete=False,
+            )
+        return ScanBatch(items=tuple(items), inspected=len(items), complete=True)
+
+    def stat(self, ref):
+        raise NotImplementedError
+
+    def read_bytes(self, ref):
+        raise NotImplementedError
+
+# ---------------------------------------------------------------------------
+# LocalAdapter-backed tests
+# ---------------------------------------------------------------------------
+
+@unittest.skipUnless(_LOCAL_SUPPORTED, "LocalAdapter unsupported on this platform")
+class FindLocalAdapterTests(unittest.TestCase):
+    def test_matches_files_and_dirs_case_modes(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "Report.txt").write_text("x")
+            (root / "report_dir").mkdir()
+            (root / "other.txt").write_text("x")
+            adapter = _make_local(root)
+            try:
+                ref = FileRef("src", ROOT_ID)
+                r = find(adapter, ref, "report")
+                self.assertEqual(
+                    sorted(m.name for m in r.items), ["Report.txt", "report_dir"]
+                )
+                self.assertFalse(r.truncated)
+                self.assertIsNone(r.reason)
+
+                r = find(adapter, ref, "report", case_sensitive=True)
+                self.assertEqual([m.name for m in r.items], ["report_dir"])
+            finally:
+                adapter.close()
+
+    def test_bfs_walk_order(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "root_match_a.txt").write_text("x")
+            (root / "root_match_b.txt").write_text("x")
+            (root / "a_dir").mkdir()
+            (root / "b_dir").mkdir()
+            (root / "a_dir" / "deep_a_match.txt").write_text("x")
+            (root / "b_dir" / "deep_b_match.txt").write_text("x")
+            (root / "a_dir" / "z_dir").mkdir()
+            (root / "b_dir" / "c_dir").mkdir()
+            (root / "a_dir" / "z_dir" / "z_match.txt").write_text("x")
+            (root / "b_dir" / "c_dir" / "c_match.txt").write_text("x")
+            adapter = _make_local(root)
+            try:
+                r = find(adapter, FileRef("src", ROOT_ID), "match")
+                self.assertEqual(
+                    [m.name for m in r.items],
+                    [
+                        "root_match_a.txt",
+                        "root_match_b.txt",
+                        "deep_a_match.txt",
+                        "deep_b_match.txt",
+                        "c_match.txt",
+                        "z_match.txt",
+                    ],
+                )
+                self.assertFalse(r.truncated)
+                self.assertIsNone(r.reason)
+            finally:
+                adapter.close()
+
+    def test_max_depth_zero_and_deeper(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "top.txt").write_text("x")
+            (root / "d1").mkdir()
+            (root / "d1" / "mid.txt").write_text("x")
+            (root / "d1" / "d2").mkdir()
+            (root / "d1" / "d2" / "deep.txt").write_text("x")
+            adapter = _make_local(root)
+            try:
+                ref = FileRef("src", ROOT_ID)
+                r0 = find(adapter, ref, "txt", max_depth=0)
+                self.assertEqual([m.name for m in r0.items], ["top.txt"])
+                self.assertTrue(r0.truncated)
+                self.assertEqual(r0.reason, "max_depth")
+
+                r1 = find(adapter, ref, "txt", max_depth=1)
+                self.assertEqual(
+                    sorted(m.name for m in r1.items), ["mid.txt", "top.txt"]
+                )
+                self.assertTrue(r1.truncated)
+                self.assertEqual(r1.reason, "max_depth")
+
+                r3 = find(adapter, ref, "txt", max_depth=3)
+                self.assertEqual(
+                    sorted(m.name for m in r3.items),
+                    ["deep.txt", "mid.txt", "top.txt"],
+                )
+                self.assertFalse(r3.truncated)
+                self.assertIsNone(r3.reason)
+            finally:
+                adapter.close()
+
+    def test_max_depth_zero_only_files_not_truncated(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "a.txt").write_text("x")
+            (root / "b.txt").write_text("x")
+            adapter = _make_local(root)
+            try:
+                r = find(adapter, FileRef("src", ROOT_ID), "txt", max_depth=0)
+                self.assertEqual(
+                    sorted(m.name for m in r.items), ["a.txt", "b.txt"]
+                )
+                self.assertFalse(r.truncated)
+                self.assertIsNone(r.reason)
+            finally:
+                adapter.close()
+
+    def test_max_results_truncation_vs_exact_last_entry(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "m1.txt").write_text("x")
+            (root / "m2.txt").write_text("x")
+            (root / "m3.txt").write_text("x")
+            adapter = _make_local(root)
+            try:
+                ref = FileRef("src", ROOT_ID)
+                r = find(adapter, ref, "m", max_results=2)
+                self.assertEqual(len(r.items), 2)
+                self.assertTrue(r.truncated)
+                self.assertEqual(r.reason, "max_results")
+                # The whole 3-entry root scan is charged even though matching
+                # stopped after the second match.
+                self.assertEqual(r.inspected, 3)
+
+                r = find(adapter, ref, "m", max_results=3)
+                self.assertEqual(len(r.items), 3)
+                self.assertFalse(r.truncated)
+                self.assertIsNone(r.reason)
+                self.assertEqual(r.inspected, 3)
+            finally:
+                adapter.close()
+
+    def test_max_results_on_last_entry_at_max_depth(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "sub_match").mkdir()
+            adapter = _make_local(root)
+            try:
+                r = find(
+                    adapter,
+                    FileRef("src", ROOT_ID),
+                    "match",
+                    max_results=1,
+                    max_depth=0,
+                )
+                self.assertEqual(len(r.items), 1)
+                self.assertEqual(r.items[0].name, "sub_match")
+                self.assertTrue(r.truncated)
+                self.assertEqual(r.reason, "max_depth")
+                self.assertEqual(r.inspected, 1)
+            finally:
+                adapter.close()
+
+    def test_max_entries_budget_covering_whole_tree_is_complete(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "a.txt").write_text("x")
+            (root / "b.txt").write_text("x")
+            adapter = _make_local(root)
+            try:
+                # Budget strictly greater than the folder size: EOF is observed
+                # within budget, so the walk is genuinely complete.
+                r = find(
+                    adapter,
+                    FileRef("src", ROOT_ID),
+                    "txt",
+                    max_entries=3,
+                    max_depth=2,
+                )
+                self.assertEqual(len(r.items), 2)
+                self.assertFalse(r.truncated)
+                self.assertIsNone(r.reason)
+                self.assertEqual(r.inspected, 2)
+            finally:
+                adapter.close()
+
+    def test_local_exact_budget_is_conservatively_incomplete(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "a.txt").write_text("x")
+            (root / "b.txt").write_text("x")
+            adapter = _make_local(root)
+            try:
+                # A local folder holding exactly the budget is deliberately
+                # incomplete: entry B+1 is never probed, so EOF is unknown.
+                r = find(
+                    adapter,
+                    FileRef("src", ROOT_ID),
+                    "txt",
+                    max_entries=2,
+                    max_depth=2,
+                )
+                self.assertEqual(len(r.items), 2)
+                self.assertTrue(r.truncated)
+                self.assertEqual(r.reason, "max_entries")
+                self.assertEqual(r.inspected, 2)
+            finally:
+                adapter.close()
+
+    def test_max_entries_exhausted_with_dirs_remaining(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "a.txt").write_text("x")
+            (root / "sub").mkdir()
+            (root / "sub" / "deep.txt").write_text("x")
+            adapter = _make_local(root)
+            try:
+                r = find(
+                    adapter,
+                    FileRef("src", ROOT_ID),
+                    "txt",
+                    max_entries=2,
+                    max_depth=2,
+                )
+                self.assertEqual(r.inspected, 2)
+                self.assertTrue(r.truncated)
+                self.assertEqual(r.reason, "max_entries")
+            finally:
+                adapter.close()
+
+    def test_empty_tree(self):
+        with tempfile.TemporaryDirectory() as td:
+            adapter = _make_local(Path(td))
+            try:
+                r = find(adapter, FileRef("src", ROOT_ID), "x")
+                self.assertEqual(r.items, ())
+                self.assertFalse(r.truncated)
+                self.assertIsNone(r.reason)
+                self.assertEqual(r.inspected, 0)
+                self.assertEqual(r.skipped, ())
+            finally:
+                adapter.close()
+
+    def test_starting_parent_errors_propagate(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "f.txt").write_text("x")
+            adapter = _make_local(root)
+            try:
+                with self.assertRaises(NotFoundError):
+                    find(adapter, FileRef("src", "p/nope"), "x")
+                with self.assertRaises(NotDirectoryError):
+                    find(adapter, FileRef("src", "p/f.txt"), "x")
+                with self.assertRaises(SourceMismatchError):
+                    find(adapter, FileRef("other", ROOT_ID), "x")
+            finally:
+                adapter.close()
+
+        with tempfile.TemporaryDirectory() as td:
+            adapter = _make_local(Path(td))
+            adapter.close()
+            with self.assertRaises(AdapterClosedError):
+                find(adapter, FileRef("src", ROOT_ID), "x")
+
+# ---------------------------------------------------------------------------
+# Fake-adapter-backed tests (error injection and budget behaviour)
+# ---------------------------------------------------------------------------
+
+class FindFakeAdapterTests(unittest.TestCase):
+    def test_large_folder_stops_early_via_adapter_limit(self):
+        children = [
+            _file(f"f{i}.txt", f"f{i}.txt", ROOT_ID) for i in range(2000)
+        ]
+        fake = FakeAdapter("fake", {ROOT_ID: children})
+        r = find(fake, FileRef("fake", ROOT_ID), "zzz", max_entries=100)
+        self.assertTrue(r.truncated)
+        self.assertEqual(r.reason, "max_entries")
+        # The whole bounded batch (the full remaining budget) is charged.
+        self.assertEqual(r.inspected, 100)
+        # The adapter received the remaining budget and nothing more.
+        self.assertEqual(fake.calls, [(ROOT_ID, 100)])
+
+    def test_over_budget_report_is_rejected_loudly(self):
+        # A scanner that ignores its budget and reports more raw work than it
+        # was allowed is rejected, never clamped into an accepted result.
+        children = [_file(f"f{i}.txt", f"f{i}.txt", ROOT_ID) for i in range(50)]
+        fake = FakeAdapter("fake", {ROOT_ID: children}, enforce_limit=False)
+        with self.assertRaises(StorageError):
+            find(fake, FileRef("fake", ROOT_ID), "zzz", max_entries=10)
+
+    def test_subdirectory_storage_error_skipped(self):
+        bad_id = "p/bad"
+        good_id = "p/good"
+        root_children = [
+            _file(bad_id, "bad", ROOT_ID, kind="directory"),
+            _file(good_id, "good", ROOT_ID, kind="directory"),
+        ]
+        good_children = [_file("p/good/x_match.txt", "x_match.txt", good_id)]
+        fake = FakeAdapter(
+            "fake",
+            {ROOT_ID: root_children, good_id: good_children},
+            raise_on={bad_id: NotFoundError("gone")},
+        )
+        r = find(fake, FileRef("fake", ROOT_ID), "match")
+        self.assertEqual([m.name for m in r.items], ["x_match.txt"])
+        self.assertEqual(r.skipped, (bad_id,))
+        self.assertFalse(r.truncated)
+        self.assertIsNone(r.reason)
+
+    def test_subdirectory_partial_scan_truncates_not_skipped(self):
+        a_id = "p/a"
+        b_id = "p/b"
+        root_children = [
+            _file(a_id, "a", ROOT_ID, kind="directory"),
+            _file(b_id, "b", ROOT_ID, kind="directory"),
+        ]
+        a_children = [
+            _file(f"p/a/f{i}.txt", f"f{i}.txt", a_id) for i in range(50)
+        ]
+        fake = FakeAdapter(
+            "fake", {ROOT_ID: root_children, a_id: a_children}
+        )
+        r = find(fake, FileRef("fake", ROOT_ID), "zzz", max_entries=10, max_depth=4)
+        self.assertTrue(r.truncated)
+        self.assertEqual(r.reason, "max_entries")
+        self.assertEqual(r.skipped, ())
+        # 'a' hit its budget mid-folder (a partial, not a failed, scan) and 'b'
+        # was never reached: the walk is truncated, not skipped.
+        self.assertEqual(r.inspected, 10)
+        self.assertEqual([c[0] for c in fake.calls], [ROOT_ID, a_id])
+        # 'a' was asked for the remaining budget (10 - 2 inspected).
+        self.assertEqual(fake.calls[1], (a_id, 8))
+
+    def test_argument_validation_before_adapter(self):
+        calls: list[int | None] = []
+
+        class SpyAdapter:
+            source_id = "spy"
+
+            def list_children(self, parent, *, max_entries=None):
+                calls.append(max_entries)
+                return []
+
+            def stat(self, ref):
+                raise NotImplementedError
+
+            def read_bytes(self, ref):
+                raise NotImplementedError
+
+        spy = SpyAdapter()
+        ref = FileRef("spy", ROOT_ID)
+        bad_kwargs = [
+            {"name_contains": ""},
+            {"name_contains": None},
+            {"name_contains": 123},
+            {"name_contains": "x", "max_results": 0},
+            {"name_contains": "x", "max_results": 101},
+            {"name_contains": "x", "max_results": True},
+            {"name_contains": "x", "max_results": 1.5},
+            {"name_contains": "x", "max_entries": 0},
+            {"name_contains": "x", "max_entries": 100_001},
+            {"name_contains": "x", "max_entries": True},
+            {"name_contains": "x", "max_depth": -1},
+            {"name_contains": "x", "max_depth": 17},
+            {"name_contains": "x", "max_depth": True},
+            {"name_contains": "x", "case_sensitive": 1},
+            {"name_contains": "x", "case_sensitive": "yes"},
+        ]
+        for kwargs in bad_kwargs:
+            with self.assertRaises(ValueError, msg=f"kwargs={kwargs}"):
+                find(spy, ref, **kwargs)
+        self.assertEqual(calls, [])
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+## FILE: docs/evidence/MODULE-005A.md | git blob 6feb541895f9b64b5a0ace0b6503c9a55d575c43
+# MODULE-005A Evidence Report — Partial Bounded Enumeration and Honest Search Accounting (Sarvam)
+
+This report records the implementation, test execution and mutation check of
+MODULE-005A (a separate partial-scan capability plus honest raw-entry accounting
+in `find`) as performed by Sarvam. It is separate from the Argon design review
+(`Dolesh-avkalan/drop`, `drive-tool/module-005a/d032-implementation/`).
+
+## 1. Provenance
+
+| Role | Detail |
+| --- | --- |
+| Base commit | `356a4d8a71d0e57a57e7c82dbfce50be145a0bdb` — "Resume after Claude handoff, record write merge and partial-scan design task" |
+| Base tree | `1d92bfccc8c2b9bb162a6fc0cfac2b0423273952` |
+| Base commit parent | `a84f6b3328d2caeb8d71f7c009e370dfea9cf452` (the approved MODULE-005 merge) |
+| Branch | `feature/module-005a-partial-scan` (created from the base commit) |
+| Assembler | Sarvam |
+
+The base commit was resolved from the short id `356a4d8`; its full SHA is
+`356a4d8a71d0e57a57e7c82dbfce50be145a0bdb`. `a84f6b3...356a4d8` compares
+`ahead_by: 1`, confirming the base contains the MODULE-005 merge `a84f6b3`.
+
+## 2. Commit on `feature/module-005a-partial-scan`
+
+| # | Commit | Message |
+| --- | --- | --- |
+| 1 | see §8 | Implement MODULE-005A partial bounded scan and honest search accounting (Sarvam) |
+| 2 | see §8 | Add MODULE-005A evidence report (Sarvam) |
+
+Commit 1's parent is the base `356a4d8`. Commit 2 adds this file. The commits
+are created through the GitHub Git Data API (the sandbox holds no push
+credentials); the API stores the commit message without a trailing newline, so
+the pushed SHAs are the ones reported in §8. `main` is not modified, nothing is
+merged and nothing is deployed.
+
+## 3. Scope of change
+
+| Path | Change |
+| --- | --- |
+| `drive_tool/storage.py` | Add frozen `ScanBatch`, `ScanFailure(StorageError)`, `ScanUnsupportedError(StorageError)`, `MAX_SCAN_ENTRIES`, `_validate_scan_max_entries`; add `InMemoryAdapter.scan_children`. `StorageAdapter` protocol unchanged. |
+| `drive_tool/local.py` | Add `LocalAdapter.scan_children` (no-lookahead, bounded, single-finally descriptor ownership) and the `_scan_work_error` helper. `stat`, `read_bytes`, `list_children` and the write code are untouched. |
+| `drive_tool/search.py` | `find` requires a callable `scan_children` (else `ScanUnsupportedError`), charges each batch's `inspected` before matching, retains partial-folder matches, validates scanner reports loudly, and accounts `ScanFailure`. |
+| `tests/test_search.py` | Add `scan_children` to the fake adapter; update the assertions whose semantics changed (see §5). |
+| `tests/test_partial_scan.py` | New (37 tests). |
+| `tests/test_partial_scan_proofs.py` | New (13 tests). |
+| `docs/evidence/MODULE-005A.md` | This report. |
+
+`drive_tool/local_write.py`, `drive_tool/listing.py`, `drive_tool/__init__.py`,
+the read/stat containment paths and every `session/` document are **not**
+changed. Per the brief's allowed scope, `session/AGENT-INTERFACE.md` is
+deliberately left untouched: the design verdict's requested correction there is
+a director action, and this task forbids editing session documents. `find` does
+report bounded-scan truncation honestly (`reason="max_entries"` / `"max_depth"`
+with no offset continuation), which is the behaviour that correction describes.
+
+## 4. Execution environment and results
+
+- Platform: Debian GNU/Linux 12 (bookworm), x86_64, non-root uid 1000 (gVisor sandbox).
+- Interpreter A: **Python 3.11.2**
+- Interpreter B: **Python 3.12.13**
+- No newer interpreter (3.13/3.14) is installed; per the brief, none was installed.
+
+Command (both interpreters, from the repository root):
+
+```
+python3.11 -m unittest discover -s tests -v
+python3.12 -m unittest discover -s tests -v
+```
+
+| Interpreter | Count | Final line | Exit |
+| --- | --- | --- | --- |
+| Python 3.11.2 | `Ran 256 tests in 2.092s` | `OK` | 0 |
+| Python 3.12.13 | `Ran 256 tests in 2.113s` | `OK` | 0 |
+
+256 = the 204 pre-existing tests (of which `test_search.py` grew by 2 from one
+split test) plus 50 new tests in the two `test_partial_scan*` modules. No test
+is skipped on this platform.
+
+| Test module | Tests |
+| --- | --- |
+| `test_storage.py` | 36 |
+| `test_listing.py` | 35 |
+| `test_local.py` | 53 |
+| `test_search.py` | 16 |
+| `test_enumeration.py` | 15 |
+| `test_enumeration_proofs.py` | 6 |
+| `test_readonly_core.py` | 16 |
+| `test_local_write.py` | 24 |
+| `test_local_write_proofs.py` | 5 |
+| `test_partial_scan.py` (new) | 37 |
+| `test_partial_scan_proofs.py` (new) | 13 |
+| **Total** | **256** |
+
+Every pre-existing `list_children` test, the whole MODULE-005 write suite
+(`test_local_write.py` 24, `test_local_write_proofs.py` 5) and the containment
+suite pass **unchanged**.
+
+## 5. Changed old assertions (and why)
+
+Semantics changed in three places, so three old assertions had to change. No
+assertion was deleted, weakened or skipped.
+
+1. **`test_search.py::test_max_results_truncation_vs_exact_last_entry`** —
+   `inspected` for the `max_results=2` case changed `2 → 3`. `find` now charges
+   the adapter's full bounded scan of the 3-entry root (`batch.inspected == 3`)
+   *before* matching, so `inspected` counts raw scan work, not returned matches.
+   This is the brief's "result limit still charges full scan" rule.
+
+2. **`test_search.py::test_max_entries_exact_budget_vs_dirs_remaining`** — split
+   into three tests because a local folder holding **exactly** the budget is now
+   deliberately **incomplete**:
+   - `test_max_entries_budget_covering_whole_tree_is_complete`: budget strictly
+     greater than the folder size (3 > 2) still observes EOF and is complete
+     (`truncated=False`, `inspected=2`).
+   - `test_local_exact_budget_is_conservatively_incomplete` (**changed**): a
+     2-entry folder with `max_entries=2` now reports `truncated=True,
+     reason="max_entries", inspected=2` (was `truncated=False`). Entry `B+1` is
+     never probed, so EOF is unknown and "unknown" is not proof of completion.
+   - `test_max_entries_exhausted_with_dirs_remaining`: unchanged in substance
+     (`truncated=True`, `reason="max_entries"`, `inspected=2`).
+
+3. **`test_search.py::test_large_folder_stops_early_via_adapter_limit`** —
+   `inspected` changed `0 → 100`, and the needle changed `"x" → "zzz"`. The old
+   `inspected == 0` recorded the MODULE-004 defect (an aborted scan was not
+   charged); the bounded scan is now charged in full. The needle change is a
+   fixture correction: every `f<i>.txt` contains `"x"` (in `.txt`), so with the
+   new "retain partial matches" rule the old needle would stop at
+   `max_results`, not at the scan budget; `"zzz"` keeps the test about
+   scan-budget truncation, which is what its name asserts.
+
+4. **`test_search.py::test_defensive_guard_against_adapter_ignoring_budget`** —
+   renamed `test_over_budget_report_is_rejected_loudly` and now expects a
+   `StorageError`. The brief replaces the old silent clamping with loud
+   rejection of an over-budget scanner report.
+
+5. **`test_search.py::test_subdirectory_enumeration_limit_stops_not_skipped`** —
+   renamed `test_subdirectory_partial_scan_truncates_not_skipped`. The existing
+   assertions are preserved; the trigger is now an incomplete batch (partial
+   scan) rather than `EnumerationLimitError`, and `inspected == 10` is asserted
+   explicitly.
+
+6. **`test_search.py::FakeAdapter`** — gained a `scan_children` method, because
+   `find` now hard-requires it. The real operational tests were not weakened:
+   the fake returns a bounded prefix and an incomplete flag, and the
+   over-budget behaviour is exercised by the rejection test above.
+
+## 6. What the new tests cover
+
+`tests/test_partial_scan.py` (contract, boundary, cleanup): `ScanBatch`
+invariants; the in-memory bounded **insertion-order** prefix (not the global
+smallest names); exact-budget behaviour (in-memory exact, local conservative);
+mandatory/validated budget (`bool`/`None`/range rejected, missing kwarg is
+`TypeError`); source/closed/validation precedence; mixed hidden/temp/symlink/
+FIFO/ENOENT entries charged; failed-scan accounting (`ScanFailure` with the
+right `inspected` and preserved cause for stat, iteration, iterator-close and
+descriptor-cleanup failures, and a plain error before any entry is yielded);
+`/proc/self/fd` flatness on repeated partial and failing scans; and loud batch
+validation (non-tuple items, bool `inspected`, out-of-range `inspected`,
+non-bool `complete`, items longer than `inspected`, an incomplete batch that
+does not exhaust the budget, out-of-range `ScanFailure.inspected`), plus
+capability denial and root-`ScanFailure` re-raise.
+
+`tests/test_partial_scan_proofs.py` (adversarial proofs): a 200-entry directory
+stops after exactly `B` yielded entries with **no `B+1` next call** and at most
+`B` stat calls; an early match is retained from an over-budget directory; a
+zero-item partial scan is truncation, not "not found"; the result limit still
+charges the full bounded scan (whole folder and partial folder); raw counts are
+summed across BFS folders; matches are ordered within the scanned prefix only;
+the iterator-close failure charges the prefix; the old `list_children`
+exact-limit success and limit+1 witness are unchanged; and repeated partial and
+failing scans leave no fd growth.
+
+Physical entry order is controlled by a deterministic test seam
+(`OrderedScanAdapter`, which scripts scandir order, counts `next()`/`stat`
+calls and injects failures); no test assumes filesystem alphabetical order.
+
+## 7. Mutation check
+
+Each mutation was applied to a scratch copy of the candidate (never committed),
+the full suite was run, and the copy was discarded. Results are identical on
+Python 3.11.2 and 3.12.13. **7 mutations, 7 caught, 0 survivors.**
+
+| # | Mutation | Caught by |
+| --- | --- | --- |
+| M1 | discard partial matches (`search.py`, incomplete-batch return `items=()`) | `test_early_match_retained_from_over_budget_directory`, `test_matches_ordered_within_scanned_prefix_only`, `test_local_exact_budget_is_conservatively_incomplete` |
+| M2 | count only metadata (`local.py`, `inspected=len(children)`) | `test_counts_all_raw_and_returns_only_supported`, `test_mixed_hidden_temp_symlink_fifo_all_charged`, `test_vanishing_entries_are_charged_but_omitted` |
+| M3 | read `B+1` entries (`local.py`, `while entry_count <= max_entries`) | 11 tests incl. `test_exact_budget_is_incomplete_and_never_probes_b_plus_1`, `test_huge_directory_stops_after_exactly_b_no_b_plus_1` |
+| M4 | `complete=True` at a hard cap without EOF (`local.py`, `complete = True`) | 8 tests incl. `test_exact_budget_is_incomplete_and_never_probes_b_plus_1`, `test_over_budget_stops_at_b_without_b_plus_1` |
+| M5 | ignore `ScanFailure.inspected` (`search.py`, drop the `inspected +=`) | `test_subdir_scanfailure_is_skipped_and_charged`, `test_no_scans_after_failed_work_exhausts_budget` |
+| M6 | scan a sibling after failed work exhausted the budget (`search.py`, `remaining_budget < 0`) | `test_no_scans_after_failed_work_exhausts_budget` |
+| M7 | leak iterator/fd on partial return (`local.py`, skip `_release_owned` in the `finally`) | `test_descriptor_cleanup_failure_is_scanfailure`, `test_no_fd_growth_on_partial_and_failing_scans`, `test_repeated_partial_and_failing_scans_no_fd_growth` |
+
+No mutation survives, so there is no mutation gap to report.
+
+## 8. Pushed identities and blob hashes
+
+| Path | Blob SHA |
+| --- | --- |
+| `drive_tool/storage.py` | `3f4f8dcf50bbf68e97cd807fe40db1ee1bec4576` |
+| `drive_tool/local.py` | `d2d03ac02ede36a1bcbafab687a139d446491fcf` |
+| `drive_tool/search.py` | `5a19344114f08dbee2adbfda2dd64d312fc8df5e` |
+| `tests/test_search.py` | `6c31aed4ae8e84157efb3054131c4040a1fa6008` |
+| `tests/test_partial_scan.py` | `0939ee77d379c994b9966d478cf94b136dc398e8` |
+| `tests/test_partial_scan_proofs.py` | `51c990bc26661d98498086371be47cd08764be56` |
+
+The branch commit SHAs are reported in the assembler's reply (the Git Data API
+records the message without a trailing newline). No `__pycache__`/`.pyc` file
+is tracked on the branch.
+
+## 9. Notes and limits
+
+- This report claims only execution performed here. There is no independent
+  reviewer result and no target-cloud result in it.
+- The base commit `356a4d8` is used exactly as instructed; the branch is not
+  merged and nothing is deployed.
+- Only Python 3.11.2 and 3.12.13 are present; newer interpreters are
+  unsupported in this environment and were not installed.
+- `scan_children` is optional on an adapter but its `max_entries` argument is
+  mandatory; the public ceiling is `MAX_SCAN_ENTRIES = 100000`, matching
+  `find`'s `max_entries` cap. Repeated identical bounded searches make no
+  promise of eventual complete coverage.
