@@ -1,0 +1,922 @@
+# D036 independent static review (compact fallback)
+
+Candidate e88c9c79fdc27057622d44ba51e008f2e4ea4f4f, base 356a4d8a71d0e57a57e7c82dbfce50be145a0bdb. Gemini could not retrieve the earlier linked file and its upload menu exposed no picker. This fallback contains the complete changed production diff and two unchanged lifetime helpers, not the whole source/test tree. Do not claim to inspect omitted code or run tests. No implementation, push, merge or deployment.
+
+Review requirements: new optional ScanBatch/scan_children; strict B yielded raw entries, no B+1 next; conservative local EOF at exact cap; filtered/temp/symlink/special/ENOENT entries count; old full-list/read/write behavior unchanged; retain useful prefix matches sorted only within physical subset; charge full raw batches before max_results; charge partial failures; preserve root original errors/causes and primary-error priority without cleanup retries; skipped directories imply incomplete coverage; malformed reports and failure.error validated at every depth; explicit capability rejection for legacy search adapters.
+
+D034 independently reproduced 256 tests/seven mutations but found skipped directories could look complete, failure.error was validated only at root, and a StorageError from a metadata extension seam lost raw work. D035 corrects those, reporting 274 tests, final-test old-fail/new-pass and three new mutations caught. D037 independently rechecks execution; do not assume its result. The metadata extension issue was not a shipped-kernel escape.
+
+Return ACCEPT / ACCEPT WITH NITS / CHANGES REQUIRED for provided changed-code scope. Give exact functions, concrete counterexamples and narrow fixes. Focus on primary + cleanup errors, partial-work failures, error identity, complete/truncated/skipped semantics, budget charging and malformed reports. State TESTS_NOT_RUN and omitted-source limitations. No claim of eventual complete search coverage or free sorted offset continuation.
+
+## Complete changed production diff
+```diff
+diff --git a/drive_tool/local.py b/drive_tool/local.py
+index d66ce2d..a0e43e1 100644
+--- a/drive_tool/local.py
++++ b/drive_tool/local.py
+@@ -63,14 +63,17 @@ from drive_tool.storage import (
+     EnumerationLimitError,
+     FileMetadata,
+     FileRef,
+     IsDirectoryError,
+     NotDirectoryError,
+     NotFoundError,
++    ScanBatch,
++    ScanFailure,
+     SourceMismatchError,
+     StorageError,
++    _validate_scan_max_entries,
+ )
+ 
+ __all__ = [
+     "DEFAULT_MAX_READ_BYTES",
+     "PATH_PREFIX",
+     "LocalStorageError",
+@@ -527,12 +530,50 @@ class LocalAdapter:
+         if first_failure is not None and primary is None:
+             context, exc = first_failure
+             raise LocalStorageError(
+                 f"failed to close descriptor for {context}: {exc}"
+             ) from exc
+ 
++    def _scan_work_error(
++        self, entry_count: int, message: str, exc: BaseException
++    ) -> StorageError:
++        """Build the error for a scan failure, charging already-yielded work.
++
++        Before any raw entry has been yielded the underlying storage error is
++        returned unchanged (zero raw work has been done). Once at least one raw
++        entry has been yielded the error is wrapped in :class:`ScanFailure`
++        carrying the number of successfully yielded raw entries, with the
++        original error and its ``OSError`` cause preserved.
++        """
++        underlying = LocalStorageError(message)
++        underlying.__cause__ = exc
++        if entry_count > 0:
++            return ScanFailure(entry_count, underlying)
++        return underlying
++
++    def _post_yield_storage_error(
++        self, entry_count: int, exc: StorageError
++    ) -> StorageError:
++        """Charge a post-yield ``StorageError`` from a metadata/stat seam.
++
++        Before any raw entry has been yielded the original error is returned
++        unchanged (zero raw work). After at least one raw entry, a plain
++        ``StorageError`` is wrapped in :class:`ScanFailure` carrying the consumed
++        raw count; an existing :class:`ScanFailure` is preserved without double
++        wrapping. This widens the *guaranteed* charged sources beyond the four
++        enumerated OS failures to any ``StorageError`` raised after a nonzero
++        prefix (robustness of the seam). It never converts a programming error,
++        ``KeyboardInterrupt`` or ``SystemExit`` -- which are not
++        ``StorageError`` -- into a storage success or partial result.
++        """
++        if isinstance(exc, ScanFailure):
++            return exc
++        if entry_count > 0:
++            return ScanFailure(entry_count, exc)
++        return exc
++
+     # -- root initialization ---------------------------------------------------
+ 
+     def _open_anchored_root(self, raw_root: str, parts: list[str]) -> int:
+         """Traverse from ``/`` without following symlinks and return root fd.
+ 
+         Each component is opened atomically with ``O_NOFOLLOW`` (no
+@@ -1035,12 +1076,207 @@ class LocalAdapter:
+         finally:
+             self._release_owned(owned)
+ 
+         children.sort(key=lambda meta: meta.name)
+         return children
+ 
++    def scan_children(
++        self, parent: FileRef, *, max_entries: int
++    ) -> ScanBatch:
++        """Return a bounded, no-lookahead scan of ``parent``'s raw entries.
++
++        ``max_entries`` (mandatory positive ``int``, ``bool`` rejected, at most
++        :data:`~drive_tool.storage.MAX_SCAN_ENTRIES`) bounds the number of raw
++        directory entries this scan will *yield*. Every yielded entry is counted
++        in ``inspected`` **before** any name filtering or stat, so invalid and
++        reserved names, writer temp files, symlinks, FIFOs/special entries, and
++        entries that vanish with ``ENOENT`` all count toward the budget. At most
++        ``max_entries`` entries are ever stat'ed.
++
++        The scan never asks the iterator for entry ``B + 1`` where ``B`` is
++        ``max_entries``: it stops the moment ``B`` raw entries have been
++        yielded. Consequently ``complete`` is ``True`` only when end-of-directory
++        was observed *within* the budget; a folder holding exactly ``B`` entries
++        reports ``complete=False`` (a deliberately conservative "unknown" -- the
++        end of the directory was never probed, and an unknown end is not proof
++        that another entry exists).
++
++        ``items`` holds only supported regular files and directories, sorted by
++        ``(name, file_id)`` within the scanned physical prefix only -- this is
++        not a claim about the global order of the directory, which POSIX
++        ``readdir`` does not provide.
++        """
++        root_fd = self._check_source_and_state(parent)
++        _validate_scan_max_entries(max_entries)
++        parts = _parse_file_id(parent.file_id)
++        dir_flags = _dir_open_flags()
++
++        # Descriptors are owned the moment they are acquired and released
++        # exactly once by the single ``finally`` below, which also covers the
++        # parent-close handoff and the scan.
++        owned: list[tuple[int, str]] = []
++        entry_count = 0
++        try:
++            if not parts:
++                try:
++                    scan_fd = self._os_open(".", dir_flags, dir_fd=root_fd)
++                except OSError as exc:
++                    raise LocalStorageError(
++                        f"failed to open root directory for scanning: {exc}"
++                    ) from exc
++            else:
++                parent_fd = self._traverse_parent_dir(
++                    root_fd, parts[:-1], parent.file_id
++                )
++                if parent_fd != root_fd:
++                    owned.append(
++                        (parent_fd, f"parent directory of {parent.file_id!r}")
++                    )
++                target_name = parts[-1]
++                try:
++                    scan_fd = self._os_open(
++                        target_name, dir_flags, dir_fd=parent_fd
++                    )
++                except OSError as exc:
++                    raise self._classify_component_open_error(
++                        target_name,
++                        parent_fd,
++                        exc,
++                        parent.file_id,
++                        is_intermediate=False,
++                        for_directory_op=True,
++                    ) from exc
++
++            owned.append((scan_fd, f"scan descriptor for {parent.file_id!r}"))
++
++            try:
++                dir_st = self._os_fstat(scan_fd)
++            except OSError as exc:
++                raise LocalStorageError(
++                    f"failed to fstat directory {parent.file_id!r}: {exc}"
++                ) from exc
++            if not stat.S_ISDIR(dir_st.st_mode):
++                if stat.S_ISLNK(dir_st.st_mode):
++                    raise UnsafePathError(
++                        f"entry {parent.file_id!r} is a symbolic link"
++                    )
++                if stat.S_ISREG(dir_st.st_mode):
++                    raise NotDirectoryError(
++                        f"entry {parent.file_id!r} is not a directory"
++                    )
++                raise UnsupportedEntryError(
++                    f"entry {parent.file_id!r} is not a supported directory"
++                )
++
++            try:
++                scandir_it = self._os_scandir(scan_fd)
++            except OSError as exc:
++                raise LocalStorageError(
++                    f"failed to scan directory {parent.file_id!r}: {exc}"
++                ) from exc
++
++            children: list[FileMetadata] = []
++            complete = True
++            with scandir_it as entries:
++                while entry_count < max_entries:
++                    try:
++                        entry = next(entries)
++                    except StopIteration:
++                        # End of directory observed within the budget.
++                        complete = True
++                        break
++                    except OSError as exc:
++                        raise self._scan_work_error(
++                            entry_count,
++                            f"failed to iterate directory {parent.file_id!r}: {exc}",
++                            exc,
++                        ) from exc
++                    # Count the raw entry before any filtering or stat.
++                    entry_count += 1
++                    name = entry.name
++                    if (
++                        name in ("", ".", "..")
++                        or "/" in name
++                        or "\\" in name
++                        or "\x00" in name
++                        or name.startswith(TEMP_PREFIX)
++                    ):
++                        continue
++                    try:
++                        st = entry.stat(follow_symlinks=False)
++                    except FileNotFoundError:
++                        # An entry vanishing concurrently is skipped, but counted.
++                        continue
++                    except OSError as exc:
++                        if exc.errno == errno.ENOENT:
++                            continue
++                        raise self._scan_work_error(
++                            entry_count,
++                            f"failed to inspect child {name!r} in "
++                            f"{parent.file_id!r}: {exc}",
++                            exc,
++                        ) from exc
++
++                    if stat.S_ISLNK(st.st_mode):
++                        continue
++                    if stat.S_ISDIR(st.st_mode):
++                        children.append(
++                            self._build_metadata(
++                                (*parts, name), kind="directory", size_bytes=None
++                            )
++                        )
++                    elif stat.S_ISREG(st.st_mode):
++                        children.append(
++                            self._build_metadata(
++                                (*parts, name),
++                                kind="file",
++                                size_bytes=st.st_size,
++                            )
++                        )
++                    # Special entries (FIFOs, sockets, device nodes) are omitted.
++                else:
++                    # The loop stopped because ``entry_count`` reached the budget
++                    # without ever probing for entry ``B + 1``: end-of-directory
++                    # is unknown, so this is conservatively incomplete.
++                    complete = False
++
++            children.sort(key=lambda meta: (meta.name, meta.ref.file_id))
++            return ScanBatch(
++                items=tuple(children),
++                inspected=entry_count,
++                complete=complete,
++            )
++        except OSError as exc:
++            # A readdir()/scandir iteration or iterator-close failure is
++            # surfaced with the raw work already done charged to it.
++            raise self._scan_work_error(
++                entry_count,
++                f"failed to iterate directory {parent.file_id!r}: {exc}",
++                exc,
++            ) from exc
++        except StorageError as exc:
++            # Any StorageError escaping the scan body (for example from the
++            # metadata or stat seam) after a nonzero prefix is charged the same
++            # way; an existing ScanFailure is preserved without double wrapping
++            # and a pre-yield error is left unchanged.
++            wrapped = self._post_yield_storage_error(entry_count, exc)
++            if wrapped is exc:
++                raise
++            raise wrapped from exc
++        finally:
++            try:
++                self._release_owned(owned)
++            except LocalStorageError as cleanup_exc:
++                # Reached only on the success path: while another exception is
++                # propagating ``_release_owned`` suppresses close failures so
++                # the primary error is never masked. No return happens before
++                # cleanup succeeds.
++                if entry_count > 0:
++                    raise ScanFailure(entry_count, cleanup_exc) from cleanup_exc
++                raise
++
+     def read_bytes(self, ref: FileRef) -> bytes:
+         """Read and return the bytes of regular file ``ref`` within bounds."""
+         root_fd = self._check_source_and_state(ref)
+         parts = _parse_file_id(ref.file_id)
+ 
+         if not parts:
+diff --git a/drive_tool/search.py b/drive_tool/search.py
+index 3833397..f2d8407 100644
+--- a/drive_tool/search.py
++++ b/drive_tool/search.py
+@@ -1,58 +1,148 @@
+ """Bounded breadth-first name search over the storage contract.
+ 
+-MODULE-004: :func:`find` walks a storage tree breadth-first, level by level,
+-and returns matching files and directories while enforcing an entry budget, a
++MODULE-005A: :func:`find` walks a storage tree breadth-first, level by level,
++and returns matching files and directories while enforcing a raw-entry budget, a
+ result budget, and a depth bound. It never blocks on a large folder: each
+-``list_children`` call receives only the remaining entry budget, so a huge
+-directory is stopped early with ``truncated=True`` rather than fully read.
++directory is scanned through the adapter's ``scan_children`` with only the
++remaining entry budget, so a huge directory is stopped early with
++``truncated=True`` rather than fully read.
++
++Search now charges *raw scan work*, not returned metadata. A single bounded
++directory scan is charged in full the moment it returns, before any name is
++matched, so ``FindResult.inspected`` counts the raw directory entries the
++adapter actually examined -- including filtered, unsupported, and vanished
++entries -- even when ``max_results`` stops matching early. A partially scanned
++folder keeps the matches it did find, but its items are ordered only within the
++scanned physical prefix; that is not a claim about the global order of the
++directory.
++
++Bounded search requires a callable ``scan_children``: supported-item counts
++cannot express raw scan work, so an adapter without it raises
++:class:`~drive_tool.storage.ScanUnsupportedError` rather than silently falling
++back to ``list_children``.
+ 
+ Python 3.11+, standard library only. No threads, no retries, no sleeps.
+ """
+ 
+ from __future__ import annotations
+ 
+ from dataclasses import dataclass
+ 
+ from drive_tool.storage import (
+-    EnumerationLimitError,
+     FileMetadata,
+     FileRef,
++    ScanFailure,
++    ScanUnsupportedError,
+     StorageAdapter,
+     StorageError,
+ )
+ 
+-__all__ = ["FindResult", "find"]
++__all__ = ["FindResult", "find", "ScanUnsupportedError"]
++
+ 
+ @dataclass(frozen=True)
+ class FindResult:
+     """The outcome of a bounded :func:`find`.
+ 
+-    ``items`` are the matches in walk order, ``truncated`` is ``True`` when a
+-    bound stopped the walk (``reason`` names it), ``inspected`` counts the
+-    entries the adapter returned and the walk examined, and ``skipped`` holds
+-    the ``file_id`` of every directory that could not be listed.
++    ``items`` are the matches in walk order, ``inspected`` counts the **raw
++    directory entries examined** by the adapter, and ``skipped`` holds the
++    ``file_id`` of every directory that could not be scanned.
++
++    ``truncated`` is ``True`` when the walk did **not** achieve exhaustive
++    coverage of the subtree: either a bound stopped it (``reason`` names it --
++    ``"max_results"``, ``"max_entries"`` or ``"max_depth"``) or a directory
++    could not be scanned (``reason="skipped"``). The subtree was searched
++    exhaustively **only when ``truncated`` is ``False`` and ``skipped`` is
++    empty**; a non-empty ``skipped`` means the coverage is unknown and must never
++    be read as "not found".
++
++    ``inspected`` is the sum of the ``ScanBatch.inspected`` values charged as
++    each directory was scanned, so it reflects the raw scan work even when
++    ``max_results`` stopped matching early or when filtered/unsupported/vanished
++    entries never produced metadata. It can therefore exceed both the number of
++    ``items`` returned and the number of entries actually tested for a match.
+     """
+ 
+     items: tuple[FileMetadata, ...]
+     truncated: bool
+     reason: str | None
+     inspected: int
+     skipped: tuple[str, ...]
+ 
++
+ def _validate_int_in_range(
+     name: str, value: object, low: int, high: int
+ ) -> None:
+     if isinstance(value, bool) or not isinstance(value, int):
+         raise ValueError(
+             f"{name} must be an int in {low}..{high}, "
+             f"got {type(value).__name__}"
+         )
+     if value < low or value > high:
+         raise ValueError(f"{name} must be in {low}..{high}, got {value}")
+ 
++
++def _validate_batch_report(
++    batch: object, remaining: int
++) -> tuple[tuple[FileMetadata, ...], int, bool]:
++    """Validate a scanner's reported batch loudly, without clamping.
++
++    ``items`` must already be a tuple (an arbitrary iterable is never consumed
++    to measure it), ``inspected`` a plain ``int`` in ``0..remaining``, and
++    ``complete`` a real ``bool``. A batch that claims to be incomplete but did
++    not exhaust the remaining budget is rejected rather than silently accepted
++    as a no-progress scan.
++    """
++    items = getattr(batch, "items", None)
++    if not isinstance(items, tuple):
++        raise StorageError(
++            "scan_children must return a ScanBatch whose items is a tuple, "
++            f"got {type(items).__name__}"
++        )
++    inspected = getattr(batch, "inspected", None)
++    if isinstance(inspected, bool) or not isinstance(inspected, int):
++        raise StorageError(
++            f"ScanBatch.inspected must be an int, got {type(inspected).__name__}"
++        )
++    if inspected < 0 or inspected > remaining:
++        raise StorageError(
++            f"ScanBatch.inspected {inspected} is outside the range 0..{remaining}"
++        )
++    complete = getattr(batch, "complete", None)
++    if not isinstance(complete, bool):
++        raise StorageError(
++            f"ScanBatch.complete must be a bool, got {type(complete).__name__}"
++        )
++    if len(items) > inspected:
++        raise StorageError(
++            f"ScanBatch reports {len(items)} items but only {inspected} inspected"
++        )
++    if not complete and inspected != remaining:
++        raise StorageError(
++            f"an incomplete ScanBatch must exhaust the remaining budget "
++            f"{remaining}, but reported inspected={inspected}"
++        )
++    return items, inspected, complete
++
++
++def _validate_failure_inspected(failure: ScanFailure, remaining: int) -> int:
++    """Validate the ``inspected`` count carried by a :class:`ScanFailure`."""
++    inspected = failure.inspected
++    if isinstance(inspected, bool) or not isinstance(inspected, int):
++        raise StorageError(
++            f"ScanFailure.inspected must be an int, got {type(inspected).__name__}"
++        )
++    if inspected < 0 or inspected > remaining:
++        raise StorageError(
++            f"ScanFailure.inspected {inspected} is outside the range "
++            f"0..{remaining}"
++        )
++    return inspected
++
++
+ def find(
+     adapter: StorageAdapter,
+     parent: FileRef,
+     name_contains: str,
+     *,
+     max_results: int = 20,
+@@ -62,31 +152,57 @@ def find(
+ ) -> FindResult:
+     """Return matches for ``name_contains`` in the subtree rooted at ``parent``.
+ 
+     The walk is breadth-first; directories within a level are visited in name
+     order and matches are returned in walk order (shallower first, then by
+     name). A match is a substring test on the entry name (casefolded unless
+-    ``case_sensitive``), and both files and directories can match. All
+-    arguments are validated before the adapter is called. A non-limit
+-    ``StorageError`` listing a subdirectory adds its ``file_id`` to
+-    ``skipped`` and the walk continues; the same error listing ``parent``
+-    propagates. An :class:`EnumerationLimitError` at any depth, or a reached
+-    entry budget with directories left, ends the walk with
+-    ``truncated=True, reason="max_entries"``.
++    ``case_sensitive``), and both files and directories can match.
++
++    All arguments are validated before the adapter is touched. The adapter must
++    expose a callable ``scan_children``; otherwise
++    :class:`~drive_tool.storage.ScanUnsupportedError` is raised before any
++    enumeration is attempted. Each directory is scanned with only the remaining
++    entry budget (``max_entries - inspected``), and the batch's ``inspected`` is
++    charged immediately, so ``inspected`` measures raw scan work even when
++    ``max_results`` stops matching early.
++
++    A ``ScanFailure`` is validated at every depth (its ``error`` must be a
++    :class:`~drive_tool.storage.StorageError`); it re-raises the original error
++    object at the starting root, or, at depth ``> 0``, is recorded in ``skipped``
++    after charging its ``inspected``, and the walk continues only while budget
++    remains. Any other ``StorageError`` listing a subdirectory is recorded in
++    ``skipped`` (charging nothing, since it failed before scanning); the same
++    error listing ``parent`` propagates.
++
++    Completeness is honest: ``truncated=False`` together with an empty
++    ``skipped`` is the only exhaustive result. Reaching an entry budget with work
++    left, or scanning a folder that was only partially covered, ends the walk
++    with ``truncated=True, reason="max_entries"``; a directory that could not be
++    scanned yields ``truncated=True, reason="skipped"``. ``max_results`` and
++    ``max_depth`` take precedence over ``"skipped"`` when they stop the walk
++    first, and ``skipped`` is always retained.
+     """
+     # -- validate before touching the adapter ------------------------------
+     if not isinstance(name_contains, str) or name_contains == "":
+         raise ValueError("name_contains must be a non-empty str")
+     _validate_int_in_range("max_results", max_results, 1, 100)
+     _validate_int_in_range("max_entries", max_entries, 1, 100_000)
+     _validate_int_in_range("max_depth", max_depth, 0, 16)
+     if not isinstance(case_sensitive, bool):
+         raise ValueError(
+             f"case_sensitive must be a bool, got {type(case_sensitive).__name__}"
+         )
+ 
++    # -- hard capability requirement ---------------------------------------
++    scan_fn = getattr(adapter, "scan_children", None)
++    if not callable(scan_fn):
++        raise ScanUnsupportedError(
++            f"adapter {type(adapter).__name__!r} has no callable scan_children; "
++            f"bounded search requires bounded raw scanning"
++        )
++
+     needle = name_contains if case_sensitive else name_contains.casefold()
+     matches: list[FileMetadata] = []
+     skipped: list[str] = []
+     inspected = 0
+     hit_max_depth = False
+ 
+@@ -108,51 +224,53 @@ def find(
+                     reason="max_entries",
+                     inspected=inspected,
+                     skipped=tuple(skipped),
+                 )
+ 
+             try:
+-                raw_children = adapter.list_children(
+-                    dir_ref, max_entries=remaining_budget
+-                )
+-            except EnumerationLimitError:
+-                # Explicit catch before StorageError (it is a subclass):
+-                # an over-limit directory stops the walk at any depth.
+-                return FindResult(
+-                    items=tuple(matches),
+-                    truncated=True,
+-                    reason="max_entries",
+-                    inspected=inspected,
+-                    skipped=tuple(skipped),
+-                )
++                batch = scan_fn(dir_ref, max_entries=remaining_budget)
++            except ScanFailure as failure:
++                # A scan that failed after doing raw work still charges it.
++                inspected += _validate_failure_inspected(failure, remaining_budget)
++                # Validate the reported error at EVERY depth, before deciding
++                # whether to unwrap it at the root or skip below the root: a
++                # malformed report is rejected loudly and is never converted
++                # into a skipped directory.
++                error = failure.error
++                if not isinstance(error, StorageError):
++                    raise StorageError(
++                        "ScanFailure.error must be a StorageError, got "
++                        f"{type(error).__name__}"
++                    )
++                if depth == 0:
++                    # The starting parent's own failure re-raises the original
++                    # error object (and its preserved cause).
++                    raise error
++                # A subdirectory that failed mid-scan is skipped; the walk only
++                # continues while budget remains.
++                skipped.append(dir_ref.file_id)
++                continue
+             except StorageError:
+                 if depth == 0:
+-                    # The starting parent's own errors propagate.
++                    # The starting parent's own errors propagate unchanged.
+                     raise
+-                # A subdirectory that vanished or became unreadable is skipped.
++                # A subdirectory that failed before scanning (or that vanished)
++                # is skipped and charges no raw entries.
+                 skipped.append(dir_ref.file_id)
+                 continue
+ 
+-            children = sorted(
+-                raw_children, key=lambda m: (m.name, m.ref.file_id)
++            items, batch_inspected, batch_complete = _validate_batch_report(
++                batch, remaining_budget
+             )
++            # Charge the raw scan work before matching anything.
++            inspected += batch_inspected
++            children = sorted(items, key=lambda m: (m.name, m.ref.file_id))
+             more_dirs_at_this_level = (idx + 1) < len(current_level)
++            exact_last_entry = False
+ 
+             for child_idx, entry in enumerate(children):
+-                # Defensive guard: a fake adapter that ignores its budget must
+-                # not let us overshoot the entry limit.
+-                if inspected >= max_entries:
+-                    return FindResult(
+-                        items=tuple(matches),
+-                        truncated=True,
+-                        reason="max_entries",
+-                        inspected=inspected,
+-                        skipped=tuple(skipped),
+-                    )
+-
+-                inspected += 1
+                 if entry.kind == "directory":
+                     if depth < max_depth:
+                         next_level_dirs.append((entry, depth + 1))
+                     else:
+                         hit_max_depth = True
+ 
+@@ -163,23 +281,43 @@ def find(
+                     matches.append(entry)
+                     if len(matches) == max_results:
+                         more_entries_in_dir = (child_idx + 1) < len(children)
+                         more_dirs_queued = (
+                             more_dirs_at_this_level or bool(next_level_dirs)
+                         )
+-                        if more_entries_in_dir or more_dirs_queued:
++                        if (
++                            more_entries_in_dir
++                            or not batch_complete
++                            or more_dirs_queued
++                        ):
+                             return FindResult(
+                                 items=tuple(matches),
+                                 truncated=True,
+                                 reason="max_results",
+                                 inspected=inspected,
+                                 skipped=tuple(skipped),
+                             )
+-                        # No more work anywhere: fall through and finish.
++                        # Exact match count on the last entry of a complete scan
++                        # with no queued work: the walk is finished.
++                        exact_last_entry = True
+                         break
+ 
++            if exact_last_entry:
++                break
++
++            if not batch_complete:
++                # A partially scanned folder is truncation, even if it held no
++                # matches: incomplete coverage is not "not found".
++                return FindResult(
++                    items=tuple(matches),
++                    truncated=True,
++                    reason="max_entries",
++                    inspected=inspected,
++                    skipped=tuple(skipped),
++                )
++
+         if len(matches) == max_results:
+             break
+ 
+         next_level_dirs.sort(key=lambda pair: (pair[0].name, pair[0].ref.file_id))
+         current_level = [(meta.ref, d) for meta, d in next_level_dirs]
+ 
+@@ -189,12 +327,23 @@ def find(
+             truncated=True,
+             reason="max_depth",
+             inspected=inspected,
+             skipped=tuple(skipped),
+         )
+ 
++    if skipped:
++        # A directory that could not be scanned means the subtree was not fully
++        # searched: an unqualified complete result must not be claimed.
++        return FindResult(
++            items=tuple(matches),
++            truncated=True,
++            reason="skipped",
++            inspected=inspected,
++            skipped=tuple(skipped),
++        )
++
+     return FindResult(
+         items=tuple(matches),
+         truncated=False,
+         reason=None,
+         inspected=inspected,
+         skipped=tuple(skipped),
+diff --git a/drive_tool/storage.py b/drive_tool/storage.py
+index b905314..3f4f8dc 100644
+--- a/drive_tool/storage.py
++++ b/drive_tool/storage.py
+@@ -6,34 +6,44 @@ hierarchy) plus an InMemoryAdapter backed by synthetic fixtures.
+ 
+ Python 3.11+, standard library only. No network, no filesystem, no writes.
+ """
+ 
+ from __future__ import annotations
+ 
++import itertools
+ from dataclasses import dataclass
+ from typing import Mapping, Protocol, runtime_checkable
+ 
+ __all__ = [
+     "FileRef",
+     "FileMetadata",
++    "ScanBatch",
+     "StorageAdapter",
+     "StorageError",
++    "ScanFailure",
++    "ScanUnsupportedError",
+     "SourceMismatchError",
+     "NotFoundError",
+     "NotDirectoryError",
+     "IsDirectoryError",
+     "EnumerationLimitError",
+     "AlreadyExistsError",
+     "ReadOnlyError",
+     "InMemoryAdapter",
+     "ROOT_ID",
++    "MAX_SCAN_ENTRIES",
+ ]
+ 
+ #: The synthetic root directory id used by the in-memory adapter.
+ ROOT_ID = "root"
+ 
++#: Public upper bound for a single :meth:`scan_children` budget. This mirrors
++#: the ``max_entries`` ceiling that :func:`drive_tool.search.find` accepts, so a
++#: scanner and a caller can never disagree about what "too large" means.
++MAX_SCAN_ENTRIES = 100_000
++
+ @dataclass(frozen=True)
+ class FileRef:
+     """An opaque reference to a file (or the synthetic root) in a source."""
+ 
+     source_id: str
+     file_id: str
+@@ -48,15 +58,71 @@ class FileMetadata:
+     ref: FileRef
+     name: str
+     parent_id: str | None
+     kind: str
+     size_bytes: int | None
+ 
++@dataclass(frozen=True)
++class ScanBatch:
++    """The outcome of a bounded single-directory scan.
++
++    This is the return value of the optional ``scan_children`` adapter method.
++    It reports a *bounded physical prefix* of one directory's raw entries, not
++    a globally sorted snapshot of the directory.
++
++    Invariants:
++
++    - ``items`` holds only *supported* child entries (regular files and
++      directories), sorted by ``(name, file_id)`` **within the scanned physical
++      prefix only** -- not the globally sorted first ``inspected`` names.
++    - ``0 <= len(items) <= inspected``.
++    - ``inspected`` is the number of raw directory entries successfully yielded
++      by the scan before filtering, stat, or omission. It never exceeds the
++      ``max_entries`` budget passed to the scan.
++    - ``complete`` is ``True`` only when end-of-directory was observed within
++      the budget; ``False`` means the scan stopped at the budget without
++      probing for a further entry. ``complete=False`` is therefore a
++      conservative "unknown / possibly more" signal: an unknown end-of-directory
++      is not proof that another entry exists.
++    """
++
++    items: tuple[FileMetadata, ...]
++    inspected: int
++    complete: bool
++
+ class StorageError(Exception):
+     """Base class for all storage contract errors."""
+ 
++class ScanFailure(StorageError):
++    """A bounded directory scan failed after raw work had already been done.
++
++    ``inspected`` is the number of raw directory entries successfully yielded by
++    the scan before the failure (so partial scan work is never silently lost),
++    and ``error`` is the underlying :class:`StorageError` that caused it. The
++    original error is preserved as ``error`` and as the ``__cause__`` chain.
++
++    Failures that occur *before* any entry is yielded (for example opening the
++    directory) are ordinary storage errors and are not wrapped.
++    """
++
++    def __init__(self, inspected: int, error: StorageError) -> None:
++        self.inspected = inspected
++        self.error = error
++        super().__init__(
++            f"directory scan failed after inspecting {inspected} "
++            f"entr{'y' if inspected == 1 else 'ies'}: {error}"
++        )
++
++class ScanUnsupportedError(StorageError):
++    """Raised when a bounded directory scan is required but not supported.
++
++    ``find`` needs to bound *raw* scan work, which supported-item counts cannot
++    express, so an adapter without a callable ``scan_children`` cannot serve a
++    search. This is a hard capability requirement, not a fallback trigger.
++    """
++
+ class SourceMismatchError(StorageError):
+     """The reference's source_id does not match the adapter's source."""
+ 
+ class NotFoundError(StorageError):
+     """The referenced file_id is unknown to this adapter."""
+ 
+@@ -143,12 +209,31 @@ def _validate_max_entries(max_entries: object) -> None:
+             f"max_entries must be a positive int or None, "
+             f"got {type(max_entries).__name__}"
+         )
+     if max_entries < 1:
+         raise ValueError(f"max_entries must be >= 1, got {max_entries}")
+ 
++
++def _validate_scan_max_entries(max_entries: object) -> None:
++    """Validate a mandatory ``scan_children`` budget.
++
++    ``max_entries`` is a required positive ``int`` in ``1..MAX_SCAN_ENTRIES``;
++    ``bool`` (including ``True``/``False``) and ``None`` are rejected.
++    """
++    if isinstance(max_entries, bool) or not isinstance(max_entries, int):
++        raise ValueError(
++            f"max_entries must be a positive int, "
++            f"got {type(max_entries).__name__}"
++        )
++    if max_entries < 1:
++        raise ValueError(f"max_entries must be >= 1, got {max_entries}")
++    if max_entries > MAX_SCAN_ENTRIES:
++        raise ValueError(
++            f"max_entries must be <= {MAX_SCAN_ENTRIES}, got {max_entries}"
++        )
++
+ class InMemoryAdapter:
+     """A read-only adapter over flat synthetic fixtures held in memory.
+ 
+     ``files`` maps a filename to its exact bytes. The filename is also the
+     file's ``file_id``. A synthetic root directory (id ``"root"``) is the
+     single parent of every fixture file.
+@@ -238,12 +323,42 @@ class InMemoryAdapter:
+                 )
+             return [self._file_metadata(name) for name in sorted(self._files)]
+         if parent.file_id not in self._files:
+             raise NotFoundError(f"unknown file_id {parent.file_id!r}")
+         raise NotDirectoryError(f"{parent.file_id!r} is not a directory")
+ 
++    def scan_children(self, parent: FileRef, *, max_entries: int) -> ScanBatch:
++        """Return a bounded, insertion-order prefix of the fixture children.
++
++        ``max_entries`` is a mandatory positive ``int``. The fixture mapping is
++        never sorted or fully materialized: at most ``max_entries`` names are
++        taken in insertion order (a bounded prefix), and only that prefix is
++        sorted by ``(name, file_id)``. Because the total length is known, an
++        in-memory scan reports exact completeness: ``complete=True`` when every
++        fixture entry fit in the prefix, ``complete=False`` otherwise.
++        """
++        self._check_source(parent)
++        _validate_scan_max_entries(max_entries)
++        if parent.file_id == ROOT_ID:
++            total = len(self._files)
++            prefix_names = list(itertools.islice(self._files, max_entries))
++            items = tuple(
++                sorted(
++                    (self._file_metadata(name) for name in prefix_names),
++                    key=lambda meta: (meta.name, meta.ref.file_id),
++                )
++            )
++            return ScanBatch(
++                items=items,
++                inspected=len(prefix_names),
++                complete=total <= max_entries,
++            )
++        if parent.file_id not in self._files:
++            raise NotFoundError(f"unknown file_id {parent.file_id!r}")
++        raise NotDirectoryError(f"{parent.file_id!r} is not a directory")
++
+     def read_bytes(self, ref: FileRef) -> bytes:
+         self._check_source(ref)
+         if ref.file_id == ROOT_ID:
+             raise IsDirectoryError(f"{ROOT_ID!r} is a directory, not a file")
+         if ref.file_id not in self._files:
+             raise NotFoundError(f"unknown file_id {ref.file_id!r}")
+```
+
+## Unchanged lifetime helpers from pinned candidate
+
+```python
+    def _release_owned(self, owned: list[tuple[int, str]]) -> None:
+        """Release each owned descriptor exactly once, in the given order.
+
+        A descriptor is "owned" the moment it is acquired, and is closed exactly
+        once here. A failing ``close`` is never retried: Linux releases the
+        descriptor even when ``close`` reports an error, and a truly ambiguous
+        close cannot be verified from user space, so it must not be retried.
+        While another exception is already propagating, close failures are
+        suppressed so the primary storage error is never masked; on the success
+        path the first close failure is raised as :class:`LocalStorageError`
+        with its ``OSError`` cause preserved.
+        """
+        primary = sys.exc_info()[0]
+        first_failure: tuple[str, OSError] | None = None
+        for fd, context in owned:
+            try:
+                self._os_close(fd)
+            except OSError as exc:
+                if first_failure is None:
+                    first_failure = (context, exc)
+        if first_failure is not None and primary is None:
+            context, exc = first_failure
+            raise LocalStorageError(
+                f"failed to close descriptor for {context}: {exc}"
+            ) from exc
+
+
+```
+
+```python
+    def _close_owned_fd(self, fd: int, *, context: str) -> None:
+        """Close an owned descriptor on the success path, wrapping OS errors.
+
+        Used where closing the descriptor is part of normal control flow (a
+        traversal step succeeded and the previous descriptor is no longer
+        needed). Linux releases the descriptor even when ``close`` reports an
+        error, so the caller must never retry the close on the same fd.
+        """
+        try:
+            self._os_close(fd)
+        except OSError as exc:
+            raise LocalStorageError(
+                f"failed to close descriptor for {context}: {exc}"
+            ) from exc
+
+
+```
