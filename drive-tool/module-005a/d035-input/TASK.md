@@ -1,0 +1,19 @@
+# d035 — MODULE-005A independent-review corrections
+
+Sarvam, I need narrow corrections to your MODULE-005A implementation. Start a NEW branch feature/module-005a-review-fixes from exact 593759a40645386427bad35d53e8b856aeaa68d5. Preserve the original branch. Read the independent report at Dolesh-avkalan/drop main drive-tool/module-005a/d034-independent-tests/d034-sarvam-independent-tests.md through GitHub; cite its exact commit. This file is the authoritative correction brief. No merge/deployment.
+
+## Director decisions on findings
+
+F-B required: an unqualified complete result must mean exhaustive coverage. At the normal terminal return, if skipped is nonempty, return truncated=True, reason="skipped". Preserve precedence of existing max_results/max_entries/max_depth reasons and always retain skipped. Update FindResult/find docs so callers know truncated=False AND skipped empty is complete; skipped folder means unknown coverage, never not-found. Update only the two existing assertions that encode the previous false completeness, explaining the compatibility change. Do not add a new API/framework/property just to avoid fixing the flag.
+
+F-A required: validate ScanFailure.error is a StorageError at EVERY depth, before deciding whether to unwrap at root or skip below root. Invalid reports must raise StorageError loudly; do not convert them into skipped directories. Preserve count bounds, bool rejection, and original valid root error identity/cause.
+
+F-C accepted robustness improvement: after any raw entry has been yielded, a StorageError from a metadata/stat seam must carry that consumed raw count in ScanFailure. Preserve an existing ScanFailure without double wrapping; before any entry is yielded, keep ordinary StorageError unchanged. Do not turn programming errors, KeyboardInterrupt or SystemExit into storage successes or partial results. Preserve primary error priority when cleanup also fails and never retry ambiguous close. The normal LocalAdapter currently does not raise from _build_metadata, so label this as robustness of extension/seam behavior rather than a normal-kernel escape.
+
+Allowed source changes: drive_tool/search.py and drive_tool/local.py only. Allowed tests: two old completeness expectations in tests/test_search.py and tests/test_partial_scan.py, and new tests/test_partial_scan_review_fixes.py. Evidence: docs/evidence/MODULE-005A.md and drop/drive-tool/module-005a/d035-review-fixes/. Preserve all other production source and tests. Keep the fix minimal; no service/credential/environment changes.
+
+## Evidence requirements
+
+Write regression tests BEFORE the corrections, show they fail against 593759a for the intended reasons, then apply fixes and run the full combined suite on the already installed Python 3.11/3.12. Include mixed cases: pre-scan and mid-scan skipped folders; another explicit truncation reason with skipped present; empty skipped remains complete when truly exhausted; malformed ScanFailure.error below root; valid root error identity/cause; post-yield metadata and StorageError-typed stat failures at root and below root, charged budgets and no sibling scan after exhaustion; simultaneous primary and cleanup errors without leaks.
+
+Run three focused scratch mutations: remove skipped terminal truncation; restore root-only failure.error validation; remove generic post-yield StorageError wrapping. Each must be caught by the new regressions. Keep existing strict-B/no-lookahead, exact-local-EOF uncertainty, partial retention, capability gate and all write/list tests passing. Record commands, counts, skips, exits, environment, exact tested source/tree identities and raw logs/scripts. No install or private data. Publish via connected GitHub tools and verify actual pushed SHAs/content. Report honest blockers/survivors. Return the correction head and evidence commit. A new independent rerun and frontier static review follow; do not claim either has already occurred.
