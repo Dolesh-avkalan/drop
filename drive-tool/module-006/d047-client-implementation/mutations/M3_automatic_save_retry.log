@@ -1,0 +1,40 @@
+======================================================================
+FAIL: test_save_success_body_over_cap_is_uncertain (tests.test_service_client.TestBoundedReplies.test_save_success_body_over_cap_is_uncertain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M3_automatic_save_retry/tests/test_service_client.py", line 741, in test_save_success_body_over_cap_is_uncertain
+    with self.assertRaises(DriveClientError) as ctx:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: DriveClientError not raised
+
+======================================================================
+FAIL: test_missing_flags_use_write_defaults_for_save (tests.test_service_client.TestErrorEnvelopes.test_missing_flags_use_write_defaults_for_save)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M3_automatic_save_retry/tests/test_service_client.py", line 668, in test_missing_flags_use_write_defaults_for_save
+    with self.assertRaises(DriveClientError) as ctx:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: DriveClientError not raised
+
+======================================================================
+FAIL: test_no_automatic_retry_on_save (tests.test_service_client.TestTransport.test_no_automatic_retry_on_save)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M3_automatic_save_retry/tests/test_service_client.py", line 796, in test_no_automatic_retry_on_save
+    with self.assertRaises(DriveClientError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: DriveClientError not raised
+
+======================================================================
+FAIL: test_save_transport_failure_is_uncertain_and_not_retry_safe (tests.test_service_client.TestTransport.test_save_transport_failure_is_uncertain_and_not_retry_safe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M3_automatic_save_retry/tests/test_service_client.py", line 777, in test_save_transport_failure_is_uncertain_and_not_retry_safe
+    with self.assertRaises(DriveClientError) as ctx:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: DriveClientError not raised
+
+----------------------------------------------------------------------
+Ran 61 tests in 1.092s
+
+FAILED (failures=4)

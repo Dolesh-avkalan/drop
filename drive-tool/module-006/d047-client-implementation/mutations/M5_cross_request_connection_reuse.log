@@ -1,0 +1,75 @@
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 28613)
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 65105)
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/local/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/local/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/usr/local/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/usr/local/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/scratch/work/d047-mutants/M5_cross_request_connection_reuse/tests/test_service_client.py", line 46, in do_POST
+    self.server.responder(self, record)
+  File "/scratch/work/d047-mutants/M5_cross_request_connection_reuse/tests/test_service_client.py", line 865, in responder
+    handler.wfile.write(body)
+  File "/usr/local/lib/python3.12/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+ConnectionResetError: [Errno 104] Connection reset by peer
+----------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/local/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/local/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/usr/local/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/usr/local/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/scratch/work/d047-mutants/M5_cross_request_connection_reuse/tests/test_service_client.py", line 46, in do_POST
+    self.server.responder(self, record)
+  File "/scratch/work/d047-mutants/M5_cross_request_connection_reuse/tests/test_service_client.py", line 858, in responder
+    payload = json.loads(record["body"].decode("utf-8"))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+----------------------------------------
+======================================================================
+FAIL: test_concurrent_calls_are_independent (tests.test_service_client.TestCloseAndIsolation.test_concurrent_calls_are_independent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M5_cross_request_connection_reuse/tests/test_service_client.py", line 884, in test_concurrent_calls_are_independent
+    self.assertEqual(errors, [])
+AssertionError: Lists differ: [DriveClientError(code='unavailable', outc[593 chars]rue)] != []
+
+First list contains 8 additional elements.
+First extra element 0:
+DriveClientError(code='unavailable', outcome_uncertain=False, retry_safe=True)
+
+Diff is 669 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_open_returns_a_new_connection_each_time (tests.test_service_client.TestCloseAndIsolation.test_open_returns_a_new_connection_each_time)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M5_cross_request_connection_reuse/tests/test_service_client.py", line 831, in test_open_returns_a_new_connection_each_time
+    self.assertIsNot(first, second)
+AssertionError: unexpectedly identical: <http.client.HTTPConnection object at 0x7ecfc103ed20>
+
+----------------------------------------------------------------------
+Ran 61 tests in 1.068s
+
+FAILED (failures=2)

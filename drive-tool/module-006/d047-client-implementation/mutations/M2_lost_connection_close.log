@@ -1,0 +1,44 @@
+======================================================================
+FAIL: test_connection_and_response_closed_on_error (tests.test_service_client.TestCloseAndIsolation.test_connection_and_response_closed_on_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M2_lost_connection_close/tests/test_service_client.py", line 823, in test_connection_and_response_closed_on_error
+    self.assertTrue(conn.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_connection_and_response_closed_on_success (tests.test_service_client.TestCloseAndIsolation.test_connection_and_response_closed_on_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M2_lost_connection_close/tests/test_service_client.py", line 813, in test_connection_and_response_closed_on_success
+    self.assertTrue(conn.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_new_connection_per_call_no_reuse (tests.test_service_client.TestCloseAndIsolation.test_new_connection_per_call_no_reuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M2_lost_connection_close/tests/test_service_client.py", line 853, in test_new_connection_per_call_no_reuse
+    self.assertTrue(c1.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_save_transport_failure_is_uncertain_and_not_retry_safe (tests.test_service_client.TestTransport.test_save_transport_failure_is_uncertain_and_not_retry_safe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M2_lost_connection_close/tests/test_service_client.py", line 782, in test_save_transport_failure_is_uncertain_and_not_retry_safe
+    self.assertTrue(conn.closed)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_timeout_maps_to_timeout_code (tests.test_service_client.TestTransport.test_timeout_maps_to_timeout_code)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M2_lost_connection_close/tests/test_service_client.py", line 771, in test_timeout_maps_to_timeout_code
+    self.assertTrue(resp_conn.closed)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 61 tests in 1.165s
+
+FAILED (failures=5)

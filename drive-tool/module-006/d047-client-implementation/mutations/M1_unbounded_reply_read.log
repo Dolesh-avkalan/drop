@@ -1,0 +1,71 @@
+======================================================================
+FAIL: test_connection_and_response_closed_on_error (tests.test_service_client.TestCloseAndIsolation.test_connection_and_response_closed_on_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/tests/test_service_client.py", line 822, in test_connection_and_response_closed_on_error
+    client.list("src")
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 370, in list
+    return self._dispatch_json("/v1/list", payload, write_op=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 485, in _dispatch_json
+    return self._dispatch(
+           ^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 538, in _dispatch
+    raw = _read_capped(resp, _MAX_JSON_BODY)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 225, in _read_capped
+    data = resp.read()
+           ^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/tests/test_service_client.py", line 164, in read
+    raise AssertionError("client must not read the response unbounded")
+AssertionError: client must not read the response unbounded
+
+======================================================================
+FAIL: test_connection_and_response_closed_on_success (tests.test_service_client.TestCloseAndIsolation.test_connection_and_response_closed_on_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/tests/test_service_client.py", line 812, in test_connection_and_response_closed_on_success
+    client.list("src")
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 370, in list
+    return self._dispatch_json("/v1/list", payload, write_op=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 485, in _dispatch_json
+    return self._dispatch(
+           ^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 531, in _dispatch
+    raw = _read_capped(resp, cap)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 225, in _read_capped
+    data = resp.read()
+           ^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/tests/test_service_client.py", line 164, in read
+    raise AssertionError("client must not read the response unbounded")
+AssertionError: client must not read the response unbounded
+
+======================================================================
+FAIL: test_new_connection_per_call_no_reuse (tests.test_service_client.TestCloseAndIsolation.test_new_connection_per_call_no_reuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/tests/test_service_client.py", line 849, in test_new_connection_per_call_no_reuse
+    self.assertEqual(client.list("src"), {"n": 1})
+                     ^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 370, in list
+    return self._dispatch_json("/v1/list", payload, write_op=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 485, in _dispatch_json
+    return self._dispatch(
+           ^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 531, in _dispatch
+    raw = _read_capped(resp, cap)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/drive_tool/service_client.py", line 225, in _read_capped
+    data = resp.read()
+           ^^^^^^^^^^^
+  File "/scratch/work/d047-mutants/M1_unbounded_reply_read/tests/test_service_client.py", line 164, in read
+    raise AssertionError("client must not read the response unbounded")
+AssertionError: client must not read the response unbounded
+
+----------------------------------------------------------------------
+Ran 61 tests in 1.134s
+
+FAILED (failures=3)

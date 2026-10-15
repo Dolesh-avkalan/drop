@@ -1,0 +1,13 @@
+======================================================================
+FAIL: test_read_exact_fill_with_eof_is_protocol_invalid (tests.test_service_client.TestReadWire.test_read_exact_fill_with_eof_is_protocol_invalid)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M6_wrong_eof_handling/tests/test_service_client.py", line 556, in test_read_exact_fill_with_eof_is_protocol_invalid
+    with self.assertRaises(DriveClientError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: DriveClientError not raised
+
+----------------------------------------------------------------------
+Ran 61 tests in 1.114s
+
+FAILED (failures=1)

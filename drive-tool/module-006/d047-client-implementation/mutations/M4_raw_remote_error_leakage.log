@@ -1,0 +1,60 @@
+======================================================================
+FAIL: test_error_is_redacted_even_if_server_echoes_token (tests.test_service_client.TestErrorEnvelopes.test_error_is_redacted_even_if_server_echoes_token)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M4_raw_remote_error_leakage/tests/test_service_client.py", line 686, in test_error_is_redacted_even_if_server_echoes_token
+    self.assertNotIn(TOKEN, text)
+AssertionError: 'tttttttttttttttttttttttttttttttttttttttt' unexpectedly found in "drive service error: denied:token tttttttttttttttttttttttttttttttttttttttt rejected at root /secret/rootDriveClientError(code='denied:token tttttttttttttttttttttttttttttttttttttttt rejected at root /secret/root', outcome_uncertain=False, retry_safe=True)"
+
+======================================================================
+FAIL: test_known_codes_recognized (tests.test_service_client.TestErrorEnvelopes.test_known_codes_recognized)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M4_raw_remote_error_leakage/tests/test_service_client.py", line 628, in test_known_codes_recognized
+    self.assertEqual(ctx.exception.code, code)
+AssertionError: 'invalid:' != 'invalid'
+- invalid:
+?        -
++ invalid
+
+
+======================================================================
+FAIL: test_missing_flags_use_read_only_defaults (tests.test_service_client.TestErrorEnvelopes.test_missing_flags_use_read_only_defaults)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M4_raw_remote_error_leakage/tests/test_service_client.py", line 662, in test_missing_flags_use_read_only_defaults
+    self.assertEqual(ctx.exception.code, "invalid")
+AssertionError: 'invalid:' != 'invalid'
+- invalid:
+?        -
++ invalid
+
+
+======================================================================
+FAIL: test_missing_flags_use_write_defaults_for_save (tests.test_service_client.TestErrorEnvelopes.test_missing_flags_use_write_defaults_for_save)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M4_raw_remote_error_leakage/tests/test_service_client.py", line 670, in test_missing_flags_use_write_defaults_for_save
+    self.assertEqual(ctx.exception.code, "invalid")
+AssertionError: 'invalid:' != 'invalid'
+- invalid:
+?        -
++ invalid
+
+
+======================================================================
+FAIL: test_uncertainty_flags_honored (tests.test_service_client.TestErrorEnvelopes.test_uncertainty_flags_honored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d047-mutants/M4_raw_remote_error_leakage/tests/test_service_client.py", line 636, in test_uncertainty_flags_honored
+    self.assertEqual(ctx.exception.code, "busy")
+AssertionError: 'busy:' != 'busy'
+- busy:
+?     -
++ busy
+
+
+----------------------------------------------------------------------
+Ran 61 tests in 0.925s
+
+FAILED (failures=5)
