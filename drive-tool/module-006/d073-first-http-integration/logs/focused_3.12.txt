@@ -1,0 +1,211 @@
+test_busy_rejection_under_concurrent_trickle (tests.test_http_adapter.AdmissionAndDeadlineTests.test_busy_rejection_under_concurrent_trickle) ... ok
+test_seventh_connection_busy_then_all_six_succeed (tests.test_http_adapter.AdmissionAndDeadlineTests.test_seventh_connection_busy_then_all_six_succeed) ... ok
+test_slow_body_trickle_hits_absolute_deadline (tests.test_http_adapter.AdmissionAndDeadlineTests.test_slow_body_trickle_hits_absolute_deadline) ... ok
+test_slow_header_trickle_hits_absolute_deadline (tests.test_http_adapter.AdmissionAndDeadlineTests.test_slow_header_trickle_hits_absolute_deadline) ... ok
+test_thread_count_is_constant_plus_seven (tests.test_http_adapter.AdmissionAndDeadlineTests.test_thread_count_is_constant_plus_seven) ... ok
+test_cross_agent_alias_denied (tests.test_http_adapter.AliasIsolationTests.test_cross_agent_alias_denied) ... ok
+test_same_alias_distinct_roots_isolated (tests.test_http_adapter.AliasIsolationTests.test_same_alias_distinct_roots_isolated) ... ok
+test_bad_authorization_variants_denied (tests.test_http_adapter.AuthFirstZeroFsTests.test_bad_authorization_variants_denied) ... ok
+test_invalid_save_query_delegates_file_id_none_no_mutation (tests.test_http_adapter.AuthFirstZeroFsTests.test_invalid_save_query_delegates_file_id_none_no_mutation) ... ok
+test_missing_authorization_denied_before_body (tests.test_http_adapter.AuthFirstZeroFsTests.test_missing_authorization_denied_before_body) ... ok
+test_missing_key_delegates_file_id_none (tests.test_http_adapter.AuthFirstZeroFsTests.test_missing_key_delegates_file_id_none) ... ok
+test_unknown_token_malformed_body_is_denied_not_invalid (tests.test_http_adapter.AuthFirstZeroFsTests.test_unknown_token_malformed_body_is_denied_not_invalid) ... ok
+test_valid_token_unauthorized_source_bad_body_is_denied (tests.test_http_adapter.AuthFirstZeroFsTests.test_valid_token_unauthorized_source_bad_body_is_denied) ... ok
+test_valid_token_valid_source_bad_payload_invalid_before_lease (tests.test_http_adapter.AuthFirstZeroFsTests.test_valid_token_valid_source_bad_payload_invalid_before_lease) ... FAIL
+test_bind_failure_rolls_back_without_thread_leak (tests.test_http_adapter.ConstructorValidationTests.test_bind_failure_rolls_back_without_thread_leak) ... ok
+test_injected_service_is_owned_and_closed (tests.test_http_adapter.ConstructorValidationTests.test_injected_service_is_owned_and_closed) ... ok
+test_port_validation (tests.test_http_adapter.ConstructorValidationTests.test_port_validation) ... ok
+test_properties (tests.test_http_adapter.ConstructorValidationTests.test_properties) ... ok
+test_requires_exactly_one_of_policies_or_service (tests.test_http_adapter.ConstructorValidationTests.test_requires_exactly_one_of_policies_or_service) ... ok
+test_service_must_be_localfileservice (tests.test_http_adapter.ConstructorValidationTests.test_service_must_be_localfileservice) ... ok
+test_socket_timeout_validation (tests.test_http_adapter.ConstructorValidationTests.test_socket_timeout_validation) ... ok
+test_adapter_does_not_reference_forbidden_backends (tests.test_http_adapter.ContractConstantsTests.test_adapter_does_not_reference_forbidden_backends) ... /scratch/work/d073-verify2/tests/test_http_adapter.py:356: ResourceWarning: unclosed file <_io.TextIOWrapper name='/scratch/work/d073-verify2/drive_tool/http_adapter.py' mode='r' encoding='utf-8'>
+  src = open(m.__file__, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_all_exports_present (tests.test_http_adapter.ContractConstantsTests.test_all_exports_present) ... ok
+test_constants_match_contract (tests.test_http_adapter.ContractConstantsTests.test_constants_match_contract) ... ok
+test_default_read_on_small_grant_is_too_large (tests.test_http_adapter.EndToEndTests.test_default_read_on_small_grant_is_too_large) ... ok
+test_explicit_length_within_small_grant_cap (tests.test_http_adapter.EndToEndTests.test_explicit_length_within_small_grant_cap) ... ok
+test_find_whitespace_only_is_invalid (tests.test_http_adapter.EndToEndTests.test_find_whitespace_only_is_invalid) ... ok
+test_list_and_find (tests.test_http_adapter.EndToEndTests.test_list_and_find) ... ok
+test_list_offset_beyond_entries_is_invalid (tests.test_http_adapter.EndToEndTests.test_list_offset_beyond_entries_is_invalid) ... ok
+test_read_empty_file (tests.test_http_adapter.EndToEndTests.test_read_empty_file) ... ok
+test_read_exact_fill_not_eof (tests.test_http_adapter.EndToEndTests.test_read_exact_fill_not_eof) ... ok
+test_read_past_eof (tests.test_http_adapter.EndToEndTests.test_read_past_eof) ... ok
+test_read_short_window_sets_eof (tests.test_http_adapter.EndToEndTests.test_read_short_window_sets_eof) ... ok
+test_save_then_read_roundtrip (tests.test_http_adapter.EndToEndTests.test_save_then_read_roundtrip) ... ok
+test_all_framing_cases_rejected_400_invalid (tests.test_http_adapter.FramingRejectionTests.test_all_framing_cases_rejected_400_invalid) ... 
+  test_all_framing_cases_rejected_400_invalid (tests.test_http_adapter.FramingRejectionTests.test_all_framing_cases_rejected_400_invalid) (case='huge_digit_content_length') ... FAIL
+  test_all_framing_cases_rejected_400_invalid (tests.test_http_adapter.FramingRejectionTests.test_all_framing_cases_rejected_400_invalid) (case='save_duplicate_key') ... FAIL
+test_second_request_is_not_executed (tests.test_http_adapter.FramingRejectionTests.test_second_request_is_not_executed) ... ok
+test_deeply_nested_json_does_not_kill_worker (tests.test_http_adapter.PayloadParsingTests.test_deeply_nested_json_does_not_kill_worker) ... FAIL
+test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) ... 
+  test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='duplicate_keys') ... FAIL
+  test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='nan') ... FAIL
+  test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='infinity') ... FAIL
+  test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='bom') ... FAIL
+  test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='invalid_utf8') ... FAIL
+  test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='non_object') ... FAIL
+test_empty_body_with_eof_header_accepted (tests.test_http_adapter.ReadSemanticsTests.test_empty_body_with_eof_header_accepted) ... ok
+test_wire_length_zero_invalid (tests.test_http_adapter.ReadSemanticsTests.test_wire_length_zero_invalid) ... ok
+test_oversized_json_result_too_large (tests.test_http_adapter.ResponseCapTests.test_oversized_json_result_too_large) ... ok
+test_pre_body_json_cl_over_cap_too_large (tests.test_http_adapter.ResponseCapTests.test_pre_body_json_cl_over_cap_too_large) ... ok
+test_pre_body_save_cl_over_cap_too_large (tests.test_http_adapter.ResponseCapTests.test_pre_body_save_cl_over_cap_too_large) ... ok
+test_save_over_grant_write_cap_too_large_pre_operation (tests.test_http_adapter.ResponseCapTests.test_save_over_grant_write_cap_too_large_pre_operation) ... ok
+test_wrong_read_result_type_unavailable (tests.test_http_adapter.ResponseCapTests.test_wrong_read_result_type_unavailable) ... ok
+test_committed_save_persists_no_rollback (tests.test_http_adapter.SaveUncertaintyTests.test_committed_save_persists_no_rollback) ... ok
+test_disconnect_before_full_body_mutates_nothing (tests.test_http_adapter.SaveUncertaintyTests.test_disconnect_before_full_body_mutates_nothing) ... ok
+test_post_lease_save_failure_is_uncertain (tests.test_http_adapter.SaveUncertaintyTests.test_post_lease_save_failure_is_uncertain) ... FAIL
+test_close_rejects_invalid_timeouts (tests.test_http_adapter.ShutdownDrainRedactionTests.test_close_rejects_invalid_timeouts) ... ok
+test_close_with_blocked_op_false_then_true (tests.test_http_adapter.ShutdownDrainRedactionTests.test_close_with_blocked_op_false_then_true) ... ok
+test_error_envelope_is_redacted (tests.test_http_adapter.ShutdownDrainRedactionTests.test_error_envelope_is_redacted) ... ok
+test_new_requests_rejected_after_close (tests.test_http_adapter.ShutdownDrainRedactionTests.test_new_requests_rejected_after_close) ... ok
+test_repr_is_redacted (tests.test_http_adapter.ShutdownDrainRedactionTests.test_repr_is_redacted) ... ok
+test_helper_raises_without_production_adapter (tests.test_http_adapter.SmokeSoakGateContractTests.test_helper_raises_without_production_adapter) ... skipped 'production adapter present; gate test not applicable'
+test_thresholds_fixed (tests.test_http_adapter.SmokeSoakGateContractTests.test_thresholds_fixed) ... ok
+test_stage_smoke_600 (tests.test_http_adapter.SmokeSoakGateTests.test_stage_smoke_600) ... skipped 'smoke/soak opt-in (D067_RUN_HTTP_SMOKE_SOAK=1) + production adapter'
+test_stage_soak_10000 (tests.test_http_adapter.SmokeSoakGateTests.test_stage_soak_10000) ... skipped 'smoke/soak opt-in (D067_RUN_HTTP_SMOKE_SOAK=1) + production adapter'
+
+======================================================================
+FAIL: test_valid_token_valid_source_bad_payload_invalid_before_lease (tests.test_http_adapter.AuthFirstZeroFsTests.test_valid_token_valid_source_bad_payload_invalid_before_lease)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 612, in test_valid_token_valid_source_bad_payload_invalid_before_lease
+    self.assertEqual((status, code), (400, "invalid"))
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid')
+
+======================================================================
+FAIL: test_all_framing_cases_rejected_400_invalid (tests.test_http_adapter.FramingRejectionTests.test_all_framing_cases_rejected_400_invalid) (case='huge_digit_content_length')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 550, in test_all_framing_cases_rejected_400_invalid
+    self.assertEqual(status, 400, name)
+AssertionError: 413 != 400 : huge_digit_content_length
+
+======================================================================
+FAIL: test_all_framing_cases_rejected_400_invalid (tests.test_http_adapter.FramingRejectionTests.test_all_framing_cases_rejected_400_invalid) (case='save_duplicate_key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 550, in test_all_framing_cases_rejected_400_invalid
+    self.assertEqual(status, 400, name)
+AssertionError: 403 != 400 : save_duplicate_key
+
+======================================================================
+FAIL: test_deeply_nested_json_does_not_kill_worker (tests.test_http_adapter.PayloadParsingTests.test_deeply_nested_json_does_not_kill_worker)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 780, in test_deeply_nested_json_does_not_kill_worker
+    self.assertEqual(_parse(_exchange(a.port, raw))[0], 400)
+AssertionError: 403 != 400
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='duplicate_keys')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : duplicate_keys
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='nan')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : nan
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='infinity')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : infinity
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='bom')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : bom
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='invalid_utf8')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : invalid_utf8
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (tests.test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='non_object')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : non_object
+
+======================================================================
+FAIL: test_post_lease_save_failure_is_uncertain (tests.test_http_adapter.SaveUncertaintyTests.test_post_lease_save_failure_is_uncertain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 731, in test_post_lease_save_failure_is_uncertain
+    with self.assertRaises(DriveClientError) as cm:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: DriveClientError not raised
+
+----------------------------------------------------------------------
+Ran 57 tests in 5.437s
+
+FAILED (failures=11, skipped=3)

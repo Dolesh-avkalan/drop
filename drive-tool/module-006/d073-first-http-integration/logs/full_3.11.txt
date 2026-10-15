@@ -1,0 +1,145 @@
+..................................................F......./scratch/work/d073-verify2/tests/test_http_adapter.py:356: ResourceWarning: unclosed file <_io.TextIOWrapper name='/scratch/work/d073-verify2/drive_tool/http_adapter.py' mode='r' encoding='utf-8'>
+  src = open(m.__file__, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.............FF.FFFFFFF.........F.....s.ss.....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+======================================================================
+FAIL: test_valid_token_valid_source_bad_payload_invalid_before_lease (test_http_adapter.AuthFirstZeroFsTests.test_valid_token_valid_source_bad_payload_invalid_before_lease)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 612, in test_valid_token_valid_source_bad_payload_invalid_before_lease
+    self.assertEqual((status, code), (400, "invalid"))
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid')
+
+======================================================================
+FAIL: test_all_framing_cases_rejected_400_invalid (test_http_adapter.FramingRejectionTests.test_all_framing_cases_rejected_400_invalid) (case='huge_digit_content_length')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 550, in test_all_framing_cases_rejected_400_invalid
+    self.assertEqual(status, 400, name)
+AssertionError: 413 != 400 : huge_digit_content_length
+
+======================================================================
+FAIL: test_all_framing_cases_rejected_400_invalid (test_http_adapter.FramingRejectionTests.test_all_framing_cases_rejected_400_invalid) (case='save_duplicate_key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 550, in test_all_framing_cases_rejected_400_invalid
+    self.assertEqual(status, 400, name)
+AssertionError: 403 != 400 : save_duplicate_key
+
+======================================================================
+FAIL: test_deeply_nested_json_does_not_kill_worker (test_http_adapter.PayloadParsingTests.test_deeply_nested_json_does_not_kill_worker)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 780, in test_deeply_nested_json_does_not_kill_worker
+    self.assertEqual(_parse(_exchange(a.port, raw))[0], 400)
+AssertionError: 403 != 400
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='duplicate_keys')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : duplicate_keys
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='nan')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : nan
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='infinity')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : infinity
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='bom')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : bom
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='invalid_utf8')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : invalid_utf8
+
+======================================================================
+FAIL: test_payload_cases_rejected_400_invalid (test_http_adapter.PayloadParsingTests.test_payload_cases_rejected_400_invalid) (case='non_object')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 775, in test_payload_cases_rejected_400_invalid
+    self.assertEqual((status, code), (400, "invalid"), name)
+AssertionError: Tuples differ: (403, 'denied') != (400, 'invalid')
+
+First differing element 0:
+403
+400
+
+- (403, 'denied')
++ (400, 'invalid') : non_object
+
+======================================================================
+FAIL: test_post_lease_save_failure_is_uncertain (test_http_adapter.SaveUncertaintyTests.test_post_lease_save_failure_is_uncertain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d073-verify2/tests/test_http_adapter.py", line 731, in test_post_lease_save_failure_is_uncertain
+    with self.assertRaises(DriveClientError) as cm:
+AssertionError: DriveClientError not raised
+
+----------------------------------------------------------------------
+Ran 563 tests in 10.479s
+
+FAILED (failures=11, skipped=3)

@@ -1,0 +1,2 @@
+A	drive_tool/http_adapter.py
+A	tests/test_http_adapter.py

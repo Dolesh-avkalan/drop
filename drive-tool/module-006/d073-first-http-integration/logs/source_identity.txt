@@ -1,0 +1,20 @@
+# D073 source identity
+
+repo:               Dolesh-avkalan/drive-tool
+integration branch: feature/module-006b-http-integration
+base commit:        b7f8d17b9dcc4aec68d54b38f994290e05264e67
+head commit:        cc9c994e64a52793949b58699f707c53f47c4369
+tree:               e6d4af27b14694d3aad698a1b37fb99b248219ab
+
+drive_tool/http_adapter.py:
+  blob:   02576d59d555afc7afde89fd8e2e63a1c1c43e24
+  bytes:  37502
+  sha256: 191ad2be919fabdd2f4ec9edb0820165c2c4358ce05c93574514b5ee30a30ff3
+  origin: verbatim production FILE block from drop d068 (a01a8576b7bb34e8a4c8e7e89beee6cb0840405c); already present on feature/module-006b-http-source
+tests/test_http_adapter.py:
+  blob:   b571032c3e938abfb2a17f1dde44bb370469e4c4
+  bytes:  50785
+  sha256: de3c67d3405a176ee4ccfcab253083fb0fd7115b7174b569b352fdc747f90272
+  origin: exact D067 test blob (branch feature/module-006b-http-tests, head e47587a506ed4dd25220eef92d54fb42a1f4fe63)
+
+scope: exactly two additions vs base; no other path changed.
