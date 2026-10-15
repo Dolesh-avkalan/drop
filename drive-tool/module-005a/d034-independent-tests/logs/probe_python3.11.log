@@ -1,0 +1,60 @@
+[PASS] P1.strict_B_inspected :: inspected=4
+[PASS] P1.no_B_plus_1_next :: next() calls=4 (must be exactly B=4)
+[PASS] P1.at_most_B_stat :: stat calls=4
+[PASS] P1.complete_false_at_cap :: complete=False
+[PASS] P1.items_le_inspected :: len(items)=4 inspected=4
+[PASS] P2.exact_budget_incomplete :: inspected=5 complete=False
+[PASS] P2.room_to_spare_complete :: inspected=5 complete=True
+[PASS] P3.prefix_match_retained :: items=['match_here.txt']
+[PASS] P3.prefix_truncated_max_entries :: truncated=True reason=max_entries
+[PASS] P3.inspected_is_B :: inspected=5
+[PASS] P4.omitted_entries_charged :: inspected=4 expected_raw=4 items=['keep.txt']
+[PASS] P4.only_supported_items :: items=['keep.txt']
+[PASS] P5.enoent_entry_charged :: inspected=3 (all 3 raw entries counted)
+[PASS] P5.enoent_item_omitted :: items=['a.txt', 'c.txt']
+[PASS] P6.stat_failure_charged :: inspected=2
+[PASS] P6.stat_failure_error_type :: error=LocalStorageError
+[PASS] P6.stat_failure_cause :: cause=OSError
+[PASS] P7.iter_failure_charged :: inspected=2
+[PASS] P8.partial_close_charged :: inspected=3 expected=3
+[PASS] P8.complete_close_charged :: inspected=3 expected=3
+[PASS] P9.no_fd_growth :: fds before=5 after=5
+[PASS] P10.root_identity :: identity preserved=True
+[PASS] P10.root_cause_chain :: original object raised
+[PASS] P11.sibling_not_scanned :: calls=['root', 'p/s1']
+[PASS] P11.truncated_after_exhaust :: truncated=True reason=max_entries inspected=3
+[PASS] P12.max_results_precedence :: reason=max_results items=2
+[PASS] P12.depth_truncation_explicit :: reason=max_depth
+[PASS] P13.items_not_tuple :: rejected loudly with StorageError
+[PASS] P13.inspected_bool :: rejected loudly with StorageError
+[PASS] P13.inspected_str :: rejected loudly with StorageError
+[PASS] P13.inspected_gt_remaining :: rejected loudly with StorageError
+[PASS] P13.inspected_negative :: rejected loudly with StorageError
+[PASS] P13.complete_not_bool :: rejected loudly with StorageError
+[PASS] P13.items_gt_inspected :: rejected loudly with StorageError
+[PASS] P13.incomplete_no_exhaust :: rejected loudly with StorageError
+[PASS] P13.missing_attrs :: rejected
+[PASS] P14.no_scanner_denied :: ScanUnsupportedError
+[PASS] P14.non_callable_denied :: ScanUnsupportedError
+[PASS] P14.arg_validation_first :: ValueError before capability check
+[PASS] A.root_bad_error :: rejected at root: StorageError
+[FINDING] A.depth_bad_error_not_rejected :: malformed ScanFailure.error accepted at depth>0: skipped=('p/sub',) truncated=False (root rejects the same input)
+[FINDING] B.skipped_but_complete_prescan :: skipped=('p/bad',) truncated=False reason=None (reports complete coverage with a skipped subtree)
+[FINDING] B.skipped_but_complete_midscan :: skipped=('p/sub',) truncated=False reason=None inspected=3
+[FINDING] C1.meta_storage_error_uncharged :: StorageError from stat seam after 1 yielded entry escaped as bare LocalStorageError (no ScanFailure, raw work unaccounted)
+[FINDING] C2.build_metadata_storage_error_uncharged :: StorageError from metadata seam after 1 yielded entry escaped as bare LocalStorageError (raw work unaccounted)
+[FINDING] C3.raw_work_lost_at_depth :: subdir bare StorageError charged as inspected=1 (root batch charged 1; the subdir's raw work is not counted), skipped=('p/sub',) truncated=False
+
+==== TALLY ====
+PASS: 40
+FAIL: 0
+FINDING: 6
+ERROR: 0
+
+==== FAILURES / FINDINGS ====
+[FINDING] A.depth_bad_error_not_rejected :: malformed ScanFailure.error accepted at depth>0: skipped=('p/sub',) truncated=False (root rejects the same input)
+[FINDING] B.skipped_but_complete_prescan :: skipped=('p/bad',) truncated=False reason=None (reports complete coverage with a skipped subtree)
+[FINDING] B.skipped_but_complete_midscan :: skipped=('p/sub',) truncated=False reason=None inspected=3
+[FINDING] C1.meta_storage_error_uncharged :: StorageError from stat seam after 1 yielded entry escaped as bare LocalStorageError (no ScanFailure, raw work unaccounted)
+[FINDING] C2.build_metadata_storage_error_uncharged :: StorageError from metadata seam after 1 yielded entry escaped as bare LocalStorageError (raw work unaccounted)
+[FINDING] C3.raw_work_lost_at_depth :: subdir bare StorageError charged as inspected=1 (root batch charged 1; the subdir's raw work is not counted), skipped=('p/sub',) truncated=False
