@@ -1,0 +1,9 @@
+$ /usr/local/bin/python3.12 /scratch/work/d038/build/d038-cloud-runner/kernel_checks.py bounded_read /scratch/work/d038/ws/d038-e88c9c79-5yruq603/extract/drive-tool-e88c9c79fdc27057622d44ba51e008f2e4ea4f4f
+
+=== kernel check: bounded_read ===
+  below/exact/above + growth all bounded (growth read 11 <= 11)
+CHECK bounded_read RESULT: PASS
+
+--- stderr ---
+
+EXIT=0 timed_out=False seconds=0.4

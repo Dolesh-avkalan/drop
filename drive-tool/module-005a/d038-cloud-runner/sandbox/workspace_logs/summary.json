@@ -1,0 +1,165 @@
+{
+  "commit": "e88c9c79fdc27057622d44ba51e008f2e4ea4f4f",
+  "archive_url": "https://codeload.github.com/Dolesh-avkalan/drive-tool/tar.gz/e88c9c79fdc27057622d44ba51e008f2e4ea4f4f",
+  "workspace": "/scratch/work/d038/ws/d038-e88c9c79-5yruq603",
+  "recommended_overall_timeout_seconds": 5580,
+  "archive_bytes": 181071,
+  "archive_sha256": "97a5035b8775795766c161d5eec240de7f954523894f6c29803b49f8669d7f24",
+  "members": 82,
+  "pythons": [
+    {
+      "name": "python3.12",
+      "path": "/usr/local/bin/python3.12",
+      "version": "3.12.13"
+    },
+    {
+      "name": "python3.11",
+      "path": "/usr/bin/python3.11",
+      "version": "3.11.2"
+    }
+  ],
+  "suite": {
+    "python3.12": {
+      "rc": 0,
+      "ran": 274,
+      "skipped": 0,
+      "ok": true,
+      "failed": false,
+      "timed_out": false,
+      "seconds": 5.22
+    },
+    "python3.11": {
+      "rc": 0,
+      "ran": 274,
+      "skipped": 0,
+      "ok": true,
+      "failed": false,
+      "timed_out": false,
+      "seconds": 4.96
+    }
+  },
+  "checks": {
+    "python3.12:nofollow": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.4
+    },
+    "python3.12:bounded_read": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.4
+    },
+    "python3.12:root_anchor": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.39
+    },
+    "python3.12:dir_symlink_swap": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.38
+    },
+    "python3.12:fifo": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.45
+    },
+    "python3.12:fd_lifetime": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.6
+    },
+    "python3.12:strict_b_scanner": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.36
+    },
+    "python3.12:partial_search": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.36
+    },
+    "python3.12:write_collision": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.34
+    },
+    "python3.12:concurrent_writers": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.32
+    },
+    "python3.11:nofollow": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.29
+    },
+    "python3.11:bounded_read": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.31
+    },
+    "python3.11:root_anchor": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.31
+    },
+    "python3.11:dir_symlink_swap": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.47
+    },
+    "python3.11:fifo": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.51
+    },
+    "python3.11:fd_lifetime": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.81
+    },
+    "python3.11:strict_b_scanner": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.39
+    },
+    "python3.11:partial_search": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.38
+    },
+    "python3.11:write_collision": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.42
+    },
+    "python3.11:concurrent_writers": {
+      "label": "PASS",
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.5
+    }
+  },
+  "failures": [],
+  "result": "PASS"
+}

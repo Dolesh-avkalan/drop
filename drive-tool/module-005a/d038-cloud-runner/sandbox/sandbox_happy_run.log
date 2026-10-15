@@ -1,0 +1,109 @@
+workspace: /scratch/work/d038/ws/d038-e88c9c79-5yruq603
+recommended overall invocation timeout (director-side): 5580 s
+--- environment (before) ---
+  time:      2026-10-15T15:45:16Z
+  host:      claw-sandbox-12d0db48d8a444a93bf1df4635
+  uname:     Linux claw-sandbox-12d0db48d8a444a93bf1df4635 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   290616569856 bytes
+  tmp free:  67104768 bytes
+  MemTotal: 2148352 kB
+  MemAvailable: 2078312 kB
+  mount: none / overlay rw
+  mount: none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+  mount: none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+copied archive /scratch/work/d038/drive-tool.tar.gz (181071 bytes)
+extracted 82 members; src root = drive-tool-e88c9c79fdc27057622d44ba51e008f2e4ea4f4f
+note: 55 file(s) present beyond the pinned set: ['AGENTS.md', 'README.md', 'docs/evidence/MODULE-001.md', 'docs/evidence/MODULE-002.md', 'docs/evidence/MODULE-003-GEMINI.md', 'docs/evidence/MODULE-003-RESOURCE-FIXES.md', 'docs/evidence/MODULE-003-REVIEW-FIXES.md', 'docs/evidence/MODULE-003.md', 'docs/evidence/MODULE-004.md', 'docs/evidence/MODULE-005.md', 'docs/evidence/MODULE-005A.md', 'docs/evidence/READONLY-CORE-INTEGRATION.md', 'session/AGENT-INTERFACE.md', 'session/CONNECTIONS.md', 'session/CORE-ACCEPTANCE.md', 'session/DECISIONS.md', 'session/FILE-ACCESS-REQUIREMENTS.md', 'session/PROGRESS.md', 'session/START_HERE.md', 'session/STATUS.md', 'session/history/2026-10-06-deepseek-login-handoff.md', 'session/history/2026-10-06-dual-dispatch-quota-block.md', 'session/history/2026-10-06-dual-module003-dispatch.md', 'session/history/2026-10-06-gemini-attachment.md', 'session/history/2026-10-06-gemini-direct-inline.md', 'session/history/2026-10-06-gemini-slow-pointer.md', 'session/history/2026-10-06-messenger-usage-audit.md', 'session/history/2026-10-06-two-hour-usage-audit.md', 'session/history/2026-10-06.md', 'session/history/2026-10-14-local-director-resume.md', 'session/history/2026-10-14-resume-review.md', 'session/history/2026-10-15-claude-director-handoff.md', 'session/history/2026-10-15-status-before-codex-resume.md', 'session/history/d008-gemini-review.md', 'session/history/d009-sarvam-reported-tests.md', 'session/history/d010-sarvam-reported-fix.md', 'session/history/d011-gemini-acceptance.md', 'session/history/d012-sarvam-independent-verification.md', 'session/history/d014-cloud-validation.md', 'tasks/MODULE-001.md', 'tasks/MODULE-002.md', 'tasks/MODULE-003.md', 'tasks/MODULE-004.md', 'tasks/MODULE-005.md', 'tasks/d008-module003-independent-review.md', 'tasks/d009-module003-independent-tests.md', 'tasks/d010-module003-resource-fixes.md', 'tasks/d011-module003-final-review.md', 'tasks/d012-module003-final-independent-tests.md', 'tasks/d013-readonly-core-integration.md', 'tasks/d014-cloud-core-validation-plan.md', 'tasks/d014-cloud-runner.md', 'tasks/d015-github-publication.md', 'tasks/d031-partial-enumeration-design.md', 'tasks/attachments/MODULE-003-bundle.md']
+identity OK: all 18 files match pinned blobs
+python coverage OK: all 18 executable .py files are pinned
+interpreters found: ['python3.12=3.12.13', 'python3.11=3.11.2']
+=== suite on python3.12 (3.12.13) ===
+  ran=274 skipped=0 ok=True failed=False exit=0 timeout=False
+  --- kernel check nofollow on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check bounded_read on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check root_anchor on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check dir_symlink_swap on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fifo on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fd_lifetime on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check strict_b_scanner on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check partial_search on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check write_collision on python3.12 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check concurrent_writers on python3.12 ---
+    PASS (exit=0 timeout=False)
+=== suite on python3.11 (3.11.2) ===
+  ran=274 skipped=0 ok=True failed=False exit=0 timeout=False
+  --- kernel check nofollow on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check bounded_read on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check root_anchor on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check dir_symlink_swap on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fifo on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check fd_lifetime on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check strict_b_scanner on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check partial_search on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check write_collision on python3.11 ---
+    PASS (exit=0 timeout=False)
+  --- kernel check concurrent_writers on python3.11 ---
+    PASS (exit=0 timeout=False)
+--- environment (after) ---
+  time:      2026-10-15T15:45:35Z
+  host:      claw-sandbox-12d0db48d8a444a93bf1df4635
+  uname:     Linux claw-sandbox-12d0db48d8a444a93bf1df4635 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   290666270720 bytes
+  tmp free:  67104768 bytes
+  MemTotal: 2148352 kB
+  MemAvailable: 2077892 kB
+  mount: none / overlay rw
+  mount: none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+  mount: none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+
+=== summary ===
+  suite python3.12: ran=274 skipped=0 ok=True
+  suite python3.11: ran=274 skipped=0 ok=True
+  check python3.12:nofollow: PASS
+  check python3.12:bounded_read: PASS
+  check python3.12:root_anchor: PASS
+  check python3.12:dir_symlink_swap: PASS
+  check python3.12:fifo: PASS
+  check python3.12:fd_lifetime: PASS
+  check python3.12:strict_b_scanner: PASS
+  check python3.12:partial_search: PASS
+  check python3.12:write_collision: PASS
+  check python3.12:concurrent_writers: PASS
+  check python3.11:nofollow: PASS
+  check python3.11:bounded_read: PASS
+  check python3.11:root_anchor: PASS
+  check python3.11:dir_symlink_swap: PASS
+  check python3.11:fifo: PASS
+  check python3.11:fd_lifetime: PASS
+  check python3.11:strict_b_scanner: PASS
+  check python3.11:partial_search: PASS
+  check python3.11:write_collision: PASS
+  check python3.11:concurrent_writers: PASS
+  manifest entries: 100
+RESULT: PASS
+
+Safe, precise cleanup (run only when evidence is no longer needed):
+  rm -rf /scratch/work/d038/ws/d038-e88c9c79-5yruq603

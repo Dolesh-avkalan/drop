@@ -1,0 +1,10 @@
+$ /usr/bin/python3.11 /scratch/work/d038/build/d038-cloud-runner/kernel_checks.py fd_lifetime /scratch/work/d038/ws/d038-e88c9c79-5yruq603/extract/drive-tool-e88c9c79fdc27057622d44ba51e008f2e4ea4f4f
+
+=== kernel check: fd_lifetime ===
+  repeated ops fd count: before=5 after=4
+  handoff results (op, raised, fd-delta) = [('read', 'LocalStorageError', 0), ('list', 'LocalStorageError', 0)]
+CHECK fd_lifetime RESULT: PASS
+
+--- stderr ---
+
+EXIT=0 timed_out=False seconds=0.81

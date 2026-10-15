@@ -1,0 +1,12 @@
+$ /usr/local/bin/python3.12 /scratch/work/d038/build/d038-cloud-runner/kernel_checks.py strict_b_scanner /scratch/work/d038/ws/d038-e88c9c79-5yruq603/extract/drive-tool-e88c9c79fdc27057622d44ba51e008f2e4ea4f4f
+
+=== kernel check: strict_b_scanner ===
+  [REAL] B=4 over 10 files: yields=4 stats=4 inspected=4 complete=False
+  [REAL] B=10 over 10 files: yields=10 stats=10 inspected=10 complete=False
+  [REAL] B=11 over 10 files: yields=10 stats=10 inspected=10 complete=True
+  [REAL] B=20 over 10 files + 1 temp entry: yields=11 stats=10 inspected=11 complete=True
+CHECK strict_b_scanner RESULT: PASS
+
+--- stderr ---
+
+EXIT=0 timed_out=False seconds=0.36

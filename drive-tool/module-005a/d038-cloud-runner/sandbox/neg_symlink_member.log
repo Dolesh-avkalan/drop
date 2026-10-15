@@ -1,0 +1,18 @@
+workspace: /scratch/work/d038/ws_neg/d038-e88c9c79-msdxfw9f
+recommended overall invocation timeout (director-side): 5580 s
+--- environment (before) ---
+  time:      2026-10-15T15:46:00Z
+  host:      claw-sandbox-12d0db48d8a444a93bf1df4635
+  uname:     Linux claw-sandbox-12d0db48d8a444a93bf1df4635 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   290845302784 bytes
+  tmp free:  67104768 bytes
+  MemTotal: 2148352 kB
+  MemAvailable: 2078304 kB
+  mount: none / overlay rw
+  mount: none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+  mount: none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+copied archive /scratch/work/d038/symlink.tar.gz (153 bytes)
+FAIL-CLOSED (extract): RuntimeError: link member in archive: 'drive-tool-e88c9c79fdc27057622d44ba51e008f2e4ea4f4f/link'

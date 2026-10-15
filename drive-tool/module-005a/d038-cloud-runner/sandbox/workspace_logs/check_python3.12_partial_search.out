@@ -1,0 +1,10 @@
+$ /usr/local/bin/python3.12 /scratch/work/d038/build/d038-cloud-runner/kernel_checks.py partial_search /scratch/work/d038/ws/d038-e88c9c79-5yruq603/extract/drive-tool-e88c9c79fdc27057622d44ba51e008f2e4ea4f4f
+
+=== kernel check: partial_search ===
+  [REAL] exact-B: items=['match_a.txt', 'match_b.txt'] truncated=True reason=max_entries inspected=5
+  [SIMULATED] mid-scan fault: items=['match_root.txt'] truncated=True reason=skipped skipped=('p/sub',) inspected=4
+CHECK partial_search RESULT: PASS
+
+--- stderr ---
+
+EXIT=0 timed_out=False seconds=0.36

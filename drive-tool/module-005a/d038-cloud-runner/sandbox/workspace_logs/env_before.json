@@ -1,0 +1,50 @@
+{
+  "label": "before",
+  "time_utc": "2026-10-15T15:45:16Z",
+  "hostname": "claw-sandbox-12d0db48d8a444a93bf1df4635",
+  "uname": "Linux claw-sandbox-12d0db48d8a444a93bf1df4635 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 ",
+  "os_release": {
+    "PRETTY_NAME": "Debian GNU/Linux 12 (bookworm)",
+    "NAME": "Debian GNU/Linux",
+    "VERSION_ID": "12",
+    "VERSION": "12 (bookworm)",
+    "VERSION_CODENAME": "bookworm",
+    "ID": "debian",
+    "HOME_URL": "https://www.debian.org/",
+    "SUPPORT_URL": "https://www.debian.org/support",
+    "BUG_REPORT_URL": "https://bugs.debian.org/"
+  },
+  "runner_python": "3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]",
+  "workspace": "/scratch/work/d038/ws/d038-e88c9c79-5yruq603",
+  "workspace_fs_free_bytes": 290616569856,
+  "tmp_free_bytes": 67104768,
+  "meminfo": {
+    "MemTotal": "2148352 kB",
+    "MemFree": "2078312 kB",
+    "MemAvailable": "2078312 kB",
+    "Buffers": "0 kB",
+    "Cached": "18876 kB",
+    "SwapCache": "0 kB",
+    "Active": "60588 kB",
+    "Inactive": "9440 kB",
+    "Active(anon)": "51152 kB",
+    "Inactive(anon)": "0 kB",
+    "Active(file)": "9436 kB",
+    "Inactive(file)": "9440 kB",
+    "Unevictable": "0 kB",
+    "Mlocked": "0 kB",
+    "SwapTotal": "0 kB",
+    "SwapFree": "0 kB",
+    "Dirty": "0 kB",
+    "Writeback": "0 kB",
+    "AnonPages": "51152 kB",
+    "Mapped": "18876 kB",
+    "Shmem": "0 kB"
+  },
+  "mounts": [
+    "none / overlay rw",
+    "none /tmp 9p rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs",
+    "none /scratch 9p rw,trans=fd,rfdno=55,wfdno=55,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs"
+  ],
+  "nproc": 2
+}
