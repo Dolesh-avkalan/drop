@@ -1,7 +1,11 @@
 # d034 environment
-host: Linux gvisor sandbox
+date_utc: 2026-10-15T15:11:13Z
+host: Linux claw-sandbox-1fa9254f29e9ef221b9eb75128 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 GNU/Linux
+os: Debian GNU/Linux 12 (bookworm)
+uid: uid=1000(sandbox) gid=1000(sandbox) groups=1000(sandbox)
 python3.11: Python 3.11.2
 python3.12: Python 3.12.13
+kernel_note: gVisor sandbox; raw readdir order emulated; order controlled by the test seam
 candidate: Dolesh-avkalan/drive-tool @ 593759a40645386427bad35d53e8b856aeaa68d5
 base: 356a4d8a71d0e57a57e7c82dbfce50be145a0bdb
-branch: feature/module-005a-partial-scan
+branch: feature/module-005a-partial-scan (head == candidate)
