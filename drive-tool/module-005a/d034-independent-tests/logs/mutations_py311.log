@@ -1,0 +1,10 @@
+Interpreter: python3.11
+[M1_search_discard_partial_matches] CAUGHT (ran=256, rc=1); failing=3 -> ['test_early_match_retained_from_over_budget_directory', 'test_local_exact_budget_is_conservatively_incomplete', 'test_matches_ordered_within_scanned_prefix_only']
+[M2_local_count_only_metadata] CAUGHT (ran=256, rc=1); failing=3 -> ['test_counts_all_raw_and_returns_only_supported', 'test_mixed_hidden_temp_symlink_fifo_all_charged', 'test_vanishing_entries_are_charged_but_omitted']
+[M3_local_read_b_plus_1] CAUGHT (ran=256, rc=1); failing=11 -> ['test_early_match_retained_from_over_budget_directory', 'test_exact_budget_is_incomplete_and_never_probes_b_plus_1', 'test_huge_directory_stops_after_exactly_b_no_b_plus_1', 'test_local_exact_budget_is_conservatively_incomplete', 'test_matches_ordered_within_scanned_prefix_only', 'test_mixed_hidden_temp_symlink_fifo_all_charged']
+[M4_local_complete_true_at_cap] CAUGHT (ran=256, rc=1); failing=8 -> ['test_early_match_retained_from_over_budget_directory', 'test_exact_budget_is_incomplete_and_never_probes_b_plus_1', 'test_huge_directory_stops_after_exactly_b_no_b_plus_1', 'test_local_exact_budget_is_conservatively_incomplete', 'test_matches_ordered_within_scanned_prefix_only', 'test_mixed_hidden_temp_symlink_fifo_all_charged']
+[M5_search_ignore_scanfailure_inspected] CAUGHT (ran=256, rc=1); failing=2 -> ['test_no_scans_after_failed_work_exhausts_budget', 'test_subdir_scanfailure_is_skipped_and_charged']
+[M6_search_scan_sibling_after_exhaust] CAUGHT (ran=256, rc=1); failing=1 -> ['test_no_scans_after_failed_work_exhausts_budget']
+[M7_local_leak_fd_on_partial_return] CAUGHT (ran=256, rc=1); failing=3 -> ['test_descriptor_cleanup_failure_is_scanfailure', 'test_no_fd_growth_on_partial_and_failing_scans', 'test_repeated_partial_and_failing_scans_no_fd_growth']
+[X1_set_truncated_when_skipped] CAUGHT (ran=256, rc=1); failing=2 -> ['test_subdir_scanfailure_is_skipped_and_charged', 'test_subdirectory_storage_error_skipped']
+[X2_add_scanfailure_error_check_at_depth] SURVIVED (ran=256, rc=0); failing=0 -> []
