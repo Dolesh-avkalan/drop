@@ -1,0 +1,14 @@
+workspace: /scratch/work/d063neg/ws/d063-b7f8d17b-igclfylo
+payload stress_checks.py sha256 OK: 8097d0a3074c37e5b891f78101f95d24f5bfb73d818cd8a0278c9fe61fa85be9
+--- environment (before) ---
+  time:      2026-10-15T21:20:57Z
+  host:      claw-sandbox-0a3645a5d7a808f4dc8485bec3
+  uname:     Linux claw-sandbox-0a3645a5d7a808f4dc8485bec3 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   306939813888 bytes
+  MemTotal: 2148352 kB
+  MemAvailable: 2087772 kB
+copied archive /scratch/work/d063neg/traversal.tar.gz (135 bytes)
+FAIL-CLOSED (extract): RuntimeError: unsafe path in archive: 'top/../evil.py'

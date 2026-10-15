@@ -1,0 +1,70 @@
+{
+  "commit": "b7f8d17b9dcc4aec68d54b38f994290e05264e67",
+  "archive_url": "https://codeload.github.com/Dolesh-avkalan/drive-tool/tar.gz/b7f8d17b9dcc4aec68d54b38f994290e05264e67",
+  "max_concurrent": 6,
+  "expected_suite_tests": 506,
+  "workspace": "/scratch/work/d063ws2/d063-b7f8d17b-02cr4d8e",
+  "payload_sha256": "8097d0a3074c37e5b891f78101f95d24f5bfb73d818cd8a0278c9fe61fa85be9",
+  "archive_bytes": 338575,
+  "archive_sha256": "93af95d9e711ec8d44d4901d39b48d0387ce78c2b1c48dd8f55539905bf61db3",
+  "members": 123,
+  "pythons": [
+    {
+      "name": "python3.12",
+      "path": "/usr/local/bin/python3.12",
+      "version": "3.12.13"
+    },
+    {
+      "name": "python3.11",
+      "path": "/usr/bin/python3.11",
+      "version": "3.11.2"
+    }
+  ],
+  "suite": {
+    "python3.12": {
+      "rc": 0,
+      "ran": 506,
+      "skipped": 0,
+      "ok": true,
+      "failed": false,
+      "timed_out": false,
+      "seconds": 6.61
+    },
+    "python3.11": {
+      "rc": 0,
+      "ran": 506,
+      "skipped": 0,
+      "ok": true,
+      "failed": false,
+      "timed_out": false,
+      "seconds": 6.18
+    }
+  },
+  "stages": {
+    "smoke": {
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 1.39,
+      "result": "PASS",
+      "calls_completed": 600
+    },
+    "soak": {
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 22.12,
+      "result": "PASS",
+      "calls_completed": 10000
+    },
+    "edges": {
+      "rc": 0,
+      "timed_out": false,
+      "seconds": 0.42,
+      "result": "PASS",
+      "calls_completed": null
+    }
+  },
+  "workspace_bytes": 15966739,
+  "failures": [],
+  "result": "PASS",
+  "seconds": 37.17
+}

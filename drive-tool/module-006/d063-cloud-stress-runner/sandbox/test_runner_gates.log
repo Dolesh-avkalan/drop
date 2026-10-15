@@ -1,0 +1,23 @@
+test_blob_matches_git_formula (__main__.BlobIdentityTests.test_blob_matches_git_formula) ... ok
+test_empty_blob_vector (__main__.BlobIdentityTests.test_empty_blob_vector) ... ok
+test_expected_set_shape (__main__.BlobIdentityTests.test_expected_set_shape) ... ok
+test_bounds_are_defined (__main__.MiscGateTests.test_bounds_are_defined) ... ok
+test_find_src_root_requires_single_dir (__main__.MiscGateTests.test_find_src_root_requires_single_dir) ... ok
+test_parse_unittest (__main__.MiscGateTests.test_parse_unittest) ... ok
+test_payload_sha_matches_pinned_constant (__main__.MiscGateTests.test_payload_sha_matches_pinned_constant)
+Self-consistency: the pinned payload hash matches the shipped file. ... ok
+test_absolute_path_rejected (__main__.SafeExtractTests.test_absolute_path_rejected) ... ok
+test_clean_archive_ok (__main__.SafeExtractTests.test_clean_archive_ok) ... ok
+test_member_count_cap (__main__.SafeExtractTests.test_member_count_cap) ... ok
+test_oversized_member_rejected (__main__.SafeExtractTests.test_oversized_member_rejected) ... ok
+test_path_traversal_rejected (__main__.SafeExtractTests.test_path_traversal_rejected) ... ok
+test_symlink_member_rejected (__main__.SafeExtractTests.test_symlink_member_rejected) ... ok
+test_clean_tree_passes (__main__.VerifyIdentitiesTests.test_clean_tree_passes) ... ok
+test_missing_is_detected (__main__.VerifyIdentitiesTests.test_missing_is_detected) ... ok
+test_tamper_is_detected (__main__.VerifyIdentitiesTests.test_tamper_is_detected)
+Required negative: a mutated executable must be reported MISMATCH. ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 3.188s
+
+OK
