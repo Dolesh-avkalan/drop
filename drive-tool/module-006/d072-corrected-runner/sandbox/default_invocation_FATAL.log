@@ -1,0 +1,1 @@
+FATAL: --base-dir must resolve under /tmp/ (got '/tmp')
