@@ -1,0 +1,27 @@
+# D043 provenance — independently retrieved identities
+
+repo            Dolesh-avkalan/drive-tool
+branch          feature/module-005b-range-read
+head_commit     121faf848b2f33f80721239fc7716adba7a9ba62
+head_tree       28ce7508c34181d63d62f03a330932a41a08ebe4
+base_commit     03a8250a5d02823812533290356cf375b7d2c33e
+task_brief      tasks/d043-range-read-independent.md @ 8f5a1cf2efb70d6df752b5326703a85dbdfc2986
+contract        tasks/MODULE-005B.md @ 18cc50f613e582e8bcaa9f282bd61b6ea48f1143
+drop_repo       Dolesh-avkalan/drop @ main (d040 evidence pinned at 0f352c7b1e98168126d115a73e46052767a41572)
+
+# changed paths (head vs base), with GitHub blob sha and local sha256
+drive_tool/local.py                 blob 74a45c61d3ea9c6e64005b1d92834fed17323d62  sha256 8d382347a4d1118440d364c693624de54883d517376779076c753672818ee2b7
+tests/test_local_range.py           blob 7fa3f80e97e84d8c8e7ff57c9cf2a950d5534fa9  sha256 59651dfac93992563d1e5205a6762f0c435adf3d0d176ec92209ab7ab38b4555
+tests/test_local_range_proofs.py    blob d217e66b72a40de3bbc042f199db1ab25da341ba  sha256 63a7deb685f2761ec510ed895018e90f82166d6e44f0f55696bc2eca85ca81c7
+docs/evidence/MODULE-005B.md        blob 4292b6903ef072b48116437b0cd3e14868e678a8  sha256 253c833468f2130d30dd3251e512ff518b9aeed13f5ec5a8bf8dfd296fd6aa43
+
+# builder d040 evidence: all 15 files re-hash to their own MANIFEST.txt (verified)
+d040_manifest_check  ALL MATCH (15/15)
+
+# environment
+os              Debian GNU/Linux 12 (bookworm), x86_64
+kernel          4.19.0-gvisor
+uid             1000 (non-root)
+python_3_11     3.11.2
+python_3_12     3.12.13
+syscall_trace   NOT AVAILABLE (no strace/ltrace on this kernel)

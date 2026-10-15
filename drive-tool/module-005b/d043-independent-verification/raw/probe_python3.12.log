@@ -1,0 +1,36 @@
+[PASS] invalid options raise correct TypeError/ValueError
+[PASS] invalid options perform zero syscalls  -- io_total before=0 after=0
+[PASS] offset+len==2**63-1 accepted (beyond-EOF => empty)  -- data=b'' eof=True
+[PASS] default window == min(262144, cap) (cap=100000)  -- len=100000 first_chunk=65536
+[PASS] default window == 262144 when cap large  -- len=262144 first_chunk=65536
+[PASS] sparse high-offset tiny read returns exact bytes  -- data=b'WXYZ' size=1048576
+[PASS] first pread starts at requested offset (no prefix read)  -- first_pread=(4, 1000000)
+[PASS] no zero-length pread issued  -- preads=[(4, 1000000)]
+[PASS] read_bytes still denies larger-than-cap file
+[PASS] exact-window fill: eof_observed False  -- eof=False
+[PASS] exact-window fill: exactly one pread, no lookahead probe  -- preads=[(10, 0)]
+[PASS] short nonempty reads continue + EINTR retried to fill window  -- data=b'ABCDEFGHIJ' calls=3
+[PASS] observed_size is the initial fstat only (not re-stat)  -- observed_size=3
+[PASS] growth after fstat is visible via pread  -- data=b'abcdef'
+[PASS] offset beyond EOF => empty data + eof True  -- data=b'' eof=True
+[PASS] subsequent growth makes previously-beyond-EOF data available  -- data=b'KLMN' eof=False
+[PASS] truncation after fstat: observed_size stale, data honest  -- observed_size=10 data=b'ab'
+[PASS] os.pread=None => UnsupportedPlatformError
+[PASS] missing pread fails before filesystem access  -- io before=0 after=0
+[PASS] construction works without pread
+[PASS] read_bytes works without pread
+[PASS] non-callable os.pread => UnsupportedPlatformError
+[PASS] source mismatch precedes option validation  -- SourceMismatchError
+[PASS] malformed file_id precedes option validation  -- UnsafePathError
+[PASS] root ref => IsDirectoryError (matches read_bytes)  -- IsDirectoryError
+[PASS] closed adapter precedes option validation  -- AdapterClosedError
+[PASS] FIFO rejected without blocking  -- alive=False result=UnsupportedEntryError
+[PASS] final-component symlink rejected  -- UnsafePathError
+[PASS] root rename+outside-symlink stays anchored to original  -- data=b'ORIGINAL'
+[PASS] concurrent independent offsets return correct windows  -- errs=[]
+[PASS] no fd growth across 60 success+failure ops  -- base=19 after=19
+[PASS] read_range reuses _parse_file_id + _traverse_parent_dir + _file_open_flags (shared machinery)  -- used={'parse': True, 'traverse': True, 'flags': True}
+[PASS] nested read via shared resolver returns correct bytes  -- data=b'INNER'
+[PASS] primary pread error wins over close failure  -- LocalStorageError("failed while reading range of 'p/prio.bin': [Errno 5] simulated read failure")
+
+=== D043 independent probe: 34 passed, 0 failed of 34 ===
