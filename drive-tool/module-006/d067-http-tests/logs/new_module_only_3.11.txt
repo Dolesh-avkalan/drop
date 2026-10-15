@@ -3,6 +3,6 @@
 
 sssssssssssssssssssssssssssssssssssssssssssssssssssss..ss
 ----------------------------------------------------------------------
-Ran 57 tests in 0.033s
+Ran 57 tests in 0.025s
 
 OK (skipped=55)

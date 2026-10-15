@@ -1,12 +1,15 @@
 # D067 source identity (deliverable: tests/test_http_adapter.py)
 
+repo:          Dolesh-avkalan/drive-tool
 branch:        feature/module-006b-http-tests
 base commit:   b7f8d17b9dcc4aec68d54b38f994290e05264e67
-git blob sha1: d8322b7b4eba9fa62eacb19bd6ef4d72f532fe1c
-sha256:        ef81429dbbe2554d0a3c10ff6c2ec29c521bb134499dd109637c3a817aec8ae4
-lines:         1326
-bytes:         54064
+head commit:   e47587a506ed4dd25220eef92d54fb42a1f4fe63
+tree:          2c184aea001a2361a9103340d4a26f4d27bd3587
+git blob sha1: b571032c3e938abfb2a17f1dde44bb370469e4c4
+sha256:        de3c67d3405a176ee4ccfcab253083fb0fd7115b7174b569b352fdc747f90272
+lines:         1078
+bytes:         50785
 test methods:  57
 test classes:  14
 
-scope: exactly one new path (tests/test_http_adapter.py); no other file changed.
+scope: exactly one new path (tests/test_http_adapter.py); 1078 insertions; no other file changed.

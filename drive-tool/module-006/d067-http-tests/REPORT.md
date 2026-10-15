@@ -26,10 +26,10 @@ than fabricate a stage.
 ## 2. Exact source identity & scope
 
 - New path (the only change on the branch): `tests/test_http_adapter.py`
-- branch: `feature/module-006b-http-tests` (created at base `b7f8d17`)
-- git blob sha1: `d8322b7b4eba9fa62eacb19bd6ef4d72f532fe1c`
-- sha256: `ef81429dbbe2554d0a3c10ff6c2ec29c521bb134499dd109637c3a817aec8ae4`
-- lines / bytes: 1326 / 54064
+- branch: `feature/module-006b-http-tests` (created at base `b7f8d17`); head `e47587a506ed4dd25220eef92d54fb42a1f4fe63`, tree `2c184aea001a2361a9103340d4a26f4d27bd3587`
+- git blob sha1: `b571032c3e938abfb2a17f1dde44bb370469e4c4`
+- sha256: `de3c67d3405a176ee4ccfcab253083fb0fd7115b7174b569b352fdc747f90272`
+- lines / bytes: 1078 / 50785
 - test methods: 57 across 14 test classes (table-driven where the cases are uniform)
 - Scope: exactly one new file; no client/backend/policy/storage edit; no
   production adapter written; no merge, deploy, install, real root or token.
