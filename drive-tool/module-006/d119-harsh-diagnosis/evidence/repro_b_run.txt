@@ -1,0 +1,10 @@
+nproc 2 hogs 4
+== old : 3/12 runs with errors/torn ==
+   sample errors: [{"op": "read", "kind": "DriveClientError", "code": "busy", "message": "drive service error: busy", "outcome_uncertain": false, "retry_safe": true}]
+   sample torn  : []
+   lease_max_held: None
+== new : 0/12 runs with errors/torn ==
+== new_mutant : 12/12 runs with errors/torn ==
+   sample errors: []
+   sample torn  : [{"len": 4096}, {"len": 4096}]
+   lease_max_held: 5
