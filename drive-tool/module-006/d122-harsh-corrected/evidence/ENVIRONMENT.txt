@@ -1,0 +1,6 @@
+sandbox environment for the D122 validation
+python: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+platform: Linux-4.19.0-gvisor-x86_64-with-glibc2.36
+nproc: 2
+workspace: /scratch/work/d122ws/d110-337e4c71-8038-640945
+interpreter used by runner: /usr/local/bin/python3
