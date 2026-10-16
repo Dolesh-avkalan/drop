@@ -1,0 +1,1 @@
+HARSH_JSON: {"cycles": 50, "excess_busy": 50, "excess_other": 0, "excess_unavailable": 0, "mode": "real-service-entry-barrier", "occupier_bad": 0, "occupier_success": 300, "problems": [], "recovery_fail": [], "recovery_ok": 60, "resources": {"closed": true, "fd_after": 4, "fd_before": 11, "threads_after_close": []}, "result": "PASS", "stage": "admission_exhaustion"}
