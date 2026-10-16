@@ -1,0 +1,1 @@
+HARSH_JSON: {"frozen": {"agents": 6, "max_concurrent": 6, "seed": 53520, "temp_prefix": ".drive-tool-tmp-"}, "problems": [], "result": "PASS", "stage": "selfcheck"}
