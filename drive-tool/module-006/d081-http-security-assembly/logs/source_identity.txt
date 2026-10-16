@@ -14,7 +14,7 @@ drive_tool/http_adapter.py:
 tests/test_http_adapter.py:
   base blob: 80798e3200064a09e4c84a2b264c4f764b64599c  sha256 23dfe5ddbca815759ac26d378b4c70b84eb9c7374f52131cf328dc687e56f467
   head blob: 772239d2d9e593e13d6d19641529a3239836257e  sha256 81bebfe2e7e4f1185942ad1eb6e03b4be91007e65605e58ab304acb31d553b47
-  bytes: 57468
+  bytes: 57956
 
 patch source: drop 406e5fb6cbfdcdb3a9fcf8c45986994766d88eb0
   path: drive-tool/module-006/d080-http-security-fixes.md

@@ -14,7 +14,7 @@ candidate plus raw evidence. No auth/schema changes, no source redesign, no merg
 - `drive_tool/http_adapter.py` blob `02576d59…` → `8cd137f7323eb5c9e1e4166471a04073204840e5`
   (39813 bytes, sha256 `1e18561512614e13250582d042593ab72c8f7bfcb104af13a2646865e94a9ac7`)
 - `tests/test_http_adapter.py` blob `80798e32…` → `772239d2d9e593e13d6d19641529a3239836257e`
-  (57468 bytes, sha256 `81bebfe2e7e4f1185942ad1eb6e03b4be91007e65605e58ab304acb31d553b47`)
+  (57956 bytes, sha256 `81bebfe2e7e4f1185942ad1eb6e03b4be91007e65605e58ab304acb31d553b47`)
 - **strict two-file scope**: `M drive_tool/http_adapter.py`, `M tests/test_http_adapter.py`, nothing else.
 - patch source: `drop` `406e5fb6`, `drive-tool/module-006/d080-http-security-fixes.md`.
 - fetched the published branch back, `cmp`-confirmed byte identity with the local build, and

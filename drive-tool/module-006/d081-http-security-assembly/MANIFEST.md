@@ -1,13 +1,13 @@
 # D081 evidence manifest
 
-generated: 2026-10-16T00:03:32Z
+generated: 2026-10-16T00:04:16Z
 
 branch feature/module-006b-http-security-fixes head cc1cd326a1df85ad906796e535db466b4cf664ba tree e60cd406f732fff2f25a1a2d5063523d974e432e
 base f304425ab774158090edd69f1b605bcc3b03096d
 
 | file | bytes | sha256 |
 | --- | --- | --- |
-| `REPORT.md` | 9206 | `0ed9f554c174fe506b5bbf901e6d4ce8f58882114cd8c8e7957efbcaf5a43dfe` |
+| `REPORT.md` | 9206 | `43f3b787d9f3c4eda6c3947027b2793f4f26c4c6484baf3dd547501387a60369` |
 | `logs/compile.txt` | 301 | `2b166578c6cfc0829900c2c0722bdea4e83f48e0c1c572c1b9da2720c2f5a40f` |
 | `logs/d079_content_length_on_patched_3.11.txt` | 522 | `e2fe2d718fecb5d96d7e62cbe749b6d6cd28b58b2355fa9e8f2ea82db6b09b05` |
 | `logs/d079_content_length_on_patched_3.12.txt` | 522 | `e2fe2d718fecb5d96d7e62cbe749b6d6cd28b58b2355fa9e8f2ea82db6b09b05` |
@@ -34,7 +34,7 @@ base f304425ab774158090edd69f1b605bcc3b03096d
 | `logs/newpass_published_3.12.txt` | 688 | `9739ff620c9a8e558d98221cb582669d46780a013270aaeb394868d494605594` |
 | `logs/patch.diff` | 8076 | `2b6cbfba1ad245b2cd7cf0774d2ce45d6cf2ddd0d7d5dfcc1cab53b16f39fd81` |
 | `logs/scope.txt` | 58 | `b2e87988a978a4501e258163e84b9d7bfe33bfa87e6e11447f59ab24bde5b523` |
-| `logs/source_identity.txt` | 1212 | `d41f2f23354c82d46e2486ad0a488e4f1662b731eed099c87705991d3565777f` |
+| `logs/source_identity.txt` | 1212 | `dbe6525428e10245ef78fa3e845506e3c944814f5879d464ac5a2f7d81032718` |
 | `logs/tests.diff` | 6998 | `4a65b9ebc5f644b3f414ec8d17a196b0869e937748cf3a5d30eb66f041c3006e` |
 | `probes/probe_content_length.py` | 2250 | `3eaef5126f00e92073f07aa2ae3598032b1d1966887f28e712bc84fe302da9e0` |
 | `probes/probe_framing.py` | 2632 | `d352b4da597d220d9d89a88221672b769b822cd107bab62380dcf7157ed59abf` |
