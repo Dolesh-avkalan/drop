@@ -1,0 +1,40 @@
+{
+  "tmp_mount": {
+    "mount": "/tmp",
+    "fstype": "9p",
+    "opts": "rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs"
+  },
+  "native_probe": {
+    "probe_dir": "/tmp/d063-b7f8d17b-jzxewynq/tmp/readdir-probe",
+    "created_order": [
+      "a.txt",
+      "b.txt"
+    ],
+    "observed_order": [
+      "b.txt",
+      "a.txt"
+    ]
+  },
+  "dual_order_repro": {
+    "asc": {
+      "rc": 1,
+      "timed_out": false,
+      "seconds": 0.35,
+      "ran": null,
+      "skipped": null,
+      "ok": false,
+      "failed": false
+    },
+    "desc": {
+      "rc": 1,
+      "timed_out": false,
+      "seconds": 0.32,
+      "ran": null,
+      "skipped": null,
+      "ok": false,
+      "failed": false
+    }
+  },
+  "confirmed_order_sensitive_defect": false,
+  "order_sensitive_test": "tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged"
+}

@@ -1,0 +1,69 @@
+workspace: /tmp/d063-b7f8d17b-jzxewynq (mode 0700)
+payload stress_checks.py sha256 OK: 8097d0a3074c37e5b891f78101f95d24f5bfb73d818cd8a0278c9fe61fa85be9
+--- environment (before) ---
+  time:      2026-10-15T23:59:40Z
+  host:      claw-sandbox-5bae244fa3a7f503f16c7f6f90
+  uname:     Linux claw-sandbox-5bae244fa3a7f503f16c7f6f90 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   66764800 bytes
+  /tmp fs:   9p opts=rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+  MemTotal: 2148352 kB
+  MemAvailable: 2086400 kB
+downloaded archive (338575 bytes)
+extracted 123 members; src root = drive-tool-b7f8d17b9dcc4aec68d54b38f994290e05264e67
+note: 88 unexpected non-executable file(s): ['README.md', 'AGENTS.md', 'tasks/d062-combined-client-backend.md', 'tasks/d060-gemini-http-security.txt', 'tasks/d060-gemini-http-review-result.md']
+identity OK: all 26 pinned executable files match; no unexpected importable/executable or symlinked file
+/tmp mount: 9p opts=rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+native readdir probe order: ['b.txt', 'a.txt'] (created a.txt before b.txt)
+interpreters found: ['python3.12=3.12.13', 'python3.11=3.11.2']
+dual-order repro: asc rc=1 desc rc=1 confirmed=False
+=== committed suite on python3.12 (3.12.13) ===
+  ran=506 skipped=0 ok=False failed=True exit=1 timeout=False trunc=False
+=== committed suite on python3.11 (3.11.2) ===
+  ran=506 skipped=0 ok=False failed=True exit=1 timeout=False trunc=False
+SUITE DID NOT PASS - continuing to stress stages for diagnostic evidence (overall exit will remain NONZERO)
+=== stress stage: smoke ===
+  smoke: rc=0 timeout=False calls=600
+=== stress stage: soak ===
+  soak: rc=0 timeout=False calls=10000
+=== stress stage: edges ===
+  edges: rc=0 timeout=False calls=None
+--- environment (after) ---
+  time:      2026-10-16T00:00:18Z
+  host:      claw-sandbox-5bae244fa3a7f503f16c7f6f90
+  uname:     Linux claw-sandbox-5bae244fa3a7f503f16c7f6f90 4.19.0-gvisor #1 SMP Sun Jan 10 15:06:54 PST 2016 x86_64 
+  os:        Debian GNU/Linux 12 (bookworm)
+  runner py: 3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]
+  nproc:     2
+  ws free:   62529536 bytes
+  /tmp fs:   9p opts=rw,trans=fd,rfdno=56,wfdno=56,aname=/,dfltuid=4294967294,dfltgid=4294967294,dcache=1000,cache=remote_revalidating,disable_fifo_open,directfs
+  MemTotal: 2148352 kB
+  MemAvailable: 2083964 kB
+
+=== summary ===
+  suite python3.12: ran=506 skipped=0 ok=False
+  suite python3.11: ran=506 skipped=0 ok=False
+  suite diagnostic continue: True (stages ran for evidence only)
+  /tmp fstype: 9p
+  native readdir order: ['b.txt', 'a.txt']
+  dual-order confirmed: False
+  stage smoke: PASS calls=600 trunc=False
+  stage soak: PASS calls=10000 trunc=False
+  stage edges: PASS calls=None trunc=False
+  workspace apparent bytes: 15973880
+  workspace allocated bytes: 16054784
+  manifest entries: 336 files, 6 symlinks (not followed)
+RESULT: FAIL (fail-closed)
+  !! suite failed on python3.12 (exit 1)
+  !! suite failed on python3.11 (exit 1)
+
+Exact target invocation (single command, from the runner directory):
+  python3 run_cloud_stress.py
+
+Result packaging command (evidence is retained; run to collect it):
+  tar -czf d063-evidence-b7f8d17b.tar.gz -C /tmp d063-b7f8d17b-jzxewynq
+
+Safe, precise cleanup (run only when evidence is no longer needed):
+  rm -rf /tmp/d063-b7f8d17b-jzxewynq

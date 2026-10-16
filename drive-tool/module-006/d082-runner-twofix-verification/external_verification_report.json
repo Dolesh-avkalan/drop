@@ -1,0 +1,23 @@
+{
+  "fact1": {
+    "modname_value": "tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests",
+    "raised_exception_type": "ModuleNotFoundError",
+    "exception_message": "No module named 'tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests'; 'tests.test_partial_scan_review_fixes' is not a package",
+    "confirmed": true
+  },
+  "fact2": {
+    "asc_summary_line": "Ran 1 test in 0.005s",
+    "asc_exit": 0,
+    "desc_summary_line": "Ran 1 test in 0.005s",
+    "desc_failure_line": "AssertionError: 3 != 2",
+    "desc_exit": 1,
+    "confirmed": true
+  },
+  "raw_commands": [
+    "curl -L https://codeload.github.com/Dolesh-avkalan/drive-tool/tar.gz/b7f8d17b9dcc4aec68d54b38f994290e05264e67 -o /scratch/work/dt.tgz",
+    "mkdir -p /scratch/work/dt && tar -xzf /scratch/work/dt.tgz -C /scratch/work/dt",
+    "PYTHONDONTWRITEBYTECODE=1 python3.12 fact1.py \"$SRC\" \"$TESTNAME\"",
+    "PYTHONDONTWRITEBYTECODE=1 python3.12 repro.py asc \"$SRC\" \"$TESTNAME\"",
+    "PYTHONDONTWRITEBYTECODE=1 python3.12 repro.py desc \"$SRC\" \"$TESTNAME\""
+  ]
+}

@@ -1,0 +1,36 @@
+# d082-runner-twofix manifest
+
+Bundle: d082-runner-twofix/
+generated: 2026-10-16T00:06:28Z
+
+`HASHES.txt` and this `MANIFEST.md` are excluded from the table (mutual self-reference).
+
+| file | bytes | sha256 |
+| --- | --- | --- |
+| `IDENTITIES.md` | 4690 | `e35a325db76a917670e07c4ee62627779b871ee1ddbfc2707542add0286672fc` |
+| `negatives/logs/negatives_results.json` | 9559 | `9b6e1b174fad761dd21c819780e4560828dccc571e298548e61fa5742e0a45dc` |
+| `negatives/logs_stdout.txt` | 8061 | `258dfe21399f0f6a011503f2711f9473381ea2282021f3085e21bc00a91645fc` |
+| `negatives/run_negatives.py` | 26115 | `8917b6a1a6056afbae3417b55b6d1a28c4c0ca29f064c0262f984b2156de8b9e` |
+| `originals/MANIFEST.md` | 3121 | `91132258576c7d27e485e07c5ed97b76ccdef7916a40699c1b58aae87660a121` |
+| `originals/runner/README.md` | 8478 | `bb3fe881c699fc8bceb26f0c0ffaf1e3e657cbba5d66efdfb89eedbcbdc7c67f` |
+| `originals/runner/run_cloud_stress.py` | 26514 | `66c9079ff7bb757256bb0a5f70b16293bfb85f3264520d8acbeccce95a81587e` |
+| `originals/runner/stress_checks.py` | 21467 | `8097d0a3074c37e5b891f78101f95d24f5bfb73d818cd8a0278c9fe61fa85be9` |
+| `originals/tests_test_runner_gates.py` | 6757 | `7592d46e1278a855cda9bda7da9e065c1b1a6916bd8aa6c9587dd85eb97e8387` |
+| `runner/README.md` | 10367 | `25b3f5a7d629bf9d5bae639841bc29286d0b9657166a1dfc6a55f7c5339a6dcb` |
+| `runner/run_cloud_stress.py` | 43732 | `318e2100fc3a7da718e97768720cf0b5cb49954edd8e879e5c1851ec041cf2d8` |
+| `runner/stress_checks.py` | 21467 | `8097d0a3074c37e5b891f78101f95d24f5bfb73d818cd8a0278c9fe61fa85be9` |
+| `sandbox/default_invocation.log` | 3649 | `75771d8ca27ebf6650c2e3d43b78754af45ba310a7b2049b48bb062b24bcdaac` |
+| `sandbox/workspace_logs/MANIFEST.md` | 44023 | `4cf258623167d7ac0085a868a08042c3e1bcdd50be8c411a5a9d10bb4f14e27f` |
+| `sandbox/workspace_logs/_dual_order_repro.py` | 2022 | `a1bbd76d627c53a38c1c9f493fcc194c35788d888c91b84e15469d7662a85092` |
+| `sandbox/workspace_logs/dual_order_asc.out` | 1134 | `4ad2d260bd7f02689bff337dc654723ce9b3df3eb2e6bd8fa6b0c8d589473ca1` |
+| `sandbox/workspace_logs/dual_order_desc.out` | 1135 | `10e420dc93820716aaaf6b174f2015304f55ef6b0574dd584e7fe215a97f154e` |
+| `sandbox/workspace_logs/env_after.json` | 1606 | `0af0b4d8d492ce0759500c6b6e090970be36cb99d33486966afe98c358d575d7` |
+| `sandbox/workspace_logs/env_before.json` | 1607 | `8f5e7499731475a6876c958ef14249e14cc7ef16f4a06178d9f236636ea8f53f` |
+| `sandbox/workspace_logs/identity.txt` | 3507 | `fd744e94d8eef8807d802ac12f765d7c9e5444a68f4363bfec4504acdcccc12a` |
+| `sandbox/workspace_logs/readdir_order_confirmation.json` | 986 | `beadca143dd0bd427ab74d0ce26aef4d9095b31eb075ea053946eccdb31a6b8a` |
+| `sandbox/workspace_logs/stress_edges.out` | 972 | `6ba55417e51919aef9c36b02bbf72eaae09e849e4abbca259573d4468499bdb9` |
+| `sandbox/workspace_logs/stress_smoke.out` | 728 | `d8d9f0c0113dbf9e2448c7bb08ff8d1ea67e6a993192a917a5b045df25ab1308` |
+| `sandbox/workspace_logs/stress_soak.out` | 736 | `994c8d525bed53a90dd74f13d7fbd0c775969f37b0cdce09e485ae75162845af` |
+| `sandbox/workspace_logs/suite_python3.11.out` | 67274 | `d2f302569cf6608c2d52ba100e362e54e517bebf7916c477e80164d2c123e3cb` |
+| `sandbox/workspace_logs/suite_python3.12.out` | 67280 | `99e84ad04902af2569a30a014eace25ecf087e1c661fbfc44607ff612d43d227` |
+| `sandbox/workspace_logs/summary.json` | 2750 | `2e8392ead8bba9aaf4d2bac36235ebc6b9e3931b65295a3bea7fa349f39060e5` |
