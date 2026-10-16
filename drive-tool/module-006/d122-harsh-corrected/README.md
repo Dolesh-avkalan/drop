@@ -73,12 +73,42 @@ harsh_checks_d110.py     # corrected payload (3e13cdde…)
 run_harsh_d110.py        # corrected outer runner (39192ffe…)
 d122_corrected.patch     # diff vs original payload 5599d32f…
 SHA256SUMS
+neg/neg_focused.py  neg_r2.py  neg_race.py
+               # focused-negative drivers (read-only diagnostics)
+evidence/ENVIRONMENT.txt
+        full_runner_summary.json
+        harsh_concurrent_ops_python3.json  harsh_resource_pressure_python3.json
+        neg_focused_run.txt  neg_r2_normal.txt  neg_r2_nomem.txt  neg_race_run.txt
 ```
+
+## Sandbox results (2 vCPU, CPython 3.12.13 — not the target)
+
+Full runner (`--sandbox --archive <pin>`): **all 8 stages PASS**, `mode=sandbox`,
+`result=SANDBOX_PASS exit=1` (a sandbox run is never a target pass).
+`sandbox_relaxations = ['base-dir outside /tmp allowed', 'disk floor lowered to
+33554432 bytes']`. `problems = []`. Payload verified `3e13cdde…` / 81318 B.
+`concurrent_ops`: `create_entered=6 multi_entered=6 lease_max_held=5
+create_winners=1 create_exists=5 torn=0 overwrite_error_count=0`.
+`resource_pressure`: R1 `ok=300`, R2 `PASS` (`mem_error=MemoryError`, `ok=50`,
+`recovery_ok=20`, `vm_kb_before=26912`, `vm_kb_ballast=230272`,
+`vm_kb_peak=514948`), R3 `PASS` (`mapped=136 raw=0 recovery_ok=20`).
+
+Focused negatives (all four blockers exercised):
+
+| negative | result |
+| --- | --- |
+| NEG1 writer failure → clean `FAIL` | `result=FAIL overwrite_error_count=2 is_unhashable_error=false` |
+| NEG2 6-way one-shot barriers entered | `create_entered=6 multi_entered=6 winners=1 exists=5` |
+| NEG3 missing `MemoryError` | R2 `FAIL`, stage `FAIL` (`mem_error=null`) |
+| NEG4 hanging child | killed+reaped in 5.04 s, `returncode=-9`, `child_error=no_result` |
+| NEG5 oldfail / newpass / mutant | original `1/8 FAIL`; corrected `0/8 FAIL`; corrected+non-atomic publish `4/4 FAIL` |
 
 ## Status
 
-- Sandbox validation (full runner + focused negatives) is recorded in
-  `evidence/` (published progressively).
 - **Gemini delta acceptance is required before any target re-run.** This is a
-  corrected candidate, not a target pass.
-- Unfinished checks and exact inventory are listed in the D122 summary.
+  corrected candidate, not a target pass. The original D110 package
+  (`f55f1ca2` / `5599d32f`, restored README `9301351c`) and the D112 package are
+  unchanged; the corrected runner/README/SHA256SUMS live here in
+  `d122-harsh-corrected/`.
+- Unfinished checks are listed at the end of the D122 report (none block
+  publication; all four blockers are fixed and exercised).
