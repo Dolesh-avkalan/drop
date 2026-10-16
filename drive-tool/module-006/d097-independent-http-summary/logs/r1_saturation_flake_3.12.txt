@@ -1,0 +1,10 @@
+# D095/D096 r1 saturation flake reproduction (independent, 3.12)
+generated: 2026-10-16T01:57:34Z
+run 1 FAIL valid=288 busy=38 unavail=0 other=24 ['valid_below_capacity_success: expected 300, got 288', 'expected_saturation_busy: expected 50, got 38', 'unexpected_other_error: expected 0, got 24']
+run 2 FAIL valid=293 busy=43 unavail=0 other=14 ['valid_below_capacity_success: expected 300, got 293', 'expected_saturation_busy: expected 50, got 43', 'unexpected_other_error: expected 0, got 14']
+run 3 FAIL valid=297 busy=46 unavail=0 other=7 ['valid_below_capacity_success: expected 300, got 297', 'expected_saturation_busy: expected 50, got 46', 'unexpected_other_error: expected 0, got 7']
+run 4 FAIL valid=291 busy=40 unavail=0 other=19 ['valid_below_capacity_success: expected 300, got 291', 'expected_saturation_busy: expected 50, got 40', 'unexpected_other_error: expected 0, got 19']
+run 5 FAIL valid=295 busy=45 unavail=0 other=10 ['valid_below_capacity_success: expected 300, got 295', 'expected_saturation_busy: expected 50, got 45', 'unexpected_other_error: expected 0, got 10']
+run 6 FAIL valid=296 busy=46 unavail=0 other=8 ['valid_below_capacity_success: expected 300, got 296', 'expected_saturation_busy: expected 50, got 46', 'unexpected_other_error: expected 0, got 8']
+run 7 FAIL valid=297 busy=46 unavail=0 other=7 ['valid_below_capacity_success: expected 300, got 297', 'expected_saturation_busy: expected 50, got 46', 'unexpected_other_error: expected 0, got 7']
+run 8 FAIL valid=299 busy=48 unavail=0 other=3 ['valid_below_capacity_success: expected 300, got 299', 'expected_saturation_busy: expected 50, got 48', 'unexpected_other_error: expected 0, got 3']
