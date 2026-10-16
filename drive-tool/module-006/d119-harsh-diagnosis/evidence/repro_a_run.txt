@@ -1,0 +1,14 @@
+nproc 2 hogs 4 iters 12
+iter  0 PASS 7.12s busy=0 served_max=6 problems=[]
+iter  1 FAIL 6.38s busy=1 served_max=6 problems=["torn/inconsistent reads: [{'exc': 'DriveClientError'}]"]
+iter  2 FAIL 5.42s busy=1 served_max=6 problems=["concurrent overwrite errors: ['DriveClientError']"]
+iter  3 FAIL 5.38s busy=1 served_max=6 problems=["torn/inconsistent reads: [{'exc': 'DriveClientError'}]"]
+iter  4 FAIL 6.02s busy=1 served_max=6 problems=["torn/inconsistent reads: [{'exc': 'DriveClientError'}]"]
+iter  5 FAIL 6.38s busy=1 served_max=6 problems=["concurrent overwrite errors: ['DriveClientError']"]
+iter  6 PASS 6.92s busy=0 served_max=6 problems=[]
+iter  7 FAIL 5.18s busy=1 served_max=6 problems=["torn/inconsistent reads: [{'exc': 'DriveClientError'}]"]
+iter  8 FAIL 6.10s busy=1 served_max=6 problems=["torn/inconsistent reads: [{'exc': 'DriveClientError'}]"]
+iter  9 PASS 6.30s busy=0 served_max=6 problems=[]
+iter 10 FAIL 5.91s busy=1 served_max=6 problems=["concurrent overwrite errors: ['DriveClientError']"]
+iter 11 FAIL 6.20s busy=1 served_max=6 problems=["concurrent overwrite errors: ['DriveClientError']"]
+TOTAL fails=9/12
