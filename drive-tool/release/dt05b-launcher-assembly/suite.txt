@@ -1,0 +1,16 @@
+......................................................................../scratch/work/drive-tool/tests/test_http_adapter.py:363: ResourceWarning: unclosed file <_io.TextIOWrapper name='/scratch/work/drive-tool/drive_tool/http_adapter.py' mode='r' encoding='utf-8'>
+  src = open(m.__file__, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+....................................s.ss...........................................................................................................................................................................................................................................................................................................................F...............................................................................................................................................................................
+======================================================================
+FAIL: test_run_end_to_end (test_serve.ServeEndToEndTests.test_run_end_to_end)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/drive-tool/tests/test_serve.py", line 243, in test_run_end_to_end
+    self.assertIn("entries", listing)
+AssertionError: 'entries' not found in {'items': [{'ref': {'source_id': 'work', 'file_id': 'p/hello.txt'}, 'name': 'hello.txt', 'parent_id': 'root', 'kind': 'file', 'size_bytes': 11}], 'next_offset': None}
+
+----------------------------------------------------------------------
+Ran 603 tests in 12.435s
+
+FAILED (failures=1, skipped=3)
