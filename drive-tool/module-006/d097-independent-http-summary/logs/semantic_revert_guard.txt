@@ -1,0 +1,28 @@
+# D097 strict semantic-revert guard (compile-clean, no syntax false positives)
+generated: 2026-10-16T01:58:28Z
+
+## Level A — full revert of drive_tool/http_adapter.py to base b962a04d
+(the busy-phase constants are part of the frozen contract, so the candidate
+ test module cannot import them; the adapter tests are SKIPPED — visibly not a pass)
+python3.11: compile OK
+python3.12: compile OK
+--- python3.11 full suite ---
+Ran 581 tests in 8.368s
+
+OK (skipped=73)
+--- python3.12 full suite ---
+Ran 581 tests in 6.495s
+
+OK (skipped=73)
+
+## Level B — constants present, monolithic _busy_reject (the D092 defect re-introduced)
+python3.11: compile OK
+python3.12: compile OK
+--- python3.11 BusyPhaseBudgetTests ---
+Ran 5 tests in 0.003s
+
+FAILED (failures=2)
+--- python3.12 BusyPhaseBudgetTests ---
+Ran 5 tests in 0.004s
+
+FAILED (failures=2)
