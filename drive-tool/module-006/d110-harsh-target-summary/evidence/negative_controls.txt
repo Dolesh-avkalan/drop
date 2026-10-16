@@ -1,0 +1,12 @@
+D110 guard-negative controls
+================================
+N1a clean payload accepted             PASS
+N1b tampered payload rejected          PASS
+N2a clean source accepted              PASS
+N2b tampered source rejected           PASS
+N3 extra importable file rejected      PASS
+N4 extra tests file rejected           PASS
+N5 symlink in source rejected          PASS
+N6 missing expected file rejected      PASS
+================================
+overall: PASS
