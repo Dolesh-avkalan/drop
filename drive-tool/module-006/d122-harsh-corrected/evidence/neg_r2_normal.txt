@@ -1,0 +1,5 @@
+stage result: PASS
+R2: {"ok": 50, "mem_error": "MemoryError", "vm_kb_before": 26908, "vm_kb_ballast": 228640, "vm_kb_peak": 513328, "recovery_ok": 20, "result": "PASS"}
+R1 ok: 300
+R3: {'result': 'PASS', 'mapped': 115, 'raw': 0, 'recovery_ok': 20}
+problems: []
