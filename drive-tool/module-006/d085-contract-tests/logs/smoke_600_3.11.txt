@@ -1,0 +1,30 @@
+stage=smoke  calls=600  agents=1  concurrency=6  outer_budget=900s
+threads_before=1 threads_after=1 (expected adapter threads=7)
+wall_seconds=3.808
+{
+  "calls_completed": 600,
+  "calls_requested": 600,
+  "closed": true,
+  "error_codes": {
+    "err:busy": 32,
+    "err:unavailable": 1
+  },
+  "failures": [
+    "unexpected error codes: {'err:busy': 32, 'err:unavailable': 1}"
+  ],
+  "fd_after": 4,
+  "fd_before": 11,
+  "outcomes": {
+    "err:busy": 32,
+    "err:unavailable": 1,
+    "find": 114,
+    "list": 168,
+    "read": 174,
+    "save": 111
+  },
+  "result": "FAIL",
+  "rss_after_kb": 32528,
+  "rss_before_kb": 44444,
+  "seconds": 3.69
+}
+RESULT: FAIL

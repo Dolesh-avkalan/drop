@@ -1,0 +1,3 @@
+test_helper_raises_without_production_adapter (test_http_adapter.SmokeSoakGateContractTests.test_helper_raises_without_production_adapter) ... skipped 'production adapter present; gate test not applicable'
+test_stage_smoke_600 (test_http_adapter.SmokeSoakGateTests.test_stage_smoke_600) ... skipped 'smoke/soak opt-in (D067_RUN_HTTP_SMOKE_SOAK=1) + production adapter'
+test_stage_soak_10000 (test_http_adapter.SmokeSoakGateTests.test_stage_soak_10000) ... skipped 'smoke/soak opt-in (D067_RUN_HTTP_SMOKE_SOAK=1) + production adapter'

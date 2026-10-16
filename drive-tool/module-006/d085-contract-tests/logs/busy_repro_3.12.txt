@@ -1,0 +1,3 @@
+concurrency=4 calls=600 busy=0 total=600 seconds=3.71 other_errors={}
+concurrency=5 calls=600 busy=0 total=600 seconds=3.34 other_errors={}
+concurrency=6 calls=600 busy=32 total=600 seconds=4.09 other_errors={}

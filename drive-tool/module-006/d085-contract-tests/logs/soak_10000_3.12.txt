@@ -1,0 +1,32 @@
+stage=soak  calls=10000  agents=6  concurrency=6  outer_budget=900s
+threads_before=1 threads_after=1 (expected adapter threads=7)
+wall_seconds=59.074
+{
+  "calls_completed": 10000,
+  "calls_requested": 10000,
+  "closed": true,
+  "error_codes": {
+    "err:busy": 326,
+    "err:denied": 320,
+    "err:unavailable": 6
+  },
+  "failures": [
+    "unexpected error codes: {'err:denied': 320, 'err:busy': 326, 'err:unavailable': 6}"
+  ],
+  "fd_after": 4,
+  "fd_before": 11,
+  "outcomes": {
+    "err:busy": 326,
+    "err:denied": 320,
+    "err:unavailable": 6,
+    "find": 1942,
+    "list": 2888,
+    "read": 2893,
+    "save": 1625
+  },
+  "result": "FAIL",
+  "rss_after_kb": 32688,
+  "rss_before_kb": 36972,
+  "seconds": 58.91
+}
+RESULT: FAIL

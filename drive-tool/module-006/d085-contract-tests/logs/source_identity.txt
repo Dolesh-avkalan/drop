@@ -1,0 +1,20 @@
+# D085 source identity
+
+repo:        Dolesh-avkalan/drive-tool
+base commit: cc1cd326a1df85ad906796e535db466b4cf664ba
+base tree:   e60cd406f732fff2f25a1a2d5063523d974e432e
+branch:      feature/module-006b-http-contract-tests
+head commit: 7dab4357ca9a79a6c857ab78bea55805dfa1de89
+head tree:   26eff85fa3b9945619157632e65d594c41653aac
+
+tests/test_http_adapter.py (ONLY changed path):
+  base blob: 772239d2d9e593e13d6d19641529a3239836257e  bytes 57956
+  head blob: 5419096c43190ea61270fd9091a8601d376bdd1e  bytes 64700
+  head sha256: 951e73d01b170a13789eb2306d66e695cc8ba5d3ae253a67be3d1bf4dc391469
+
+drive_tool/http_adapter.py (UNCHANGED):
+  blob: 8cd137f7323eb5c9e1e4166471a04073204840e5
+  sha256: 1e18561512614e13250582d042593ab72c8f7bfcb104af13a2646865e94a9ac7
+
+adjudication: drop 1676ffd, drive-tool/module-006/d083-auth-adjudication.md
+  blob: 28464d641281adb6a13c328d31a380c7cac8570f
