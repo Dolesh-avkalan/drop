@@ -1,0 +1,8 @@
+$ /usr/local/bin/python3.12 /scratch/work/d093/bundle/runner/stress_checks.py edges /tmp/d063-b7f8d17b-42gnynur/extract/drive-tool-b7f8d17b9dcc4aec68d54b38f994290e05264e67 --deadline-seconds 110
+
+STRESS_RESULT edges: PASS
+STRESS_JSON: {"action": "edges", "checks": {"close_active_lease": true, "close_idempotent": true, "empty_save_roundtrip": true, "fault_outcome_uncertain": true, "fault_post_publish_code": true, "fault_published_before_error": true, "fault_retry_not_safe": true, "fd_returns_baseline": true, "no_temp_leaks": true, "post_close_unavailable": true, "race_exact_payload": true, "race_single_winner": true, "read_at_eof": true, "read_empty_file": true, "read_exact_window": true, "read_past_eof": true, "read_short_file": true, "sparse_large_range": true, "symlink_omitted_from_listing": true}, "failures": [], "outcomes_seen": {"unavailable": 2}, "result": "PASS", "seconds": 0.08}
+
+--- stderr ---
+
+EXIT=0 timed_out=False truncated=False seconds=0.4

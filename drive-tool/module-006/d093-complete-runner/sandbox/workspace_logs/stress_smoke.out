@@ -1,0 +1,8 @@
+$ /usr/local/bin/python3.12 /scratch/work/d093/bundle/runner/stress_checks.py smoke /tmp/d063-b7f8d17b-42gnynur/extract/drive-tool-b7f8d17b9dcc4aec68d54b38f994290e05264e67 --deadline-seconds 170
+
+STRESS_RESULT smoke: PASS
+STRESS_JSON: {"action": "smoke", "calls_completed": 600, "calls_requested": 600, "closed_ok": true, "failures": [], "fd_after": 4, "fd_before": 4, "fixture_bytes": 14180953, "outcomes": {"err:denied": 50, "err:exists": 13, "find": 126, "list": 129, "read": 212, "save": 70}, "result": "PASS", "rss_after_kb": 30920, "rss_before_kb": 26032, "seconds": 1.02, "temp_leaks": [], "threads_before": 1, "threads_peak": 7, "unexpected": []}
+
+--- stderr ---
+
+EXIT=0 timed_out=False truncated=False seconds=1.35
