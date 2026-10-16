@@ -1,0 +1,1585 @@
+{
+  "aggregate": {
+    "python3.11": "PARTIAL",
+    "python3.12": "PARTIAL"
+  },
+  "archive_bytes": 489794,
+  "archive_origin": "local:/scratch/work/d110/cand.tar.gz",
+  "archive_sha256": "191d6f2bd985be51f1b6092472beeec25b267a4c6e89de7817b4d6538c61c6c3",
+  "disk": {
+    "base": "/scratch/work/d110/ws",
+    "floor_bytes": 1073741824,
+    "free_base_bytes": 304992366592,
+    "free_root_bytes": 9223372036853522432
+  },
+  "exit": 1,
+  "finished": "2026-10-16T04:10:35Z",
+  "host": {
+    "confirmed": null,
+    "disposable_host_verified": false,
+    "expected": "instance-20261015-210506",
+    "hostname": "claw-sandbox-404a053f93c6ba244db114eefa"
+  },
+  "identity": {
+    "checked": 28,
+    "problems": []
+  },
+  "interpreter": "3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]",
+  "manifest": {
+    "files": 132,
+    "path": "source_manifest.tsv"
+  },
+  "mode": "sandbox",
+  "payload": {
+    "bytes": 75545,
+    "file": "harsh_checks_d110.py",
+    "problems": [],
+    "sha256": "5599d32fa9df7918a8809098492284cebbce42b9141c61844c18c069fc17db43"
+  },
+  "pin": {
+    "archive": "https://codeload.github.com/Dolesh-avkalan/drive-tool/tar.gz/337e4c713829af76615472eb47b81244ff399528",
+    "commit": "337e4c713829af76615472eb47b81244ff399528",
+    "repo": "Dolesh-avkalan/drive-tool"
+  },
+  "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
+  "problems": [],
+  "pythons": [
+    "python3.11",
+    "python3.12"
+  ],
+  "required_stages": [
+    "selfcheck",
+    "http_hostile",
+    "admission_exhaustion",
+    "isolation",
+    "concurrent_ops",
+    "crash_kill",
+    "resource_pressure",
+    "enospc"
+  ],
+  "resources": {
+    "elapsed_seconds": 44.886,
+    "free_base_bytes": 304987901952,
+    "within_workspace_bound": true,
+    "workspace_allocated_bytes": 2371584,
+    "workspace_limit_bytes": 201326592
+  },
+  "result": "PARTIAL",
+  "runner": "d110-harsh-fault-runner",
+  "sandbox_relaxations": [
+    "base-dir outside /tmp allowed",
+    "disk floor lowered to 1073741824 bytes"
+  ],
+  "source_root": "src/drive-tool-337e4c713829af76615472eb47b81244ff399528",
+  "stages": {
+    "python3.11": {
+      "admission_exhaustion": {
+        "cycles": 50,
+        "excess_busy": 50,
+        "excess_other": 0,
+        "excess_unavailable": 0,
+        "json": "logs/harsh_admission_exhaustion_python311.json",
+        "log": "logs/harsh_admission_exhaustion_python311.out",
+        "mode": "real-service-entry-barrier",
+        "occupier_bad": 0,
+        "occupier_success": 300,
+        "problems": [],
+        "raw_exit": 0,
+        "recovery_fail": [],
+        "recovery_ok": 60,
+        "resources": {
+          "closed": true,
+          "fd_after": 4,
+          "fd_before": 11,
+          "threads_after_close": []
+        },
+        "result": "PASS",
+        "stage": "admission_exhaustion",
+        "timed_out": false
+      },
+      "concurrent_ops": {
+        "create_exists": 5,
+        "create_other": [],
+        "create_winners": 1,
+        "json": "logs/harsh_concurrent_ops_python311.json",
+        "log": "logs/harsh_concurrent_ops_python311.out",
+        "multi_agent": [
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "overwrite_errors": [],
+        "problems": [],
+        "raw_exit": 0,
+        "resources": {
+          "closed": true,
+          "fd_after": 4,
+          "fd_before": 11,
+          "threads_after_close": []
+        },
+        "result": "PASS",
+        "stage": "concurrent_ops",
+        "temp_residue": [],
+        "timed_out": false,
+        "torn_count": 0,
+        "torn_reads": []
+      },
+      "crash_kill": {
+        "cases": [
+          {
+            "killed_sigkill": true,
+            "mode": "C1",
+            "orphan_temps": 1,
+            "orphan_visible_in_find": 0,
+            "orphan_visible_in_list": 0,
+            "overwrite": false,
+            "ready": true,
+            "recovery": {
+              "ok": true
+            },
+            "target_state": "absent"
+          },
+          {
+            "killed_sigkill": true,
+            "mode": "C1",
+            "orphan_temps": 1,
+            "orphan_visible_in_find": 0,
+            "orphan_visible_in_list": 0,
+            "overwrite": true,
+            "ready": true,
+            "recovery": {
+              "ok": true
+            },
+            "target_state": "original"
+          },
+          {
+            "killed_sigkill": true,
+            "mode": "C2",
+            "orphan_temps": 1,
+            "orphan_visible_in_find": 0,
+            "orphan_visible_in_list": 0,
+            "overwrite": false,
+            "ready": true,
+            "recovery": {
+              "ok": true
+            },
+            "target_state": "absent"
+          },
+          {
+            "killed_sigkill": true,
+            "mode": "C2",
+            "orphan_temps": 1,
+            "orphan_visible_in_find": 0,
+            "orphan_visible_in_list": 0,
+            "overwrite": true,
+            "ready": true,
+            "recovery": {
+              "ok": true
+            },
+            "target_state": "original"
+          }
+        ],
+        "json": "logs/harsh_crash_kill_python311.json",
+        "log": "logs/harsh_crash_kill_python311.out",
+        "note": "SIGKILL proves process-crash atomicity, NOT physical power-loss durability across a hypervisor disk cache.",
+        "problems": [],
+        "raw_exit": 0,
+        "result": "PASS",
+        "stage": "crash_kill",
+        "timed_out": false
+      },
+      "enospc": {
+        "injected_phases": [
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": false,
+            "overwrite_preserved": null,
+            "phase": "temp_create",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": false
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": true,
+            "overwrite_preserved": true,
+            "phase": "temp_create",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": true
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": false,
+            "overwrite_preserved": null,
+            "phase": "mid_write",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": false
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": true,
+            "overwrite_preserved": true,
+            "phase": "mid_write",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": true
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": false,
+            "overwrite_preserved": null,
+            "phase": "fsync",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": false
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": true,
+            "overwrite_preserved": true,
+            "phase": "fsync",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": true
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": false,
+            "overwrite_preserved": null,
+            "phase": "publish",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": false
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": true,
+            "overwrite_preserved": true,
+            "phase": "publish",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": true
+          }
+        ],
+        "json": "logs/harsh_enospc_python311.json",
+        "log": "logs/harsh_enospc_python311.out",
+        "note": "Error classification is recorded as the ACCEPTED adapter actually behaves; the historical design's expected outcome_uncertain=False/retry_safe=True is NOT assumed.",
+        "problems": [],
+        "raw_exit": 0,
+        "result": "PASS",
+        "rlimit_fsize": {
+          "code": "unavailable",
+          "orphans": 0,
+          "outcome_uncertain": true,
+          "raised": "ServiceError",
+          "result": "PASS",
+          "retry_safe": false,
+          "target_exists": false
+        },
+        "stage": "enospc",
+        "timed_out": false
+      },
+      "http_hostile": {
+        "json": "logs/harsh_http_hostile_python311.json",
+        "log": "logs/harsh_http_hostile_python311.out",
+        "max_response_bytes": 191,
+        "observed": {
+          "bare_lf_header_block": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 4.304,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "buffered_trailing_bytes": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 0.908,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "duplicate_content_length": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 1.046,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "empty_request": {
+            "bytes": 186,
+            "code": "timeout",
+            "elapsed_ms": 1002.348,
+            "outcome_uncertain": false,
+            "retry_safe": true,
+            "status": 504,
+            "transport_error": null
+          },
+          "huge_digit_content_length": {
+            "bytes": 191,
+            "code": "too_large",
+            "elapsed_ms": 3.894,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 413,
+            "transport_error": null
+          },
+          "immediate_close": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 2.149,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "non_digit_content_length": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 1.068,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "overlong_header_block": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 7.927,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "overlong_request_line": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 2.585,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "oversize_json_body": {
+            "bytes": 191,
+            "code": "too_large",
+            "elapsed_ms": 1.079,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 413,
+            "transport_error": null
+          },
+          "oversize_save_body": {
+            "bytes": 191,
+            "code": "too_large",
+            "elapsed_ms": 1.656,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 413,
+            "transport_error": null
+          },
+          "slow_partial_header": {
+            "bytes": 186,
+            "code": "timeout",
+            "elapsed_ms": 1001.82,
+            "outcome_uncertain": false,
+            "retry_safe": true,
+            "status": 504,
+            "transport_error": null
+          },
+          "too_many_headers": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 1.154,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "truncated_body": {
+            "bytes": 186,
+            "code": "timeout",
+            "elapsed_ms": 1002.74,
+            "outcome_uncertain": false,
+            "retry_safe": true,
+            "status": 504,
+            "transport_error": null
+          },
+          "unknown_endpoint": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 2.022,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          }
+        },
+        "problems": [],
+        "raw_exit": 0,
+        "recovery_ok": true,
+        "resources": {
+          "closed": true,
+          "fd_after": 4,
+          "fd_before": 11,
+          "threads_after_close": []
+        },
+        "result": "PASS",
+        "stage": "http_hostile",
+        "timed_out": false
+      },
+      "isolation": {
+        "cross_agent": {
+          "other_reads_main": "denied",
+          "other_writes_main": "denied"
+        },
+        "hostile_ids": {
+          "'/etc/passwd'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/../../etc/passwd'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/../secret'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/.drive-tool-tmp-evil'": {
+            "client_read": "not_found",
+            "client_save": "denied",
+            "server_list": {
+              "bytes": 183,
+              "code": "not_found",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 404
+            },
+            "server_read": {
+              "bytes": 183,
+              "code": "not_found",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 404
+            },
+            "server_save": {
+              "bytes": 179,
+              "code": "denied",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p//etc/passwd'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'": {
+            "client_read": "unavailable",
+            "client_save": "denied",
+            "server_list": {
+              "bytes": 194,
+              "code": "unavailable",
+              "outcome_uncertain": false,
+              "retry_safe": true,
+              "status": 503
+            },
+            "server_read": {
+              "bytes": 194,
+              "code": "unavailable",
+              "outcome_uncertain": false,
+              "retry_safe": true,
+              "status": 503
+            },
+            "server_save": {
+              "bytes": 179,
+              "code": "denied",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/bad\\x00name'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/escape_file'": {
+            "client_read": "denied",
+            "client_save": "denied",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 179,
+              "code": "denied",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/escape_link/secret.txt'": {
+            "client_read": "denied",
+            "client_save": "denied",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 179,
+              "code": "denied",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/sub/../../../../etc/hosts'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          }
+        },
+        "json": "logs/harsh_isolation_python311.json",
+        "listed_names": [
+          "data.bin",
+          "empty.bin",
+          "readme.txt",
+          "savepool",
+          "sub"
+        ],
+        "log": "logs/harsh_isolation_python311.out",
+        "problems": [],
+        "raw_exit": 0,
+        "resources": {
+          "closed": true,
+          "threads_after_close": []
+        },
+        "result": "PASS",
+        "sentinel_intact": true,
+        "stage": "isolation",
+        "timed_out": false
+      },
+      "resource_pressure": {
+        "R1_cpu_saturation": {
+          "bad": [],
+          "bad_count": 0,
+          "expected": 300,
+          "ok": 300
+        },
+        "R2_memory_pressure": {
+          "reason": "baseline VmSize 533516 KiB leaves < 196608 KiB headroom under RLIMIT_AS 512 MiB",
+          "result": "SKIPPED"
+        },
+        "R3_emfile": {
+          "hard": 1073741816,
+          "mapped": 133,
+          "new_soft": 24,
+          "nfd_pressure": 21,
+          "ok": 27,
+          "raw": 0,
+          "raw_type": null,
+          "recovery_ok": 20,
+          "result": "PASS",
+          "soft": 1073741816
+        },
+        "host_mem_available_kb_after": 2061648,
+        "host_mem_available_kb_before": 2029884,
+        "json": "logs/harsh_resource_pressure_python311.json",
+        "log": "logs/harsh_resource_pressure_python311.out",
+        "note": "R2 is SKIPPED (never PASS) when the host MemAvailable floor is not met.",
+        "problems": [],
+        "raw_exit": 2,
+        "resources": {
+          "closed": true,
+          "threads_after_close": []
+        },
+        "result": "PARTIAL",
+        "stage": "resource_pressure",
+        "timed_out": false
+      },
+      "selfcheck": {
+        "frozen": {
+          "agents": 6,
+          "max_concurrent": 6,
+          "seed": 53520,
+          "temp_prefix": ".drive-tool-tmp-"
+        },
+        "json": "logs/harsh_selfcheck_python311.json",
+        "log": "logs/harsh_selfcheck_python311.out",
+        "problems": [],
+        "raw_exit": 0,
+        "result": "PASS",
+        "stage": "selfcheck",
+        "timed_out": false
+      }
+    },
+    "python3.12": {
+      "admission_exhaustion": {
+        "cycles": 50,
+        "excess_busy": 50,
+        "excess_other": 0,
+        "excess_unavailable": 0,
+        "json": "logs/harsh_admission_exhaustion_python312.json",
+        "log": "logs/harsh_admission_exhaustion_python312.out",
+        "mode": "real-service-entry-barrier",
+        "occupier_bad": 0,
+        "occupier_success": 300,
+        "problems": [],
+        "raw_exit": 0,
+        "recovery_fail": [],
+        "recovery_ok": 60,
+        "resources": {
+          "closed": true,
+          "fd_after": 4,
+          "fd_before": 11,
+          "threads_after_close": []
+        },
+        "result": "PASS",
+        "stage": "admission_exhaustion",
+        "timed_out": false
+      },
+      "concurrent_ops": {
+        "create_exists": 5,
+        "create_other": [],
+        "create_winners": 1,
+        "json": "logs/harsh_concurrent_ops_python312.json",
+        "log": "logs/harsh_concurrent_ops_python312.out",
+        "multi_agent": [
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        "overwrite_errors": [],
+        "problems": [],
+        "raw_exit": 0,
+        "resources": {
+          "closed": true,
+          "fd_after": 4,
+          "fd_before": 11,
+          "threads_after_close": []
+        },
+        "result": "PASS",
+        "stage": "concurrent_ops",
+        "temp_residue": [],
+        "timed_out": false,
+        "torn_count": 0,
+        "torn_reads": []
+      },
+      "crash_kill": {
+        "cases": [
+          {
+            "killed_sigkill": true,
+            "mode": "C1",
+            "orphan_temps": 1,
+            "orphan_visible_in_find": 0,
+            "orphan_visible_in_list": 0,
+            "overwrite": false,
+            "ready": true,
+            "recovery": {
+              "ok": true
+            },
+            "target_state": "absent"
+          },
+          {
+            "killed_sigkill": true,
+            "mode": "C1",
+            "orphan_temps": 1,
+            "orphan_visible_in_find": 0,
+            "orphan_visible_in_list": 0,
+            "overwrite": true,
+            "ready": true,
+            "recovery": {
+              "ok": true
+            },
+            "target_state": "original"
+          },
+          {
+            "killed_sigkill": true,
+            "mode": "C2",
+            "orphan_temps": 1,
+            "orphan_visible_in_find": 0,
+            "orphan_visible_in_list": 0,
+            "overwrite": false,
+            "ready": true,
+            "recovery": {
+              "ok": true
+            },
+            "target_state": "absent"
+          },
+          {
+            "killed_sigkill": true,
+            "mode": "C2",
+            "orphan_temps": 1,
+            "orphan_visible_in_find": 0,
+            "orphan_visible_in_list": 0,
+            "overwrite": true,
+            "ready": true,
+            "recovery": {
+              "ok": true
+            },
+            "target_state": "original"
+          }
+        ],
+        "json": "logs/harsh_crash_kill_python312.json",
+        "log": "logs/harsh_crash_kill_python312.out",
+        "note": "SIGKILL proves process-crash atomicity, NOT physical power-loss durability across a hypervisor disk cache.",
+        "problems": [],
+        "raw_exit": 0,
+        "result": "PASS",
+        "stage": "crash_kill",
+        "timed_out": false
+      },
+      "enospc": {
+        "injected_phases": [
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": false,
+            "overwrite_preserved": null,
+            "phase": "temp_create",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": false
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": true,
+            "overwrite_preserved": true,
+            "phase": "temp_create",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": true
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": false,
+            "overwrite_preserved": null,
+            "phase": "mid_write",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": false
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": true,
+            "overwrite_preserved": true,
+            "phase": "mid_write",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": true
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": false,
+            "overwrite_preserved": null,
+            "phase": "fsync",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": false
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": true,
+            "overwrite_preserved": true,
+            "phase": "fsync",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": true
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": false,
+            "overwrite_preserved": null,
+            "phase": "publish",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": false
+          },
+          {
+            "fd_after": 5,
+            "fd_before": 5,
+            "orphans": 0,
+            "overwrite": true,
+            "overwrite_preserved": true,
+            "phase": "publish",
+            "raised": {
+              "code": "unavailable",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "type": "ServiceError"
+            },
+            "recovery_ok": true,
+            "target_exists_after": true
+          }
+        ],
+        "json": "logs/harsh_enospc_python312.json",
+        "log": "logs/harsh_enospc_python312.out",
+        "note": "Error classification is recorded as the ACCEPTED adapter actually behaves; the historical design's expected outcome_uncertain=False/retry_safe=True is NOT assumed.",
+        "problems": [],
+        "raw_exit": 0,
+        "result": "PASS",
+        "rlimit_fsize": {
+          "code": "unavailable",
+          "orphans": 0,
+          "outcome_uncertain": true,
+          "raised": "ServiceError",
+          "result": "PASS",
+          "retry_safe": false,
+          "target_exists": false
+        },
+        "stage": "enospc",
+        "timed_out": false
+      },
+      "http_hostile": {
+        "json": "logs/harsh_http_hostile_python312.json",
+        "log": "logs/harsh_http_hostile_python312.out",
+        "max_response_bytes": 191,
+        "observed": {
+          "bare_lf_header_block": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 5.946,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "buffered_trailing_bytes": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 1.043,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "duplicate_content_length": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 1.054,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "empty_request": {
+            "bytes": 186,
+            "code": "timeout",
+            "elapsed_ms": 1001.67,
+            "outcome_uncertain": false,
+            "retry_safe": true,
+            "status": 504,
+            "transport_error": null
+          },
+          "huge_digit_content_length": {
+            "bytes": 191,
+            "code": "too_large",
+            "elapsed_ms": 2.256,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 413,
+            "transport_error": null
+          },
+          "immediate_close": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 2.248,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "non_digit_content_length": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 1.87,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "overlong_header_block": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 7.79,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "overlong_request_line": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 2.959,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "oversize_json_body": {
+            "bytes": 191,
+            "code": "too_large",
+            "elapsed_ms": 1.124,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 413,
+            "transport_error": null
+          },
+          "oversize_save_body": {
+            "bytes": 191,
+            "code": "too_large",
+            "elapsed_ms": 1.557,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 413,
+            "transport_error": null
+          },
+          "slow_partial_header": {
+            "bytes": 186,
+            "code": "timeout",
+            "elapsed_ms": 1001.789,
+            "outcome_uncertain": false,
+            "retry_safe": true,
+            "status": 504,
+            "transport_error": null
+          },
+          "too_many_headers": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 1.329,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          },
+          "truncated_body": {
+            "bytes": 186,
+            "code": "timeout",
+            "elapsed_ms": 1002.373,
+            "outcome_uncertain": false,
+            "retry_safe": true,
+            "status": 504,
+            "transport_error": null
+          },
+          "unknown_endpoint": {
+            "bytes": 183,
+            "code": "invalid",
+            "elapsed_ms": 1.141,
+            "outcome_uncertain": false,
+            "retry_safe": false,
+            "status": 400,
+            "transport_error": null
+          }
+        },
+        "problems": [],
+        "raw_exit": 0,
+        "recovery_ok": true,
+        "resources": {
+          "closed": true,
+          "fd_after": 4,
+          "fd_before": 11,
+          "threads_after_close": []
+        },
+        "result": "PASS",
+        "stage": "http_hostile",
+        "timed_out": false
+      },
+      "isolation": {
+        "cross_agent": {
+          "other_reads_main": "denied",
+          "other_writes_main": "denied"
+        },
+        "hostile_ids": {
+          "'/etc/passwd'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/../../etc/passwd'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/../secret'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/.drive-tool-tmp-evil'": {
+            "client_read": "not_found",
+            "client_save": "denied",
+            "server_list": {
+              "bytes": 183,
+              "code": "not_found",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 404
+            },
+            "server_read": {
+              "bytes": 183,
+              "code": "not_found",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 404
+            },
+            "server_save": {
+              "bytes": 179,
+              "code": "denied",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p//etc/passwd'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'": {
+            "client_read": "unavailable",
+            "client_save": "denied",
+            "server_list": {
+              "bytes": 194,
+              "code": "unavailable",
+              "outcome_uncertain": false,
+              "retry_safe": true,
+              "status": 503
+            },
+            "server_read": {
+              "bytes": 194,
+              "code": "unavailable",
+              "outcome_uncertain": false,
+              "retry_safe": true,
+              "status": 503
+            },
+            "server_save": {
+              "bytes": 179,
+              "code": "denied",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/bad\\x00name'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/escape_file'": {
+            "client_read": "denied",
+            "client_save": "denied",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 179,
+              "code": "denied",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/escape_link/secret.txt'": {
+            "client_read": "denied",
+            "client_save": "denied",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 179,
+              "code": "denied",
+              "outcome_uncertain": true,
+              "retry_safe": false,
+              "status": 403
+            }
+          },
+          "'p/sub/../../../../etc/hosts'": {
+            "client_read": "client_rejected",
+            "client_save": "client_rejected",
+            "server_list": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_read": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            },
+            "server_save": {
+              "bytes": 180,
+              "code": "denied",
+              "outcome_uncertain": false,
+              "retry_safe": false,
+              "status": 403
+            }
+          }
+        },
+        "json": "logs/harsh_isolation_python312.json",
+        "listed_names": [
+          "data.bin",
+          "empty.bin",
+          "readme.txt",
+          "savepool",
+          "sub"
+        ],
+        "log": "logs/harsh_isolation_python312.out",
+        "problems": [],
+        "raw_exit": 0,
+        "resources": {
+          "closed": true,
+          "threads_after_close": []
+        },
+        "result": "PASS",
+        "sentinel_intact": true,
+        "stage": "isolation",
+        "timed_out": false
+      },
+      "resource_pressure": {
+        "R1_cpu_saturation": {
+          "bad": [],
+          "bad_count": 0,
+          "expected": 300,
+          "ok": 300
+        },
+        "R2_memory_pressure": {
+          "reason": "baseline VmSize 533764 KiB leaves < 196608 KiB headroom under RLIMIT_AS 512 MiB",
+          "result": "SKIPPED"
+        },
+        "R3_emfile": {
+          "hard": 1073741816,
+          "mapped": 124,
+          "new_soft": 24,
+          "nfd_pressure": 21,
+          "ok": 36,
+          "raw": 0,
+          "raw_type": null,
+          "recovery_ok": 20,
+          "result": "PASS",
+          "soft": 1073741816
+        },
+        "host_mem_available_kb_after": 2067632,
+        "host_mem_available_kb_before": 2010648,
+        "json": "logs/harsh_resource_pressure_python312.json",
+        "log": "logs/harsh_resource_pressure_python312.out",
+        "note": "R2 is SKIPPED (never PASS) when the host MemAvailable floor is not met.",
+        "problems": [],
+        "raw_exit": 2,
+        "resources": {
+          "closed": true,
+          "threads_after_close": []
+        },
+        "result": "PARTIAL",
+        "stage": "resource_pressure",
+        "timed_out": false
+      },
+      "selfcheck": {
+        "frozen": {
+          "agents": 6,
+          "max_concurrent": 6,
+          "seed": 53520,
+          "temp_prefix": ".drive-tool-tmp-"
+        },
+        "json": "logs/harsh_selfcheck_python312.json",
+        "log": "logs/harsh_selfcheck_python312.out",
+        "problems": [],
+        "raw_exit": 0,
+        "result": "PASS",
+        "stage": "selfcheck",
+        "timed_out": false
+      }
+    }
+  },
+  "started": "2026-10-16T04:09:50Z",
+  "uncompressed_bytes": 1785011,
+  "workspace": "/scratch/work/d110/ws/d110-337e4c71-1002-790780"
+}
