@@ -1,0 +1,145 @@
+{
+  "injected_phases": [
+    {
+      "fd_after": 5,
+      "fd_before": 5,
+      "orphans": 0,
+      "overwrite": false,
+      "overwrite_preserved": null,
+      "phase": "temp_create",
+      "raised": {
+        "code": "unavailable",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "type": "ServiceError"
+      },
+      "recovery_ok": true,
+      "target_exists_after": false
+    },
+    {
+      "fd_after": 5,
+      "fd_before": 5,
+      "orphans": 0,
+      "overwrite": true,
+      "overwrite_preserved": true,
+      "phase": "temp_create",
+      "raised": {
+        "code": "unavailable",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "type": "ServiceError"
+      },
+      "recovery_ok": true,
+      "target_exists_after": true
+    },
+    {
+      "fd_after": 5,
+      "fd_before": 5,
+      "orphans": 0,
+      "overwrite": false,
+      "overwrite_preserved": null,
+      "phase": "mid_write",
+      "raised": {
+        "code": "unavailable",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "type": "ServiceError"
+      },
+      "recovery_ok": true,
+      "target_exists_after": false
+    },
+    {
+      "fd_after": 5,
+      "fd_before": 5,
+      "orphans": 0,
+      "overwrite": true,
+      "overwrite_preserved": true,
+      "phase": "mid_write",
+      "raised": {
+        "code": "unavailable",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "type": "ServiceError"
+      },
+      "recovery_ok": true,
+      "target_exists_after": true
+    },
+    {
+      "fd_after": 5,
+      "fd_before": 5,
+      "orphans": 0,
+      "overwrite": false,
+      "overwrite_preserved": null,
+      "phase": "fsync",
+      "raised": {
+        "code": "unavailable",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "type": "ServiceError"
+      },
+      "recovery_ok": true,
+      "target_exists_after": false
+    },
+    {
+      "fd_after": 5,
+      "fd_before": 5,
+      "orphans": 0,
+      "overwrite": true,
+      "overwrite_preserved": true,
+      "phase": "fsync",
+      "raised": {
+        "code": "unavailable",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "type": "ServiceError"
+      },
+      "recovery_ok": true,
+      "target_exists_after": true
+    },
+    {
+      "fd_after": 5,
+      "fd_before": 5,
+      "orphans": 0,
+      "overwrite": false,
+      "overwrite_preserved": null,
+      "phase": "publish",
+      "raised": {
+        "code": "unavailable",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "type": "ServiceError"
+      },
+      "recovery_ok": true,
+      "target_exists_after": false
+    },
+    {
+      "fd_after": 5,
+      "fd_before": 5,
+      "orphans": 0,
+      "overwrite": true,
+      "overwrite_preserved": true,
+      "phase": "publish",
+      "raised": {
+        "code": "unavailable",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "type": "ServiceError"
+      },
+      "recovery_ok": true,
+      "target_exists_after": true
+    }
+  ],
+  "note": "Error classification is recorded as the ACCEPTED adapter actually behaves; the historical design's expected outcome_uncertain=False/retry_safe=True is NOT assumed.",
+  "problems": [],
+  "result": "PASS",
+  "rlimit_fsize": {
+    "code": "unavailable",
+    "orphans": 0,
+    "outcome_uncertain": true,
+    "raised": "ServiceError",
+    "result": "PASS",
+    "retry_safe": false,
+    "target_exists": false
+  },
+  "stage": "enospc"
+}
