@@ -1,0 +1,31 @@
+{
+  "concurrent_capacity": 6,
+  "create_entered": 6,
+  "create_exists": 5,
+  "create_other": [],
+  "create_winners": 1,
+  "lease_max_held": 5,
+  "multi_agent": [
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+  ],
+  "multi_entered": 6,
+  "overwrite_error_count": 0,
+  "overwrite_errors": [],
+  "problems": [],
+  "resources": {
+    "closed": true,
+    "fd_after": 4,
+    "fd_before": 11,
+    "threads_after_close": []
+  },
+  "result": "PASS",
+  "stage": "concurrent_ops",
+  "temp_residue": [],
+  "torn_count": 0,
+  "torn_reads": []
+}
