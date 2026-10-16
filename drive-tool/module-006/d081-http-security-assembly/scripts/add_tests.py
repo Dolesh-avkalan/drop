@@ -1,0 +1,175 @@
+path = "tests/test_http_adapter.py"
+src = open(path, encoding="utf-8").read()
+anchor = 'if __name__ == "__main__":\n    unittest.main()\n'
+assert src.count(anchor) == 1, "anchor not unique"
+
+BLOCK = '''
+# ---------------------------------------------------------------------------
+# D080 security-fix regressions.
+#
+# Translated from the D080 example regressions (which were written for pytest
+# with an imagined ``adapter`` fixture) into this existing unittest harness.
+# Semantics are preserved; the two tests whose example form is not
+# deterministic or not reproducible in this environment use a deterministic
+# seam instead, as noted at each site.  No pytest dependency is introduced.
+
+
+def _raw_exchange(port, payload, *, timeout=1.0, half_close=True):
+    """Send raw bytes to the loopback adapter and collect the whole reply."""
+    s = socket.create_connection(("127.0.0.1", port), timeout=timeout)
+    try:
+        s.sendall(payload)
+        if half_close:
+            s.shutdown(socket.SHUT_WR)
+        s.settimeout(timeout)
+        chunks = []
+        while True:
+            try:
+                chunk = s.recv(4096)
+            except socket.timeout:
+                break
+            if not chunk:
+                break
+            chunks.append(chunk)
+        return b"".join(chunks)
+    finally:
+        s.close()
+
+
+@unittest.skipUnless(_ADAPTER_AVAILABLE, _SKIP_REASON)
+class D080SecurityFixRegressionTests(_Base):
+    def test_partial_header_bounds_reject_early(self):
+        a = self.make(socket_timeout=1.0)
+        cases = (
+            ("overlong_request_line",
+             b"POST /" + b"a" * 8200 + b" HTTP/1.1\\r\\n"),
+            ("overlong_header_block",
+             b"POST /v1/list HTTP/1.1\\r\\nX-Pad: " + b"a" * 16384 + b"\\r\\n"),
+            ("bare_lf_header_block",
+             b"POST /v1/list HTTP/1.1\\nHost: 127.0.0.1\\n\\n"),
+        )
+        for name, payload in cases:
+            with self.subTest(case=name):
+                raw = _raw_exchange(a.port, payload, timeout=1.0)
+                self.assertIn(b" 400 ", raw, raw)
+                self.assertIn(b'"code":"invalid"', raw, raw)
+                self.assertIn(b'"retry_safe":false', raw, raw)
+                self.assertNotIn(b" 504 ", raw, raw)
+
+    def test_content_length_priority_and_leading_zeros(self):
+        a = self.make(socket_timeout=1.0)
+        # Missing Authorization + huge Content-Length: the auth check must
+        # precede the size gate.
+        raw = _raw_exchange(
+            a.port,
+            b"POST /v1/list HTTP/1.1\\r\\n"
+            b"Host: 127.0.0.1\\r\\n"
+            b"Content-Length: 99999999999\\r\\n"
+            b"Content-Type: application/json\\r\\n\\r\\n",
+            timeout=1.0,
+        )
+        self.assertIn(b" 403 ", raw, raw)
+        self.assertNotIn(b" 413 ", raw, raw)
+
+        # Valid lexical Authorization + invalid Content-Type + huge
+        # Content-Length: the Content-Type check must precede the size gate.
+        raw = _raw_exchange(
+            a.port,
+            b"POST /v1/list HTTP/1.1\\r\\n"
+            b"Host: 127.0.0.1\\r\\n"
+            b"Authorization: Bearer " + b"x" * 32 + b"\\r\\n"
+            b"Content-Length: 99999999999\\r\\n"
+            b"Content-Type: text/plain\\r\\n\\r\\n",
+            timeout=1.0,
+        )
+        self.assertIn(b" 400 ", raw, raw)
+        self.assertNotIn(b" 413 ", raw, raw)
+
+        # Leading zeros are normalised: 00000000002 is 2, not too_large.
+        raw = _raw_exchange(
+            a.port,
+            b"POST /v1/list HTTP/1.1\\r\\n"
+            b"Host: 127.0.0.1\\r\\n"
+            b"Authorization: Bearer " + b"x" * 32 + b"\\r\\n"
+            b"Content-Type: application/json\\r\\n"
+            b"Content-Length: 00000000002\\r\\n\\r\\n{}",
+            timeout=1.0,
+        )
+        self.assertNotIn(b" 413 ", raw, raw)
+
+    def test_startup_six_worker_readiness(self):
+        a = self.make(socket_timeout=3.0)
+        # Deterministic seam (the D080 example used a 6-way concurrent burst,
+        # which does not deterministically expose the startup window): the
+        # corrected __init__ registers all six slots as idle synchronously,
+        # before any thread can run, so no arrival can be falsely refused.
+        self.assertEqual(len(a._idle_slots), MAX_IN_FLIGHT_OPERATIONS)
+        results = []
+        lock = threading.Lock()
+        barrier = threading.Barrier(MAX_IN_FLIGHT_OPERATIONS)
+
+        def hit():
+            barrier.wait(timeout=5.0)
+            raw = _raw_exchange(
+                a.port,
+                b"POST /v1/list HTTP/1.1\\r\\n"
+                b"Host: 127.0.0.1\\r\\n"
+                b"Content-Length: 0\\r\\n"
+                b"Content-Type: application/json\\r\\n\\r\\n",
+                timeout=3.0,
+            )
+            with lock:
+                results.append(raw)
+
+        threads = [threading.Thread(target=hit)
+                   for _ in range(MAX_IN_FLIGHT_OPERATIONS)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join(timeout=10.0)
+        self.assertEqual(len(results), MAX_IN_FLIGHT_OPERATIONS, results)
+        self.assertFalse(any(b" 503 " in r for r in results), results)
+
+    def test_repeat_close_does_not_wake_released_port(self):
+        # Deterministic seam (the D080 example re-bound the released port and
+        # asserted accept() timed out; that rebind is not reproducible here
+        # because the in-flight connection still holds the port): count
+        # _wake_listener calls, which is the same property stated directly.
+        svc = self.instrumented()
+        a = self.make(service=svc, socket_timeout=5.0)
+        wakes = []
+        real_wake = a._wake_listener
+
+        def counting_wake():
+            wakes.append(True)
+            return real_wake()
+
+        a._wake_listener = counting_wake
+
+        svc.block = True
+        svc.block_target = 1
+        svc.block_timeout = 10.0
+
+        def in_flight():
+            try:
+                self.client(a, _MAIN_TOKEN).list("main", limit=5)
+            except DriveClientError:
+                pass
+
+        t = threading.Thread(target=in_flight, daemon=True)
+        t.start()
+        self.assertTrue(svc.entered.wait(timeout=5.0))
+        # The first close cannot drain the in-flight worker.
+        self.assertIs(a.close(timeout=0.01), False)
+        self.assertEqual(len(wakes), 1)
+        # A repeat close must not wake/close the already-released listener.
+        a.close(timeout=0.05)
+        self.assertEqual(len(wakes), 1)
+        svc.release_gate()
+        t.join(timeout=10.0)
+        self.assertTrue(a.close(timeout=5.0))
+
+
+'''
+open(path, "w", encoding="utf-8").write(src.replace(anchor, BLOCK.lstrip("\n") + anchor))
+print("appended D080 regression class")

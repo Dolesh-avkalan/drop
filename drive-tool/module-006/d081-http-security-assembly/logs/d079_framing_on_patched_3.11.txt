@@ -1,0 +1,8 @@
+control: valid request                         half=False elapsed= 0.002s bytes=180   status=HTTP/1.1 403 Forbidden           code=denied
+overlong request line, no CRLFCRLF             half=False elapsed= 0.002s bytes=183   status=HTTP/1.1 400 Bad Request         code=invalid
+overlong request line, no CRLFCRLF             half=True  elapsed= 0.002s bytes=183   status=HTTP/1.1 400 Bad Request         code=invalid
+overlong header block, no CRLFCRLF             half=False elapsed= 0.005s bytes=183   status=HTTP/1.1 400 Bad Request         code=invalid
+overlong header block, no CRLFCRLF             half=True  elapsed= 0.005s bytes=183   status=HTTP/1.1 400 Bad Request         code=invalid
+bare LF terminator                             half=False elapsed= 0.001s bytes=183   status=HTTP/1.1 400 Bad Request         code=invalid
+bare LF terminator                             half=True  elapsed= 0.001s bytes=183   status=HTTP/1.1 400 Bad Request         code=invalid
+control: buffer > 24576 (size check fires)     half=False elapsed= 0.005s bytes=183   status=HTTP/1.1 400 Bad Request         code=invalid

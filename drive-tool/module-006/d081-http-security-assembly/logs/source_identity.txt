@@ -1,0 +1,24 @@
+# D081 source identity
+
+repo:        Dolesh-avkalan/drive-tool
+base commit: f304425ab774158090edd69f1b605bcc3b03096d
+base tree:   87569b2b8a82c821497d9e784c568d5f75f3e5d7
+branch:      feature/module-006b-http-security-fixes
+head commit: cc1cd326a1df85ad906796e535db466b4cf664ba
+head tree:   e60cd406f732fff2f25a1a2d5063523d974e432e
+
+drive_tool/http_adapter.py:
+  base blob: 02576d59d555afc7afde89fd8e2e63a1c1c43e24  sha256 191ad2be919fabdd2f4ec9edb0820165c2c4358ce05c93574514b5ee30a30ff3
+  head blob: 8cd137f7323eb5c9e1e4166471a04073204840e5  sha256 1e18561512614e13250582d042593ab72c8f7bfcb104af13a2646865e94a9ac7
+  bytes: 39813
+tests/test_http_adapter.py:
+  base blob: 80798e3200064a09e4c84a2b264c4f764b64599c  sha256 23dfe5ddbca815759ac26d378b4c70b84eb9c7374f52131cf328dc687e56f467
+  head blob: 772239d2d9e593e13d6d19641529a3239836257e  sha256 81bebfe2e7e4f1185942ad1eb6e03b4be91007e65605e58ab304acb31d553b47
+  bytes: 57468
+
+patch source: drop 406e5fb6cbfdcdb3a9fcf8c45986994766d88eb0
+  path: drive-tool/module-006/d080-http-security-fixes.md
+  blob: 39d08924d8244b98cef309debf71186490b2f583
+
+D079 probes: drop 4e7da180830ddda018de9d319af3dd5b7184a5a4
+  path: drive-tool/module-006/d079-http-security-probes/

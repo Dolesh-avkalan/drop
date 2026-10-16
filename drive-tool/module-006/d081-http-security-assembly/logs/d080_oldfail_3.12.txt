@@ -1,0 +1,52 @@
+test_content_length_priority_and_leading_zeros (tests.test_http_adapter.D080SecurityFixRegressionTests.test_content_length_priority_and_leading_zeros) ... FAIL
+test_partial_header_bounds_reject_early (tests.test_http_adapter.D080SecurityFixRegressionTests.test_partial_header_bounds_reject_early) ... 
+  test_partial_header_bounds_reject_early (tests.test_http_adapter.D080SecurityFixRegressionTests.test_partial_header_bounds_reject_early) (case='overlong_request_line') ... FAIL
+  test_partial_header_bounds_reject_early (tests.test_http_adapter.D080SecurityFixRegressionTests.test_partial_header_bounds_reject_early) (case='overlong_header_block') ... FAIL
+  test_partial_header_bounds_reject_early (tests.test_http_adapter.D080SecurityFixRegressionTests.test_partial_header_bounds_reject_early) (case='bare_lf_header_block') ... FAIL
+test_repeat_close_does_not_wake_released_port (tests.test_http_adapter.D080SecurityFixRegressionTests.test_repeat_close_does_not_wake_released_port) ... FAIL
+test_startup_six_worker_readiness (tests.test_http_adapter.D080SecurityFixRegressionTests.test_startup_six_worker_readiness) ... ok
+
+======================================================================
+FAIL: test_content_length_priority_and_leading_zeros (tests.test_http_adapter.D080SecurityFixRegressionTests.test_content_length_priority_and_leading_zeros)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d081-base/tests/test_http_adapter.py", line 1153, in test_content_length_priority_and_leading_zeros
+    self.assertIn(b" 403 ", raw, raw)
+AssertionError: b' 403 ' not found in b'HTTP/1.1 413 Payload Too Large\r\nContent-Type: application/json\r\nContent-Length: 86\r\nConnection: close\r\n\r\n{"ok":false,"error":{"code":"too_large","outcome_uncertain":false,"retry_safe":false}}' : b'HTTP/1.1 413 Payload Too Large\r\nContent-Type: application/json\r\nContent-Length: 86\r\nConnection: close\r\n\r\n{"ok":false,"error":{"code":"too_large","outcome_uncertain":false,"retry_safe":false}}'
+
+======================================================================
+FAIL: test_partial_header_bounds_reject_early (tests.test_http_adapter.D080SecurityFixRegressionTests.test_partial_header_bounds_reject_early) (case='overlong_request_line')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d081-base/tests/test_http_adapter.py", line 1136, in test_partial_header_bounds_reject_early
+    self.assertIn(b" 400 ", raw, raw)
+AssertionError: b' 400 ' not found in b'' : b''
+
+======================================================================
+FAIL: test_partial_header_bounds_reject_early (tests.test_http_adapter.D080SecurityFixRegressionTests.test_partial_header_bounds_reject_early) (case='overlong_header_block')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d081-base/tests/test_http_adapter.py", line 1136, in test_partial_header_bounds_reject_early
+    self.assertIn(b" 400 ", raw, raw)
+AssertionError: b' 400 ' not found in b'' : b''
+
+======================================================================
+FAIL: test_partial_header_bounds_reject_early (tests.test_http_adapter.D080SecurityFixRegressionTests.test_partial_header_bounds_reject_early) (case='bare_lf_header_block')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d081-base/tests/test_http_adapter.py", line 1136, in test_partial_header_bounds_reject_early
+    self.assertIn(b" 400 ", raw, raw)
+AssertionError: b' 400 ' not found in b'' : b''
+
+======================================================================
+FAIL: test_repeat_close_does_not_wake_released_port (tests.test_http_adapter.D080SecurityFixRegressionTests.test_repeat_close_does_not_wake_released_port)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d081-base/tests/test_http_adapter.py", line 1249, in test_repeat_close_does_not_wake_released_port
+    self.assertEqual(len(wakes), 1)
+AssertionError: 2 != 1
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.319s
+
+FAILED (failures=5)

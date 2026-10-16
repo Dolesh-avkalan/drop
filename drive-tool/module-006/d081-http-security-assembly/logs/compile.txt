@@ -1,0 +1,10 @@
+# D081 compile checks (published branch bytes)
+
+python3.11: adapter + tests compile OK
+python3.12: adapter + tests compile OK
+
+# semantic-guard revert check
+$ git checkout f304425a -- drive_tool/http_adapter.py (base adapter restored)
+base adapter compiles:
+  py3.12 OK
+(branch working tree restored)

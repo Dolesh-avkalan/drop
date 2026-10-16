@@ -1,0 +1,9 @@
+test_content_length_priority_and_leading_zeros (tests.test_http_adapter.D080SecurityFixRegressionTests.test_content_length_priority_and_leading_zeros) ... ok
+test_partial_header_bounds_reject_early (tests.test_http_adapter.D080SecurityFixRegressionTests.test_partial_header_bounds_reject_early) ... ok
+test_repeat_close_does_not_wake_released_port (tests.test_http_adapter.D080SecurityFixRegressionTests.test_repeat_close_does_not_wake_released_port) ... ok
+test_startup_six_worker_readiness (tests.test_http_adapter.D080SecurityFixRegressionTests.test_startup_six_worker_readiness) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.371s
+
+OK

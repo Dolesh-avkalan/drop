@@ -1,0 +1,5 @@
+c1 huge CL, no Authorization                         status=HTTP/1.1 403 Forbidden         code=denied
+c2 huge CL, valid auth, CT text/plain                status=HTTP/1.1 400 Bad Request       code=invalid
+c3 leading zeros CL 00000000002, valid auth+CT, body {} status=HTTP/1.1 403 Forbidden         code=denied
+c4 control 11-digit CL, valid auth+CT json           status=HTTP/1.1 413 Payload Too Large code=too_large
+c5 control CL 2, valid auth+CT json, body {}         status=HTTP/1.1 403 Forbidden         code=denied

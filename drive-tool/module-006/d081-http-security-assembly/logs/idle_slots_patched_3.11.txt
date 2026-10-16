@@ -1,0 +1,2 @@
+len(_idle_slots) right after __init__ over 200 trials: {6: 200}
+MAX_IN_FLIGHT_OPERATIONS = 6

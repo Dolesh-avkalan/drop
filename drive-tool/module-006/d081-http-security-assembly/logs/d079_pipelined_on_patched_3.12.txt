@@ -1,0 +1,4 @@
+A already-buffered > CL (CL=100, 200 sent)   status=HTTP/1.1 400 Bad Request service_calls=0 []
+B control CL=2 body {}                       status=HTTP/1.1 403 Forbidden service_calls=1 [('list', None)]
+C pipelined req1(CL=6000)+req2               status=HTTP/1.1 200 OK        service_calls=1 [('list', 'root')]
+D pipelined req1(CL=6000)+req2 again         status=HTTP/1.1 200 OK        service_calls=1 [('list', 'root')]
