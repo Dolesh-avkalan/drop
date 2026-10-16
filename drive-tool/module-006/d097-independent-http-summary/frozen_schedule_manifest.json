@@ -1,0 +1,45 @@
+{
+  "frozen": {
+    "budget_seconds": 900,
+    "hold_seconds": 0.055,
+    "leases": 5,
+    "seed": 53398
+  },
+  "full_schedule_dump_sha256": "14a6ac33e796dd62d2a1e60415868608c5013c6e2c5bfc39346ec3c3003c0c88",
+  "harness": "d097-http-gate-harness",
+  "note": "Compact frozen-schedule manifest. The full per-intent schedules are deterministic from the frozen seed and are re-generated bit-identically by `http_gate_d097.py --dump-schedule`; the fingerprints below are the frozen identity. Full-schedule dump sha256 (this host) recorded for provenance.",
+  "schedules": {
+    "smoke600": {
+      "counts": {
+        "busy": 0,
+        "denied": 20,
+        "ok": 580
+      },
+      "fingerprint": "74e61249b9e7d3be0b0f3e31f7e88d1be5368c9ef752991fc21fdd690e9d68ef",
+      "per_agent": {
+        "agent0": 97,
+        "agent1": 97,
+        "agent2": 97,
+        "agent3": 117,
+        "agent4": 96,
+        "agent5": 96
+      }
+    },
+    "soak10000": {
+      "counts": {
+        "busy": 0,
+        "denied": 320,
+        "ok": 9680
+      },
+      "fingerprint": "7f3911b44f9a1dd86671fcfd141b8aa0ac00486deb94f97c37d01cc89105bf4e",
+      "per_agent": {
+        "agent0": 1614,
+        "agent1": 1614,
+        "agent2": 1613,
+        "agent3": 1933,
+        "agent4": 1613,
+        "agent5": 1613
+      }
+    }
+  }
+}
