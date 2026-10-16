@@ -1,6 +1,6 @@
 # D097 evidence manifest
 
-generated: 2026-10-16T02:00:35Z
+generated: 2026-10-16T02:07:41Z
 
 candidate branch feature/module-006b-http-busy-budget head f37a30b0073611c05d26f714f2e833d689673a09
 base b962a04df1c5abdb78c37617d3a6adca02d04024 (adapter blob a28970e2, test blob 8130d56f)
@@ -15,13 +15,16 @@ Verified INPUT harnesses (not re-published here; already in drop):
 
 Per-call `records`/`cycles` arrays in the JSON logs are omitted for size; the
 accounting buckets, resources, schedule fingerprint and problems are retained.
+The two saturation JSONs are published in a compact form; their sha256 below is
+that of the published bytes. Every file here was verified byte-for-byte against
+the pushed blobs (git blob sha).
 
 | file | bytes | sha256 |
 | --- | --- | --- |
 | `frozen_schedule_manifest.json` | 1309 | `e08fc4fea3115e6636d53acf6d293c7a930dfc724f5992679829a921f4f3d9f7` |
 | `logs/d097_gate_3.12.json` | 3980 | `689e453af9fdb658658941360a6151f64d79f56100cbd63ad752c3c8d18556a6` |
-| `logs/d097_saturation_3.11.json` | 24749 | `856aab9ec7b832d49c9bd34a6cdfbae1da5f25993ba33c9c9462ba5384cd1a9a` |
-| `logs/d097_saturation_3.12.json` | 24749 | `cf10a927344aa1d9fbae77410548042684bb0df63cf746fa01dd62b6f7d08f6a` |
+| `logs/d097_saturation_3.11.json` | 12573 | `5cf6c34bfb723ccb59a11ad3eada5a8db00e35519121f9b8f55d6bed8a5bc2e4` |
+| `logs/d097_saturation_3.12.json` | 12573 | `ba7eb4546bf642cc25738f533adf6a82a1efc1b7520055421ea04dec59c7768a` |
 | `logs/d097_smoke_3.11.json` | 1780 | `2fd35c7907629dc458078234e65a51a127947ff379ea923692c69e754b41f222` |
 | `logs/full_base_3.11.txt` | 995 | `c4fc54b5938a1b9e2c1d2ba84d2c41a701f0619da4e42628f9011c6dcd2cf27b` |
 | `logs/full_base_3.12.txt` | 995 | `1115115ecc3045be861a53481d12b54479fef40aa9bb6874262db3d799df6f11` |
