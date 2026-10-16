@@ -1,0 +1,8 @@
+nproc 2 iters 0 mode res
+
+== PATCHED resource_pressure ==
+  result: PASS
+  R2: {'ok': 50, 'mem_error': 'MemoryError', 'vm_kb': 40200, 'recovery_ok': 20, 'result': 'PASS'}
+  R1 ok: 300
+  R3: {'result': 'PASS', 'mapped': 128, 'raw': 0, 'recovery_ok': 20}
+  problems: []
