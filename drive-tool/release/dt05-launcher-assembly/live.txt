@@ -1,0 +1,33 @@
+### live check (as specified: token=secret123)
+### command: python3 live_check.py  (drives python3 -m drive_tool.serve --config cfg.json on port 18765)
+### date: 2026-10-16T12:57:48Z
+
+=== live check: drive_tool.serve ===
+user uid=1000 gid=1000 (non-root)
+repo=/scratch/work/drive-tool
+port=18765  token='secret123'
+
+temp root: /scratch/tmp/dt05-live-qxo71k24/root
+root file: hello.txt (19 bytes)
+
+hash-token cmd: echo -n secret123 | python3 -m drive_tool.serve --hash-token
+  rc=0 stdout='fcf730b6d95236ecd3c9fc2d92d7b6b2bb061514961aec041d6c7a7192f592e4' stderr=''
+  printed      = fcf730b6d95236ecd3c9fc2d92d7b6b2bb061514961aec041d6c7a7192f592e4
+  sha256(secret123) = fcf730b6d95236ecd3c9fc2d92d7b6b2bb061514961aec041d6c7a7192f592e4
+  hash matches sha256 of token: YES
+
+config written: /scratch/tmp/dt05-live-qxo71k24/cfg.json (mode 600)
+config: {"port": 18765, "agents": [{"agent_id": "alice", "token_sha256": "fcf730b6d95236ecd3c9fc2d92d7b6b2bb061514961aec041d6c7a7192f592e4", "grants": [{"alias": "work", "root": "/scratch/tmp/dt05-live-qxo71k24/root", "operations": ["list", "find", "read", "save"]}]}]}
+
+port 18765 free (bindable without SO_REUSEADDR): True
+server pid=5062 started: python3 -m drive_tool.serve --config cfg.json
+server stderr listening line: 'drive-tool listening on 127.0.0.1:18765 (1 agents)'
+
+constructing DriveClient(port=18765, token='secret123') ...
+  CLIENT STEP FAILED: ValueError: token length must be in 32..256
+
+sending SIGTERM to server pid=5062 ...
+  server exit code after SIGTERM: 0
+  exit code is 0: YES
+
+=== live check FAIL ===

@@ -1,0 +1,40 @@
+### supplementary diagnostic (NOT the specified check): same procedure with a 40-char token that satisfies DriveClient's 32..256 rule
+### token: secret123secret123secret123secret1234567
+### note: run after a wait because the adapter listener does not set SO_REUSEADDR
+
+=== live check: drive_tool.serve ===
+user uid=1000 gid=1000 (non-root)
+repo=/scratch/work/drive-tool
+port=18765  token='secret123secret123secret123secret1234567'
+
+temp root: /scratch/tmp/dt05-live-niibm7_u/root
+root file: hello.txt (19 bytes)
+
+hash-token cmd: echo -n secret123secret123secret123secret1234567 | python3 -m drive_tool.serve --hash-token
+  rc=0 stdout='6eeeeb639f415a0e5cd278da687d7ecb675014f65d4806072361420f5cb585c8' stderr=''
+  printed      = 6eeeeb639f415a0e5cd278da687d7ecb675014f65d4806072361420f5cb585c8
+  sha256(secret123) = 6eeeeb639f415a0e5cd278da687d7ecb675014f65d4806072361420f5cb585c8
+  hash matches sha256 of token: YES
+
+config written: /scratch/tmp/dt05-live-niibm7_u/cfg.json (mode 600)
+config: {"port": 18765, "agents": [{"agent_id": "alice", "token_sha256": "6eeeeb639f415a0e5cd278da687d7ecb675014f65d4806072361420f5cb585c8", "grants": [{"alias": "work", "root": "/scratch/tmp/dt05-live-niibm7_u/root", "operations": ["list", "find", "read", "save"]}]}]}
+
+port 18765 free (bindable without SO_REUSEADDR): True
+server pid=5075 started: python3 -m drive_tool.serve --config cfg.json
+server stderr listening line: 'drive-tool listening on 127.0.0.1:18765 (1 agents)'
+
+constructing DriveClient(port=18765, token='secret123secret123secret123secret1234567') ...
+  DriveClient constructed OK
+  list('work','root') ->
+    {"items": [{"ref": {"source_id": "work", "file_id": "p/hello.txt"}, "name": "hello.txt", "parent_id": "root", "kind": "file", "size_bytes": 19}], "next_offset": null}
+    keys=['items', 'next_offset']
+  read('work','p/hello.txt', offset=0, length=64) ->
+    data=b'live-check-payload\n'
+    offset=0 observed_size=19 eof_observed=True
+  READ MATCHES the file content
+
+sending SIGTERM to server pid=5075 ...
+  server exit code after SIGTERM: 0
+  exit code is 0: YES
+
+=== live check PASS ===
