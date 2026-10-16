@@ -1,0 +1,21 @@
+$ /usr/local/bin/python3.12 /tmp/d063-b7f8d17b-42gnynur/logs/_dual_order_repro.py desc /tmp/d063-b7f8d17b-42gnynur/extract/drive-tool-b7f8d17b9dcc4aec68d54b38f994290e05264e67 tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged
+
+test_metadata_failure_below_root_is_skipped_and_charged (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged) ... FAIL
+
+======================================================================
+FAIL: test_metadata_failure_below_root_is_skipped_and_charged (tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/d063-b7f8d17b-42gnynur/extract/drive-tool-b7f8d17b9dcc4aec68d54b38f994290e05264e67/tests/test_partial_scan_review_fixes.py", line 406, in test_metadata_failure_below_root_is_skipped_and_charged
+    self.assertEqual(result.inspected, 2)
+AssertionError: 3 != 2
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+FAILED (failures=1)
+
+--- stderr ---
+
+EXIT=1 timed_out=False seconds=0.32
+ran=1 skipped=0 ok=False failed=True

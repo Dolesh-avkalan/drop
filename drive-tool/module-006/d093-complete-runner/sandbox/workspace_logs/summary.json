@@ -1,0 +1,116 @@
+{
+  "commit": "b7f8d17b9dcc4aec68d54b38f994290e05264e67",
+  "archive_url": "https://codeload.github.com/Dolesh-avkalan/drive-tool/tar.gz/b7f8d17b9dcc4aec68d54b38f994290e05264e67",
+  "max_concurrent": 6,
+  "expected_suite_tests": 506,
+  "suite_diagnostic_continue": true,
+  "workspace": "/tmp/d063-b7f8d17b-42gnynur",
+  "workspace_mode": "0700",
+  "payload_sha256": "8097d0a3074c37e5b891f78101f95d24f5bfb73d818cd8a0278c9fe61fa85be9",
+  "archive_bytes": 338575,
+  "archive_sha256": "93af95d9e711ec8d44d4901d39b48d0387ce78c2b1c48dd8f55539905bf61db3",
+  "members": 123,
+  "pythons": [
+    {
+      "name": "python3.12",
+      "path": "/usr/local/bin/python3.12",
+      "version": "3.12.13"
+    },
+    {
+      "name": "python3.11",
+      "path": "/usr/bin/python3.11",
+      "version": "3.11.2"
+    }
+  ],
+  "readdir_order_confirmation": {
+    "tmp_fstype": "9p",
+    "native_observed_order": [
+      "b.txt",
+      "a.txt"
+    ],
+    "dual_order_repro": {
+      "asc": {
+        "rc": 0,
+        "timed_out": false,
+        "seconds": 0.32,
+        "ran": 1,
+        "skipped": 0,
+        "ok": true,
+        "failed": false
+      },
+      "desc": {
+        "rc": 1,
+        "timed_out": false,
+        "seconds": 0.32,
+        "ran": 1,
+        "skipped": 0,
+        "ok": false,
+        "failed": true
+      }
+    },
+    "confirmed_order_sensitive_defect": true
+  },
+  "suite": {
+    "python3.12": {
+      "rc": 1,
+      "ran": 506,
+      "skipped": 0,
+      "ok": false,
+      "failed": true,
+      "timed_out": false,
+      "truncated": false,
+      "seconds": 6.02
+    },
+    "python3.11": {
+      "rc": 1,
+      "ran": 506,
+      "skipped": 0,
+      "ok": false,
+      "failed": true,
+      "timed_out": false,
+      "truncated": false,
+      "seconds": 5.8
+    }
+  },
+  "suite_failures": [
+    "suite failed on python3.12 (exit 1)",
+    "suite failed on python3.11 (exit 1)"
+  ],
+  "stages": {
+    "smoke": {
+      "rc": 0,
+      "timed_out": false,
+      "truncated": false,
+      "seconds": 1.35,
+      "result": "PASS",
+      "calls_completed": 600,
+      "internal_deadline_seconds": 170
+    },
+    "soak": {
+      "rc": 0,
+      "timed_out": false,
+      "truncated": false,
+      "seconds": 21.9,
+      "result": "PASS",
+      "calls_completed": 10000,
+      "internal_deadline_seconds": 410
+    },
+    "edges": {
+      "rc": 0,
+      "timed_out": false,
+      "truncated": false,
+      "seconds": 0.4,
+      "result": "PASS",
+      "calls_completed": null,
+      "internal_deadline_seconds": 110
+    }
+  },
+  "workspace_bytes": 15973571,
+  "workspace_allocated_bytes": 16054272,
+  "failures": [
+    "suite failed on python3.12 (exit 1)",
+    "suite failed on python3.11 (exit 1)"
+  ],
+  "result": "FAIL",
+  "seconds": 37.35
+}
