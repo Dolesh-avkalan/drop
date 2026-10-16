@@ -1,0 +1,25 @@
+PASS all-pass exit 0 :: rc=0
+PASS selfcheck FAIL -> nonzero :: rc=1
+PASS selfcheck FAIL -> smoke not run :: smoke calls=0
+PASS selfcheck FAIL -> saturation not run
+PASS smoke FAIL -> nonzero :: rc=1
+PASS smoke FAIL -> NO soak after smoke fail :: soak calls=0
+PASS smoke FAIL -> NO saturation after smoke fail
+PASS soak FAIL -> nonzero :: rc=1
+PASS saturation FAIL -> nonzero :: rc=1
+PASS smoke SKIPPED -> nonzero
+PASS smoke ERROR -> nonzero
+PASS soak TIMEOUT -> nonzero
+PASS stage raising -> nonzero
+PASS stage TimeoutError -> nonzero
+PASS stage non-dict return -> nonzero
+PASS aggregate truth table exhaustive (2401 combos)
+PASS aggregate passes for EXACTLY the all-PASS combination :: false passes=[]
+PASS entry-point exit matches truth table (no false pass) :: mismatches=[]
+PASS all-PASS aggregate ok
+PASS one-FAIL (selfcheck) aggregate not ok :: ['selfcheck: FAIL']
+PASS one-FAIL (smoke600) aggregate not ok :: ['smoke600: FAIL']
+PASS one-FAIL (soak10000) aggregate not ok :: ['soak10000: FAIL']
+PASS one-FAIL (saturation_6plus1) aggregate not ok :: ['saturation_6plus1: FAIL']
+
+23/23 checks passed; truth-table combos=2401; false passes=0

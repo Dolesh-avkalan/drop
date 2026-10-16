@@ -1,0 +1,31 @@
+{
+  "frozen": {
+    "hold_seconds": 0.055,
+    "leases": 5,
+    "seed": 53398
+  },
+  "harness": "d096-http-gate-harness",
+  "problems": [],
+  "result": "PASS",
+  "saturation_arithmetic": {
+    "busy": 50,
+    "valid": 300
+  },
+  "schedule_counts": {
+    "smoke600": {
+      "busy": 0,
+      "denied": 20,
+      "ok": 580
+    },
+    "soak10000": {
+      "busy": 0,
+      "denied": 320,
+      "ok": 9680
+    }
+  },
+  "schedule_fingerprints": {
+    "smoke600": "74e61249b9e7d3be0b0f3e31f7e88d1be5368c9ef752991fc21fdd690e9d68ef",
+    "soak10000": "7f3911b44f9a1dd86671fcfd141b8aa0ac00486deb94f97c37d01cc89105bf4e"
+  },
+  "stage": "selfcheck"
+}

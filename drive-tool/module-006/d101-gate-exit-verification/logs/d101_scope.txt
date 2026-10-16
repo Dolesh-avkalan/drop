@@ -1,0 +1,61 @@
+total top-level definitions/assigns: 54
+differing: ['ASSIGN:REQUIRED_STAGES', '_aggregate_gate', '_run_guarded', 'run_gate']
+
+  same   ASSIGN:AGENT_COUNT
+  same   ASSIGN:BUCKETS
+  same   ASSIGN:CLIENT_LEASES
+  same   ASSIGN:DRAIN_HOLD_SECONDS
+  same   ASSIGN:EXPECTED_ADAPTER_THREADS
+  same   ASSIGN:FD_BASELINE_SLACK
+  same   ASSIGN:FROZEN_SEED
+  same   ASSIGN:MAX_FIXTURE_BYTES
+  same   ASSIGN:MAX_RSS_GROWTH_BYTES
+  same   ASSIGN:MAX_WORKSPACE_BYTES
+  same   ASSIGN:PERSONAS
+  same   ASSIGN:READ_ONLY_AGENT
+  DIFF   ASSIGN:REQUIRED_STAGES
+  same   ASSIGN:SAT_CYCLES
+  same   ASSIGN:SAT_EXCESS
+  same   ASSIGN:SAT_OCCUPIERS
+  same   ASSIGN:SMOKE_RO_SAVE
+  same   ASSIGN:SMOKE_TOTAL
+  same   ASSIGN:SMOKE_VALID
+  same   ASSIGN:SOAK_RO_SAVE
+  same   ASSIGN:SOAK_TOTAL
+  same   ASSIGN:SOAK_VALID
+  same   ASSIGN:STAGE_BUDGET_SECONDS
+  same   ASSIGN:VALID_OPS
+  same   ASSIGN:_TOKENS
+  same   Intent
+  same   LeaseLimiter
+  same   _EntryGate
+  same   _adapter_threads
+  DIFF   _aggregate_gate
+  same   _make_gated_service
+  same   _nfd
+  same   _raw_exchange
+  same   _raw_request
+  same   _rss_kb
+  DIFF   _run_guarded
+  same   _status_code
+  same   _tree_bytes
+  same   _write
+  same   build_policies
+  same   build_roots
+  same   classify
+  same   frozen_schedule
+  same   main
+  same   run_adversarial
+  same   run_bounded
+  DIFF   run_gate
+  same   run_saturation
+  same   run_stage
+  same   schedule_counts
+  same   schedule_fingerprint
+  same   selfcheck
+  same   token_label
+  same   verdict
+
+frozen-identical count: 50
+gate-helper delta confined to: ['ASSIGN:REQUIRED_STAGES', '_aggregate_gate', '_run_guarded', 'run_gate']
+delta is exactly the gating helper: True

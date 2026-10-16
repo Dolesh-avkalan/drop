@@ -1,0 +1,7 @@
+old_d097_gate_3.11        exit=1
+d101_gate_3.11            exit=0
+d101_gate_3.12            exit=0
+d101_selfcheck_3.11       exit=0
+d101_selfcheck_3.12       exit=0
+d101_gate_exit_unit_3.11  exit=0
+d101_gate_exit_unit_3.12  exit=0

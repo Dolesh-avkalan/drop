@@ -1,0 +1,127 @@
+{
+  "checks": [
+    {
+      "detail": "rc=0",
+      "name": "all-pass exit 0",
+      "ok": true
+    },
+    {
+      "detail": "rc=1",
+      "name": "selfcheck FAIL -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "smoke calls=0",
+      "name": "selfcheck FAIL -> smoke not run",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "selfcheck FAIL -> saturation not run",
+      "ok": true
+    },
+    {
+      "detail": "rc=1",
+      "name": "smoke FAIL -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "soak calls=0",
+      "name": "smoke FAIL -> NO soak after smoke fail",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "smoke FAIL -> NO saturation after smoke fail",
+      "ok": true
+    },
+    {
+      "detail": "rc=1",
+      "name": "soak FAIL -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "rc=1",
+      "name": "saturation FAIL -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "smoke SKIPPED -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "smoke ERROR -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "soak TIMEOUT -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "stage raising -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "stage TimeoutError -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "stage non-dict return -> nonzero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "aggregate truth table exhaustive (2401 combos)",
+      "ok": true
+    },
+    {
+      "detail": "false passes=[]",
+      "name": "aggregate passes for EXACTLY the all-PASS combination",
+      "ok": true
+    },
+    {
+      "detail": "mismatches=[]",
+      "name": "entry-point exit matches truth table (no false pass)",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "all-PASS aggregate ok",
+      "ok": true
+    },
+    {
+      "detail": "['selfcheck: FAIL']",
+      "name": "one-FAIL (selfcheck) aggregate not ok",
+      "ok": true
+    },
+    {
+      "detail": "['smoke600: FAIL']",
+      "name": "one-FAIL (smoke600) aggregate not ok",
+      "ok": true
+    },
+    {
+      "detail": "['soak10000: FAIL']",
+      "name": "one-FAIL (soak10000) aggregate not ok",
+      "ok": true
+    },
+    {
+      "detail": "['saturation_6plus1: FAIL']",
+      "name": "one-FAIL (saturation_6plus1) aggregate not ok",
+      "ok": true
+    }
+  ],
+  "entry_point_mismatches": [],
+  "failed": 0,
+  "false_passes": [],
+  "harness": "d101-gate-exit-unit-suite",
+  "passed": 23,
+  "python": "3.11.2",
+  "total": 23,
+  "truth_table_combos": 2401
+}

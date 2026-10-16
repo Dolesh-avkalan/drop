@@ -1,0 +1,26 @@
+D101 gate-exit comparison proof
+candidate f37a30b, base b962a04d, same host (see env.txt), same frozen stages
+
+OLD harness scripts/http_gate_d097.py  sha256 0ecf875e10d6b27dffc42eb379d6fa0ab850fc41018af9f2b8860ac5ffa81d24
+  --gate 3.11 exit code : 1  (smoke PASS, soak PASS)
+  top-level result key  : None
+  smoke.result=PASS  soak.result=PASS
+  => NONZERO despite every stage PASS (the reported defect).
+
+NEW harness scripts/http_gate_d101.py  sha256 3754ca19b4a72797ac16a1e32300ddf399e7117e2dec63def6693d2512db8d7b
+  --gate 3.11 exit code : 0
+    result=PASS problems=[]
+    executed=['selfcheck', 'smoke600', 'soak10000', 'saturation_6plus1']
+    smoke  PASS  buckets={'expected_readonly_denial': 20, 'expected_saturation_busy': 0, 'unexpected_other_error': 0, 'unexpected_unavailable': 0, 'valid_below_capacity_success': 580}
+    soak   PASS  buckets={'expected_readonly_denial': 320, 'expected_saturation_busy': 0, 'unexpected_other_error': 0, 'unexpected_unavailable': 0, 'valid_below_capacity_success': 9680}
+    sat    PASS  buckets={'expected_readonly_denial': 0, 'expected_saturation_busy': 50, 'unexpected_other_error': 0, 'unexpected_unavailable': 0, 'valid_below_capacity_success': 300}
+  --gate 3.12 exit code : 0
+    result=PASS problems=[]
+    executed=['selfcheck', 'smoke600', 'soak10000', 'saturation_6plus1']
+    smoke  PASS  buckets={'expected_readonly_denial': 20, 'expected_saturation_busy': 0, 'unexpected_other_error': 0, 'unexpected_unavailable': 0, 'valid_below_capacity_success': 580}
+    soak   PASS  buckets={'expected_readonly_denial': 320, 'expected_saturation_busy': 0, 'unexpected_other_error': 0, 'unexpected_unavailable': 0, 'valid_below_capacity_success': 9680}
+    sat    PASS  buckets={'expected_readonly_denial': 0, 'expected_saturation_busy': 50, 'unexpected_other_error': 0, 'unexpected_unavailable': 0, 'valid_below_capacity_success': 300}
+
+Only the gating helper changed (run_gate + _aggregate_gate + _run_guarded +
+REQUIRED_STAGES); the stage runners, frozen schedules/intents, D089 accounting,
+budgets and the real service-entry saturation barrier are byte-for-byte D097.
