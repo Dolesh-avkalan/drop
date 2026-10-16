@@ -1,0 +1,39 @@
+# D097 security-mutation battery
+
+Each mutant is ONE surgical semantic change to a private copy of
+drive_tool/http_adapter.py; it must compile cleanly (no syntax false positive)
+and the targeted test class must FAIL (mutant killed). The unmutated candidate
+must PASS the same class (new pass).
+
+| mutant | category | compile 3.11 | compile 3.12 | class | 3.11 | 3.12 | killed |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| m1_framing_nonpost | framing | True | True | FramingRejectionTests | rc=1 | rc=1 | True |
+| m2_auth_missing_allowed | auth | True | True | AuthFirstZeroFsTests | rc=1 | rc=1 | True |
+| m3_caps_wire_gate_removed | caps | True | True | CapabilityBoundaryTests | rc=1 | rc=1 | True |
+| m4_close_not_idempotent | once-only-close | True | True | CloseBudgetTests | rc=1 | rc=1 | True |
+| m5_close_ignores_deadline | timed-close | True | True | CloseBudgetTests | rc=1 | rc=1 | True |
+| m6_busy_monolithic_preread | busy-phase | True | True | BusyPhaseBudgetTests | rc=1 | rc=1 | True |
+
+## m1_framing_nonpost (framing) -> FramingRejectionTests
+3.11: rc=1 FAILED (failures=1)
+3.12: rc=1 FAILED (failures=1)
+
+## m2_auth_missing_allowed (auth) -> AuthFirstZeroFsTests
+3.11: rc=1 FAILED (failures=1)
+3.12: rc=1 FAILED (failures=1)
+
+## m3_caps_wire_gate_removed (caps) -> CapabilityBoundaryTests
+3.11: rc=1 FAILED (errors=1)
+3.12: rc=1 FAILED (errors=1)
+
+## m4_close_not_idempotent (once-only-close) -> CloseBudgetTests
+3.11: rc=1 FAILED (failures=2)
+3.12: rc=1 FAILED (failures=2)
+
+## m5_close_ignores_deadline (timed-close) -> CloseBudgetTests
+3.11: rc=1 FAILED (failures=1)
+3.12: rc=1 FAILED (failures=1)
+
+## m6_busy_monolithic_preread (busy-phase) -> BusyPhaseBudgetTests
+3.11: rc=1 FAILED (failures=2)
+3.12: rc=1 FAILED (failures=2)
