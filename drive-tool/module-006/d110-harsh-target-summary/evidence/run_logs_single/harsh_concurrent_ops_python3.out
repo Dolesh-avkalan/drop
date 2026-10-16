@@ -1,0 +1,1 @@
+HARSH_JSON: {"create_exists": 5, "create_other": [], "create_winners": 1, "multi_agent": ["ok", "ok", "ok", "ok", "ok", "ok"], "overwrite_errors": [], "problems": [], "resources": {"closed": true, "fd_after": 4, "fd_before": 11, "threads_after_close": []}, "result": "PASS", "stage": "concurrent_ops", "temp_residue": [], "torn_count": 0, "torn_reads": []}
