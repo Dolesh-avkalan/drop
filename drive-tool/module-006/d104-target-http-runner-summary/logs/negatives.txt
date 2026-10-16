@@ -1,0 +1,26 @@
+d104 runner negative checks — parent-run in the authoring sandbox.
+Each case must fail closed (runner exit 1) and must NOT reach the gate.
+
+N1 identity tamper (one pinned source file altered; drive_tool/storage.py +9 bytes)
+    exit=1 result=FAIL
+    identity problems:
+      size mismatch drive_tool/storage.py: 13727 != 13718
+      blob mismatch drive_tool/storage.py: c7283d65d24e44295710910fc4ca7528492d0de7 != 3f4f8dcf50bbf68e97cd807fe40db1ee1bec4576
+      sha256 mismatch drive_tool/storage.py: ebd8aa0a... != 422f22fb...
+    (gate not executed)
+
+N2 gate-payload tamper (http_gate_d101.py +7 bytes)
+    exit=1 result=FAIL
+    gate-payload: gate payload sha256 mismatch:
+      51e0835e07cf45fc109946148a528a1af7309bebc51a73eef6db29a4e1ae79ab !=
+      3754ca19b4a72797ac16a1e32300ddf399e7117e2dec63def6693d2512db8d7b
+
+N3 workspace escape — --base-dir outside /tmp (--base-dir /scratch/work)
+    exit=1  "base-dir must resolve under /tmp (got /scratch/work)"
+
+N4 workspace escape — --workdir equal to the base (/tmp itself)
+    exit=1  "workdir must be a descendant of base-dir (never base itself)"
+
+N5 stray importable file (docs/rogue_module.py added)
+    exit=1 result=FAIL
+    identity: unexpected importable/executable file: docs/rogue_module.py

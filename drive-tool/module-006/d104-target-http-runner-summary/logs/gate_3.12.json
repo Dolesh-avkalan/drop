@@ -1,0 +1,1975 @@
+{
+ "executed": [
+  "selfcheck",
+  "smoke600",
+  "soak10000",
+  "saturation_6plus1"
+ ],
+ "harness": "d101-http-gate-harness",
+ "note": null,
+ "problems": [],
+ "required_stages": [
+  "selfcheck",
+  "smoke600",
+  "soak10000",
+  "saturation_6plus1"
+ ],
+ "result": "PASS",
+ "saturation": {
+  "buckets": {
+   "expected_readonly_denial": 0,
+   "expected_saturation_busy": 50,
+   "unexpected_other_error": 0,
+   "unexpected_unavailable": 0,
+   "valid_below_capacity_success": 300
+  },
+  "cycles": [
+   {
+    "cycle": 0,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 1,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 2,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 3,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 4,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 5,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 6,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 7,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 8,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 9,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 10,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 11,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 12,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 13,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 14,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 15,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 16,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 17,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 18,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 19,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 20,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 21,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 22,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 23,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 24,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 25,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 26,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 27,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 28,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 29,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 30,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 31,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 32,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 33,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 34,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 35,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 36,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 37,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 38,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 39,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 40,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 41,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 42,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 43,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 44,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 45,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 46,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 47,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 48,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   },
+   {
+    "cycle": 49,
+    "entered_count": 6,
+    "entered_ok": true,
+    "excess": [
+     503,
+     "busy"
+    ],
+    "occupiers": [
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ],
+     [
+      200,
+      null
+     ]
+    ]
+   }
+  ],
+  "expected": {
+   "expected_readonly_denial": 0,
+   "expected_saturation_busy": 50,
+   "unexpected_other_error": 0,
+   "unexpected_unavailable": 0,
+   "valid_below_capacity_success": 300
+  },
+  "frozen": {
+   "budget_seconds": 900,
+   "cycles": 50,
+   "excess": 1,
+   "occupiers": 6
+  },
+  "harness": "d097-http-gate-harness",
+  "problems": [],
+  "requested": 350,
+  "resources": {
+   "adapter_threads_after_close": [],
+   "adapter_threads_live": [
+    "drive-http-accept",
+    "drive-http-worker-0",
+    "drive-http-worker-1",
+    "drive-http-worker-2",
+    "drive-http-worker-3",
+    "drive-http-worker-4",
+    "drive-http-worker-5"
+   ],
+   "closed": true,
+   "elapsed_seconds": 2.134,
+   "fd_after": 4,
+   "fd_before": 11,
+   "within_budget": true
+  },
+  "result": "PASS",
+  "saturation_mode": "real-service-entry-barrier",
+  "stage": "saturation_6plus1"
+ },
+ "selfcheck": {
+  "frozen": {
+   "hold_seconds": 0.055,
+   "leases": 5,
+   "seed": 53398
+  },
+  "harness": "d096-http-gate-harness",
+  "problems": [],
+  "result": "PASS",
+  "saturation_arithmetic": {
+   "busy": 50,
+   "valid": 300
+  },
+  "schedule_counts": {
+   "smoke600": {
+    "busy": 0,
+    "denied": 20,
+    "ok": 580
+   },
+   "soak10000": {
+    "busy": 0,
+    "denied": 320,
+    "ok": 9680
+   }
+  },
+  "schedule_fingerprints": {
+   "smoke600": "74e61249b9e7d3be0b0f3e31f7e88d1be5368c9ef752991fc21fdd690e9d68ef",
+   "soak10000": "7f3911b44f9a1dd86671fcfd141b8aa0ac00486deb94f97c37d01cc89105bf4e"
+  },
+  "stage": "selfcheck"
+ },
+ "smoke": {
+  "buckets": {
+   "expected_readonly_denial": 20,
+   "expected_saturation_busy": 0,
+   "unexpected_other_error": 0,
+   "unexpected_unavailable": 0,
+   "valid_below_capacity_success": 580
+  },
+  "expected": {
+   "expected_readonly_denial": 20,
+   "expected_saturation_busy": 0,
+   "unexpected_other_error": 0,
+   "unexpected_unavailable": 0,
+   "valid_below_capacity_success": 580
+  },
+  "frozen": {
+   "budget_seconds": 900,
+   "hold_seconds": 0.055,
+   "leases": 5,
+   "ro_save": 20,
+   "seed": 53398,
+   "total": 600,
+   "valid": 580
+  },
+  "harness": "d096-http-gate-harness",
+  "problems": [],
+  "requested": 600,
+  "resources": {
+   "adapter_threads_after_close": [],
+   "adapter_threads_live": [
+    "drive-http-accept",
+    "drive-http-worker-0",
+    "drive-http-worker-1",
+    "drive-http-worker-2",
+    "drive-http-worker-3",
+    "drive-http-worker-4",
+    "drive-http-worker-5"
+   ],
+   "adapter_threads_ok": true,
+   "closed": true,
+   "elapsed_seconds": 7.459,
+   "fd_after": 4,
+   "fd_before": 11,
+   "fd_ok": true,
+   "fixture_bytes": 25128,
+   "fixture_limit_bytes": 33554432,
+   "max_leases_held": 5,
+   "rss_after_kb": 35184,
+   "rss_before_kb": 43604,
+   "rss_growth_bytes": -8622080,
+   "rss_ok": true,
+   "within_budget": true,
+   "workspace_bytes": 25384,
+   "workspace_limit_bytes": 134217728
+  },
+  "result": "PASS",
+  "schedule_counts": {
+   "busy": 0,
+   "denied": 20,
+   "ok": 580
+  },
+  "schedule_fingerprint": "74e61249b9e7d3be0b0f3e31f7e88d1be5368c9ef752991fc21fdd690e9d68ef",
+  "stage": "smoke600"
+ },
+ "soak": {
+  "buckets": {
+   "expected_readonly_denial": 320,
+   "expected_saturation_busy": 0,
+   "unexpected_other_error": 0,
+   "unexpected_unavailable": 0,
+   "valid_below_capacity_success": 9680
+  },
+  "expected": {
+   "expected_readonly_denial": 320,
+   "expected_saturation_busy": 0,
+   "unexpected_other_error": 0,
+   "unexpected_unavailable": 0,
+   "valid_below_capacity_success": 9680
+  },
+  "frozen": {
+   "budget_seconds": 900,
+   "hold_seconds": 0.055,
+   "leases": 5,
+   "ro_save": 320,
+   "seed": 53398,
+   "total": 10000,
+   "valid": 9680
+  },
+  "harness": "d096-http-gate-harness",
+  "problems": [],
+  "requested": 10000,
+  "resources": {
+   "adapter_threads_after_close": [],
+   "adapter_threads_live": [
+    "drive-http-accept",
+    "drive-http-worker-0",
+    "drive-http-worker-1",
+    "drive-http-worker-2",
+    "drive-http-worker-3",
+    "drive-http-worker-4",
+    "drive-http-worker-5"
+   ],
+   "adapter_threads_ok": true,
+   "closed": true,
+   "elapsed_seconds": 121.225,
+   "fd_after": 4,
+   "fd_before": 11,
+   "fd_ok": true,
+   "fixture_bytes": 25128,
+   "fixture_limit_bytes": 33554432,
+   "max_leases_held": 5,
+   "rss_after_kb": 42352,
+   "rss_before_kb": 41448,
+   "rss_growth_bytes": 925696,
+   "rss_ok": true,
+   "within_budget": true,
+   "workspace_bytes": 25384,
+   "workspace_limit_bytes": 134217728
+  },
+  "result": "PASS",
+  "schedule_counts": {
+   "busy": 0,
+   "denied": 320,
+   "ok": 9680
+  },
+  "schedule_fingerprint": "7f3911b44f9a1dd86671fcfd141b8aa0ac00486deb94f97c37d01cc89105bf4e",
+  "stage": "soak10000"
+ },
+ "stage": "gate"
+}

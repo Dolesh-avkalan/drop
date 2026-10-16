@@ -1,0 +1,17 @@
+# d104 target HTTP runner — file hash manifest
+# generated 2026-10-16T03:05:39Z
+# sha256  bytes  path
+3bb404eb0ea3bdcced2f3313d4fcd89a814d624b2718e0f82227f30767e5ed33      3549  README.md
+3754ca19b4a72797ac16a1e32300ddf399e7117e2dec63def6693d2512db8d7b     45668  http_gate_d101.py
+832032fa13b1eeba299da467efa95912ba946a27bbbaaf99ebee42cba386dc6d     23450  logs/gate_3.11.json
+e3301ab4f9bcd4d9893efe1eeac1653e4efc352365a646c6f2db9b3c4d4accc2       998  logs/gate_3.11.tail.txt
+d104bf6710f546762a0790d0c76b1f3e835affdf4cdcfb4466b6e8c39fafe31a     23450  logs/gate_3.12.json
+df84bcda6a7779ec80b008ef9db415186e53b4a04e7c8e96e1eec11c4240315e       998  logs/gate_3.12.tail.txt
+90c5e4a73c703be20132910da064fa8a63225cb50edb03929ff3f5f1ccfd29a3      1260  logs/negatives.txt
+9992aaad04b263dca704aabbe4fba985d434787488ebc9b23494af5102453345      2720  logs/run_3.11.json
+b6df0fd328c0682fd8c983192ae406b81de9ef8acd20fecf01d899b62a163aed      2740  logs/run_3.12.json
+d7dc23d1be879d8f242793202bc411a03ac4b1f87dfc9bb7fbfafd346219c371      2819  logs/run_download_3.12.json
+13fc3b06a764b366041ab58aba042fbab4ff5da3144f01430a858edb643427db     76917  logs/suite_3.11.log
+fefb55dbc6513b7f1c35f6f5f97c112c6e2a4acc57da958534f6b422ff2ddac3     76917  logs/suite_3.12.log
+4a91f4baa9210aa5404b86029e0f46948dd3ac97c030a3a4028f5f6910f29223      3732  report.md
+4eaf7f530bb25646e2c58e61d05eded952fdf53172f2db212c4e43945d72fdbf     32795  run_target_http.py

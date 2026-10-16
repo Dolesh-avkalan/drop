@@ -1,0 +1,83 @@
+{
+  "archive_bytes": 489794,
+  "archive_origin": "local:/scratch/work/cand.tar.gz",
+  "archive_sha256": "191d6f2bd985be51f1b6092472beeec25b267a4c6e89de7817b4d6538c61c6c3",
+  "exit": 0,
+  "finished": "2026-10-16T02:59:34Z",
+  "gate_payload": {
+    "path": "http_gate_d101.py",
+    "problems": [],
+    "sha256": "3754ca19b4a72797ac16a1e32300ddf399e7117e2dec63def6693d2512db8d7b"
+  },
+  "gate_sha256": "3754ca19b4a72797ac16a1e32300ddf399e7117e2dec63def6693d2512db8d7b",
+  "identity": {
+    "checked": 28,
+    "problems": []
+  },
+  "interpreter": "3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]",
+  "manifest": {
+    "files": 132,
+    "path": "source_manifest.tsv"
+  },
+  "pin": {
+    "archive": "https://codeload.github.com/Dolesh-avkalan/drive-tool/tar.gz/337e4c713829af76615472eb47b81244ff399528",
+    "commit": "337e4c713829af76615472eb47b81244ff399528",
+    "repo": "Dolesh-avkalan/drive-tool"
+  },
+  "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
+  "problems": [],
+  "pythons": [
+    "/usr/local/bin/python3.12"
+  ],
+  "resources": {
+    "elapsed_seconds": 144.857,
+    "free_bytes": 57520128,
+    "max_concurrent_ops": 6,
+    "within_workspace_bound": true,
+    "workspace_allocated_bytes": 9339392,
+    "workspace_limit_bytes": 134217728
+  },
+  "result": "PASS",
+  "runner": "d104-target-http-runner",
+  "source_root": "src/drive-tool-337e4c713829af76615472eb47b81244ff399528",
+  "sourcehash": "b8b44c4c056e1925957445cc9b532c53194920124a469df54e49053a7dcbb71c",
+  "stages": {
+    "/usr/local/bin/python3.12": {
+      "env": {
+        "out": "3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]\nLinux-4.19.0-gvisor-x86_64-with-glibc2.36\n/tmp/d104-337e4c71-2567-429759/src/drive-tool-337e4c713829af76615472eb47b81244ff399528",
+        "raw_exit": 0
+      },
+      "gate": {
+        "executed": [
+          "selfcheck",
+          "smoke600",
+          "soak10000",
+          "saturation_6plus1"
+        ],
+        "json": "gate_python312.json",
+        "log": "gate_python312.log",
+        "problems": [],
+        "raw_exit": 0,
+        "result": "PASS",
+        "timed_out": false
+      },
+      "python": "/usr/local/bin/python3.12",
+      "suite": {
+        "failed": false,
+        "log": "suite_python312.log",
+        "problems": [],
+        "ran": 581,
+        "raw_exit": 0,
+        "skips": [
+          "test_http_adapter.SmokeSoakGateContractTests.test_helper_raises_without_production_adapter",
+          "test_http_adapter.SmokeSoakGateTests.test_stage_smoke_600",
+          "test_http_adapter.SmokeSoakGateTests.test_stage_soak_10000"
+        ],
+        "timed_out": false
+      }
+    }
+  },
+  "started": "2026-10-16T02:57:09Z",
+  "uncompressed_bytes": 1785011,
+  "workspace": "/tmp/d104-337e4c71-2567-429759"
+}

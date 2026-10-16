@@ -1,0 +1,40 @@
+        "drive-http-worker-3",
+        "drive-http-worker-4",
+        "drive-http-worker-5"
+      ],
+      "adapter_threads_ok": true,
+      "closed": true,
+      "elapsed_seconds": 121.687,
+      "fd_after": 4,
+      "fd_before": 11,
+      "fd_ok": true,
+      "fixture_bytes": 25128,
+      "fixture_limit_bytes": 33554432,
+      "max_leases_held": 5,
+      "rss_after_kb": 42372,
+      "rss_before_kb": 41808,
+      "rss_growth_bytes": 577536,
+      "rss_ok": true,
+      "within_budget": true,
+      "workspace_bytes": 25384,
+      "workspace_limit_bytes": 134217728
+    },
+    "result": "PASS",
+    "schedule_counts": {
+      "busy": 0,
+      "denied": 320,
+      "ok": 9680
+    },
+    "schedule_fingerprint": "7f3911b44f9a1dd86671fcfd141b8aa0ac00486deb94f97c37d01cc89105bf4e",
+    "schedule_per_agent": {
+      "agent0": 1614,
+      "agent1": 1614,
+      "agent2": 1613,
+      "agent3": 1933,
+      "agent4": 1613,
+      "agent5": 1613
+    },
+    "stage": "soak10000"
+  },
+  "stage": "gate"
+}
