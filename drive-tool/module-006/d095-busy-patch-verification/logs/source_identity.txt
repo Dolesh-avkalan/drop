@@ -1,0 +1,24 @@
+# D095 source identity
+
+repo:        Dolesh-avkalan/drive-tool
+base commit: b962a04df1c5abdb78c37617d3a6adca02d04024
+base tree:   ebcee4f5d1108b678d137da23916ecc8cd9a1999
+branch:      feature/module-006b-http-busy-budget
+head commit: f37a30b0073611c05d26f714f2e833d689673a09
+head tree:   377e9e507a5bbfe269d92bf8a5327e83e021e6b5
+
+drive_tool/http_adapter.py:
+  base blob: a28970e29f7aa52373026f2e539206b2de784ccf  sha256 9706fdbc9e48fe35e3777116f536a462368ae87080c47934a534fd0d93cdd0ec
+  head blob: 41279e6290617968c3b4f3f91fc3cf9a7dab505a  sha256 3ed13cfa7960854382577c9e0982d3ba116833793a6430d141732ccac89c020c
+tests/test_http_adapter.py:
+  base blob: 8130d56f4ca04305ec2e9a38ff59c892c6a659b0  sha256 88c1e558e093d3017056b0e592b778406ce23043fb2a7a5c090312d560b17e78
+  head blob: 7a7be06d5ef0e25d0ac54e11bc5909cda27500d3  sha256 b678744759bd53c3dc992e215fc7e98cd5df869c381addbaaa2bfb15e2b87dbf
+
+patch source: drop 61f5d147ccbb7705f76349d7fcd143178c6ab6f8
+  path: drive-tool/module-006/d094-busy-reject-patch.md
+  blob: 8bf344022503bd3550095ac56d5b8b4723edc122
+
+harness source: drop 33a20f63c85ab1381e0ac2a2ac15c6278a4e9de9
+  path: drive-tool/module-006/d096-http-gate-harness/
+  published http_gate.py sha256 36770171d78b2541f5b869d3f1c8ef5573eb61eba55ef26c00cc4b1e629954ed (verified)
+  corrected r1 sha256 4bb7a02a27db2fe54e6e1232ee7e136ea79bf497a8be96d04f66d981875ba8f2

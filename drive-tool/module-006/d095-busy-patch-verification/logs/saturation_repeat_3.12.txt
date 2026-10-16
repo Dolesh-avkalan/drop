@@ -1,0 +1,8 @@
+run 1: PASS valid=300 busy=50 unavail=0 other=0
+run 2: PASS valid=300 busy=50 unavail=0 other=0
+run 3: PASS valid=300 busy=50 unavail=0 other=0
+run 4: FAIL valid=299 busy=49 unavail=0 other=2
+run 5: PASS valid=300 busy=50 unavail=0 other=0
+run 6: PASS valid=300 busy=50 unavail=0 other=0
+run 7: PASS valid=300 busy=50 unavail=0 other=0
+run 8: PASS valid=300 busy=50 unavail=0 other=0

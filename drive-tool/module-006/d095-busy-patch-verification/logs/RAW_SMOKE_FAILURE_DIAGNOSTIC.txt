@@ -1,0 +1,19 @@
+# D095 raw smoke failure diagnostic (frozen D096 harness, unmodified)
+
+Harness: drop 33a20f63 drive-tool/module-006/d096-http-gate-harness/scripts/http_gate.py
+  sha256 36770171d78b2541f5b869d3f1c8ef5573eb61eba55ef26c00cc4b1e629954ed (verified against the published MANIFEST)
+  frozen schedule fingerprints c3ab4855... (smoke600) / e08db707... (soak10000) (verified)
+Candidate: feature/module-006b-http-busy-budget (adapter 41279e62)
+
+smoke600 result: FAIL
+  buckets: valid 386 (want 580), expected_ro_denial 20 (want 20),
+           expected_saturation_busy 0, unexpected_unavailable 0, unexpected_other_error 194
+  resources: closed=True fd 11->4 threads 7->0 leases_max=5 elapsed 7.28s
+
+ATTRIBUTION: the 194 errors are transport=ValueError on op=read only,
+each completing in ~0.04 ms -- i.e. raised by client-side validation
+before any socket I/O. drive_tool.service_client._validate_file_id
+requires a non-root file_id to start with 'p/', and the harness schedule
+used 'readme.txt'. This is a HARNESS defect in the frozen D096 harness,
+not a production failure. unexpected_unavailable is 0, which is the
+D094 property under test.

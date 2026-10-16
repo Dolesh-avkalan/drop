@@ -1,0 +1,73 @@
+{
+  "buckets": {
+    "expected_readonly_denial": 20,
+    "expected_saturation_busy": 0,
+    "unexpected_other_error": 0,
+    "unexpected_unavailable": 0,
+    "valid_below_capacity_success": 580
+  },
+  "expected": {
+    "expected_readonly_denial": 20,
+    "expected_saturation_busy": 0,
+    "unexpected_other_error": 0,
+    "unexpected_unavailable": 0,
+    "valid_below_capacity_success": 580
+  },
+  "frozen": {
+    "budget_seconds": 900,
+    "hold_seconds": 0.055,
+    "leases": 5,
+    "ro_save": 20,
+    "seed": 53398,
+    "total": 600,
+    "valid": 580
+  },
+  "harness": "d096-http-gate-harness",
+  "problems": [],
+  "records": "<600 records omitted>",
+  "requested": 600,
+  "resources": {
+    "adapter_threads_after_close": [],
+    "adapter_threads_live": [
+      "drive-http-accept",
+      "drive-http-worker-0",
+      "drive-http-worker-1",
+      "drive-http-worker-2",
+      "drive-http-worker-3",
+      "drive-http-worker-4",
+      "drive-http-worker-5"
+    ],
+    "adapter_threads_ok": true,
+    "closed": true,
+    "elapsed_seconds": 7.435,
+    "fd_after": 4,
+    "fd_before": 11,
+    "fd_ok": true,
+    "fixture_bytes": 25128,
+    "fixture_limit_bytes": 33554432,
+    "max_leases_held": 5,
+    "rss_after_kb": 35016,
+    "rss_before_kb": 44532,
+    "rss_growth_bytes": -9744384,
+    "rss_ok": true,
+    "within_budget": true,
+    "workspace_bytes": 25384,
+    "workspace_limit_bytes": 134217728
+  },
+  "result": "PASS",
+  "schedule_counts": {
+    "busy": 0,
+    "denied": 20,
+    "ok": 580
+  },
+  "schedule_fingerprint": "74e61249b9e7d3be0b0f3e31f7e88d1be5368c9ef752991fc21fdd690e9d68ef",
+  "schedule_per_agent": {
+    "agent0": 97,
+    "agent1": 97,
+    "agent2": 97,
+    "agent3": 117,
+    "agent4": 96,
+    "agent5": 96
+  },
+  "stage": "smoke600"
+}

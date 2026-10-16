@@ -1,0 +1,28 @@
+cycle  0  excess bytes=187  status=503  code=busy
+cycle  1  excess bytes=187  status=503  code=busy
+cycle  2  excess bytes=187  status=503  code=busy
+cycle  3  excess bytes=187  status=503  code=busy
+cycle  4  excess bytes=187  status=503  code=busy
+cycle  5  excess bytes=187  status=503  code=busy
+cycle  6  excess bytes=187  status=503  code=busy
+cycle  7  excess bytes=187  status=503  code=busy
+cycle  8  excess bytes=187  status=503  code=busy
+cycle  9  excess bytes=187  status=503  code=busy
+cycle 10  excess bytes=187  status=503  code=busy
+cycle 11  excess bytes=187  status=503  code=busy
+cycle 12  excess bytes=187  status=503  code=busy
+cycle 13  excess bytes=187  status=503  code=busy
+cycle 14  excess bytes=187  status=503  code=busy
+cycle 15  excess bytes=187  status=503  code=busy
+cycle 16  excess bytes=187  status=503  code=busy
+cycle 17  excess bytes=187  status=503  code=busy
+cycle 18  excess bytes=187  status=503  code=busy
+cycle 19  excess bytes=187  status=503  code=busy
+cycle 20  excess bytes=187  status=503  code=busy
+cycle 21  excess bytes=187  status=503  code=busy
+cycle 22  excess bytes=187  status=503  code=busy
+cycle 23  excess bytes=187  status=503  code=busy
+cycle 24  excess bytes=187  status=503  code=busy
+
+cycles=25 busy=25 empty=0 unavailable=0 closed=True
+VERDICT: PASS

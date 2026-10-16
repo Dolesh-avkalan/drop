@@ -1,0 +1,29 @@
+# D095 semantic-revert guard (two levels), both compile-clean
+
+## A. full revert to b962a04d (phase constants AND the phased _busy_reject removed)
+$ git checkout b962a04d -- drive_tool/http_adapter.py
+adapter sha256: 9706fdbc9e48fe35e3777116f536a462368ae87080c47934a534fd0d93cdd0ec
+  python3.11 compile clean
+  python3.12 compile clean
+$ python3.12 -m unittest tests.test_http_adapter.BusyPhaseBudgetTests
+Ran 5 tests in 0.000s
+
+OK (skipped=5)
+  -> the phase constants are part of the frozen contract, so the harness
+     import fails and every adapter test is SKIPPED (not a silent pass).
+$ git checkout HEAD -- drive_tool/http_adapter.py
+adapter sha256 restored: 3ed13cfa7960854382577c9e0982d3ba116833793a6430d141732ccac89c020c
+  python3.11 compile clean
+  python3.12 compile clean
+
+## B. constants-only revert (phase constants present, monolithic _busy_reject kept)
+   (see /scratch/work/d095-base; this is the discriminating oldfail)
+FAIL: test_busy_envelope_is_not_unavailable (tests.test_http_adapter.BusyPhaseBudgetTests.test_busy_envelope_is_not_unavailable)
+FAIL: test_delayed_payload_pre_read_cannot_starve_busy_write (tests.test_http_adapter.BusyPhaseBudgetTests.test_delayed_payload_pre_read_cannot_starve_busy_write)
+Ran 5 tests in 0.003s
+FAILED (failures=2)
+
+## C. actual-socket 6+1, repeated
+   patched: 25/25 cycles delivered 503 busy (187 bytes)
+   pre-patch: 25/25 cycles delivered 0 bytes (the empty reply the production
+              client maps to 'unavailable')

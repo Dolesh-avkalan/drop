@@ -1,0 +1,11 @@
+--- /scratch/work/d095-evidence/scripts/http_gate_d096_original.py	2026-10-16 01:31:59.519031748 +0000
++++ /scratch/work/d095-evidence/scripts/http_gate_r1.py	2026-10-16 01:31:59.499031463 +0000
+@@ -144,7 +144,7 @@
+         elif op == "find":
+             file_id = "root"
+         elif op == "read":
+-            file_id = "readme.txt"
++            file_id = "p/readme.txt"      # canonical prefix; the client rejects bare names
+         else:
+             file_id = "p/savepool/v%03d.bin" % (k % 64)
+         items.append((agent, op, file_id, "ok"))

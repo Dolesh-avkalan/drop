@@ -1,0 +1,68 @@
+diff --git a/drive_tool/http_adapter.py b/drive_tool/http_adapter.py
+index a28970e..41279e6 100644
+--- a/drive_tool/http_adapter.py
++++ b/drive_tool/http_adapter.py
+@@ -44,6 +44,9 @@ __all__ = [
+     "DEFAULT_DRAIN_TIMEOUT_SECONDS",
+     "ACCEPT_POLL_INTERVAL_SECONDS",
+     "BUSY_REJECT_BUDGET_SECONDS",
++    "BUSY_PRE_READ_BUDGET_SECONDS",
++    "BUSY_WRITE_RESERVE_SECONDS",
++    "BUSY_POST_DRAIN_BUDGET_SECONDS",
+     "MAX_BUSY_READ_BYTES",
+     "POST_RESPONSE_DRAIN_SECONDS",
+     "MAX_DRAIN_BYTES",
+@@ -61,7 +64,10 @@ MAX_READ_BODY_BYTES = 1048576
+ DEFAULT_SOCKET_TIMEOUT_SECONDS = 5.0
+ DEFAULT_DRAIN_TIMEOUT_SECONDS = 5.0
+ ACCEPT_POLL_INTERVAL_SECONDS = 0.05
+-BUSY_REJECT_BUDGET_SECONDS = 0.05
++BUSY_REJECT_BUDGET_SECONDS = 0.050
++BUSY_PRE_READ_BUDGET_SECONDS = 0.010
++BUSY_WRITE_RESERVE_SECONDS = 0.020
++BUSY_POST_DRAIN_BUDGET_SECONDS = 0.020
+ MAX_BUSY_READ_BYTES = 16384
+ POST_RESPONSE_DRAIN_SECONDS = 0.05
+ MAX_DRAIN_BYTES = 65536
+@@ -537,10 +543,16 @@ class DriveHTTPAdapter:
+     # ----- busy rejection -------------------------------------------------
+ 
+     def _busy_reject(self, conn):
+-        busy_deadline = time.monotonic() + BUSY_REJECT_BUDGET_SECONDS
++        now = time.monotonic()
++        busy_deadline = now + BUSY_REJECT_BUDGET_SECONDS
+         total_read = 0
+ 
+-        remaining = busy_deadline - time.monotonic()
++        # Phase 1: bounded pre-read. Must not consume the reserved write slice.
++        pre_read_deadline = min(
++            now + BUSY_PRE_READ_BUDGET_SECONDS,
++            busy_deadline - BUSY_WRITE_RESERVE_SECONDS,
++        )
++        remaining = pre_read_deadline - time.monotonic()
+         if remaining > 0:
+             try:
+                 conn.settimeout(remaining)
+@@ -550,6 +562,7 @@ class DriveHTTPAdapter:
+             except (socket.timeout, OSError, ValueError):
+                 pass
+ 
++        # Phase 2: reserved write window inside the same 50ms outer ceiling.
+         body = (
+             b'{"ok":false,"error":{"code":"busy",'
+             b'"outcome_uncertain":false,"retry_safe":true}}'
+@@ -569,8 +582,13 @@ class DriveHTTPAdapter:
+         except OSError:
+             pass
+ 
++        # Phase 3: bounded post-write drain; never exceeds 16 KiB or outer deadline.
++        drain_deadline = min(
++            busy_deadline,
++            time.monotonic() + BUSY_POST_DRAIN_BUDGET_SECONDS,
++        )
+         while total_read < MAX_BUSY_READ_BYTES:
+-            remaining = busy_deadline - time.monotonic()
++            remaining = drain_deadline - time.monotonic()
+             if remaining <= 0:
+                 break
+             try:

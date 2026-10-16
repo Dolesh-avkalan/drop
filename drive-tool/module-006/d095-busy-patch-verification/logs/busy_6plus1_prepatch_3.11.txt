@@ -1,0 +1,28 @@
+cycle  0  excess bytes=0    status=None code=None
+cycle  1  excess bytes=0    status=None code=None
+cycle  2  excess bytes=0    status=None code=None
+cycle  3  excess bytes=0    status=None code=None
+cycle  4  excess bytes=0    status=None code=None
+cycle  5  excess bytes=0    status=None code=None
+cycle  6  excess bytes=0    status=None code=None
+cycle  7  excess bytes=0    status=None code=None
+cycle  8  excess bytes=0    status=None code=None
+cycle  9  excess bytes=0    status=None code=None
+cycle 10  excess bytes=0    status=None code=None
+cycle 11  excess bytes=0    status=None code=None
+cycle 12  excess bytes=0    status=None code=None
+cycle 13  excess bytes=0    status=None code=None
+cycle 14  excess bytes=0    status=None code=None
+cycle 15  excess bytes=0    status=None code=None
+cycle 16  excess bytes=0    status=None code=None
+cycle 17  excess bytes=0    status=None code=None
+cycle 18  excess bytes=0    status=None code=None
+cycle 19  excess bytes=0    status=None code=None
+cycle 20  excess bytes=0    status=None code=None
+cycle 21  excess bytes=0    status=None code=None
+cycle 22  excess bytes=0    status=None code=None
+cycle 23  excess bytes=0    status=None code=None
+cycle 24  excess bytes=0    status=None code=None
+
+cycles=25 busy=0 empty=25 unavailable=0 closed=True
+VERDICT: FAIL
