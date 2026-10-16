@@ -1,0 +1,273 @@
+{
+  "cross_agent": {
+    "other_reads_main": "denied",
+    "other_writes_main": "denied"
+  },
+  "hostile_ids": {
+    "'/etc/passwd'": {
+      "client_read": "client_rejected",
+      "client_save": "client_rejected",
+      "server_list": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_read": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_save": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      }
+    },
+    "'p/../../etc/passwd'": {
+      "client_read": "client_rejected",
+      "client_save": "client_rejected",
+      "server_list": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_read": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_save": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      }
+    },
+    "'p/../secret'": {
+      "client_read": "client_rejected",
+      "client_save": "client_rejected",
+      "server_list": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_read": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_save": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      }
+    },
+    "'p/.drive-tool-tmp-evil'": {
+      "client_read": "not_found",
+      "client_save": "denied",
+      "server_list": {
+        "bytes": 183,
+        "code": "not_found",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 404
+      },
+      "server_read": {
+        "bytes": 183,
+        "code": "not_found",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 404
+      },
+      "server_save": {
+        "bytes": 179,
+        "code": "denied",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "status": 403
+      }
+    },
+    "'p//etc/passwd'": {
+      "client_read": "client_rejected",
+      "client_save": "client_rejected",
+      "server_list": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_read": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_save": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      }
+    },
+    "'p/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'": {
+      "client_read": "unavailable",
+      "client_save": "denied",
+      "server_list": {
+        "bytes": 194,
+        "code": "unavailable",
+        "outcome_uncertain": false,
+        "retry_safe": true,
+        "status": 503
+      },
+      "server_read": {
+        "bytes": 194,
+        "code": "unavailable",
+        "outcome_uncertain": false,
+        "retry_safe": true,
+        "status": 503
+      },
+      "server_save": {
+        "bytes": 179,
+        "code": "denied",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "status": 403
+      }
+    },
+    "'p/bad\\x00name'": {
+      "client_read": "client_rejected",
+      "client_save": "client_rejected",
+      "server_list": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_read": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_save": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      }
+    },
+    "'p/escape_file'": {
+      "client_read": "denied",
+      "client_save": "denied",
+      "server_list": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_read": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_save": {
+        "bytes": 179,
+        "code": "denied",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "status": 403
+      }
+    },
+    "'p/escape_link/secret.txt'": {
+      "client_read": "denied",
+      "client_save": "denied",
+      "server_list": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_read": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_save": {
+        "bytes": 179,
+        "code": "denied",
+        "outcome_uncertain": true,
+        "retry_safe": false,
+        "status": 403
+      }
+    },
+    "'p/sub/../../../../etc/hosts'": {
+      "client_read": "client_rejected",
+      "client_save": "client_rejected",
+      "server_list": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_read": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      },
+      "server_save": {
+        "bytes": 180,
+        "code": "denied",
+        "outcome_uncertain": false,
+        "retry_safe": false,
+        "status": 403
+      }
+    }
+  },
+  "listed_names": [
+    "data.bin",
+    "empty.bin",
+    "readme.txt",
+    "savepool",
+    "sub"
+  ],
+  "problems": [],
+  "resources": {
+    "closed": true,
+    "threads_after_close": []
+  },
+  "result": "PASS",
+  "sentinel_intact": true,
+  "stage": "isolation"
+}
