@@ -1,0 +1,28 @@
+{
+ "full_schedule_dump_sha256": "14a6ac33e796dd62d2a1e60415868608c5013c6e2c5bfc39346ec3c3003c0c88",
+ "note": "full --dump-schedule output is bit-identical on 3.11.2 and 3.12.13 and equals the D097/D101 recorded full-schedule dump sha256; the 1.6 MiB dump itself is reproducible from scripts/http_gate_d101.py and is not duplicated here.",
+ "saturation_6plus1": {
+  "busy": 50,
+  "cycles": 50,
+  "excess": 1,
+  "occupiers": 6,
+  "success": 300
+ },
+ "seed": "0x0D096",
+ "smoke600": {
+  "counts": {
+   "busy": 0,
+   "denied": 20,
+   "ok": 580
+  },
+  "fingerprint": "74e61249b9e7d3be0b0f3e31f7e88d1be5368c9ef752991fc21fdd690e9d68ef"
+ },
+ "soak10000": {
+  "counts": {
+   "busy": 0,
+   "denied": 320,
+   "ok": 9680
+  },
+  "fingerprint": "7f3911b44f9a1dd86671fcfd141b8aa0ac00486deb94f97c37d01cc89105bf4e"
+ }
+}
