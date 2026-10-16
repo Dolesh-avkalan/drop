@@ -1,0 +1,14 @@
+=== environment ===
+2026-10-16T04:11:16Z
+python3: Python 3.12.13
+python3.11: Python 3.11.2
+python3.12: Python 3.12.13
+python3.13: NOT AVAILABLE
+platform: Linux-4.19.0-gvisor-x86_64-with-glibc2.36
+MemTotal:        2148352 kB
+MemAvailable:    2097332 kB
+nproc: 2
+Filesystem      Size  Used Avail Use% Mounted on
+none             64M  132K   64M   1% /tmp
+none            8.0E  1.2M  8.0E   1% /
+none            300G   16G  285G   6% /scratch
