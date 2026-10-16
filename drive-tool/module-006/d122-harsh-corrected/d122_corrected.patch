@@ -1,0 +1,528 @@
+--- /scratch/work/d122/orig/harsh_checks_d110.py	2026-10-16 05:49:55.331548005 +0000
++++ /scratch/work/d122/harsh_checks_d110.corrected.py	2026-10-16 05:51:01.162510109 +0000
+@@ -46,6 +46,7 @@
+ import secrets
+ import signal
+ import socket
++import subprocess
+ import sys
+ import tempfile
+ import threading
+@@ -65,6 +66,9 @@
+ MIN_FREE_BYTES = 1024 * 1024 * 1024         # >= 1 GiB free disk floor
+ FD_BASELINE_SLACK = 2
+ MAX_CONCURRENT = 6
++CONC_LEASES = 5            # drain-aware client leases for the LOOPING sub-test only
++CONC_LEASE_HOLD = 0.055    # s; hold each lease past its response (D101 pattern)
++DRAIN_PAUSE = 0.060        # s; >= the server's 0.050 s post-response drain window
+ HOST_MEM_FLOOR_KB = 1024 * 1024            # >= 1 GiB MemAvailable before RAM
+ HOST_MEM_ABORT_KB = 512 * 1024             # abort RAM pressure below 512 MiB
+ CHILD_RLIMIT_AS = 512 * 1024 * 1024        # child RLIMIT_AS <= 512 MiB
+@@ -766,6 +770,55 @@
+         shutil.rmtree(base, ignore_errors=True)
+ 
+ 
++class _LeaseLimiter:
++    """K client leases; each held until response + ``hold`` seconds.
++
++    Applied ONLY to the LOOPING sub-test (b) (2 writers + 3 readers).  The
++    D101 gate used exactly this (K=5, 55 ms) so a client does not open a new
++    connection while the server is still draining the previous one.  This is a
++    normal-scheduling mitigation, NOT a universal OS-scheduler guarantee.
++    A ``busy`` here is still an error -- never forgiven.
++    """
++
++    def __init__(self, capacity, hold):
++        self._sem = threading.BoundedSemaphore(capacity)
++        self._hold = hold
++        self.max_held = 0
++        self._lock = threading.Lock()
++        self._held = 0
++
++    def acquire(self):
++        self._sem.acquire()
++        with self._lock:
++            self._held += 1
++            if self._held > self.max_held:
++                self.max_held = self._held
++
++    def release(self, response_ts):
++        wait = (response_ts + self._hold) - time.monotonic()
++        if wait > 0:
++            time.sleep(wait)
++        with self._lock:
++            self._held -= 1
++        self._sem.release()
++
++
++def _exc_detail(exc, op):
++    """Rich, countable diagnostics for one failed operation."""
++    return {"op": op, "kind": type(exc).__name__,
++            "code": getattr(exc, "code", None),
++            "message": str(exc)[:160],
++            "outcome_uncertain": getattr(exc, "outcome_uncertain", None),
++            "retry_safe": getattr(exc, "retry_safe", None)}
++
++
++def _drain_pause(seconds=DRAIN_PAUSE):
++    """Sleep >= the server's post-response drain window (0.050 s) so prior
++    workers finish _drain_and_close before the next phase opens connections.
++    A normal-scheduling mitigation, not a universal OS guarantee."""
++    time.sleep(seconds)
++
++
+ # ---------------------------------------------------------------------------
+ # Stage 5: concurrent_ops
+ # ---------------------------------------------------------------------------
+@@ -783,23 +836,39 @@
+         adapter = DriveHTTPAdapter(policies, port=0, socket_timeout=10.0)
+         time.sleep(0.1)
+         fd0 = _nfd()
++        # The drain-aware lease (K=5, 55 ms) is applied ONLY to the LOOPING
++        # sub-test (b).  The one-shot sub-tests (a) and (c) keep the full
++        # MAX_CONCURRENT (=6) way race with no slot cap.
++        lease = _LeaseLimiter(CONC_LEASES, CONC_LEASE_HOLD)
++        write_lock = threading.Lock()
+ 
+         PAYLEN = 4096
+         payloads = [bytes([i]) * PAYLEN for i in range(1, 9)]
+         payload_shas = {sha256_bytes(p) for p in payloads}
+         WRITABLE = (0, 1, 4, 5)   # main, other, alias_a, alias_b
+ 
+-        # (a) exactly one winner for a concurrent no-overwrite create.
+-        #     Bounded to the adapter's in-flight capacity (MAX_CONCURRENT=6) so
+-        #     a "busy" rejection cannot confound the winner count.
++        # (a) exactly one winner for a concurrent no-overwrite create: FULL
++        #     6-way (6 == MAX_CONCURRENT), NO lease; a real entry barrier proves
++        #     all six requests are in flight together.
+         target = "p/savepool/race_create.bin"
+         winners = []
+         exists = []
+         other = []
+         lock = threading.Lock()
++        a_barrier = threading.Barrier(MAX_CONCURRENT)
++        a_entered = []
++        a_broken = []
+ 
+         def creator(i):
+             try:
++                a_barrier.wait(timeout=30.0)
++            except threading.BrokenBarrierError:
++                with lock:
++                    a_broken.append(i)
++                return
++            with lock:
++                a_entered.append(i)
++            try:
+                 DriveClient(port=adapter.port, token=TOKENS[0], timeout=10.0).save(
+                     "main", target, payloads[i % len(payloads)], overwrite=False)
+                 with lock:
+@@ -809,7 +878,7 @@
+                     (exists if exc.code == "exists" else other).append(exc.code)
+             except Exception as exc:  # noqa: BLE001
+                 with lock:
+-                    other.append(type(exc).__name__)
++                    other.append(_exc_detail(exc, "create"))
+ 
+         threads = [threading.Thread(target=creator, args=(i,))
+                    for i in range(MAX_CONCURRENT)]
+@@ -817,6 +886,12 @@
+             t.start()
+         for t in threads:
+             t.join(timeout=30.0)
++        _drain_pause()
++        if a_broken:
++            problems.append("no-overwrite create barrier broke: %s" % a_broken)
++        if len(a_entered) != MAX_CONCURRENT:
++            problems.append("no-overwrite create entered=%d (expected %d)"
++                            % (len(a_entered), MAX_CONCURRENT))
+         if len(winners) != 1:
+             problems.append("no-overwrite create winners=%d (expected 1)" % len(winners))
+         if len(exists) != MAX_CONCURRENT - 1:
+@@ -826,32 +901,42 @@
+             problems.append("no-overwrite create unexpected codes: %s" % other)
+ 
+         # (b) simultaneous overwrite + range reads of one file: every reader
+-        #     must see a complete, untorn payload (atomic rename).  Kept within
+-        #     capacity: 2 writers + 3 readers = 5 in-flight.
++        #     must see a complete, untorn payload (atomic rename).  The LOOPING
++        #     threads (2 writers + 3 readers = 5) share the K=5, 55 ms lease.
+         target2 = "p/savepool/race_over.bin"
+         DriveClient(port=adapter.port, token=TOKENS[0], timeout=10.0).save(
+             "main", target2, payloads[0], overwrite=True)
++        _drain_pause()
+         torn = []
+         write_err = []
+         stop = threading.Event()
+ 
+         def writer(i):
+-            try:
+-                while not stop.is_set():
++            while not stop.is_set():
++                lease.acquire()
++                try:
+                     DriveClient(port=adapter.port, token=TOKENS[0], timeout=10.0).save(
+                         "main", target2, payloads[i % len(payloads)], overwrite=True)
+-            except Exception as exc:  # noqa: BLE001
+-                write_err.append(type(exc).__name__)
++                except Exception as exc:  # noqa: BLE001
++                    with write_lock:
++                        if len(write_err) < 5:
++                            write_err.append(_exc_detail(exc, "overwrite"))
++                    break
++                finally:
++                    lease.release(time.monotonic())
+ 
+         def reader(i):
+-            try:
+-                for _ in range(30):
++            for _ in range(30):
++                lease.acquire()
++                try:
+                     data = DriveClient(port=adapter.port, token=TOKENS[0], timeout=10.0).read(
+                         "main", target2, offset=0, length=PAYLEN).data
+                     if len(data) != PAYLEN or sha256_bytes(data) not in payload_shas:
+                         torn.append({"len": len(data), "sha": sha256_bytes(data)})
+-            except Exception as exc:  # noqa: BLE001
+-                torn.append({"exc": type(exc).__name__})
++                except Exception as exc:  # noqa: BLE001
++                    torn.append(_exc_detail(exc, "read"))
++                finally:
++                    lease.release(time.monotonic())
+ 
+         wthreads = [threading.Thread(target=writer, args=(i,)) for i in range(2)]
+         rthreads = [threading.Thread(target=reader, args=(i,)) for i in range(3)]
+@@ -864,18 +949,29 @@
+         stop.set()
+         for t in wthreads:
+             t.join(timeout=30.0)
++        _drain_pause()
+         if torn:
+             problems.append("torn/inconsistent reads: %s" % torn[:5])
+         if write_err:
+-            problems.append("concurrent overwrite errors: %s" % sorted(set(write_err)))
++            problems.append("concurrent overwrite errors: %s" % write_err[:5])
+ 
+         # (c) simultaneous create across distinct files by distinct WRITABLE
+-        #     agents (read-only / size-capped personas are exercised in other
+-        #     stages), bounded to capacity.
++        #     agents: FULL 6-way, NO lease, real entry barrier.
+         multi = []
+         mlock = threading.Lock()
++        c_barrier = threading.Barrier(MAX_CONCURRENT)
++        c_entered = []
++        c_broken = []
+ 
+         def multi_save(i):
++            try:
++                c_barrier.wait(timeout=30.0)
++            except threading.BrokenBarrierError:
++                with mlock:
++                    c_broken.append(i)
++                return
++            with mlock:
++                c_entered.append(i)
+             agent = WRITABLE[i % len(WRITABLE)]
+             alias = PERSONAS[agent][2]
+             try:
+@@ -889,7 +985,7 @@
+                     multi.append(exc.code)
+             except Exception as exc:  # noqa: BLE001
+                 with mlock:
+-                    multi.append("raw:" + type(exc).__name__)
++                    multi.append(_exc_detail(exc, "multi"))
+ 
+         mthreads = [threading.Thread(target=multi_save, args=(i,))
+                     for i in range(MAX_CONCURRENT)]
+@@ -897,6 +993,11 @@
+             t.start()
+         for t in mthreads:
+             t.join(timeout=30.0)
++        if c_broken:
++            problems.append("multi-agent create barrier broke: %s" % c_broken)
++        if len(c_entered) != MAX_CONCURRENT:
++            problems.append("multi-agent create entered=%d (expected %d)"
++                            % (len(c_entered), MAX_CONCURRENT))
+         bad_multi = [m for m in multi if m != "ok"]
+         if bad_multi:
+             problems.append("multi-agent create failures: %s" % bad_multi)
+@@ -919,10 +1020,12 @@
+             "result": "PASS" if not problems else "FAIL",
+             "problems": problems,
+             "create_winners": len(winners), "create_exists": len(exists),
+-            "create_other": other,
++            "create_other": other, "create_entered": len(a_entered),
+             "torn_reads": torn[:5], "torn_count": len(torn),
+-            "overwrite_errors": sorted(set(write_err)),
+-            "multi_agent": multi,
++            "overwrite_errors": write_err[:5], "overwrite_error_count": len(write_err),
++            "multi_agent": multi, "multi_entered": len(c_entered),
++            "lease_max_held": lease.max_held,
++            "concurrent_capacity": MAX_CONCURRENT,
+             "temp_residue": orphans,
+             "resources": {"fd_before": fd0, "fd_after": fd1, "closed": closed,
+                           "threads_after_close": threads_after},
+@@ -1292,88 +1395,128 @@
+         os._exit(3)
+ 
+ 
+-def _r2_child(repo, root_main, wfd):
+-    """Child: RLIMIT_AS memory pressure + MemoryError recovery."""
++_R2_CHILD_SRC = r"""
++import os, sys, resource, json, hashlib
++repo, root_main, wfd = sys.argv[1], sys.argv[2], int(sys.argv[3])
++sys.path.insert(0, repo)
++def _vmsize_kb():
+     try:
+-        os.setsid()
+-        sys.path.insert(0, repo)
+-        vm_kb = None
++        with open("/proc/self/status") as fh:
++            for line in fh:
++                if line.startswith("VmSize:"):
++                    return int(line.split()[1])
++    except OSError:
++        return None
++    return None
++CHILD_RLIMIT_AS = 512 * 1024 * 1024
++BALLAST = 192 * 1024 * 1024
++try:
++    vm_kb = _vmsize_kb()
++    headroom_kb = BALLAST // 1024
++    if vm_kb is not None and (vm_kb + headroom_kb) > CHILD_RLIMIT_AS // 1024:
++        os.write(wfd, json.dumps({"result": "SKIPPED", "reason":
++            "baseline VmSize %d KiB leaves < %d KiB headroom" % (vm_kb, headroom_kb)}).encode("ascii"))
++        os._exit(0)
++    try:
++        with open("/proc/self/oom_score_adj", "w") as fh:
++            fh.write("1000\n")
++    except OSError:
++        pass
++    resource.setrlimit(resource.RLIMIT_AS, (CHILD_RLIMIT_AS, CHILD_RLIMIT_AS))
++    from drive_tool.file_service import LocalFileService
++    from drive_tool.service_policy import AgentPolicy, SourceGrant
++    token = "d110-main-" + "A" * 40
++    grant = SourceGrant(alias="main", root=os.path.realpath(root_main),
++                        operations=frozenset(("find", "list", "read", "save")),
++                        max_read_bytes=1048576, max_write_bytes=1048576)
++    pol = AgentPolicy(agent_id="agent-main",
++                      token_sha256=hashlib.sha256(token.encode("ascii")).digest(),
++                      grants=(grant,))
++    svc = LocalFileService((pol,))
++    ballast = bytearray(BALLAST)
++    ballast[::4096] = b"\x01" * (len(ballast) // 4096)
++    vm_kb_ballast = _vmsize_kb()
++    ok = 0
++    for i in range(50):
++        svc.read(token, "main", "p/readme.txt", offset=0, length=16)
++        svc.save(token, "main", "p/savepool/mem_%03d.bin" % i, b"m" * 256, overwrite=True)
++        ok += 1
++    mem_error = None
++    grow = bytearray()
++    try:
++        for _ in range(200):
++            grow.extend(b"\x00" * (8 * 1024 * 1024))
++    except MemoryError:
++        mem_error = "MemoryError"
++    vm_kb_peak = _vmsize_kb()
++    del ballast, grow
++    recovery_ok = 0
++    for i in range(20):
++        svc.save(token, "main", "p/savepool/rec_%03d.bin" % i, b"r" * 256, overwrite=True)
++        svc.read(token, "main", "p/readme.txt", offset=0, length=16)
++        recovery_ok += 1
++    try:
++        svc.close(timeout=5.0)
++    except BaseException:
++        pass
++    os.write(wfd, json.dumps({"ok": ok, "mem_error": mem_error,
++                              "vm_kb_before": vm_kb, "vm_kb_ballast": vm_kb_ballast,
++                              "vm_kb_peak": vm_kb_peak,
++                              "recovery_ok": recovery_ok}).encode("ascii"))
++    os._exit(0)
++except BaseException as exc:
++    try:
++        os.write(wfd, json.dumps({"child_error": type(exc).__name__}).encode("ascii"))
++    except BaseException:
++        pass
++    os._exit(3)
++"""
++
++
++def _collect_proc(proc, rfd, timeout=120.0):
++    """Collect a subprocess.Popen child's piped result with a bounded reap.
++
++    Reaps via proc.wait() -- never a raw os.waitpid behind Popen's back -- and
++    kills the child's own process group first if it times out.
++    """
++    buf = b""
++    deadline = time.monotonic() + timeout
++    os.set_blocking(rfd, False)
++    while time.monotonic() < deadline:
+         try:
+-            with open("/proc/self/status") as fh:
+-                for line in fh:
+-                    if line.startswith("VmSize:"):
+-                        vm_kb = int(line.split()[1])
+-                        break
+-        except OSError:
+-            pass
+-        headroom_kb = 192 * 1024
+-        if vm_kb is not None and (vm_kb + headroom_kb) > CHILD_RLIMIT_AS // 1024:
+-            os.write(wfd, json.dumps({
+-                "result": "SKIPPED",
+-                "reason": ("baseline VmSize %d KiB leaves < %d KiB headroom "
+-                           "under RLIMIT_AS %d MiB")
+-                          % (vm_kb, headroom_kb, CHILD_RLIMIT_AS // (1024 * 1024))}
+-            ).encode("ascii"))
+-            os._exit(0)
++            chunk = os.read(rfd, 65536)
++        except BlockingIOError:
++            chunk = b""
++        if chunk:
++            buf += chunk
++            break
++        if proc.poll() is not None:
++            break
++        time.sleep(0.05)
++    os.close(rfd)
++    if proc.poll() is None:
+         try:
+-            with open("/proc/self/oom_score_adj", "w") as fh:
+-                fh.write("1000\n")
++            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+         except OSError:
+-            pass
+-        resource.setrlimit(resource.RLIMIT_AS, (CHILD_RLIMIT_AS, CHILD_RLIMIT_AS))
+-        from drive_tool.file_service import LocalFileService
+-        from drive_tool.service_policy import AgentPolicy, SourceGrant
+-        grant = SourceGrant(alias="main", root=root_main,
+-                            operations=frozenset(("find", "list", "read", "save")),
+-                            max_read_bytes=1048576, max_write_bytes=1048576)
+-        pol = AgentPolicy(agent_id="agent-main",
+-                          token_sha256=hashlib.sha256(TOKENS[0].encode("ascii")).digest(),
+-                          grants=(grant,))
+-        svc = LocalFileService((pol,))
+-        ballast = bytearray(96 * 1024 * 1024)
+-        ballast[::4096] = b"\x01" * (len(ballast) // 4096)
+-        ok = 0
+-        for i in range(50):
+-            svc.read(TOKENS[0], "main", "p/readme.txt", offset=0, length=16)
+-            svc.save(TOKENS[0], "main", "p/savepool/mem_%03d.bin" % i,
+-                     b"m" * 256, overwrite=True)
+-            ok += 1
+-        # force a MemoryError boundary
+-        mem_error = None
+-        grow = bytearray()
+-        try:
+-            for _ in range(200):
+-                grow.extend(b"\x00" * (8 * 1024 * 1024))
+-        except MemoryError:
+-            mem_error = "MemoryError"
+-        del ballast
+-        del grow
+-        recovery_ok = 0
+-        for i in range(20):
+-            svc.save(TOKENS[0], "main", "p/savepool/rec_%03d.bin" % i,
+-                     b"r" * 256, overwrite=True)
+-            svc.read(TOKENS[0], "main", "p/readme.txt", offset=0, length=16)
+-            recovery_ok += 1
+-        try:
+-            svc.close(timeout=5.0)
+-        except BaseException:
+-            pass
+-        os.write(wfd, json.dumps({"ok": ok, "mem_error": mem_error,
+-                                  "vm_kb": vm_kb,
+-                                  "recovery_ok": recovery_ok}).encode("ascii"))
+-        os._exit(0)
+-    except BaseException as exc:
+-        try:
+-            os.write(wfd, json.dumps({"child_error": type(exc).__name__}).encode("ascii"))
+-        except BaseException:
+-            pass
+-        os._exit(3)
++            try:
++                proc.kill()
++            except OSError:
++                pass
++    try:
++        proc.wait(timeout=30)
++    except subprocess.TimeoutExpired:
++        pass
++    try:
++        return json.loads(buf.decode("ascii"))
++    except Exception:  # noqa: BLE001
++        return {"child_error": "no_result", "raw_len": len(buf)}
+ 
+ 
+ def _collect_child(pid, rfd, timeout=120.0):
+     buf = b""
+     deadline = time.monotonic() + timeout
+     os.set_blocking(rfd, False)
++    exited = False
+     while time.monotonic() < deadline:
+         try:
+             chunk = os.read(rfd, 65536)
+@@ -1382,15 +1525,25 @@
+         if chunk:
+             buf += chunk
+             break
+-        # is the child gone?
+         try:
+             wpid, status = os.waitpid(pid, os.WNOHANG)
+             if wpid == pid:
++                exited = True
+                 break
+         except ChildProcessError:
++            exited = True
+             break
+         time.sleep(0.05)
+     os.close(rfd)
++    if not exited:
++        # bounded: kill the child's own process group before any blocking wait
++        try:
++            os.killpg(os.getpgid(pid), signal.SIGKILL)
++        except OSError:
++            try:
++                os.kill(pid, signal.SIGKILL)
++            except OSError:
++                pass
+     try:
+         os.waitpid(pid, 0)
+     except ChildProcessError:
+@@ -1476,17 +1629,18 @@
+         if threads_after:
+             problems.append("adapter threads not reaped")
+ 
+-        # R2: memory pressure (guarded by the host MemAvailable floor)
++        # R2: memory pressure (guarded by the host MemAvailable floor).
++        # The RAM child is a CLEAN exec'ed interpreter with its own session so
++        # its VmSize starts small and the 192 MiB touched ballast fits under
++        # the UNCHANGED 512 MiB RLIMIT_AS cap; it is reaped via proc.wait().
+         avail = _mem_available_kb()
+         if avail is not None and avail >= HOST_MEM_FLOOR_KB:
+             rfd, wfd = os.pipe()
+-            pid = os.fork()
+-            if pid == 0:
+-                os.close(rfd)
+-                _r2_child(repo, root_main, wfd)
+-                os._exit(0)
++            proc = subprocess.Popen(
++                [sys.executable, "-c", _R2_CHILD_SRC, repo, root_main, str(wfd)],
++                pass_fds=(wfd,), start_new_session=True)
+             os.close(wfd)
+-            r2 = _collect_child(pid, rfd, timeout=min(120.0, budget))
++            r2 = _collect_proc(proc, rfd, timeout=min(120.0, budget))
+             if r2.get("result") == "SKIPPED":
+                 pass   # the child self-reported an honest skip
+             elif r2.get("child_error"):
+@@ -1494,7 +1648,8 @@
+                       "reason": "child error: %s" % r2.get("child_error")}
+             else:
+                 r2["result"] = "PASS" if (r2.get("ok") == 50
+-                                          and r2.get("recovery_ok") == 20) else "FAIL"
++                                          and r2.get("recovery_ok") == 20
++                                          and r2.get("mem_error") == "MemoryError") else "FAIL"
+             if r2.get("result") == "FAIL":
+                 problems.append("R2 memory pressure failed: %s" % r2)
+         else:
