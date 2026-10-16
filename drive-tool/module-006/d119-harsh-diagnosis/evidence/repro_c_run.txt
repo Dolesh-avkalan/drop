@@ -1,0 +1,11 @@
+/scratch/work/d119/repro_c.py:51: DeprecationWarning: This process (pid=4736) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+== Part 1: inherited VmSize (first-D110 shape) ==
+  parent single-threaded VmSize_kb = 29160
+  parent after adapter (7 threads) VmSize_kb = 548744
+  forked child: {"child_vm_kb": 548744, "headroom_kb": 196608, "cap_kb": 524288, "fits": false}
+  -> would SKIP: True
+
+== Part 2: clean exec'ed child (proposed fix) ==
+  rc = 0
+  CHILD:{"fresh_vmsize_kb": 26840, "oom_score_adj": "set", "rlimit_as_set": true, "vmsize_after_ballast_kb": 228552, "ops_ok": 50, "mem_error": "MemoryError", "recovery_ops": 20}
