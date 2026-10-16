@@ -1,135 +1,168 @@
-# D110 harsh-fault package — compact core
+# d110 harsh target extension — core package
 
-Bounded adversarial "break-it" extension for the accepted D102 final HTTP
-candidate. This package is authored and **sandbox-tested here**; it does **not**
-run on the target from here and **no target result is fabricated**. The
-operator runs it on the designated disposable instance after Gemini security
-review.
+Pinned, stdlib-only **harsh-fault** extension for the accepted final Drive Tool
+HTTP candidate. It is authored and sandbox-tested here; it does **not** run on
+the target from here and **no target result is fabricated**. The operator runs
+it on the disposable instance.
 
-It is strictly separate from the D104 baseline HTTP runner and does **not**
-duplicate the active baseline cloud run. It modifies **no** Drive Tool source,
-test, acceptance spec or old evidence.
+This package is separate from the D101/D104 reliability gate. It reuses the
+**exact D104 runner containment / identity / archive / resource patterns**
+(drop `c29e3a2b23161602ec331a49ff8edb774dfebcb2`,
+`drive-tool/module-006/d104-target-http-runner-summary/{run_target_http.py,http_gate_d101.py,README.md}`)
+and drives the accepted final HTTP adapter with hostile-fault stages. It is a
+*break-it* extension: adverse diagnostics are never relabelled as normal
+success, and an unsupported capability is reported as `SKIP`/problem, never as
+a pass.
 
 ## Files (core — everything needed to run)
 
 | file | bytes | sha256 |
 | --- | --- | --- |
-| `run_harsh_d110.py` | 32554 | `f55f1ca20d79f576b32006e7a9745fd9baa4b2af8cf55e6b77cf62e541712c87` |
-| `harsh_checks_d110.py` | 75545 | `5599d32fa9df7918a8809098492284cebbce42b9141c61844c18c069fc17db43` |
+| `run_harsh_target.py` | 28881 | `0e76f066ff16a0e5594a6da6a161aa2b297c2b9e8e34be96be92dc8d5ac75987` |
+| `harsh_gate_d110.py` | 78388 | `b94eb09ad329abe669633834fe21b67139b43c0fe666645cde263e2139f53e0e` |
 
-`harsh_checks_d110.py` is the pinned payload; its sha256 is embedded in the
-runner and verified **before** execution.
+`harsh_gate_d110.py` is the pinned harsh payload. Its sha256 is embedded in
+`run_harsh_target.py` and verified before execution; the runner fails closed on
+any mismatch. The runner also re-verifies the candidate archive sha256 and every
+executable/importable candidate file before executing anything.
 
 ## Pins
 
 - candidate: `Dolesh-avkalan/drive-tool` @ `337e4c713829af76615472eb47b81244ff399528`
 - archive: `https://codeload.github.com/Dolesh-avkalan/drive-tool/tar.gz/337e4c713829af76615472eb47b81244ff399528`
-  (sha256 `191d6f2bd985be51f1b6092472beeec25b267a4c6e89de7817b4d6538c61c6c3`, verified in-sandbox)
-- identity manifest: the same 26 pinned `drive_tool/` + `tests/` blob-sha1/sha256
-  set used by D104, re-hashed fail-closed before any execution.
+  (sha256 `191d6f2bd985be51f1b6092472beeec25b267a4c6e89de7817b4d6538c61c6c3`)
+- accepted D101 final HTTP gate (reference): sha256 `3754ca19b4a72797ac16a1e32300ddf399e7117e2dec63def6693d2512db8d7b`
+- accepted order fix preserved: `tests/test_partial_scan_review_fixes.py`
+  blob `c01003e7015915db3dcac15a168ff7aae3d423db`
+- composite sourcehash (adapter‖test): `b8b44c4c056e1925957445cc9b532c53194920124a469df54e49053a7dcbb71c`
+- pinned candidate manifest: 28 files (identical to the accepted D104 `EXPECTED_BLOBS`)
 
-## Exact operator command (disposable target: Debian / CPython 3.13)
+No Drive Tool source, tests, acceptance spec or old evidence is modified. New
+scripts only. No PR/merge.
+
+## Exact operator command (target: Debian / CPython 3.13)
 
     cd d110-harsh-target && \
-    timeout 1200 python3 run_harsh_d110.py \
+    timeout 1200 python3 run_harsh_target.py \
         --confirm-disposable-host=instance-20261015-210506 \
         --json d110_summary.json
 
-`timeout 1200` is the hard 20-minute outer operator bound. The runner defaults
-to the interpreter it is launched with; add `--python python3.13` to pin it.
-A nonzero exit means the package did not fully pass — read `d110_summary.json`
-and the retained raw logs under `<workspace>/logs/`. The runner fails closed
-unless the live hostname equals `instance-20261015-210506` **and**
-`--confirm-disposable-host` matches it.
+`timeout 1200` is the hard 20-minute outer operator bound; the runner's internal
+overall deadline defaults to 1080 s. `--confirm-disposable-host` is fail-closed:
+if `socket.gethostname()` does not equal the value, the runner aborts before
+doing any work. A nonzero exit means the aggregate gate failed — read
+`d110_summary.json` and the retained raw logs under the workspace.
 
-## Sandbox validation command (harness validation only — never a target pass)
+To reproduce a single stage: add `--stage <name>` (repeatable). To run offline
+against a pre-downloaded archive: add `--archive /path/to/candidate.tar.gz`.
 
-    python3 run_harsh_d110.py --sandbox --base-dir /scratch/d110ws \
-        --archive <local candidate tar.gz> --json d110_summary.json
+## Behaviour
 
-`--sandbox` runs the identical package locally, marks
-`disposable_host_verified=false` and `mode=sandbox`, and records any relaxed
-containment in `sandbox_relaxations`. It is **never** reported as a target pass.
+Order, failing closed at every preflight gate:
 
-## Fixed allow-list of stages (execution order)
+1. host identity (when `--confirm-disposable-host` is given) and free-disk floor;
+2. acquire the pinned archive (download, or `--archive` a local tar.gz) and
+   verify its sha256 against the pin;
+3. extract with path/size/count/link guards (no symlinks, no traversal, no
+   special files, bounded sizes/totals);
+4. re-hash **every** executable/importable candidate file against the embedded
+   pinned blob-sha1 + sha256; reject unexpected importable/executable files,
+   unexpected `drive_tool/` or `tests/` files, symlinks, traversal, oversize;
+5. verify the harsh payload sha256;
+6. run the fixed allow-list of harsh stages, each in its own process group with
+   a per-stage deadline and byte-capped output; stop the aggregate on the first
+   FAIL;
+7. gate the retained workspace at <= 192 MiB and write a symlink-safe manifest.
 
-1. `selfcheck` — frozen arithmetic / accounting / temp-scan truth, no adapter.
-2. `http_hostile` — malformed / oversize / slow-partial HTTP framing.
-3. `admission_exhaustion` — deterministic 6+1 admission + recovery.
-4. `isolation` — cross-agent / path / symlink containment.
-5. `concurrent_ops` — simultaneous create / overwrite / range operations.
-6. `crash_kill` — synchronized child SIGKILL + fresh recovery + orphan audit.
-7. `resource_pressure` — CHILD-only CPU / RAM / FD pressure.
-8. `enospc` — RLIMIT_FSIZE EFBIG + injected 4-phase ENOSPC.
-
-Each stage prints one `HARSH_JSON: {...}` line; the runner aggregates and
-retains per-stage logs, `summary.json` and `logs/MANIFEST.md`.
+Acceptance is PASS only if **every** required stage reports PASS. A `SKIP`,
+`ERROR`, `TIMEOUT`, `MISSING` or any non-PASS result makes the aggregate nonzero.
 
 ## Case / invariant matrix
 
-| stage | cases | invariants / gate | sandbox result |
-| --- | --- | --- | --- |
-| selfcheck | frozen consts; temp-scan; fixture bound | no drift; scan finds exactly the prefixed files | PASS |
-| http_hostile | 14 framing probes + slow-partial | server survives every probe; a valid request succeeds afterwards; bounded response; threads reaped; fd baseline | PASS |
-| admission_exhaustion | 50 × (6 occupiers + 1 excess) + recovery | real service-entry barrier; 300 success / 50 busy / 0 unexpected; 60/60 recovery; threads reaped; fd baseline | PASS |
-| isolation | cross-agent; 10 hostile file_ids at client **and** server boundary; symlink escape; outside sentinel | every hostile id denied (403/404/503), never 200-ok; symlinks denied; sentinel byte-identical and unexposed | PASS |
-| concurrent_ops | 6-way no-overwrite create race; 2 writers × 3 readers overwrite/range; 6-way multi-agent create | exactly 1 create winner; zero torn reads; zero temp residue; fd baseline | PASS |
-| crash_kill | C1 pre-fsync kill, C2 post-fsync pre-publish kill, each overwrite=False/True | child SIGKILLed; ≥1 orphan temp; overwrite target preserved / non-overwrite target absent; fresh-service recovery ok; orphan visibility recorded | PASS |
-| resource_pressure | R1 4 low-priority CPU children + 300-op workload; R2 RLIMIT_AS memory; R3 EMFILE | R1 300/300; R3 EMFILE mapped to ServiceError, 0 raw escapes, recovery ok; R2 skipped below the VM-headroom floor | PARTIAL (R2 SKIPPED) |
-| enospc | RLIMIT_FSIZE EFBIG; injected ENOSPC at temp-create / mid-write / fsync / publish × overwrite False/True | every failure → `ServiceError` code `unavailable`; overwrite target preserved; no partial publication; 0 orphan temps; fd baseline; full recovery | PASS |
+| stage | mechanism | invariant gates (all must hold) |
+| --- | --- | --- |
+| `selfcheck` | capability probes + frozen arithmetic, no adapter | product bounds match (`MAX_IN_FLIGHT_OPERATIONS=6`, `TEMP_PREFIX`, `PATH_PREFIX`); host `MemAvailable` and free-disk floors; RLIMIT_FSIZE/AS/NOFILE settable; `os.link` supported; SIGXFSZ ignorable; concurrency harness <= `MAX_IN_FLIGHT` |
+| `readdir_order` | dual-order run of `test_metadata_failure_below_root_is_skipped_and_charged` (native + forced-inverted `os.scandir`/`os.listdir`) + `/tmp` fstype/native-order telemetry | the order-explicit accepted test PASSES under **both** host readdir orders (no filesystem masking) |
+| `http_hostile` | raw-socket malformed/oversize/slow-partial requests: overlong request line, overlong/too-many headers, huge/non-digit/duplicate Content-Length, bare-LF headers, buffered trailing bytes, bad method, unknown endpoint, oversize JSON/save bodies, slow partial body | every case terminates in a typed 4xx/5xx envelope or a clean close — never a 2xx success, never a hang, never an unhandled worker death; the adapter still serves a valid request afterwards; `close()` returns True; 7 threads reaped; fd back to baseline |
+| `admission` | deterministic 6+1: six occupiers held at a **real service-entry barrier**, excess probe sent while all six slots are provably held | each cycle: 6/6 occupiers admitted, excess gets `busy` (503), zero unexpected; recovery request returns 200 after exhaustion; `close()` True; threads reaped; fd baseline |
+| `isolation` | cross-agent read/list, path traversal (`..`, `%2e%2e`), symlink read/list/save escaping the root, shared-alias access, read-only save | every escape attempt is a typed denial (`denied`/`invalid`/`not_found`/client-side reject), never an unhandled exception; the outside secret is never returned; the outside directory is byte-unchanged and gains no file; shared-alias agents both succeed |
+| `concurrency` | simultaneous create (`overwrite=False`), overwrite race with concurrent range readers, concurrent `create_parents`; total concurrency <= 6 | create race: exactly 1 winner, all others `exists`; overwrite race: all succeed; readers never observe torn/partial data (a transient `busy` is admission, not corruption); no temp residue; final file equals exactly one complete payload |
+| `crash_kill` | pipe-synchronized child SIGKILL at mid-write and post-fsync/pre-publish, plus a 4-child uninstrumented SIGKILL storm | each kill terminates the child by SIGKILL; >= 1 orphan `TEMP_PREFIX` temp on disk (staging genuinely interrupted); nothing partially published; a **fresh process** then succeeds on list/read/find/save with no lock wedge; orphan temps are NOT exposed by `list()`/`find()`; storm: every file equals its seed or a complete valid write (0 torn) |
+| `resource_pressure` | CHILD-only: 4 `nice 15` + RLIMIT_CPU CPU children; child `RLIMIT_AS=384 MiB` + `oom_score_adj=1000`; child `RLIMIT_NOFILE` exhaustion (fillers to EMFILE) | CPU: 200/200 calls succeed; RAM: reads/saves succeed, host `MemAvailable` stays above the floor, child exits clean; FD: EMFILE is genuinely forced (mapped ServiceErrors > 0), zero unhandled OSError escapes the service, recovery succeeds and fd returns to baseline. If EMFILE cannot be forced the stage is reported as a problem, not a pass |
+| `enospc` | injected `OSError(ENOSPC)` at four save phases (temp create, mid-write, fsync, publish incl. link+rename), plus a real child `RLIMIT_FSIZE=8192` kernel EFBIG mid-write | each failure maps to `code == "unavailable"`; a write-in-flight failure never claims `retry_safe=True` with `outcome_uncertain=False`; the pre-existing overwrite target stays byte-identical; no partial new file is published; zero temp/FD leak; full recovery after the fault is removed |
 
-## Distinguishing expected faults from defects
+## Observed contract notes (accepted candidate)
 
-The package never relabels an adverse diagnostic as a normal success. It
-separates:
+These are recorded as **observed product behaviour**, not defects:
 
-- **expected denial** (`denied` 403 / `not_found` 404 / `too_large` 413) — the
-  isolation and size guards working;
-- **expected busy** (`busy` 503) — deterministic admission exhaustion working;
-- **expected resource fault** (`unavailable` 503 from ENOSPC/EFBIG/EMFILE) —
-  storage/descriptor faults correctly mapped;
-- **corruption / escape / unhandled exception / deadlock / leak** — a genuine
-  FAIL. None were observed.
+- A write that fails in-flight (ENOSPC / EFBIG / OSError) is mapped to
+  `ServiceError(code="unavailable", outcome_uncertain=True, retry_safe=False)`.
+  This is deliberately conservative and satisfies the "no retry of uncertain
+  writes" requirement. (It differs from the older Gemini draft, which expected
+  `outcome_uncertain=False, retry_safe=True` for pre-publish faults; the
+  accepted adapter is stricter, and the gate asserts the stricter safety
+  property, never the weaker one.)
+- `TEMP_PREFIX` (`.drive-tool-tmp-`) staging files are hidden from `list()` and
+  `find()`. Orphan temps left by SIGKILL remain on disk (one per killed child)
+  but are not exposed by the service surface.
+- A malformed/oversize request never kills a worker: it returns a typed
+  envelope (`invalid` 400 / `too_large` 413 / `timeout` 504) or a clean close,
+  and the adapter recovers immediately.
 
-## Safety boundaries
+## Containment / safety
 
-- stdlib only; no credential, cloud API, install, reboot, service/public
-  binding, real root, deploy, or remote shell.
-- workspace: new unique `/tmp` dir, mode `0700`, strict descendant of the base,
-  ≤ 192 MiB; ≥ 1 GiB free-disk floor; 16 MiB emergency ballast file.
-- `TMPDIR` inside the workspace; bytecode writing disabled.
-- every executable/importable file re-hashed fail-closed before execution;
-  unexpected files, symlinks, traversal and oversize rejected.
-- per-stage deadlines + an overall deadline < 20 min; each stage in its own
-  process group, killed as a group on timeout; byte-capped capture.
-- the runner only ever kills its own child process groups; SSH/parent preserved.
-- child pressure is bounded: `RLIMIT_AS ≤ 512 MiB`, ≤ 4 CPU children at
-  `nice(15)` + `RLIMIT_CPU`, `RLIMIT_NOFILE` lowered only inside a child; host
-  `MemAvailable ≥ 1 GiB` before the RAM stage, abort below 512 MiB.
+stdlib only; no credential, cloud API, install, reboot, service/public binding,
+real root or deploy; no generic remote shell; loopback only. Execution is
+confined to a new unique `/tmp/d110-<commit8>-<uniq>` workspace (0700, strict
+descendant of the base, never the base itself); `TMPDIR` lives inside it and
+bytecode writing is disabled. `<= 192 MiB` retained workspace; `>= 1 GiB`
+free-disk floor (overridable only via `--min-free-bytes` for sandbox validation).
+Host `MemAvailable >= 1 GiB` is required before the RAM stage and pressure aborts
+below 512 MiB. Child `RLIMIT_AS <= 512 MiB`; CPU stress is `<= 4` low-priority
+children; service concurrency `<= 6` plus one rejected admission probe. Only the
+runner's own child process groups are killed; SSH/parent are preserved. Per-case
+deadlines, overall `<= 20 min`, operator `timeout 1200`, bounded output, reaping
+and retained logs on failure. No physical-power-loss durability claim is made.
+
+## Sandbox evidence (this package, not the target)
+
+Executed locally against the pinned candidate on the two available interpreters:
+
+| interpreter | result | notes |
+| --- | --- | --- |
+| CPython 3.12.13 | PASS (all 9 stages) | full orchestrator run, local archive, 19.5 s |
+| CPython 3.11.2 | PASS (all 9 stages) | full orchestrator run, local archive |
+
+Guard negatives (fail-closed, verified):
+
+- tampered payload -> `payload sha256 mismatch`, exit 1, nothing executed;
+- tampered archive -> `archive sha256 ... != pin ...`, exit 1;
+- content tamper of `drive_tool/http_adapter.py` -> size/blob/sha256 mismatch;
+  an unexpected importable file (`__pycache__/*.pyc`) is also rejected.
+
+Raw per-stage JSON, captured logs and the source manifest are retained under
+`evidence/py312/` and `evidence/py311/`.
 
 ## Explicit non-guarantees
 
-- **No physical-power-loss durability.** SIGKILL proves process-crash atomicity,
-  not durability across a hypervisor disk write-back cache.
-- **SIGKILL-orphaned temp files are not swept.** A process killed between
-  `mkstemp` and `unlink` cannot run its `finally:`; the package *audits* orphans
-  rather than claiming they are cleaned up.
-- **R2 memory pressure may be skipped.** If the interpreter's baseline `VmSize`
-  leaves less than 192 MiB headroom under the 512 MiB `RLIMIT_AS`, R2 is
-  reported `SKIPPED` (never PASS).
-- **Unprivileged mount/tmpfs ENOSPC is not attempted.** The package never fills
-  the host filesystem; it relies on kernel `RLIMIT_FSIZE` EFBIG and injected
-  syscall ENOSPC instead.
-- **Hardware timing of uninstrumented races is statistical.** C1/C2 are
-  pipe-synchronized and deterministic; C3-style storms and R1 are statistical.
+1. SIGKILL proves **process-crash atomicity**, not physical power-loss
+   durability across hypervisor disk write-back caches.
+2. Orphan `TEMP_PREFIX` files left by SIGKILL are not auto-reaped unless the
+   product implements a startup/periodic janitor sweep; the gate only proves
+   they are not exposed by `list()`/`find()`.
+3. Real mount-full ENOSPC via a private tmpfs/loopback mount is not attempted
+   here (no mounts/sudo/installs); ENOSPC is exercised by syscall injection plus
+   the kernel `RLIMIT_FSIZE` EFBIG path, which is the meaningful unprivileged
+   equivalent.
+4. Exact timing of the uninstrumented SIGKILL storm and the CPU-saturation race
+   is scheduler-dependent; determinism for mid-write crash invariants comes from
+   the pipe-synchronized cases.
 
-## Sandbox evidence (actual, retained under `evidence/`)
+## Unresolved limits
 
-Executed in-sandbox on the pinned archive under CPython 3.11.2 and 3.12.13
-(CPython 3.13 was **not available** in the sandbox; the target is 3.13). Both
-interpreters produced identical verdicts: seven stages PASS, `resource_pressure`
-PARTIAL because R2 was honestly skipped (baseline `VmSize` ≈ 520 MiB exceeds the
-512 MiB child `RLIMIT_AS` budget). No genuine product defect was observed. The
-aggregate is therefore PARTIAL, not PASS — a skipped capability is never
-reported as a pass. Raw per-stage logs, the two run summaries, the guard-negative
-controls and the environment capture are in `evidence/`.
+- Not executed on the target `instance-20261015-210506`; target numbers are for
+  the operator to produce. The D104 suite/gate were only re-confirmed locally
+  (581 tests, OK, skipped=3 on 3.12.13) and are not re-run by this package.
+- CPython 3.13 was not available in the sandbox; validated on 3.11 and 3.12.
+- `--min-free-bytes` is a sandbox-validation override; the default (1 GiB) is
+  the target contract and must be left at default on the disposable instance.
