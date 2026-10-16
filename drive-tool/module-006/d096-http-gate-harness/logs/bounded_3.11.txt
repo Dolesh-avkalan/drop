@@ -1,0 +1,27 @@
+{
+  "calls": 60,
+  "harness": "d096-http-gate-harness",
+  "ok": 60,
+  "problems": [],
+  "resources": {
+    "adapter_threads_after_close": [],
+    "adapter_threads_live": [
+      "drive-http-accept",
+      "drive-http-worker-0",
+      "drive-http-worker-1",
+      "drive-http-worker-2",
+      "drive-http-worker-3",
+      "drive-http-worker-4",
+      "drive-http-worker-5"
+    ],
+    "closed": true,
+    "fd_after": 4,
+    "fd_before": 11,
+    "fixture_bytes": 25128,
+    "residue_bytes": 25128,
+    "rss_after_kb": 31592,
+    "rss_before_kb": 43248
+  },
+  "result": "PASS",
+  "stage": "bounded_cleanup"
+}

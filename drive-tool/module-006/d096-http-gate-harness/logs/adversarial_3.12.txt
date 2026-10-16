@@ -1,0 +1,44 @@
+{
+  "gate_pass": false,
+  "harness": "d096-http-gate-harness",
+  "kind": "adversarial-best-effort",
+  "note": "Adversarial framing probes are recorded for information only.  This track is NOT a normal gate pass and must never be reported as acceptance.",
+  "observed": {
+    "bare_lf_header_block": {
+      "bytes": 183,
+      "code": "invalid",
+      "status": 400
+    },
+    "buffered_trailing_bytes": {
+      "bytes": 183,
+      "code": "invalid",
+      "status": 400
+    },
+    "duplicate_content_length": {
+      "bytes": 183,
+      "code": "invalid",
+      "status": 400
+    },
+    "huge_digit_content_length": {
+      "bytes": 191,
+      "code": "too_large",
+      "status": 413
+    },
+    "non_digit_content_length": {
+      "bytes": 183,
+      "code": "invalid",
+      "status": 400
+    },
+    "overlong_header_block": {
+      "bytes": 183,
+      "code": "invalid",
+      "status": 400
+    },
+    "overlong_request_line": {
+      "bytes": 183,
+      "code": "invalid",
+      "status": 400
+    }
+  },
+  "stage": "adversarial_protocol"
+}

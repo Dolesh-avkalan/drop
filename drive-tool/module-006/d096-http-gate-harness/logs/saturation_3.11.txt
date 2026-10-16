@@ -1,0 +1,45 @@
+{
+  "buckets": {
+    "expected_readonly_denial": 0,
+    "expected_saturation_busy": 50,
+    "unexpected_other_error": 0,
+    "unexpected_unavailable": 0,
+    "valid_below_capacity_success": 300
+  },
+  "cycles": "<50 cycles omitted>",
+  "expected": {
+    "expected_readonly_denial": 0,
+    "expected_saturation_busy": 50,
+    "unexpected_other_error": 0,
+    "unexpected_unavailable": 0,
+    "valid_below_capacity_success": 300
+  },
+  "frozen": {
+    "budget_seconds": 900,
+    "cycles": 50,
+    "excess": 1,
+    "occupiers": 6
+  },
+  "harness": "d096-http-gate-harness",
+  "problems": [],
+  "requested": 350,
+  "resources": {
+    "adapter_threads_after_close": [],
+    "adapter_threads_live": [
+      "drive-http-accept",
+      "drive-http-worker-0",
+      "drive-http-worker-1",
+      "drive-http-worker-2",
+      "drive-http-worker-3",
+      "drive-http-worker-4",
+      "drive-http-worker-5"
+    ],
+    "closed": true,
+    "elapsed_seconds": 2.11,
+    "fd_after": 4,
+    "fd_before": 11,
+    "within_budget": true
+  },
+  "result": "PASS",
+  "stage": "saturation_6plus1"
+}
