@@ -1,0 +1,6 @@
+nomem mutant applied (child never raises MemoryError)
+stage result: FAIL
+R2: {"ok": 50, "mem_error": null, "vm_kb_before": 26900, "vm_kb_ballast": 228644, "vm_kb_peak": 228644, "recovery_ok": 20, "result": "FAIL"}
+R1 ok: 300
+R3: {'result': 'PASS', 'mapped': 129, 'raw': 0, 'recovery_ok': 20}
+problems: ["R2 memory pressure failed: {'ok': 50, 'mem_error': None, 'vm_kb_before': 26900, 'vm_kb_ballast': 228644, 'vm_kb_peak': 228644, 'recovery_ok': 20, 'result': 'FAIL'}"]
