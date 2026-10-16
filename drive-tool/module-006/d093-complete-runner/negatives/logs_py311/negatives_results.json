@@ -1,0 +1,150 @@
+{
+  "results": [
+    {
+      "id": "N1",
+      "scope": "B3 workspace escape via symlink",
+      "desc": "workdir through symlink to /var/tmp",
+      "new_passed": true,
+      "new_detail": "rc=1 escaped_dir_created=False msg=True",
+      "old_detail": "rc=1 escaped_dir_created=True"
+    },
+    {
+      "id": "N2",
+      "scope": "B3 base-dir outside /tmp",
+      "desc": "--base-dir /var/tmp",
+      "new_passed": true,
+      "new_detail": "rc=1 created=[] rejected_msg=True",
+      "old_detail": "rc=0 created=['d063-b7f8d17b-lfzfwmef']"
+    },
+    {
+      "id": "N3",
+      "scope": "B3 workspace mode",
+      "desc": "workspace created with mode 0700",
+      "new_passed": true,
+      "new_detail": "rc=1 workdir_mode=0o700 (expected 0o700)",
+      "old_detail": "rc=1 workdir_mode=0o775"
+    },
+    {
+      "id": "N4",
+      "scope": "B2 extra file under tests/",
+      "desc": "archive with tests/rogue.py",
+      "new_passed": true,
+      "new_detail": "rc=1 token=True fail_closed=True",
+      "old_detail": "rc=1 fail_closed_at_identity=False noted_extra=True"
+    },
+    {
+      "id": "N5",
+      "scope": "B2 sitecustomize.py at source root",
+      "desc": "archive with sitecustomize.py",
+      "new_passed": true,
+      "new_detail": "rc=1 token=True fail_closed=True",
+      "old_detail": "rc=1 fail_closed_at_identity=False noted_extra=True"
+    },
+    {
+      "id": "N6",
+      "scope": "B2 unexpected .so",
+      "desc": "archive with drive_tool/_evil.so",
+      "new_passed": true,
+      "new_detail": "rc=1 token=True fail_closed=True",
+      "old_detail": "rc=1 fail_closed_at_identity=False noted_extra=True"
+    },
+    {
+      "id": "N7",
+      "scope": "B2 symlink inside extracted src",
+      "desc": "drive_tool/listing.py -> byte-identical copy",
+      "new_passed": true,
+      "new_detail": "problems=['MISSING_OR_LINK drive_tool/listing.py'] hard_extras=[]",
+      "old_detail": "problems=[] extras=['README.md', 'AGENTS.md', 'tasks/d062-combined-client-backend.md'] (empty problems == link accepted)"
+    },
+    {
+      "id": "N8",
+      "scope": "B2 symlinked directory",
+      "desc": "escape -> /etc",
+      "new_passed": true,
+      "new_detail": "hard_extras=['SYMLINK_DIR escape']",
+      "old_detail": "returned 2-tuple; symlink dir not flagged; extras=['README.md', 'AGENTS.md', 'tasks/d062-combined-client-backend.md', 'tasks/d060-gemini-http-security.txt', 'tasks/d060-gemini-http-review-result.md', 'tasks/d059-http-design.txt', 'tasks/d058-independent-backend.md', 'tasks/d057-independent-final-client.md', 'tasks/d056-transport-delta-review.txt', 'tasks/d055-canonical-client.md', 'tasks/d054-file-service-assembly.md', 'tasks/d053-client-review-fixes.md', 'tasks/d052-client-independent.md', 'tasks/d051-client-review.txt', 'tasks/d050-file-service-implementation.md', 'tasks/d049-policy-independent.md', 'tasks/d048-policy-review.txt', 'tasks/d047-agent-client.md', 'tasks/d046-policy-assembly.md', 'tasks/d045-service-policy-implementation.md', 'tasks/d044-service-readiness.md', 'tasks/d043-range-read-independent.md', 'tasks/d041-service-contract-review.md', 'tasks/d038-cloud-core-runner.md', 'tasks/d037-partial-scan-correction-verification.md', 'tasks/d035-partial-scan-review-fixes.md', 'tasks/d034-partial-scan-independent-tests.md', 'tasks/d033-partial-scan-review.md', 'tasks/d031-partial-enumeration-design.md', 'tasks/d015-github-publication.md', 'tasks/d014-cloud-runner.md', 'tasks/d014-cloud-core-validation-plan.md', 'tasks/d013-readonly-core-integration.md', 'tasks/d012-module003-final-independent-tests.md', 'tasks/d011-module003-final-review.md', 'tasks/d010-module003-resource-fixes.md', 'tasks/d009-module003-independent-tests.md', 'tasks/d008-module003-independent-review.md', 'tasks/MODULE-006-DESIGN.md', 'tasks/MODULE-005B.md', 'tasks/MODULE-005A.md', 'tasks/MODULE-005.md', 'tasks/MODULE-004.md', 'tasks/MODULE-003.md', 'tasks/MODULE-002.md', 'tasks/MODULE-001.md', 'tasks/attachments/MODULE-003-bundle.md', 'session/STATUS.md', 'session/START_HERE.md', 'session/PROGRESS.md', 'session/FILE-ACCESS-REQUIREMENTS.md', 'session/DECISIONS.md', 'session/CORE-ACCEPTANCE.md', 'session/CONNECTIONS.md', 'session/AGENT-INTERFACE.md', 'session/history/d039-argon-service-design.md', 'session/history/d031-argon-partial-scan-design.md', 'session/history/d014-cloud-validation.md', 'session/history/d012-sarvam-independent-verification.md', 'session/history/d011-gemini-acceptance.md', 'session/history/d010-sarvam-reported-fix.md', 'session/history/d009-sarvam-reported-tests.md', 'session/history/d008-gemini-review.md', 'session/history/2026-10-15-status-before-codex-resume.md', 'session/history/2026-10-15-status-before-1720-heartbeat.md', 'session/history/2026-10-15-claude-director-handoff.md', 'session/history/2026-10-14-resume-review.md', 'session/history/2026-10-14-local-director-resume.md', 'session/history/2026-10-06.md', 'session/history/2026-10-06-two-hour-usage-audit.md', 'session/history/2026-10-06-messenger-usage-audit.md', 'session/history/2026-10-06-gemini-slow-pointer.md', 'session/history/2026-10-06-gemini-direct-inline.md', 'session/history/2026-10-06-gemini-attachment.md', 'session/history/2026-10-06-dual-module003-dispatch.md', 'session/history/2026-10-06-dual-dispatch-quota-block.md', 'session/history/2026-10-06-deepseek-login-handoff.md', 'docs/evidence/READONLY-CORE-INTEGRATION.md', 'docs/evidence/MODULE-005B.md', 'docs/evidence/MODULE-005A.md', 'docs/evidence/MODULE-005.md', 'docs/evidence/MODULE-004.md', 'docs/evidence/MODULE-003.md', 'docs/evidence/MODULE-003-REVIEW-FIXES.md', 'docs/evidence/MODULE-003-RESOURCE-FIXES.md', 'docs/evidence/MODULE-003-GEMINI.md', 'docs/evidence/MODULE-002.md', 'docs/evidence/MODULE-001.md']"
+    },
+    {
+      "id": "N11",
+      "scope": "B1 no filesystem masking",
+      "desc": "--base-dir /mnt after suite failure",
+      "new_passed": true,
+      "new_detail": "rc=1 created_under_mnt=[] rejected_msg=True",
+      "old_detail": "rc=1 created_under_mnt=False"
+    },
+    {
+      "id": "N12",
+      "scope": "L1 wall-clock download deadline",
+      "desc": "trickling source vs 1s deadline",
+      "new_passed": true,
+      "new_detail": "RuntimeError: download exceeded wall-clock deadline (1s)",
+      "old_detail": "old download_archive has no wall-clock deadline (socket timeout only)"
+    },
+    {
+      "id": "N14",
+      "scope": "L3 bounded subprocess capture",
+      "desc": "payload writes 20 MiB to stdout",
+      "new_passed": true,
+      "new_detail": "truncated=True captured_bytes=8388608 cap=8388608",
+      "old_detail": "old run() uses subprocess.run(capture_output=True): no byte cap, no 'truncated' key"
+    },
+    {
+      "id": "N15",
+      "scope": "L3 process-group kill",
+      "desc": "payload spawns a sleeping child",
+      "new_passed": true,
+      "new_detail": "timed_out=True orphan_sentinel=False child_pid=5259 child_state=Z (Z=terminated)",
+      "old_detail": "timed_out=True orphan_sentinel=True child_pid=5262 child_state=Z"
+    },
+    {
+      "id": "N16",
+      "scope": "L4 manifest symlink safety",
+      "desc": "symlink in workspace",
+      "new_passed": true,
+      "new_detail": "links=[('link', '/etc/passwd', 'file')] link_hashed=False dir_size=9 (expected 9)",
+      "old_detail": "old write_manifest() returns 1-tuple and sha256_file() follows the symlink (records /etc/passwd hash)"
+    },
+    {
+      "id": "N18",
+      "scope": "regression archive guards",
+      "desc": "6 malicious archives",
+      "new_passed": true,
+      "new_detail": "all_rejected=True {'dotdot': \"rejected: unsafe path in archive: '../escape.txt'\", 'absolute': \"rejected: absolute path in archive: '/etc/evil.txt'\", 'symlink': \"rejected: link member in archive: 'root/link'\", 'hardlink': \"rejected: link member in archive: 'root/hard'\", 'oversize': \"rejected: file 'root/big.bin' exceeds 5242880 bytes\", 'toomany': 'rejected: archive has more than 2000 members'}",
+      "old_detail": "old safe_extract already rejects these (unchanged behaviour)"
+    },
+    {
+      "id": "N9",
+      "scope": "B1 suite failure + diagnostic continue",
+      "desc": "full runner run",
+      "new_passed": true,
+      "new_detail": "suite_diagnostic_continue=True result=FAIL stages=['smoke', 'soak', 'edges'] suite={'python3.12': 1, 'python3.11': 1}",
+      "old_detail": "old runner aborts before smoke/soak/edges when the suite fails"
+    },
+    {
+      "id": "N10",
+      "scope": "B1 dual-order repro",
+      "desc": "full runner run",
+      "new_passed": true,
+      "new_detail": "asc_rc=0 desc_rc=1 confirmed=True native_order=['b.txt', 'a.txt']",
+      "old_detail": "old runner has no readdir confirmation or dual-order repro"
+    },
+    {
+      "id": "N13",
+      "scope": "L2 --deadline-seconds propagation",
+      "desc": "from stress_smoke.out",
+      "new_passed": true,
+      "new_detail": "invocation=$ /usr/local/bin/python3.12 /scratch/work/d093/bundle/runner/stress_checks.py smoke /tmp/d063-b7f8d17b-42gnynur/extract/drive-tool-b7f8d17b9dcc4aec68d54b38f994290e05264e67 --deadline-seconds 170 internal_deadline=170",
+      "old_detail": "old runner never passes --deadline-seconds"
+    },
+    {
+      "id": "N17",
+      "scope": "L5 apparent vs allocated",
+      "desc": "summary.json + block-based probe",
+      "new_passed": true,
+      "new_detail": "summary apparent=15973571 allocated=16054272; probe apparent=2114497 allocated=2115072 (manual 2114497/2115072, block-based measure matches: True)",
+      "old_detail": "old runner records only apparent bytes"
+    }
+  ],
+  "passed": 18,
+  "total": 18
+}
