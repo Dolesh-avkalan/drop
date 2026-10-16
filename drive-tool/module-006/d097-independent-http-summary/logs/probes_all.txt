@@ -1,0 +1,133 @@
+# D097 independent real-socket HTTP probes
+generated: 2026-10-16T01:57:18Z
+
+## interpreter python3.11
+### busy-6plus1 
+{
+  "probe": "busy-6plus1",
+  "repo": "/scratch/work/candidate",
+  "entered": true,
+  "occupiers_ok": 6,
+  "excess": [
+    503,
+    "busy"
+  ],
+  "verdict": "PASS"
+}
+
+### delayed-busy (candidate patched)
+{
+  "probe": "delayed-busy",
+  "repo": "/scratch/work/candidate",
+  "entered": true,
+  "occupiers_ok": 6,
+  "excess_status_code": [
+    503,
+    "busy"
+  ],
+  "excess_bytes": 187,
+  "excess_body_head": "HTTP/1.1 503 Service Unavailable\r\nContent-Type: application/json\r\nContent-Length",
+  "verdict": "PASS"
+}
+
+### close-once (candidate patched)
+{
+  "probe": "close-once",
+  "repo": "/scratch/work/candidate",
+  "first_response": [
+    200,
+    null
+  ],
+  "close1": true,
+  "close2": true,
+  "close3": true,
+  "new_conn_refused": true,
+  "verdict": "PASS"
+}
+
+### close-timed (candidate patched)
+{
+  "probe": "close-timed",
+  "repo": "/scratch/work/candidate",
+  "entered": true,
+  "close_budget_result": false,
+  "elapsed_s": 0.102,
+  "fd_before": 15,
+  "fd_after": 8,
+  "unrelated_desc_alive": true,
+  "final_close": true,
+  "verdict": "PASS"
+}
+
+## interpreter python3.12
+### busy-6plus1 (candidate patched)
+{
+  "probe": "busy-6plus1",
+  "repo": "/scratch/work/candidate",
+  "entered": true,
+  "occupiers_ok": 6,
+  "excess": [
+    503,
+    "busy"
+  ],
+  "verdict": "PASS"
+}
+
+### delayed-busy (candidate patched)
+{
+  "probe": "delayed-busy",
+  "repo": "/scratch/work/candidate",
+  "entered": true,
+  "occupiers_ok": 6,
+  "excess_status_code": [
+    503,
+    "busy"
+  ],
+  "excess_bytes": 187,
+  "excess_body_head": "HTTP/1.1 503 Service Unavailable\r\nContent-Type: application/json\r\nContent-Length",
+  "verdict": "PASS"
+}
+
+### close-once (candidate patched)
+{
+  "probe": "close-once",
+  "repo": "/scratch/work/candidate",
+  "first_response": [
+    200,
+    null
+  ],
+  "close1": true,
+  "close2": true,
+  "close3": true,
+  "new_conn_refused": true,
+  "verdict": "PASS"
+}
+
+### close-timed (candidate patched)
+{
+  "probe": "close-timed",
+  "repo": "/scratch/work/candidate",
+  "entered": true,
+  "close_budget_result": false,
+  "elapsed_s": 0.101,
+  "fd_before": 15,
+  "fd_after": 8,
+  "unrelated_desc_alive": true,
+  "final_close": true,
+  "verdict": "PASS"
+}
+
+## delayed-busy discriminator: pre-patch base b962a04d
+{
+  "probe": "delayed-busy",
+  "repo": "/scratch/work/base",
+  "entered": true,
+  "occupiers_ok": 6,
+  "excess_status_code": [
+    null,
+    null
+  ],
+  "excess_bytes": 0,
+  "excess_body_head": "",
+  "verdict": "FAIL"
+}
