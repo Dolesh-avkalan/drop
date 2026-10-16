@@ -1,0 +1,8 @@
+calls=1200 concurrency=6 wall=7.36s closed=True
+SERVER emissions (status, code, uncertain, retry) -> count:
+   (403, 'denied', False, False) -> 39
+SERVER busy_reject calls: {'count': 41}
+SERVER write errors: {}
+CLIENT codes: {'ok': 1120, 'denied': 39, 'busy': 41}
+CLIENT unavailable rows: 0
+disk files per source (savepool): {'alias_a': 16, 'alias_b': 16, 'main': 16, 'other': 16, 'ro': 0, 'small': 16} total 80

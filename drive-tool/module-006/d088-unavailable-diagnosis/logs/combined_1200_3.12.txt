@@ -1,0 +1,10 @@
+calls=1200 concurrency=6 wall=7.48s closed=True
+CLIENT codes: {'ok': 1125, 'denied': 39, 'busy': 35, 'unavailable': 1}
+SERVER structured emissions: {"(403, 'denied')": 39}
+SERVER _busy_reject calls: {'count': 36}
+CLIENT _wrap_transport exception types: {'RemoteDisconnected': 1}
+CLIENT envelope->unavailable fallback: {}
+IDENTITY busy_reject == client_busy + client_unavailable: 36 == 35 + 1 -> True
+unavailable rows (1):
+    {"agent": "agent4", "i": 760, "op": "list", "retry": true, "source": "shared", "uncertain": false}
+disk files per source (savepool): {'alias_a': 16, 'alias_b': 16, 'main': 16, 'other': 16, 'ro': 0, 'small': 16} total 80

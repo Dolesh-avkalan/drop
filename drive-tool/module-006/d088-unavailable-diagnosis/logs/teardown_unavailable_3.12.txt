@@ -1,0 +1,5 @@
+gate entered: True
+close(timeout=0.2) -> False
+close(timeout=5.0) -> True
+SERVER emissions: {"(503, 'unavailable', False, True)": 3}
+CLIENT results: [{"i": 0, "code": "unavailable", "uncertain": false, "retry": true}, {"i": 1, "code": "unavailable", "uncertain": false, "retry": true}, {"i": 2, "code": "unavailable", "uncertain": false, "retry": true}]

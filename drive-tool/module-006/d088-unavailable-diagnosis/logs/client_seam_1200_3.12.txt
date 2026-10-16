@@ -1,0 +1,6 @@
+calls=1200 concurrency=6 wall=7.06s closed=True
+CLIENT codes: {'ok': 1132, 'denied': 38, 'busy': 29, 'unavailable': 1}
+_wrap_transport exception types: {'RemoteDisconnected': 1}
+_parse_error_envelope -> unavailable (raw empty/nonempty): {}
+unavailable rows (1):
+    {"agent": "agent4", "i": 70, "op": "list", "retry": true, "source": "shared", "uncertain": false}

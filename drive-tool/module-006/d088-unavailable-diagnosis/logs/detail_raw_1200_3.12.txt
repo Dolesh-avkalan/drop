@@ -1,0 +1,57 @@
+mode=raw calls=1200 concurrency=6 wall=6.58s closed=True
+classes: {'structured_success': 1150, 'structured_error': 50}
+codes: {'denied': 40, 'busy': 10}
+ops: {'list': 360, 'find': 240, 'read': 360, 'save': 240}
+non-2xx / non-denied rows: 50
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 9, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent0", "body_len": 59, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 12, "op": "list", "retry": true, "source": "main", "status": 503, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 39, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 69, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 99, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 129, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 159, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 102, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 183, "op": "find", "retry": true, "source": "ro", "status": 503, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 189, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 219, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 249, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 279, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 309, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 339, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 369, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 399, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent4", "body_len": 61, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 412, "op": "list", "retry": true, "source": "shared", "status": 503, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 429, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 459, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent0", "body_len": 68, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 486, "op": "read", "retry": true, "source": "main", "status": 503, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 489, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 519, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 549, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 579, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 609, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent2", "body_len": 60, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 620, "op": "list", "retry": true, "source": "small", "status": 503, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 639, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 669, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 699, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 729, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 759, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent2", "body_len": 60, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 770, "op": "list", "retry": true, "source": "small", "status": 503, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 789, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent5", "body_len": 70, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 815, "op": "read", "retry": true, "source": "shared", "status": 503, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 819, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 849, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 879, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 909, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent5", "body_len": 61, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 911, "op": "list", "retry": true, "source": "shared", "status": 503, "uncertain": false}
+   {"agent": "agent1", "body_len": 8, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 919, "op": "save", "retry": true, "source": "other", "status": 503, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 939, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 969, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 999, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 1029, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 1059, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 1089, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 57, "class": "structured_error", "code": "busy", "expected_grant": true, "i": 1101, "op": "list", "retry": true, "source": "ro", "status": 503, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 1119, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 1149, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "structured_error", "code": "denied", "expected_grant": false, "i": 1179, "op": "save", "retry": false, "source": "ro", "status": 403, "uncertain": false}
+disk files per source root (savepool): {'alias_a': 16, 'alias_b': 16, 'main': 16, 'other': 16, 'ro': 0, 'small': 16}
+total files: 80

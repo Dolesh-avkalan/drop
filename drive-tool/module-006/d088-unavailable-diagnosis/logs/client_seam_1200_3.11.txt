@@ -1,0 +1,5 @@
+calls=1200 concurrency=6 wall=6.35s closed=True
+CLIENT codes: {'ok': 1123, 'denied': 37, 'busy': 40}
+_wrap_transport exception types: {}
+_parse_error_envelope -> unavailable (raw empty/nonempty): {}
+unavailable rows (0):

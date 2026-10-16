@@ -1,0 +1,14 @@
+# D088 source identity (unchanged by this task)
+
+repo:        Dolesh-avkalan/drive-tool
+exact head:  7dab4357ca9a79a6c857ab78bea55805dfa1de89
+tree:        26eff85fa3b9945619157632e65d594c41653aac
+source blob: 8cd137f7323eb5c9e1e4166471a04073204840e5  sha256 1e18561512614e13250582d042593ab72c8f7bfcb104af13a2646865e94a9ac7
+tests blob:  5419096c43190ea61270fd9091a8601d376bdd1e  sha256 951e73d01b170a13789eb2306d66e695cc8ba5d3ae253a67be3d1bf4dc391469
+
+No source or test file was modified by D088; probes are runtime-only instrumentation.
+
+D085 gate FAIL history preserved (diagnostic, not a gated pass):
+  smoke 600  3.11 FAIL busy=32 unavailable=1 ; 3.12 FAIL busy=28
+  soak 10000 3.11 FAIL busy=300 denied=322 unavailable=7 ; 3.12 FAIL busy=326 denied=320 unavailable=6
+  those runs remain FAIL in drop/drive-tool/module-006/d085-contract-tests/.

@@ -1,0 +1,10 @@
+calls=1200 concurrency=6 wall=6.73s closed=True
+SERVER emissions (status, code, uncertain, retry) -> count:
+   (403, 'denied', False, False) -> 37
+SERVER busy_reject calls: {'count': 36}
+SERVER write errors: {}
+CLIENT codes: {'ok': 1127, 'denied': 37, 'unavailable': 2, 'busy': 34}
+CLIENT unavailable rows: 2
+    {"agent": "agent3", "code": "unavailable", "i": 249, "op": "save", "retry": false, "source": "ro", "uncertain": true}
+    {"agent": "agent3", "code": "unavailable", "i": 867, "op": "read", "retry": true, "source": "ro", "uncertain": false}
+disk files per source (savepool): {'alias_a': 16, 'alias_b': 16, 'main': 16, 'other': 16, 'ro': 0, 'small': 16} total 80

@@ -1,0 +1,40 @@
+mode=client calls=1200 concurrency=6 wall=6.89s closed=True
+classes: {'client_success': 1130, 'client_error': 70}
+codes: {'denied': 37, 'busy': 33}
+ops: {'list': 360, 'find': 240, 'read': 360, 'save': 240}
+non-2xx / non-denied rows: 33
+   {"agent": "agent0", "body_len": 8, "class": "client_error", "code": "busy", "expected_grant": true, "i": 18, "op": "save", "retry": true, "source": "main", "status": -1, "uncertain": false}
+   {"agent": "agent5", "body_len": 70, "class": "client_error", "code": "busy", "expected_grant": true, "i": 47, "op": "read", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent2", "body_len": 8, "class": "client_error", "code": "busy", "expected_grant": true, "i": 128, "op": "save", "retry": true, "source": "small", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "client_error", "code": "busy", "expected_grant": false, "i": 129, "op": "save", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+   {"agent": "agent4", "body_len": 70, "class": "client_error", "code": "busy", "expected_grant": true, "i": 196, "op": "read", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent1", "body_len": 105, "class": "client_error", "code": "busy", "expected_grant": true, "i": 253, "op": "find", "retry": true, "source": "other", "status": -1, "uncertain": false}
+   {"agent": "agent2", "body_len": 60, "class": "client_error", "code": "busy", "expected_grant": true, "i": 260, "op": "list", "retry": true, "source": "small", "status": -1, "uncertain": false}
+   {"agent": "agent4", "body_len": 106, "class": "client_error", "code": "busy", "expected_grant": true, "i": 274, "op": "find", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 57, "class": "client_error", "code": "busy", "expected_grant": true, "i": 351, "op": "list", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+   {"agent": "agent5", "body_len": 70, "class": "client_error", "code": "busy", "expected_grant": true, "i": 365, "op": "read", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent5", "body_len": 8, "class": "client_error", "code": "busy", "expected_grant": true, "i": 389, "op": "save", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent5", "body_len": 106, "class": "client_error", "code": "busy", "expected_grant": true, "i": 413, "op": "find", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent1", "body_len": 60, "class": "client_error", "code": "busy", "expected_grant": true, "i": 421, "op": "list", "retry": true, "source": "other", "status": -1, "uncertain": false}
+   {"agent": "agent5", "body_len": 61, "class": "client_error", "code": "busy", "expected_grant": true, "i": 431, "op": "list", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent4", "body_len": 106, "class": "client_error", "code": "busy", "expected_grant": true, "i": 484, "op": "find", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent4", "body_len": 61, "class": "client_error", "code": "busy", "expected_grant": true, "i": 502, "op": "list", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent0", "body_len": 68, "class": "client_error", "code": "busy", "expected_grant": true, "i": 546, "op": "read", "retry": true, "source": "main", "status": -1, "uncertain": false}
+   {"agent": "agent1", "body_len": 60, "class": "client_error", "code": "busy", "expected_grant": true, "i": 571, "op": "list", "retry": true, "source": "other", "status": -1, "uncertain": false}
+   {"agent": "agent4", "body_len": 106, "class": "client_error", "code": "busy", "expected_grant": true, "i": 574, "op": "find", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent2", "body_len": 60, "class": "client_error", "code": "busy", "expected_grant": true, "i": 590, "op": "list", "retry": true, "source": "small", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "client_error", "code": "busy", "expected_grant": false, "i": 609, "op": "save", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 66, "class": "client_error", "code": "busy", "expected_grant": true, "i": 627, "op": "read", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+   {"agent": "agent5", "body_len": 61, "class": "client_error", "code": "busy", "expected_grant": true, "i": 641, "op": "list", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent0", "body_len": 8, "class": "client_error", "code": "busy", "expected_grant": true, "i": 768, "op": "save", "retry": true, "source": "main", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 66, "class": "client_error", "code": "busy", "expected_grant": true, "i": 795, "op": "read", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+   {"agent": "agent5", "body_len": 106, "class": "client_error", "code": "busy", "expected_grant": true, "i": 803, "op": "find", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 66, "class": "client_error", "code": "busy", "expected_grant": true, "i": 837, "op": "read", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+   {"agent": "agent5", "body_len": 70, "class": "client_error", "code": "busy", "expected_grant": true, "i": 845, "op": "read", "retry": true, "source": "shared", "status": -1, "uncertain": false}
+   {"agent": "agent1", "body_len": 69, "class": "client_error", "code": "busy", "expected_grant": true, "i": 895, "op": "read", "retry": true, "source": "other", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 8, "class": "client_error", "code": "busy", "expected_grant": false, "i": 939, "op": "save", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 66, "class": "client_error", "code": "busy", "expected_grant": true, "i": 1005, "op": "read", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 102, "class": "client_error", "code": "busy", "expected_grant": true, "i": 1083, "op": "find", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+   {"agent": "agent3", "body_len": 57, "class": "client_error", "code": "busy", "expected_grant": true, "i": 1161, "op": "list", "retry": true, "source": "ro", "status": -1, "uncertain": false}
+disk files per source root (savepool): {'alias_a': 16, 'alias_b': 16, 'main': 16, 'other': 16, 'ro': 0, 'small': 16}
+total files: 80
