@@ -1,0 +1,712 @@
+{
+  "archive_bytes": 489794,
+  "archive_origin": "local:/scratch/work/cand.tar.gz",
+  "archive_sha256": "191d6f2bd985be51f1b6092472beeec25b267a4c6e89de7817b4d6538c61c6c3",
+  "confirm_disposable_host": null,
+  "d101_gate_sha256": "3754ca19b4a72797ac16a1e32300ddf399e7117e2dec63def6693d2512db8d7b",
+  "exit": 0,
+  "finished": "2026-10-16T04:20:52Z",
+  "hostname": "claw-sandbox-65a1a6a5cb1bd29d9ef09aa6b0",
+  "identity": {
+    "checked": 28,
+    "problems": []
+  },
+  "interpreter": "3.12.13 (main, May  8 2026, 20:08:05) [GCC 12.2.0]",
+  "manifest": {
+    "files": 132,
+    "path": "source_manifest.tsv"
+  },
+  "payload": {
+    "path": "harsh_gate_d110.py",
+    "problems": [],
+    "sha256": "b94eb09ad329abe669633834fe21b67139b43c0fe666645cde263e2139f53e0e"
+  },
+  "payload_sha256": "b94eb09ad329abe669633834fe21b67139b43c0fe666645cde263e2139f53e0e",
+  "pin": {
+    "archive": "https://codeload.github.com/Dolesh-avkalan/drive-tool/tar.gz/337e4c713829af76615472eb47b81244ff399528",
+    "archive_sha256": "191d6f2bd985be51f1b6092472beeec25b267a4c6e89de7817b4d6538c61c6c3",
+    "commit": "337e4c713829af76615472eb47b81244ff399528",
+    "repo": "Dolesh-avkalan/drive-tool"
+  },
+  "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
+  "problems": [],
+  "pythons": [
+    "python3.11"
+  ],
+  "resources": {
+    "elapsed_seconds": 17.785,
+    "free_bytes": 55017472,
+    "within_workspace_bound": true,
+    "workspace_allocated_bytes": 2333696,
+    "workspace_limit_bytes": 201326592
+  },
+  "result": "PASS",
+  "runner": "d110-harsh-target-runner",
+  "source_root": "src/drive-tool-337e4c713829af76615472eb47b81244ff399528",
+  "sourcehash": "b8b44c4c056e1925957445cc9b532c53194920124a469df54e49053a7dcbb71c",
+  "stages": {
+    "python3.11": {
+      "env": {
+        "out": "3.11.2 (main, May 12 2026, 05:17:27) [GCC 12.2.0]\nLinux-4.19.0-gvisor-x86_64-with-glibc2.36\n/tmp/d110-337e4c71-1193-435078/src/drive-tool-337e4c713829af76615472eb47b81244ff399528",
+        "raw_exit": 0
+      },
+      "python": "python3.11",
+      "stages": {
+        "admission": {
+          "detail": {
+            "cycles": [
+              {
+                "cycle": 0,
+                "entered": true,
+                "excess": [
+                  503,
+                  "busy"
+                ],
+                "occupiers_bad": 0,
+                "occupiers_ok": 6
+              },
+              {
+                "cycle": 1,
+                "entered": true,
+                "excess": [
+                  503,
+                  "busy"
+                ],
+                "occupiers_bad": 0,
+                "occupiers_ok": 6
+              },
+              {
+                "cycle": 2,
+                "entered": true,
+                "excess": [
+                  503,
+                  "busy"
+                ],
+                "occupiers_bad": 0,
+                "occupiers_ok": 6
+              },
+              {
+                "cycle": 3,
+                "entered": true,
+                "excess": [
+                  503,
+                  "busy"
+                ],
+                "occupiers_bad": 0,
+                "occupiers_ok": 6
+              },
+              {
+                "cycle": 4,
+                "entered": true,
+                "excess": [
+                  503,
+                  "busy"
+                ],
+                "occupiers_bad": 0,
+                "occupiers_ok": 6
+              },
+              {
+                "cycle": 5,
+                "entered": true,
+                "excess": [
+                  503,
+                  "busy"
+                ],
+                "occupiers_bad": 0,
+                "occupiers_ok": 6
+              },
+              {
+                "cycle": 6,
+                "entered": true,
+                "excess": [
+                  503,
+                  "busy"
+                ],
+                "occupiers_bad": 0,
+                "occupiers_ok": 6
+              },
+              {
+                "cycle": 7,
+                "entered": true,
+                "excess": [
+                  503,
+                  "busy"
+                ],
+                "occupiers_bad": 0,
+                "occupiers_ok": 6
+              }
+            ],
+            "frozen": {
+              "cycles": 8,
+              "excess": 1,
+              "occupiers": 6
+            },
+            "problems": [],
+            "recovery": {
+              "code": null,
+              "status": 200
+            },
+            "resources": {
+              "closed": true,
+              "fd_after": 4,
+              "fd_before": 10
+            },
+            "result": "PASS",
+            "stage": "admission"
+          },
+          "json": "stage_admission.json",
+          "log": "logs/harsh_admission.out",
+          "problems": [],
+          "raw_exit": 0,
+          "result": "PASS",
+          "timed_out": false
+        },
+        "concurrency": {
+          "detail": {
+            "detail": {
+              "create": {
+                "exists": 5,
+                "other": [],
+                "winners": 1
+              },
+              "create_parents": {
+                "errors": []
+              },
+              "overwrite": {
+                "busy_reads": 0,
+                "errors": [],
+                "torn_count": 0,
+                "torn_reads": []
+              },
+              "temp_leaks": {}
+            },
+            "problems": [],
+            "result": "PASS",
+            "stage": "concurrency"
+          },
+          "json": "stage_concurrency.json",
+          "log": "logs/harsh_concurrency.out",
+          "problems": [],
+          "raw_exit": 0,
+          "result": "PASS",
+          "timed_out": false
+        },
+        "crash_kill": {
+          "detail": {
+            "cases": {
+              "midwrite": {
+                "killed_by_sigkill": true,
+                "mode": "mid_write",
+                "orphan_temps": 1,
+                "published": false,
+                "ready": true,
+                "recovery": {
+                  "find_ok": true,
+                  "list_ok": true,
+                  "on_disk_temps": 1,
+                  "read_ok": true,
+                  "save_ok": true,
+                  "temp_in_find": false,
+                  "temp_in_list": false
+                }
+              },
+              "orphan_visibility": {
+                "on_disk_temps": 1,
+                "temp_in_find": false,
+                "temp_in_list": false
+              },
+              "prepublish": {
+                "killed_by_sigkill": true,
+                "mode": "pre_publish",
+                "orphan_temps": 1,
+                "published": false,
+                "ready": true,
+                "recovery": {
+                  "find_ok": true,
+                  "list_ok": true,
+                  "on_disk_temps": 1,
+                  "read_ok": true,
+                  "save_ok": true,
+                  "temp_in_find": false,
+                  "temp_in_list": false
+                }
+              },
+              "storm": {
+                "errors": [],
+                "killed": 4,
+                "recovery_ok": true,
+                "torn": 0
+              }
+            },
+            "note": "SIGKILL terminates user space only; this proves process-crash atomicity, NOT physical power-loss durability. No physical-power-loss claim is made.",
+            "problems": [],
+            "result": "PASS",
+            "stage": "crash_kill"
+          },
+          "json": "stage_crash_kill.json",
+          "log": "logs/harsh_crash_kill.out",
+          "problems": [],
+          "raw_exit": 0,
+          "result": "PASS",
+          "timed_out": false
+        },
+        "enospc": {
+          "detail": {
+            "phases": {
+              "fsync": {
+                "error": {
+                  "code": "unavailable",
+                  "outcome_uncertain": true,
+                  "retry_safe": false
+                },
+                "fd_delta": 0,
+                "no_partial_new": true,
+                "target_preserved": true,
+                "temp_leaks": {}
+              },
+              "mid_write": {
+                "error": {
+                  "code": "unavailable",
+                  "outcome_uncertain": true,
+                  "retry_safe": false
+                },
+                "fd_delta": 0,
+                "no_partial_new": true,
+                "target_preserved": true,
+                "temp_leaks": {}
+              },
+              "publish": {
+                "error": {
+                  "code": "unavailable",
+                  "outcome_uncertain": true,
+                  "retry_safe": false
+                },
+                "fd_delta": 0,
+                "no_partial_new": true,
+                "target_preserved": true,
+                "temp_leaks": {}
+              },
+              "recovery": {
+                "ok": true
+              },
+              "rlimit_fsize": {
+                "code": "unavailable",
+                "outcome_uncertain": true,
+                "retry_safe": false,
+                "target_preserved": true,
+                "temp_leaks": 0
+              },
+              "temp_create": {
+                "error": {
+                  "code": "unavailable",
+                  "outcome_uncertain": true,
+                  "retry_safe": false
+                },
+                "fd_delta": 0,
+                "no_partial_new": true,
+                "target_preserved": true,
+                "temp_leaks": {}
+              }
+            },
+            "problems": [],
+            "result": "PASS",
+            "stage": "enospc"
+          },
+          "json": "stage_enospc.json",
+          "log": "logs/harsh_enospc.out",
+          "problems": [],
+          "raw_exit": 0,
+          "result": "PASS",
+          "timed_out": false
+        },
+        "http_hostile": {
+          "detail": {
+            "cases": {
+              "bad_method": {
+                "bytes": 183,
+                "code": "invalid",
+                "status": 400
+              },
+              "bare_lf_header_block": {
+                "bytes": 183,
+                "code": "invalid",
+                "status": 400
+              },
+              "buffered_trailing_bytes": {
+                "bytes": 183,
+                "code": "invalid",
+                "status": 400
+              },
+              "duplicate_content_length": {
+                "bytes": 183,
+                "code": "invalid",
+                "status": 400
+              },
+              "huge_digit_content_length": {
+                "bytes": 191,
+                "code": "too_large",
+                "status": 413
+              },
+              "non_digit_content_length": {
+                "bytes": 183,
+                "code": "invalid",
+                "status": 400
+              },
+              "overlong_header_block": {
+                "bytes": 183,
+                "code": "invalid",
+                "status": 400
+              },
+              "overlong_request_line": {
+                "bytes": 183,
+                "code": "invalid",
+                "status": 400
+              },
+              "oversize_json_body": {
+                "bytes": 191,
+                "code": "too_large",
+                "status": 413
+              },
+              "oversize_save_body": {
+                "bytes": 191,
+                "code": "too_large",
+                "status": 413
+              },
+              "post_hostile_recovery": {
+                "bytes": 628,
+                "code": null,
+                "status": 200
+              },
+              "slow_partial_body": {
+                "bytes": 186,
+                "code": "timeout",
+                "status": 504
+              },
+              "too_many_headers": {
+                "bytes": 183,
+                "code": "invalid",
+                "status": 400
+              },
+              "unknown_endpoint": {
+                "bytes": 183,
+                "code": "invalid",
+                "status": 400
+              }
+            },
+            "problems": [],
+            "resources": {
+              "closed": true,
+              "fd_after": 4,
+              "fd_before": 10,
+              "threads_after": []
+            },
+            "result": "PASS",
+            "stage": "http_hostile"
+          },
+          "json": "stage_http_hostile.json",
+          "log": "logs/harsh_http_hostile.out",
+          "problems": [],
+          "raw_exit": 0,
+          "result": "PASS",
+          "timed_out": false
+        },
+        "isolation": {
+          "detail": {
+            "checks": {
+              "cross_agent_other": {
+                "error": {
+                  "code": "denied",
+                  "outcome_uncertain": false,
+                  "retry_safe": false
+                },
+                "ok": false
+              },
+              "cross_agent_other_read": {
+                "error": {
+                  "code": "denied",
+                  "outcome_uncertain": false,
+                  "retry_safe": false
+                },
+                "ok": false
+              },
+              "ro_save_denied": {
+                "error": {
+                  "code": "denied",
+                  "outcome_uncertain": false,
+                  "retry_safe": false
+                },
+                "ok": false
+              },
+              "shared_alias_a": {
+                "ok": true,
+                "value": {
+                  "items": [
+                    {
+                      "kind": "file",
+                      "name": "data.bin",
+                      "parent_id": "root",
+                      "ref": {
+                        "file_id": "p/data.bin",
+                        "source_id": "shared"
+                      },
+                      "size_bytes": 4096
+                    },
+                    {
+                      "kind": "file",
+                      "name": "readme.txt",
+                      "parent_id": "root",
+                      "ref": {
+                        "file_id": "p/readme.txt",
+                        "source_id": "shared"
+                      },
+                      "size_bytes": 80
+                    },
+                    {
+                      "kind": "directory",
+                      "name": "savepool",
+                      "parent_id": "root",
+                      "ref": {
+                        "file_id": "p/savepool",
+                        "source_id": "shared"
+                      },
+                      "size_bytes": null
+                    },
+                    {
+                      "kind": "directory",
+                      "name": "sub",
+                      "parent_id": "root",
+                      "ref": {
+                        "file_id": "p/sub",
+                        "source_id": "shared"
+                      },
+                      "size_bytes": null
+                    }
+                  ],
+                  "next_offset": null
+                }
+              },
+              "shared_alias_b": {
+                "ok": true,
+                "value": {
+                  "items": [
+                    {
+                      "kind": "file",
+                      "name": "data.bin",
+                      "parent_id": "root",
+                      "ref": {
+                        "file_id": "p/data.bin",
+                        "source_id": "shared"
+                      },
+                      "size_bytes": 4096
+                    },
+                    {
+                      "kind": "file",
+                      "name": "readme.txt",
+                      "parent_id": "root",
+                      "ref": {
+                        "file_id": "p/readme.txt",
+                        "source_id": "shared"
+                      },
+                      "size_bytes": 80
+                    },
+                    {
+                      "kind": "directory",
+                      "name": "savepool",
+                      "parent_id": "root",
+                      "ref": {
+                        "file_id": "p/savepool",
+                        "source_id": "shared"
+                      },
+                      "size_bytes": null
+                    },
+                    {
+                      "kind": "directory",
+                      "name": "sub",
+                      "parent_id": "root",
+                      "ref": {
+                        "file_id": "p/sub",
+                        "source_id": "shared"
+                      },
+                      "size_bytes": null
+                    }
+                  ],
+                  "next_offset": null
+                }
+              },
+              "symlink_list": {
+                "error": {
+                  "code": "denied",
+                  "outcome_uncertain": false,
+                  "retry_safe": false
+                },
+                "ok": false
+              },
+              "symlink_read": {
+                "error": {
+                  "code": "denied",
+                  "outcome_uncertain": false,
+                  "retry_safe": false
+                },
+                "ok": false
+              },
+              "symlink_save": {
+                "error": {
+                  "code": "denied",
+                  "outcome_uncertain": true,
+                  "retry_safe": false
+                },
+                "ok": false
+              },
+              "traversal_dotdot": {
+                "client_reject": "ValueError",
+                "ok": false
+              },
+              "traversal_encoded": {
+                "error": {
+                  "code": "not_found",
+                  "outcome_uncertain": false,
+                  "retry_safe": false
+                },
+                "ok": false
+              }
+            },
+            "outside_listing": [
+              "secret.txt"
+            ],
+            "problems": [],
+            "result": "PASS",
+            "stage": "isolation"
+          },
+          "json": "stage_isolation.json",
+          "log": "logs/harsh_isolation.out",
+          "problems": [],
+          "raw_exit": 0,
+          "result": "PASS",
+          "timed_out": false
+        },
+        "readdir_order": {
+          "detail": {
+            "inverted_run": {
+              "ok": true,
+              "rc": 0,
+              "tail": [
+                "Ran 1 test in 0.000s",
+                "",
+                "OK (skipped=1)"
+              ]
+            },
+            "native_readdir_order": [
+              "b.txt",
+              "a.txt"
+            ],
+            "native_run": {
+              "ok": true,
+              "rc": 0,
+              "tail": [
+                "Ran 1 test in 0.006s",
+                "",
+                "OK"
+              ]
+            },
+            "note": "The committed test is order-explicit (it injects both ['a.txt','b.txt'] and ['b.txt','a.txt']); the accepted fix must pass under either host readdir order.",
+            "problems": [],
+            "result": "PASS",
+            "stage": "readdir_order",
+            "test_id": "tests.test_partial_scan_review_fixes.PostYieldStorageErrorTests.test_metadata_failure_below_root_is_skipped_and_charged",
+            "tmp_fstype": "9p"
+          },
+          "json": "stage_readdir_order.json",
+          "log": "logs/harsh_readdir_order.out",
+          "problems": [],
+          "raw_exit": 0,
+          "result": "PASS",
+          "timed_out": false
+        },
+        "resource_pressure": {
+          "detail": {
+            "problems": [],
+            "result": "PASS",
+            "stage": "resource_pressure",
+            "sub": {
+              "cpu": {
+                "calls_ok": 200,
+                "errors": []
+              },
+              "fd": {
+                "emfile_forced": true,
+                "fillers": 8,
+                "mapped_service_errors": 120,
+                "nfd_after": 4,
+                "nfd_before": 4,
+                "nofile_hard": 1073741816,
+                "nofile_soft_before": 1073741816,
+                "nofile_soft_lowered": 12,
+                "recovered": true,
+                "unhandled": []
+              },
+              "ram": {
+                "mem_after_kb": 2058712,
+                "mem_before_kb": 2016288,
+                "result": {
+                  "as_mib": 384,
+                  "memoryerror_raised": true,
+                  "ops": 200,
+                  "ops_ok": true,
+                  "post_ok": true,
+                  "rss_kb": 31664
+                }
+              }
+            }
+          },
+          "json": "stage_resource_pressure.json",
+          "log": "logs/harsh_resource_pressure.out",
+          "problems": [],
+          "raw_exit": 0,
+          "result": "PASS",
+          "timed_out": false
+        },
+        "selfcheck": {
+          "detail": {
+            "capabilities": {
+              "free_bytes": 55091200,
+              "free_floor_bytes": 33554432,
+              "mem_available_kb": 2060296,
+              "oom_score_adj_writable": true,
+              "os_link_supported": true,
+              "platform": "linux",
+              "python": "3.11.2 (main, May 12 2026, 05:17:27) [GCC 12.2.0]",
+              "rlimit_as_settable": true,
+              "rlimit_fsize_settable": true,
+              "rlimit_nofile_settable": true,
+              "sigxfsz_ignorable": true,
+              "tmp_fstype": "9p"
+            },
+            "problems": [],
+            "result": "PASS",
+            "stage": "selfcheck"
+          },
+          "json": "stage_selfcheck.json",
+          "log": "logs/harsh_selfcheck.out",
+          "problems": [],
+          "raw_exit": 0,
+          "result": "PASS",
+          "timed_out": false
+        }
+      }
+    }
+  },
+  "stages_to_run": [
+    "selfcheck",
+    "readdir_order",
+    "http_hostile",
+    "admission",
+    "isolation",
+    "concurrency",
+    "crash_kill",
+    "resource_pressure",
+    "enospc"
+  ],
+  "started": "2026-10-16T04:20:35Z",
+  "uncompressed_bytes": 1785011,
+  "workspace": "/tmp/d110-337e4c71-1193-435078"
+}
