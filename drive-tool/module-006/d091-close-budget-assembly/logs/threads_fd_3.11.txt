@@ -1,0 +1,3 @@
+threads: before=1 live=8 after_close=1 (expected adapter threads=7)
+adapter threads: ['drive-http-accept', 'drive-http-worker-0', 'drive-http-worker-1', 'drive-http-worker-2', 'drive-http-worker-3', 'drive-http-worker-4', 'drive-http-worker-5']
+fd: before=4 live=11 closed=True

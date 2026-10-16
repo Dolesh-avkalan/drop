@@ -1,0 +1,32 @@
+test_contended_close_does_not_close_active_descriptors (tests.test_http_adapter.CloseBudgetTests.test_contended_close_does_not_close_active_descriptors) ... FAIL
+test_lock_is_released_once_and_close_is_idempotent (tests.test_http_adapter.CloseBudgetTests.test_lock_is_released_once_and_close_is_idempotent) ... FAIL
+test_second_close_honors_deadline_while_first_holds_lock (tests.test_http_adapter.CloseBudgetTests.test_second_close_honors_deadline_while_first_holds_lock) ... FAIL
+
+======================================================================
+FAIL: test_contended_close_does_not_close_active_descriptors (tests.test_http_adapter.CloseBudgetTests.test_contended_close_does_not_close_active_descriptors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d091-base/tests/test_http_adapter.py", line 1494, in test_contended_close_does_not_close_active_descriptors
+    self.assertIs(adapter.close(timeout=0.05), False)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_lock_is_released_once_and_close_is_idempotent (tests.test_http_adapter.CloseBudgetTests.test_lock_is_released_once_and_close_is_idempotent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d091-base/tests/test_http_adapter.py", line 1509, in test_lock_is_released_once_and_close_is_idempotent
+    self.assertIs(adapter.close(timeout=0.05), False)
+AssertionError: True is not False
+
+======================================================================
+FAIL: test_second_close_honors_deadline_while_first_holds_lock (tests.test_http_adapter.CloseBudgetTests.test_second_close_honors_deadline_while_first_holds_lock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/scratch/work/d091-base/tests/test_http_adapter.py", line 1462, in test_second_close_honors_deadline_while_first_holds_lock
+    self.assertIs(second_result, False)
+AssertionError: True is not False
+
+----------------------------------------------------------------------
+Ran 3 tests in 15.010s
+
+FAILED (failures=3)

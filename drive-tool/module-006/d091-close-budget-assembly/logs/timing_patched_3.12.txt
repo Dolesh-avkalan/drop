@@ -1,0 +1,8 @@
+first close reached the service lease: True
+contended close(timeout=0.05) -> False in 0.0511s (budget 0.05s + 0.10s margin = 0.15s)
+service.close calls during the contended close: 1
+first close returned: [True] alive: False
+adapter._closed: True
+service.close calls total: 1
+idempotent follow-up close(timeout=0.1) -> True
+VERDICT: PASS

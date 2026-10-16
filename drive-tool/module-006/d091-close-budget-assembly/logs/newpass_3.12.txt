@@ -1,0 +1,8 @@
+test_contended_close_does_not_close_active_descriptors (tests.test_http_adapter.CloseBudgetTests.test_contended_close_does_not_close_active_descriptors) ... ok
+test_lock_is_released_once_and_close_is_idempotent (tests.test_http_adapter.CloseBudgetTests.test_lock_is_released_once_and_close_is_idempotent) ... ok
+test_second_close_honors_deadline_while_first_holds_lock (tests.test_http_adapter.CloseBudgetTests.test_second_close_honors_deadline_while_first_holds_lock) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.159s
+
+OK

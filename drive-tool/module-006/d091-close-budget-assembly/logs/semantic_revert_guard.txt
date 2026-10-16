@@ -1,0 +1,16 @@
+# D091 semantic-revert guard: revert the production hunk and confirm compile-clean
+
+$ git checkout 7dab4357 -- drive_tool/http_adapter.py   # pre-patch adapter
+adapter sha256 now: 1e18561512614e13250582d042593ab72c8f7bfcb104af13a2646865e94a9ac7
+$ python3.11 -m py_compile drive_tool/http_adapter.py
+  compile clean
+$ python3.12 -m py_compile drive_tool/http_adapter.py
+  compile clean
+$ python3.12 -m unittest tests.test_http_adapter.CloseBudgetTests   # guard must fail on the reverted source
+Ran 3 tests in 15.026s
+
+FAILED (failures=3)
+
+$ git checkout HEAD -- drive_tool/http_adapter.py   # restore the patch
+adapter sha256 restored: 9706fdbc9e48fe35e3777116f536a462368ae87080c47934a534fd0d93cdd0ec
+compile clean

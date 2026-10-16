@@ -1,0 +1,21 @@
+# D091 source identity
+
+repo:        Dolesh-avkalan/drive-tool
+base commit: 7dab4357ca9a79a6c857ab78bea55805dfa1de89
+base tree:   26eff85fa3b9945619157632e65d594c41653aac
+branch:      feature/module-006b-http-close-budget
+head commit: b962a04df1c5abdb78c37617d3a6adca02d04024
+head tree:   ebcee4f5d1108b678d137da23916ecc8cd9a1999
+
+drive_tool/http_adapter.py:
+  base blob: 8cd137f7323eb5c9e1e4166471a04073204840e5  sha256 1e18561512614e13250582d042593ab72c8f7bfcb104af13a2646865e94a9ac7
+  head blob: a28970e29f7aa52373026f2e539206b2de784ccf  sha256 9706fdbc9e48fe35e3777116f536a462368ae87080c47934a534fd0d93cdd0ec  bytes 40119
+tests/test_http_adapter.py:
+  base blob: 5419096c43190ea61270fd9091a8601d376bdd1e  sha256 951e73d01b170a13789eb2306d66e695cc8ba5d3ae253a67be3d1bf4dc391469  bytes 64700
+  head blob: 8130d56f4ca04305ec2e9a38ff59c892c6a659b0  sha256 88c1e558e093d3017056b0e592b778406ce23043fb2a7a5c090312d560b17e78  bytes 70229
+
+patch source: drop ea5b10428c461536b2c9300211d016ee11f63fa7
+  path: drive-tool/module-006/d087-close-lock-budget.md
+  blob: d1b05bfb25c373957dca094002cb9d73bcaefe81
+
+scope vs base: exactly two modified paths; no auth, gate or other semantics changed.
