@@ -1,0 +1,34 @@
+{
+  "R1_cpu_saturation": {
+    "bad": [],
+    "bad_count": 0,
+    "expected": 300,
+    "ok": 300
+  },
+  "R2_memory_pressure": {
+    "reason": "baseline VmSize 533764 KiB leaves < 196608 KiB headroom under RLIMIT_AS 512 MiB",
+    "result": "SKIPPED"
+  },
+  "R3_emfile": {
+    "hard": 1073741816,
+    "mapped": 124,
+    "new_soft": 24,
+    "nfd_pressure": 21,
+    "ok": 36,
+    "raw": 0,
+    "raw_type": null,
+    "recovery_ok": 20,
+    "result": "PASS",
+    "soft": 1073741816
+  },
+  "host_mem_available_kb_after": 2067632,
+  "host_mem_available_kb_before": 2010648,
+  "note": "R2 is SKIPPED (never PASS) when the host MemAvailable floor is not met.",
+  "problems": [],
+  "resources": {
+    "closed": true,
+    "threads_after_close": []
+  },
+  "result": "PARTIAL",
+  "stage": "resource_pressure"
+}
